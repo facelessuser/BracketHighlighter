@@ -10,6 +10,7 @@
 - Open SublimeBrackets.py and fine the Customize section.
 - Change the Scope, Outline, and Icon for bracket types.
 - Save file and your options should take effect immediately.
+
 ![ssexample.png](https://github.com/pyparadigm/SublimeBrackets/raw/master/ssoptions.png)
 
 # Screenshot
