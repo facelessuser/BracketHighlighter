@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
 
-class MatchCommand(sublime_plugin.EventListener):
+class SublimeBrackets(sublime_plugin.EventListener):
 
   # Customize
   #--------------------
@@ -22,9 +22,9 @@ class MatchCommand(sublime_plugin.EventListener):
 
   view = None
   window = None
-  highlight_us = None
   last_id_view = None
   last_id_sel = None
+  highlight_us = None
 
   def on_selection_modified(self, view):
     self.view = view
