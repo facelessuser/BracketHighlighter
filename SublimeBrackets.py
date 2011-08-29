@@ -169,19 +169,16 @@ class SublimeBrackets(sublime_plugin.EventListener):
         if(brackets['curly'] > 0):
           brackets['curly'] = brackets['curly'] - 1
         else: 
-          self.bracket_type = 'curly'
           return scout
       elif(char == '('):
         if(brackets['round'] > 0):
           brackets['round'] = brackets['round'] - 1
         else: 
-          self.bracket_type = 'round'
           return scout
       elif(char == '['):
         if(brackets['square'] > 0):
           brackets['square'] = brackets['square'] - 1
         else: 
-          self.bracket_type = 'square'
           return scout
       elif(char == '}'):
         brackets['curly'] = brackets['curly'] + 1
@@ -210,19 +207,16 @@ class SublimeBrackets(sublime_plugin.EventListener):
         if(brackets['curly'] > 0):
           brackets['curly'] = brackets['curly'] - 1
         else: 
-          self.bracket_type = 'curly'
           return scout
       elif(char == ')'):
         if(brackets['round'] > 0):
           brackets['round'] = brackets['round'] - 1
         else: 
-          self.bracket_type = 'round'
           return scout
       elif(char == ']'):
         if(brackets['square'] > 0):
           brackets['square'] = brackets['square'] - 1
         else: 
-          self.bracket_type = 'square'
           return scout
       elif(char == '{'):
         brackets['curly'] = brackets['curly'] + 1
