@@ -116,21 +116,26 @@ class SublimeBrackets(sublime_plugin.EventListener):
       )
 
   def match_braces(self, sel):
-    self.bracket_type = None
     left = self.scout_left(sel.a)
     if(left != None):
+      if(self.view.substr(left) == '{'):
+        self.bracket_type = 'curly'
+        self.bracket_open = '{'
+        self.bracket_close = '}'
+      if(self.view.substr(left) == '('):
+        self.bracket_type = 'round'
+        self.bracket_open = '('
+        self.bracket_close = ')'
+      if(self.view.substr(left) == '['):
+        self.bracket_type = 'square'
+        self.bracket_open = '['
+        self.bracket_close = ']'
       right = self.scout_right(left + 1)
     if(left != None and right != None):
-      if(self.view.substr(left) == '{'):
-        bracket_type = 'curly'
-      if(self.view.substr(left) == '('):
-        bracket_type = 'round'
-      if(self.view.substr(left) == '['):
-        bracket_type = 'square'
       region = sublime.Region(left, left + 1)
-      self.highlight_us[bracket_type].append(region)
+      self.highlight_us[self.bracket_type].append(region)
       region = sublime.Region(right, right + 1)
-      self.highlight_us[bracket_type].append(region)
+      self.highlight_us[self.bracket_type].append(region)
 
   def scout_left(self, scout):
     brackets = {
@@ -164,7 +169,7 @@ class SublimeBrackets(sublime_plugin.EventListener):
         continue
       # Assign char.
       char = self.view.substr(scout)
-      # Hit start bracket
+      # Hit brackets.
       if(char == '{'):
         if(brackets['curly'] > 0):
           brackets['curly'] = brackets['curly'] - 1
@@ -189,9 +194,7 @@ class SublimeBrackets(sublime_plugin.EventListener):
 
   def scout_right(self, scout):
     brackets = {
-      'curly': 0,
-      'round': 0,
-      'square': 0,
+      'parentheses': 0
     }
     scout = scout - 1
     while(scout < self.view.size()):
@@ -202,25 +205,11 @@ class SublimeBrackets(sublime_plugin.EventListener):
         continue
       # Assign char.
       char = self.view.substr(scout)
-      # Hit start bracket
-      if(char == '}'):
-        if(brackets['curly'] > 0):
-          brackets['curly'] = brackets['curly'] - 1
+      # Hit brackets.
+      if(char == self.bracket_close):
+        if(brackets['parentheses'] > 0):
+          brackets['parentheses'] = brackets['parentheses'] - 1
         else: 
           return scout
-      elif(char == ')'):
-        if(brackets['round'] > 0):
-          brackets['round'] = brackets['round'] - 1
-        else: 
-          return scout
-      elif(char == ']'):
-        if(brackets['square'] > 0):
-          brackets['square'] = brackets['square'] - 1
-        else: 
-          return scout
-      elif(char == '{'):
-        brackets['curly'] = brackets['curly'] + 1
-      elif(char == '('):
-        brackets['round'] = brackets['round'] + 1
-      elif(char == '['):
-        brackets['square'] = brackets['square'] + 1
+      elif(char == self.bracket_open):
+        brackets['parentheses'] = brackets['parentheses'] + 1
