@@ -38,8 +38,9 @@ class SublimeBrackets(sublime_plugin.EventListener):
         'round': [],
         'square': []
       }
-      for clear_view in self.window.views():
-        self.highlight(clear_view)
+      if self.window != None:
+        for clear_view in self.window.views():
+          self.highlight(clear_view)
       # Process selections.
       for sel in view.sel():
         self.match_braces(sel)
