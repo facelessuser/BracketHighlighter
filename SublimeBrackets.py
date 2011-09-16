@@ -1,8 +1,13 @@
 import sublime, sublime_plugin
 
-class SublimeBrackets(sublime_plugin.EventListener):
+class SublimeBracketsKeyCommand(sublime_plugin.WindowCommand):
+  def run(self):
+    SublimeBracketsCommand().on_selection_modified(self.window.active_view(),True)
+
+class SublimeBracketsCommand(sublime_plugin.EventListener):
   #Initialize
   Settings = sublime.load_settings('SublimeBrackets.sublime-settings')
+  UseThreshold = None
   Targets = None
   highlight_us = None
   SearchThreshold = None
@@ -11,12 +16,14 @@ class SublimeBrackets(sublime_plugin.EventListener):
   last_id_view = None
   last_id_sel = None
 
-  def on_selection_modified(self, view):
+  def on_selection_modified(self, view, overrideThresh=False):
     self.view = view
     self.window = view.window()
     self.last_view = view
 
     self.init()
+    if(overrideThresh == True):
+      self.UseThreshold = False
 
     if(self.unique()):
       # Clear views.
@@ -34,6 +41,7 @@ class SublimeBrackets(sublime_plugin.EventListener):
 
   def init(self):
     self.SearchThreshold = int(self.Settings.get('search_threshold'))
+    self.UseThreshold = bool(self.Settings.get('use_search_threshold'))
     self.Targets = {}
     self.highlight_us = {}
     self.addBracket('curly','{','}')
@@ -115,7 +123,7 @@ class SublimeBrackets(sublime_plugin.EventListener):
     max_search = 0
     while(scout > 0):
       max_search += 1
-      if (max_search >= self.SearchThreshold):
+      if (max_search >= self.SearchThreshold and self.UseThreshold == True):
         return None
       scout -= 1
       # Cicumstance checks.
@@ -175,7 +183,7 @@ class SublimeBrackets(sublime_plugin.EventListener):
     max_search = 0
     while(scout < self.view.size()):
       max_search += 1
-      if (max_search >= self.SearchThreshold):
+      if (max_search >= self.SearchThreshold  and self.UseThreshold == True):
         return None
       scout += 1
       # Are we in a string?
