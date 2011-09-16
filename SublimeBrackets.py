@@ -23,8 +23,6 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
 
     if(self.unique()):
       # Clear views.
-      #for bracket in self.highlight_us:
-      #  self.highlight_us[bracket] = []
       self.init()
       if(overrideThresh == True):
         self.UseThreshold = False
