@@ -40,7 +40,6 @@ class SublimeBrackets(sublime_plugin.EventListener):
     self.addBracket('round','(',')')
     self.addBracket('square','[',']')
     self.addBracket('angle','<','>')
-    print self.Targets
 
   def addBracket(self, bracket, opening, closing):
     if(bool(self.Settings.get(bracket+'_enable')) == True):
