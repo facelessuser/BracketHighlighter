@@ -21,14 +21,13 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
     self.window = view.window()
     self.last_view = view
 
-    self.init()
-    if(overrideThresh == True):
-      self.UseThreshold = False
-
     if(self.unique()):
       # Clear views.
-      for bracket in self.highlight_us:
-        self.highlight_us[bracket] = []
+      #for bracket in self.highlight_us:
+      #  self.highlight_us[bracket] = []
+      self.init()
+      if(overrideThresh == True):
+        self.UseThreshold = False
 
       if self.window != None:
         for clear_view in self.window.views():
@@ -123,7 +122,7 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
     max_search = 0
     while(scout > 0):
       max_search += 1
-      if (max_search >= self.SearchThreshold and self.UseThreshold == True):
+      if (self.UseThreshold == True and max_search >= self.SearchThreshold):
         return None
       scout -= 1
       # Cicumstance checks.
@@ -183,7 +182,7 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
     max_search = 0
     while(scout < self.view.size()):
       max_search += 1
-      if (max_search >= self.SearchThreshold  and self.UseThreshold == True):
+      if (self.UseThreshold == True and max_search >= self.SearchThreshold):
         return None
       scout += 1
       # Are we in a string?
