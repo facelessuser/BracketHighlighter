@@ -171,7 +171,6 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
           brackets[bracket]['count'] += 1
           break
 
-
   def scout_right(self, scout):
     brackets = {
       'parentheses': 0

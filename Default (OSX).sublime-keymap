@@ -1,0 +1,3 @@
+[
+	{ "keys": ["super+shift+b"], "command": "sublime_brackets_key" }
+]
