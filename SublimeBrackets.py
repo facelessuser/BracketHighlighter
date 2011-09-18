@@ -132,7 +132,7 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
         'close' : self.Targets[bracket]['close'],
       }
 
-    while(scout > 0):
+    while(scout >= 0):
       if (self.UseThreshold == True):
         self.SearchThreshold -= 1
         if(self.SearchThreshold < 0):
