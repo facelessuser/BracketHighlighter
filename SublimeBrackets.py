@@ -17,16 +17,15 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
   last_id_sel = None
 
   def on_selection_modified(self, view, overrideThresh=False):
+    #setup views
     self.view = view
     self.window = view.window()
     self.last_view = view
 
     if(self.unique()):
+      #init
+      self.init(overrideThresh)
       # Clear views.
-      self.init()
-      if(overrideThresh == True):
-        self.UseThreshold = False
-
       if self.window != None:
         for clear_view in self.window.views():
           self.highlight(clear_view)
@@ -36,15 +35,17 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
     # Highlight.
     self.highlight(view)
 
-  def init(self):
-    self.SearchThreshold = int(self.Settings.get('search_threshold'))
-    self.UseThreshold = bool(self.Settings.get('use_search_threshold'))
+  def init(self,overrideThresh):
     self.Targets = {}
     self.highlight_us = {}
     self.addBracket('curly','{','}')
     self.addBracket('round','(',')')
     self.addBracket('square','[',']')
     self.addBracket('angle','<','>')
+    self.SearchThreshold = int(self.Settings.get('search_threshold'))
+    self.UseThreshold = bool(self.Settings.get('use_search_threshold'))
+    if(overrideThresh == True):
+        self.UseThreshold = False
 
   def addBracket(self, bracket, opening, closing):
     if(bool(self.Settings.get(bracket+'_enable')) == True):
@@ -90,7 +91,7 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
         )
 
   def match_braces(self, sel):
-    left = self.scout_left(sel.a)
+    left = self.scout_left(sel.a + self.checkOffset(sel.a))
     if(left != None):
       for bracket in self.Targets:
         if(self.view.substr(left) == self.Targets[bracket]['open']):
@@ -105,6 +106,21 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
       region = sublime.Region(right, right + 1)
       self.highlight_us[self.bracket_type].append(region)
 
+  def checkOffset(self,scout):
+    offset = 0
+    if (offset == 0):
+      char = self.view.substr(scout - 1)
+      for bracket in self.Targets:
+        if(char == self.Targets[bracket]['close']):
+          offset -= 2
+    if (offset == 0):
+      char = self.view.substr(scout)
+      for bracket in self.Targets:
+        if(char == self.Targets[bracket]['close']):
+          offset -= 1
+
+    return offset
+
   def scout_left(self, scout):
     brackets = {}
     for bracket in self.Targets:
@@ -114,85 +130,57 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
         'close' : self.Targets[bracket]['close'],
       }
 
-    a_check = True
-    b_check = True
-    scout += 1
-    max_search = 0
     while(scout > 0):
-      max_search += 1
-      if (self.UseThreshold == True and max_search >= self.SearchThreshold):
-        return None
-      scout -= 1
-      # Cicumstance checks.
-      next = False
-      if(a_check == True):
-        a_check = False
-        char = self.view.substr(scout - 1)
-        for bracket in brackets:
-          if(char == brackets[bracket]['close']):
-            next = True
-            break
-
-      if(next == True):
-        continue
-
-      if(b_check == True):
-        b_check = False
+      if (self.UseThreshold == True):
+        self.SearchThreshold -= 1
+        if(self.SearchThreshold < 0):
+          return None
+      # Are we in a string or comment?
+      if( self.view.score_selector(scout, 'string') == 0 and 
+          self.view.score_selector(scout, 'comment')== 0 and
+          self.view.score_selector(scout, 'keyword.operator') == 0):
+        # Assign char.
         char = self.view.substr(scout)
+        # Hit brackets.
+        foundBracket = False
         for bracket in brackets:
-          if(char == brackets[bracket]['close']):
-            next = True
-            break
+          if (char == brackets[bracket]['open']):
+            if(brackets[bracket]['count'] > 0):
+              brackets[bracket]['count'] -= 1
+              foundBracket = True
+              break
+            else:
+              return scout
 
-      if(next == True):
-        continue
-
-      # Are we in a string?
-      if( self.view.score_selector(scout, 'string') > 0 or
-          self.view.score_selector(scout, 'comment') > 0): 
-        continue
-      # Assign char.
-      char = self.view.substr(scout)
-      # Hit brackets.
-      for bracket in brackets:
-        if (char == brackets[bracket]['open']):
-          if(brackets[bracket]['count'] > 0):
-            brackets[bracket]['count'] -= 1
-            next == True
-            break
-          else:
-            return scout
-
-      if(next == True):
-        continue
-
-      for bracket in brackets:
-        if (char == brackets[bracket]['close']):
-          brackets[bracket]['count'] += 1
-          break
+        if(foundBracket == False):
+          for bracket in brackets:
+            if (char == brackets[bracket]['close']):
+              brackets[bracket]['count'] += 1
+              break
+      scout -= 1
 
   def scout_right(self, scout):
     brackets = {
       'parentheses': 0
     }
-    scout -= 1
-    max_search = 0
-    while(scout < self.view.size()):
-      max_search += 1
-      if (self.UseThreshold == True and max_search >= self.SearchThreshold):
-        return None
+    viewSize = self.view.size()
+    while(scout < viewSize):
+      if (self.UseThreshold == True):
+        self.SearchThreshold -= 1
+        if(self.SearchThreshold < 0):
+          return None
+      # Are we in a string or comment?
+      if( self.view.score_selector(scout, 'string') == 0 and
+          self.view.score_selector(scout, 'comment') == 0 and
+          self.view.score_selector(scout, 'keyword.operator') == 0): 
+        # Assign char.
+        char = self.view.substr(scout)
+        # Hit brackets.
+        if(char == self.bracket_close):
+          if(brackets['parentheses'] > 0):
+            brackets['parentheses'] -= 1
+          else: 
+            return scout
+        elif(char == self.bracket_open):
+          brackets['parentheses'] += 1
       scout += 1
-      # Are we in a string?
-      if( self.view.score_selector(scout, 'string') > 0 or
-          self.view.score_selector(scout, 'comment') > 0): 
-        continue
-      # Assign char.
-      char = self.view.substr(scout)
-      # Hit brackets.
-      if(char == self.bracket_close):
-        if(brackets['parentheses'] > 0):
-          brackets['parentheses'] -= 1
-        else: 
-          return scout
-      elif(char == self.bracket_open):
-        brackets['parentheses'] += 1

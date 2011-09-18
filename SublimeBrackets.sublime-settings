@@ -3,7 +3,7 @@
 	"curly_enable" : true,
 	"round_enable" : true,
 	"square_enable" : true,
-	"angle_enable" : false,
+	"angle_enable" : true,
 
 	//Scope? (Defined in theme files.) ->
 	//Examples: (keyword/string/number)
