@@ -43,9 +43,11 @@ class SublimeBracketsCommand(sublime_plugin.EventListener):
     self.addBracket('square','[',']')
     self.addBracket('angle','<','>')
     self.SearchThreshold = int(self.Settings.get('search_threshold'))
-    self.UseThreshold = bool(self.Settings.get('use_search_threshold'))
     if(overrideThresh == True):
-        self.UseThreshold = False
+      self.UseThreshold = False
+    else:
+      self.UseThreshold = bool(self.Settings.get('use_search_threshold'))
+
 
   def addBracket(self, bracket, opening, closing):
     if(bool(self.Settings.get(bracket+'_enable')) == True):
