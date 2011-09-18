@@ -1,7 +1,5 @@
 #About
-This is a fork of pyparadigm's SublimeBrackets.  Pyparadigm's plugin is great, but it had a small issue that I needed 
-fixed, so I forked it to remedy it.  Afterwards, I started adding features that I wanted...so here I am with a branch 
-that is deviating more and more from the original.  If the original ever pulls these changes in, I will stop support.
+This is a fork of pyparadigm's SublimeBrackets.  Pyparadigm's plugin is great, but it had a small issue that I needed fixed, so I forked it to remedy it.  Afterwards, I started adding features that I wanted...so here I am with a branch that is deviating more and more from the original.  If the original ever pulls these changes in, I will stop support.
 
 # Installation
 * Latest version: [Click here to download.](https://github.com/facelessuser/SublimeBrackets/zipball/master "Click here to download lastest version.")
