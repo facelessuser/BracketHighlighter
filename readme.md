@@ -11,7 +11,7 @@ I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the 
 
 # Features
 - Customizable highlighting of brackets (),[],<>,{}
-- Customizable highlighting of Tags
+- Customizable highlighting of Tags (supports unary tags (HTML5 coming), but not optional self closing tags)
 - Customizable highlighting of quotes
 - Selectively disable or enable specific matching of tags, brackets, or quotes
 - Selectively exclude matching of specific mathing of tags, brackets, or quotes based on language
