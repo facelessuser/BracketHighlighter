@@ -345,7 +345,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
   def match_quotes(self, start):
     matched = False
     self.search_left = self.search_threshold
-    is_string = (self.view.score_selector(start, 'string') >= 0)
+    is_string = (self.view.score_selector(start, 'string') > 0)
     if( self.quote_enable == True and
         start > 0 and 
         (is_string or
@@ -405,7 +405,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             scout += 1
             lastChar = char
         else:
-          if(lastChar == quote and scout != begin - 1):
+          if(lastChar == quote and scout - 1 != begin):
             end = scout
             matched = True
           break
