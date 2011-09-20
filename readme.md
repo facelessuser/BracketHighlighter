@@ -19,7 +19,7 @@ I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the 
 
 # Options
 - Open BracketHighlighter.sublime-settings and configure your preferences (can be accessed from menu).
-- Change the Scope, Outline, and Icon for bracket types.
+- Change the Scope, Outline, Icon for bracket types, and more.
 - Save the file and your options should take effect immediately.
 
 # Screenshot (need to update screenshots)
