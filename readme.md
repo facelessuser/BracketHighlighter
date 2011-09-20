@@ -1,6 +1,7 @@
 #About
 This is a fork of pyparadigm's [SublimeBrackets](https://github.com/pyparadigm/SublimeBrackets "Go to SublimeBrackets.")
 I forked this to fix some issues I had and add some features I wanted.  I also wanted to improve the efficiency of the matching.
+I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the parallel searching that is now streamlined in one search.
 
 # Installation
 * Latest version: [Click here to download.](https://github.com/facelessuser/BracketHighlighter/zipball/master "Click here to download lastest version.")
@@ -21,7 +22,5 @@ I forked this to fix some issues I had and add some features I wanted.  I also w
 - Change the Scope, Outline, and Icon for bracket types.
 - Save the file and your options should take effect immediately.
 
-![Example Screenshot](https://github.com/pyparadigm/SublimeBrackets/raw/master/ssoptions.png)
-
-# Screenshot
+# Screenshot (need to update screenshots)
 ![Options Screenshot](https://github.com/pyparadigm/SublimeBrackets/raw/master/ssexample.png)
