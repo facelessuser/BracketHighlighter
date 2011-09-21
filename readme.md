@@ -23,5 +23,5 @@ I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the 
 - Change the Scope, Outline, Icon for bracket types, which brackets etc. to match, set search thresholds, etc.
 - Save the file and your options should take effect immediately.
 
-# Screenshot (need to update screenshots)
-![Options Screenshot](https://github.com/pyparadigm/SublimeBrackets/raw/master/ssexample.png)
+# Screenshot
+![Options Screenshot](https://github.com/facelessuser/BracketHighlighter/raw/master/example.png)
