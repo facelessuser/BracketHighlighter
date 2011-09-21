@@ -1,4 +1,3 @@
-from copy import copy
 from os.path import basename
 from Elements import is_tag, match
 import sublime, sublime_plugin
@@ -73,13 +72,14 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
        self.add_bracket('angle')
     # Tags
     self.tag_enable   = (self.exclude_bracket('tag',language) == False)
+    self.highlight_us['tag'] = []
     # Quotes
     self.quote_enable = (self.exclude_bracket('quote',language) == False)
     self.highlight_us['quote'] = []
 
   def add_bracket(self,bracket):
     self.highlight_us[bracket] = []
-    self.targets[bracket] = copy(self.brackets[bracket])
+    self.targets[bracket] = self.brackets[bracket]
 
   def exclude_bracket (self, bracket, language):
     exclude = True
@@ -155,6 +155,14 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.targets[bracket]['icon'],
         self.targets[bracket]['outline']
       )
+    # Highlight tags
+    view.add_regions(
+      'tag',
+      self.highlight_us['tag'],
+      self.brackets['tag']['scope'],
+      self.brackets['tag']['icon'],
+      self.brackets['tag']['outline']
+    )
     # Highlight quotes
     view.add_regions(
       'quote',
@@ -338,17 +346,14 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
       # Set Highlight Region
       if(blotch == False):
-        self.targets['angle']['scope']   = copy(self.brackets['tag']['scope'])
-        self.targets['angle']['icon']    = copy(self.brackets['tag']['icon'])
-        self.targets['angle']['outline'] = copy(self.brackets['tag']['outline'])
         if(self.brackets_only == True):
-          self.highlight_us['angle'].append(tag1['region'])
-          self.highlight_us['angle'].append(tag1['region2'])
-          self.highlight_us['angle'].append(tag2['region'])
-          self.highlight_us['angle'].append(tag2['region2'])
+          self.highlight_us['tag'].append(tag1['region'])
+          self.highlight_us['tag'].append(tag1['region2'])
+          self.highlight_us['tag'].append(tag2['region'])
+          self.highlight_us['tag'].append(tag2['region2'])
         else:
-          self.highlight_us['angle'].append(tag1['region'])
-          self.highlight_us['angle'].append(tag2['region'])
+          self.highlight_us['tag'].append(tag1['region'])
+          self.highlight_us['tag'].append(tag2['region'])
         if(self.count_lines == True):
           self.lines = self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
     return not blotch
