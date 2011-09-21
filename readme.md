@@ -15,11 +15,12 @@ I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the 
 - Customizable highlighting of quotes
 - Selectively disable or enable specific matching of tags, brackets, or quotes
 - Selectively exclude matching of specific mathing of tags, brackets, or quotes based on language
+- When using on demand shortcut, show line count between match in the status bar
 - Works with multi-select.
 
 # Options
 - Open BracketHighlighter.sublime-settings and configure your preferences (can be accessed from menu).
-- Change the Scope, Outline, Icon for bracket types, and more.
+- Change the Scope, Outline, Icon for bracket types, which brackets etc. to match, set search thresholds, etc.
 - Save the file and your options should take effect immediately.
 
 # Screenshot (need to update screenshots)
