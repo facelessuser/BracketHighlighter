@@ -363,9 +363,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     if(self.quote_enable == False):
       return matched
     self.search_left = self.search_threshold
+    #Check if likely a string
     left_side_match  = (self.view.score_selector(start, 'string') > 0)
     right_side_match = (self.view.score_selector(start - 1, 'string') > 0)
-    if( start > 0 and (left_side_match or right_side_match)):
+    if(left_side_match or right_side_match):
       # Calculate offset
       offset  = -1 if(left_side_match == False) else 0
       matched = self.find_quotes(start + offset)
@@ -384,7 +385,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       if (self.use_threshold == True):
         self.search_left -= 1
         if(self.search_left < 0):
-          return None
+          return matched
       char = self.view.substr(scout)
       if( self.view.score_selector(scout, 'string') > 0):
         if(scout == 0 and (char == "'" or char == '"')):
@@ -394,7 +395,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         else:
           scout -= 1
           lastChar = char
-      else:
+      elif(lastChar == "'" or lastChar == '"'):
         begin = scout + 1
         quote = lastChar
         break
@@ -408,7 +409,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if (self.use_threshold == True):
           self.search_left -= 1
           if(self.search_left < 0):
-            return None
+            return matched
         char = self.view.substr(scout)
         if( self.view.score_selector(scout, 'string') > 0):
           if(scout == viewSize and char == quote and scout != begin):
@@ -428,5 +429,5 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       self.highlight_us['quote'].append(sublime.Region(begin, begin+1))
       self.highlight_us['quote'].append(sublime.Region(end - 1, end))
       if(self.count_lines == True):
-        self.lines = self.view.rowcol(begin)[0] - self.view.rowcol(end)[0] + 1
+        self.lines = self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
     return matched
