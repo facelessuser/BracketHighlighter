@@ -3,8 +3,8 @@ from Elements import is_tag, match
 import sublime, sublime_plugin
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
-    def run(self):
-      BracketHighlighterCommand(True,True).match(self.window.active_view())
+  def run(self):
+    BracketHighlighterCommand(True,True).match(self.window.active_view())
 
 class BracketHighlighterCommand(sublime_plugin.EventListener):
   # Initialize
@@ -48,7 +48,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       'scope'   : self.settings.get(bracket+'_scope'),
       'outline' : (sublime.DRAW_OUTLINED if (bool(self.settings.get(bracket+'_outline'))) else sublime.HIDE_ON_MINIMAP),
       'icon'    : self.settings.get(bracket+'_icon'),
-      'exclude' : str(self.settings.get(bracket+'_exclude_language')).lower().split(','),
+      'list'    : str(self.settings.get(bracket+'_language_list')).lower().split(','),
+      'filter'  : self.settings.get(bracket+'_language_filter'),
       'open'    : opening,
       'close'   : closing
     }
@@ -84,11 +85,21 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
   def exclude_bracket (self, bracket, language):
     exclude = True
     if(self.brackets[bracket]['enable'] == True):
-      exclude      = False
-      if(language != None):
-        for item in self.brackets[bracket]['exclude']:
-          if(language == item):
-            exclude = True
+      # Black list languages
+      if(self.brackets[bracket]['filter'] == 'blacklist'):
+        exclude      = False
+        if(language != None):
+          for item in self.brackets[bracket]['list']:
+            if(language == item):
+              exclude = True
+              break;
+      #White list languages
+      elif(self.brackets[bracket]['filter'] == 'whitelist'):
+        if(language != None):
+          for item in self.brackets[bracket]['list']:
+            if(language == item):
+              exclude = False
+              break
     return exclude
 
   def unique(self):

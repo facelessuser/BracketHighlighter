@@ -12,16 +12,24 @@
 	//don't show non tag angle matches
 	"ignore_non_tags" : false,
 
-	//exclude completely brackets by language type (example: C++ for C++.tmLanguage)
+	//exclude or include bracket by language type (example: C++ for C++.tmLanguage)
 	//Note: this is particularly useful with Angle. Some languages do not attribute any special scope to angle brackets making it hard
 	//to tell when the bracket is beign used in a valid scenario.  C++ is a perfect example.  It is better to disable completely than 
 	//to ignore angle.  Ignoring will not show angle matches, but will also interfere with other bracket matches.
-	"angle_exclude_language" : "C++,Plain text",
-	"tag_exclude_language"   : "Plain text",
-	"quote_exclude_language" : "Plain text",
-	"curly_exclude_language" : "Plain text",
-	"round_exclude_language" : "Plain text",
-	"square_exclude_language": "Plain text",
+	"angle_language_list" : "HTML,HTML 5,XML,PHP",
+	"tag_language_list"   : "HTML,HTML 5,XML,PHP",
+	"quote_language_list" : "Plain text",
+	"curly_language_list" : "Plain text",
+	"round_language_list" : "Plain text",
+	"square_language_list": "Plain text",
+
+	//filter type (whitelist|blacklist)
+	"angle_language_filter" : "whitelist",
+	"tag_language_filter"   : "whitelist",
+	"quote_language_filter" : "blacklist",
+	"curly_language_filter" : "blacklist",
+	"round_language_filter" : "blacklist",
+	"square_language_filter": "blacklist",
 
 	//Scope? (Defined in theme files.) ->
 	//Examples: (keyword/string/number)
