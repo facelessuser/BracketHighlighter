@@ -21,6 +21,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.highlight_us                 = {}
     self.brackets                     = self.init_brackets()
     self.lines                        = 0
+    self.chars                        = 0
     self.count_lines                  = count_lines
     self.ignore_angle                 = bool(self.settings.get('ignore_non_tags'))
     self.tag_type                     = self.settings.get('tag_type')
@@ -45,8 +46,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     }
 
   def get_bracket_settings(self, bracket, opening, closing):
-    style = sublime.HIDE_ON_MINIMAP if(self.settings.get(bracket+'_style') == "solid") else sublime.DRAW_OUTLINED
-    if(self.settings.get(bracket+'_style') == "underline"):
+    style = sublime.HIDE_ON_MINIMAP 
+    if(self.settings.get(bracket+'_style') == "outline"):
+      style |= sublime.DRAW_OUTLINED
+    elif(self.settings.get(bracket+'_style') == "underline"):
       style |= sublime.DRAW_EMPTY_AS_OVERWRITE
     return {
       'enable'   : bool(self.settings.get(bracket+'_enable')),
@@ -165,7 +168,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     # Highlight.
     self.highlight(view)
     if(self.count_lines == True):
-      sublime.status_message('Lines in Block '+str(self.lines))
+      sublime.status_message('In Block: Lines '+str(self.lines)+", Chars "+str(self.chars))
 
   def highlight(self, view):
     # Perform highlight on brackets and tags
@@ -231,6 +234,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
       if(self.count_lines == True):
         self.lines = self.view.rowcol(right)[0] - self.view.rowcol(left)[0] + 1
+        self.chars = right - 1 - left
 
   def scout_left(self, scout):
     brackets = {}
@@ -369,6 +373,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           self.highlight_us['bh_tag'] = self.underline_tag(self.highlight_us['bh_tag'])
         if(self.count_lines == True):
           self.lines = self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
+          self.chars = tag2['begin'] - 1 - tag1['end']
     return not blotch
 
   def underline_tag(self,regions):
@@ -418,9 +423,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         else:
           scout -= 1
           lastChar = char
-      elif(lastChar == "'" or lastChar == '"'):
-        begin = scout + 1
-        quote = lastChar
+      else:
+        if(lastChar == "'" or lastChar == '"'):
+          begin = scout + 1
+          quote = lastChar
         break
 
     # Right quote
@@ -457,4 +463,5 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.highlight_us['bh_quote'].append(sublime.Region(end-1, end))
       if(self.count_lines == True):
         self.lines = self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
+        self.chars = end - 2 - begin
     return matched

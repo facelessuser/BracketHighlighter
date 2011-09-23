@@ -19,7 +19,7 @@ The 9/22/11 commit will require you to re-configure your user settings.  I apolo
 - Customizable highlighting of quotes
 - Selectively disable or enable specific matching of tags, brackets, or quotes
 - Selectively whitelist or blacklist matching of specific tags, brackets, or quotes based on language
-- When using on demand shortcut, show line count between match in the status bar
+- When using on demand shortcut, show line count and char count between match in the status bar
 - Works with multi-select.
 
 # Options
