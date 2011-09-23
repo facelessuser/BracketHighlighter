@@ -17,11 +17,13 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.bracket_modified_event_fired = False
     self.last_id_view                 = None
     self.last_id_sel                  = None
-    self.targets                      = {}
+    self.targets                      = []
     self.highlight_us                 = {}
-    self.brackets                     = self.initBrackets()
+    self.brackets                     = self.init_brackets()
     self.lines                        = 0
     self.count_lines                  = count_lines
+    self.ignore_angle                 = bool(self.settings.get('ignore_non_tags'))
+    self.tag_type                     = self.settings.get('tag_type')
 
     # Search threshold
     self.use_threshold        = False if (override_thresh == True) else bool(self.settings.get('use_search_threshold'))
@@ -32,55 +34,65 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     # Tag special options
     self.brackets_only        = bool(self.settings.get('tag_brackets_only'))
 
-  def initBrackets(self):
+  def init_brackets(self):
     return {
-      'curly' : self.get_bracket_settings('curly','{','}'),
-      'round' : self.get_bracket_settings('round','(',')'),
-      'square': self.get_bracket_settings('square','[',']'),
-      'angle' : self.get_bracket_settings('angle','<','>'),
-      'tag'   : self.get_bracket_settings('tag','<','>'),
-      'quote' : self.get_bracket_settings('quote',"'","'")
+      'bh_curly' : self.get_bracket_settings('curly','{','}'),
+      'bh_round' : self.get_bracket_settings('round','(',')'),
+      'bh_square': self.get_bracket_settings('square','[',']'),
+      'bh_angle' : self.get_bracket_settings('angle','<','>'),
+      'bh_tag'   : self.get_bracket_settings('tag','<','>'),
+      'bh_quote' : self.get_bracket_settings('quote',"'","'")
     }
 
   def get_bracket_settings(self, bracket, opening, closing):
+    style = sublime.HIDE_ON_MINIMAP if(self.settings.get(bracket+'_style') == "solid") else sublime.DRAW_OUTLINED
+    if(self.settings.get(bracket+'_style') == "underline"):
+      style |= sublime.DRAW_EMPTY_AS_OVERWRITE
     return {
-      'enable'  : bool(self.settings.get(bracket+'_enable')),
-      'scope'   : self.settings.get(bracket+'_scope'),
-      'outline' : (sublime.DRAW_OUTLINED if (bool(self.settings.get(bracket+'_outline'))) else sublime.HIDE_ON_MINIMAP),
-      'icon'    : self.settings.get(bracket+'_icon'),
-      'list'    : str(self.settings.get(bracket+'_language_list')).lower().split(','),
-      'filter'  : self.settings.get(bracket+'_language_filter'),
-      'open'    : opening,
-      'close'   : closing
+      'enable'   : bool(self.settings.get(bracket+'_enable')),
+      'scope'    : self.settings.get(bracket+'_scope'),
+      'style'    : style,
+      'underline': (self.settings.get(bracket+'_style') == "underline"),
+      'icon'     : self.settings.get(bracket+'_icon'),
+      'list'     : map(lambda x:x.lower(),self.settings.get(bracket+'_language_list')),
+      'filter'   : self.settings.get(bracket+'_language_filter'),
+      'open'     : opening,
+      'close'    : closing
     }
 
   def init(self):
     # Current language
     language          = basename(self.view.settings().get('syntax')).replace('.tmLanguage','').lower()
     # Reset objects
-    self.targets      = {}
+    self.targets      = []
     self.highlight_us = {}
     self.lines        = 0
     
     # Standard Brackets
-    if (self.exclude_bracket('curly',language) == False): 
-      self.add_bracket('curly')
-    if (self.exclude_bracket('round',language) == False): 
-      self.add_bracket('round')
-    if (self.exclude_bracket('square',language) == False): 
-       self.add_bracket('square')
-    if (self.exclude_bracket('angle',language) == False): 
-       self.add_bracket('angle')
+    if (self.exclude_bracket('bh_curly',language) == False): 
+      self.add_bracket('bh_curly')
+    if (self.exclude_bracket('bh_round',language) == False): 
+      self.add_bracket('bh_round')
+    if (self.exclude_bracket('bh_square',language) == False): 
+       self.add_bracket('bh_square')
+    if (self.exclude_bracket('bh_angle',language) == False): 
+       self.add_bracket('bh_angle')
     # Tags
-    self.tag_enable   = (self.exclude_bracket('tag',language) == False)
-    self.highlight_us['tag'] = []
+    if(self.exclude_bracket('bh_tag',language) == False):
+      self.tag_enable = True
+      self.highlight_us['bh_tag'] = []
+    else:
+      self.tag_enable = False
     # Quotes
-    self.quote_enable = (self.exclude_bracket('quote',language) == False)
-    self.highlight_us['quote'] = []
+    if(self.exclude_bracket('bh_quote',language) == False):
+      self.quote_enable = True
+      self.highlight_us['bh_quote'] = []
+    else:
+      self.quote_enable = False
 
   def add_bracket(self,bracket):
     self.highlight_us[bracket] = []
-    self.targets[bracket] = self.brackets[bracket]
+    self.targets.append(bracket)
 
   def exclude_bracket (self, bracket, language):
     exclude = True
@@ -156,32 +168,18 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       sublime.status_message('Lines in Block '+str(self.lines))
 
   def highlight(self, view):
-
     # Perform highlight on brackets and tags
-    for bracket in self.targets:
-      view.add_regions(
-        bracket,
-        self.highlight_us[bracket],
-        self.targets[bracket]['scope'],
-        self.targets[bracket]['icon'],
-        self.targets[bracket]['outline']
-      )
-    # Highlight tags
-    view.add_regions(
-      'tag',
-      self.highlight_us['tag'],
-      self.brackets['tag']['scope'],
-      self.brackets['tag']['icon'],
-      self.brackets['tag']['outline']
-    )
-    # Highlight quotes
-    view.add_regions(
-      'quote',
-      self.highlight_us['quote'],
-      self.brackets['quote']['scope'],
-      self.brackets['quote']['icon'],
-      self.brackets['quote']['outline']
-    )
+    for bracket in self.brackets:
+      if(bracket in self.highlight_us):
+        view.add_regions(
+          bracket,
+          self.highlight_us[bracket],
+          self.brackets[bracket]['scope'],
+          self.brackets[bracket]['icon'],
+          self.brackets[bracket]['style']
+        )
+      else:
+        view.erase_regions(bracket)
 
   def offset_cursor(self,scout):
     # Offset cursor
@@ -190,9 +188,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       char1 = self.view.substr(scout - 1)
       char2 = self.view.substr(scout)
       for bracket in self.targets:
-        if(char1 == self.targets[bracket]['close']):
+        if(char1 == self.brackets[bracket]['close']):
           offset -= 2
-        elif(char2 == self.targets[bracket]['close']):
+        elif(char2 == self.brackets[bracket]['close']):
           offset -= 1
     return offset
 
@@ -205,30 +203,32 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     left = self.scout_left(start)
     if(left != None):
       for bracket in self.targets:
-        if(self.view.substr(left) == self.targets[bracket]['open']):
+        if(self.view.substr(left) == self.brackets[bracket]['open']):
           self.bracket_type  = bracket
-          self.bracket_open  = self.targets[bracket]['open']
-          self.bracket_close = self.targets[bracket]['close']
+          self.bracket_open  = self.brackets[bracket]['open']
+          self.bracket_close = self.brackets[bracket]['close']
           break
       # Find right brace
       right = self.scout_right(start+1)
     # Matches found
     if(left != None and right != None):
       # Angle specific
-      if(self.bracket_type == 'angle'):
+      if(self.bracket_type == 'bh_angle'):
         # Find tags if required
         if( self.tag_enable == True and 
             is_tag(self.view.substr(sublime.Region(left,right+1))) == True):
           if (self.match_tags(left,right)):
             return
         # Continue higlighting angle unless required not to
-        if(bool(self.settings.get('ignore_non_tags')) == True):
+        if(self.ignore_angle == True):
           return
       # Set higlight regions
-      region = sublime.Region(left, left + 1)
-      self.highlight_us[self.bracket_type].append(region)
-      region = sublime.Region(right, right + 1)
-      self.highlight_us[self.bracket_type].append(region)
+      if(self.brackets[self.bracket_type]['underline']):
+        self.highlight_us[self.bracket_type].append(sublime.Region(left,left))
+        self.highlight_us[self.bracket_type].append(sublime.Region(right,right))
+      else:
+        self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
+        self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
       if(self.count_lines == True):
         self.lines = self.view.rowcol(right)[0] - self.view.rowcol(left)[0] + 1
 
@@ -237,8 +237,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     for bracket in self.targets:
       brackets[bracket] = {
         'count' : 0,
-        'open' : self.targets[bracket]['open'],
-        'close' : self.targets[bracket]['close'],
+        'open'  : self.brackets[bracket]['open'],
+        'close' : self.brackets[bracket]['close'],
       }
 
     while(scout >= 0):
@@ -305,7 +305,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     bufferRegion = sublime.Region(0, bufferSize)
     bufferText   = self.view.substr(bufferRegion)
     curPosition  = start + 1
-    foundTags    = match(bufferText, curPosition, self.settings.get('tag_type'), self.tag_use_threshold, self.search_left)
+    foundTags    = match(bufferText, curPosition, self.tag_type, self.tag_use_threshold, self.search_left)
 
     # Find brackets inside tags
     tag1 = { "match": foundTags[0] }
@@ -358,16 +358,28 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       # Set Highlight Region
       if(blotch == False):
         if(self.brackets_only == True):
-          self.highlight_us['tag'].append(tag1['region'])
-          self.highlight_us['tag'].append(tag1['region2'])
-          self.highlight_us['tag'].append(tag2['region'])
-          self.highlight_us['tag'].append(tag2['region2'])
+          self.highlight_us['bh_tag'].append(tag1['region'])
+          self.highlight_us['bh_tag'].append(tag1['region2'])
+          self.highlight_us['bh_tag'].append(tag2['region'])
+          self.highlight_us['bh_tag'].append(tag2['region2'])
         else:
-          self.highlight_us['tag'].append(tag1['region'])
-          self.highlight_us['tag'].append(tag2['region'])
+          self.highlight_us['bh_tag'].append(tag1['region'])
+          self.highlight_us['bh_tag'].append(tag2['region'])
+        if(self.brackets['bh_tag']['underline'] == True):
+          self.highlight_us['bh_tag'] = self.underline_tag(self.highlight_us['bh_tag'])
         if(self.count_lines == True):
           self.lines = self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
     return not blotch
+
+  def underline_tag(self,regions):
+    underline = []
+    for region in regions:
+      start = region.begin()
+      end   = region.end()
+      while (start < end):
+        underline.append(sublime.Region(start,start))
+        start += 1
+    return underline
 
   def match_quotes(self, start):
     matched = False
@@ -437,8 +449,12 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           break
 
     if(matched == True):
-      self.highlight_us['quote'].append(sublime.Region(begin, begin+1))
-      self.highlight_us['quote'].append(sublime.Region(end - 1, end))
+      if(self.brackets['bh_quote']['underline'] == True):
+        self.highlight_us['bh_quote'].append(sublime.Region(begin, begin))
+        self.highlight_us['bh_quote'].append(sublime.Region(end-1, end-1))
+      else:
+        self.highlight_us['bh_quote'].append(sublime.Region(begin, begin+1))
+        self.highlight_us['bh_quote'].append(sublime.Region(end-1, end))
       if(self.count_lines == True):
         self.lines = self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
     return matched

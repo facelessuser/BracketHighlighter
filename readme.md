@@ -1,9 +1,13 @@
-#About
+# About
 This is a fork of pyparadigm's [SublimeBrackets](https://github.com/pyparadigm/SublimeBrackets "Go to SublimeBrackets.")
 I forked this to fix some issues I had and to add some features I wanted.  I also wanted to improve the efficiency of the matching.
 I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the parallel searching that is now streamlined in one search.
 
-# Installation
+# New and Noteworthy
+The 9/22/11 commit will require you to re-configure your user settings.  I apologize for this, but it was unavoidable. I hope to not have to change existing setting names or types again.  I think I am finally settling down on major code changes to architecture.
+- Pick your highlight style: solid, outline, or underline
+
+# Installation 
 * Latest version: [Click here to download.](https://github.com/facelessuser/BracketHighlighter/zipball/master "Click here to download lastest version.")
 - Must be running **Sublime Text 2 Build 2108** or higher.
 - Drop the folder into your Sublime Text 2 packages directory.
@@ -20,7 +24,7 @@ I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the 
 
 # Options
 - Open BracketHighlighter.sublime-settings and configure your preferences (can be accessed from menu).
-- Change the Scope, Outline, Icon for bracket types, which brackets etc. to match, set search thresholds, etc.
+- Change the scope, highlight style, icon for bracket types, which brackets to match, set search thresholds, etc.
 - Save the file and your options should take effect immediately.
 
 # Screenshot

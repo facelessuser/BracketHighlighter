@@ -7,7 +7,7 @@
 	"angle_enable" : true,
 	//Higlight tags if tag is selected. angle_enable must be true for tags to work
 	//if you would like to ignore non tags then set ignore_non_tags to true
-	"tag_enable" : true,
+	"tag_enable"   : true,
 
 	//don't show non tag angle matches
 	"ignore_non_tags" : false,
@@ -16,12 +16,12 @@
 	//Note: this is particularly useful with Angle. Some languages do not attribute any special scope to angle brackets making it hard
 	//to tell when the bracket is beign used in a valid scenario.  C++ is a perfect example.  It is better to disable completely than 
 	//to ignore angle.  Ignoring will not show angle matches, but will also interfere with other bracket matches.
-	"angle_language_list" : "HTML,HTML 5,XML,PHP",
-	"tag_language_list"   : "HTML,HTML 5,XML,PHP",
-	"quote_language_list" : "Plain text",
-	"curly_language_list" : "Plain text",
-	"round_language_list" : "Plain text",
-	"square_language_list": "Plain text",
+	"angle_language_list" : ["HTML","HTML 5","XML","PHP"],
+	"tag_language_list"   : ["HTML","HTML 5","XML","PHP"],
+	"quote_language_list" : ["Plain text"],
+	"curly_language_list" : ["Plain text"],
+	"round_language_list" : ["Plain text"],
+	"square_language_list": ["Plain text"],
 
 	//filter type (whitelist|blacklist)
 	"angle_language_filter" : "whitelist",
@@ -40,13 +40,13 @@
 	"angle_scope" : "entity.name.class",
 	"tag_scope"   : "entity.name.class",
 
-	//Outline? (True/False) ->
-	"quote_outline" : false,
-	"curly_outline" : false,
-	"round_outline" : false,
-	"square_outline": false,
-	"angle_outline" : false,
-	"tag_outline"   : false,
+	//Outline? (solid/outline/underline) ->
+	"quote_style" : "solid",
+	"curly_style" : "solid",
+	"round_style" : "solid",
+	"square_style": "solid",
+	"angle_style" : "solid",
+	"tag_style"   : "outline",
 
 	//Icon? (dot/circle/bookmark/cross)
 	"quote_icon" : "dot",
@@ -63,7 +63,7 @@
 	"tag_type" : "html",
 
 	//threshold distance to search
-	"search_threshold"    : 2000,
+	"search_threshold"     : 2000,
 	"tag_search_threshold" : 2000,
 	"use_search_threshold"     : true,
 	"tag_use_search_threshold" : true
