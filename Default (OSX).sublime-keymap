@@ -1,3 +1,6 @@
 [
-	{ "keys": ["super+shift+b"], "command": "bracket_highlighter_key" }
+	{ "keys": ["super+shift+b"], "command": "bracket_highlighter_key" },
+	{ "keys": ["alt+up"], "command": "bracket_highlighter_key", "args": {"show":"left" }},
+	{ "keys": ["alt+down"], "command": "bracket_highlighter_key", "args": {"show":"right" }},
+	{ "keys": ["super+alt+b"], "command": "bracket_highlighter_key", "args": {"show":"select" }}
 ]

@@ -57,7 +57,7 @@
 	"tag_icon"   : "dot",
 
 	//Higlight brackets of tag only instead of entire tag
-	"tag_brackets_only" : true,
+	"tag_brackets_only" : false,
 
 	//Type of tag selection? (html/xhtml)
 	"tag_type" : "html",
