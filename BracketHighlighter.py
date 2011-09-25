@@ -4,16 +4,16 @@ import sublime, sublime_plugin
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
   def run(self,show=None):
-    BracketHighlighterCommand(True,True,show).match(self.window.active_view())
+    BracketHighlighterCommand(True,True,show,False).match(self.window.active_view())
 
 class BracketHighlighterCommand(sublime_plugin.EventListener):
   # Initialize
-  def __init__(self, override_thresh=False, count_lines=False, show=None):
+  def __init__(self, override_thresh=False, count_lines=False, show=None, adj_only=None):
     self.settings = sublime.load_settings('BracketHighlighter.sublime-settings')
     self.settings.add_on_change('reload', lambda: self.setup())
-    self.setup(override_thresh,count_lines,show)
+    self.setup(override_thresh,count_lines,show,adj_only)
 
-  def setup(self,override_thresh=False, count_lines=False, show=None):
+  def setup(self,override_thresh=False, count_lines=False, show=None, adj_only=None):
     self.last_id_view                 = None
     self.last_id_sel                  = None
     self.targets                      = []
@@ -28,6 +28,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.show_bracket                 = show
 
     # Search threshold
+    self.adj_only             = adj_only if (adj_only != None) else bool(self.settings.get('match_adjacent_only'))
     self.use_threshold        = False if (override_thresh == True) else bool(self.settings.get('use_search_threshold'))
     self.tag_use_threshold    = False if (override_thresh == True) else bool(self.settings.get('tag_use_search_threshold'))
     self.search_threshold     = int(self.settings.get('search_threshold'))
@@ -64,7 +65,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       'close'    : closing
     }
 
-  def init(self):
+  def init_match(self):
     # Current language
     language          = basename(self.view.settings().get('syntax')).replace('.tmLanguage','').lower()
     # Reset objects
@@ -74,6 +75,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.lines        = 0
     self.multi_select = False
     self.search_left  = self.search_threshold
+    self.adj_bracket  = False
     
     # Standard Brackets
     if (self.exclude_bracket('bh_curly',language) == False): 
@@ -133,47 +135,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       is_unique = True
     return is_unique
 
-  def on_modified(self, view):
-    # Force unique view in order to update in all changes
-    self.last_id_view = None
-    # Start matching
-    self.match(view)
-
-  def on_selection_modified(self, view):
-    #global bracket_modified_event_fired
-    self.match(view)
-
-  def match(self, view):
-    # Setup views
-    self.view      = view
-    self.window    = view.window()
-    self.last_view = view
-    self.multi_select = (len(view.sel()) > 1)
-
-    if(self.unique()):
-      # Initialize
-      self.init()
-      # Clear views.
-      if self.window != None:
-        for clear_view in self.window.views():
-          self.highlight(clear_view)
-      # Process selections.
-      for sel in view.sel():
-        start = sel.a
-        # Match quotes if enabled and within a string
-        if(self.quote_enable == True):
-          (matched,start) = self.match_quotes(start)
-          # Try and match brackets if quotes failed
-          if(matched == False):
-            self.match_braces(start)
-        else:
-          self.match_braces(start + self.offset_cursor(start))
-    # Highlight.
-    self.go_brackets()
-    self.highlight(view)
-    if(self.count_lines == True):
-      sublime.status_message('In Block: Lines '+str(self.lines)+", Chars "+str(self.chars))
-
   def highlight(self, view):
     # Perform highlight on brackets and tags
     for bracket in self.brackets:
@@ -212,14 +173,53 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       char1 = self.view.substr(scout - 1)
       char2 = self.view.substr(scout)
       for bracket in self.targets:
+        if(char2 == self.brackets[bracket]['open'] or char1 == self.brackets[bracket]['open']):
+          self.adj_bracket = True
         if(char1 == self.brackets[bracket]['close']):
           offset -= 2
+          self.adj_bracket = True
+          break
         elif(char2 == self.brackets[bracket]['close']):
           offset -= 1
+          self.adj_bracket = True
     return offset
+
+  def match(self, view):
+    # Setup views
+    self.view      = view
+    self.window    = view.window()
+    self.last_view = view
+    self.multi_select = (len(view.sel()) > 1)
+
+    if(self.unique()):
+      # Initialize
+      self.init_match()
+      # Clear views.
+      if self.window != None:
+        for clear_view in self.window.views():
+          self.highlight(clear_view)
+      # Process selections.
+      for sel in view.sel():
+        start = sel.a
+        # Match quotes if enabled and within a string
+        if(self.quote_enable == True):
+          (matched,start) = self.match_quotes(start)
+          # Try and match brackets if quotes failed
+          if(matched == False):
+            self.match_braces(start)
+        else:
+          self.match_braces(start + self.offset_cursor(start))
+    # Highlight.
+    self.go_brackets()
+    self.highlight(view)
+    if(self.count_lines == True):
+      sublime.status_message('In Block: Lines '+str(self.lines)+", Chars "+str(self.chars))
 
   def match_braces(self, sel):
     start = sel
+    if(self.adj_only == True):
+      if(not self.adj_bracket):
+        return
 
     # Find left brace
     left = self.scout_left(start)
@@ -260,13 +260,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       self.store_sel(sel,sel)
 
   def scout_left(self, scout):
-    brackets = {}
+    count = {}
     for bracket in self.targets:
-      brackets[bracket] = {
-        'count' : 0,
-        'open'  : self.brackets[bracket]['open'],
-        'close' : self.brackets[bracket]['close'],
-      }
+      count[bracket] = 0
 
     while(scout >= 0):
       if (self.use_threshold == True):
@@ -281,26 +277,25 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         char = self.view.substr(scout)
         # Hit brackets.
         foundBracket = False
-        for bracket in brackets:
-          if (char == brackets[bracket]['open']):
-            if(brackets[bracket]['count'] > 0):
-              brackets[bracket]['count'] -= 1
+        for bracket in self.targets:
+          if (char == self.brackets[bracket]['open']):
+            if(count[bracket] > 0):
+              count[bracket] -= 1
               foundBracket = True
               break
             else:
               return scout
 
         if(foundBracket == False):
-          for bracket in brackets:
-            if (char == brackets[bracket]['close']):
-              brackets[bracket]['count'] += 1
+          for bracket in self.targets:
+            if (char == self.brackets[bracket]['close']):
+              count[bracket] += 1
               break
       scout -= 1
 
   def scout_right(self, scout):
-    brackets = {
-      'parentheses': 0
-    }
+    brackets = 0
+
     viewSize = self.view.size()
     while(scout < viewSize):
       if (self.use_threshold == True):
@@ -315,12 +310,12 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         char = self.view.substr(scout)
         # Hit brackets.
         if(char == self.bracket_close):
-          if(brackets['parentheses'] > 0):
-            brackets['parentheses'] -= 1
+          if(brackets > 0):
+            brackets -= 1
           else: 
             return scout
         elif(char == self.bracket_open):
-          brackets['parentheses'] += 1
+          brackets += 1
       scout += 1
 
   def match_tags(self, start, end):
@@ -412,10 +407,18 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
   def match_quotes(self, start):
     matched = False
+    bail    = False
     #Check if likely a string
     left_side_match  = (self.view.score_selector(start, 'string') > 0)
     right_side_match = (self.view.score_selector(start - 1, 'string') > 0)
-    if(left_side_match or right_side_match):
+    if(self.adj_only):
+      far_left_side_match  = (self.view.score_selector(start - 2, 'string') > 0)
+      far_right_side_match = (self.view.score_selector(start + 1, 'string') > 0)
+      bail = not ((left_side_match or right_side_match) and
+                  ((left_side_match != right_side_match) or
+                  not far_left_side_match or 
+                  not far_right_side_match))
+    if((left_side_match or right_side_match) and bail == False):
       # Calculate offset
       offset  = -1 if(left_side_match == False) else 0
       (matched,start) = self.find_quotes(start + offset)
@@ -496,3 +499,19 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.chars += end - 2 - begin
       self.store_sel(begin+1, end-1)
     return (matched, begin-1)
+
+  def on_load(self, view):
+    self.match(view)
+
+  def on_modified(self, view):
+    # Force unique view in order to update in all changes
+    self.last_id_view = None
+    # Start matching
+    self.match(view)
+
+  def on_activated(self,view):
+    self.match(view)
+
+  def on_selection_modified(self, view):
+    #global bracket_modified_event_fired
+    self.match(view)
