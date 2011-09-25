@@ -14,7 +14,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.setup(override_thresh,count_lines,show)
 
   def setup(self,override_thresh=False, count_lines=False, show=None):
-    self.bracket_modified_event_fired = False
     self.last_id_view                 = None
     self.last_id_sel                  = None
     self.targets                      = []
@@ -135,8 +134,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     return is_unique
 
   def on_modified(self, view):
-    # Keep selection method from firing
-    self.bracket_modified_event_fired = True
     # Force unique view in order to update in all changes
     self.last_id_view = None
     # Start matching
@@ -144,11 +141,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
   def on_selection_modified(self, view):
     #global bracket_modified_event_fired
-    if(self.bracket_modified_event_fired == True):
-      self.bracket_modified_event_fired = False
-      return
-    self.bracket_modified_event_fired = True
-    # Start matching
     self.match(view)
 
   def match(self, view):
