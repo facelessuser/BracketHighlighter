@@ -320,7 +320,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
   def match_tags(self, start, end):
     self.search_left = self.tag_search_threshold
-    blotch = True
+    matched = False
 
     # Go find tags. Limit search with threshold if required
     bufferSize   = self.view.size()
@@ -339,7 +339,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.view.substr(curPosition) != '<'):
 
       # Get 1st Tag
-      matched = False
+      matched = True
       # Already have end points?
       if(tag1['match'] == start):
         tag1['begin'] = start
@@ -393,7 +393,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           self.lines += self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
           self.chars += tag2['begin'] - 1 - tag1['end']
         self.store_sel(tag1['end'] + 1, tag2['begin'])
-    return not blotch
+    return matched
 
   def underline_tag(self,regions):
     underline = []
