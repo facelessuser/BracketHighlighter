@@ -23,7 +23,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
   def setup(self,override_thresh=False, count_lines=False, show=None, adj_only=None):
     self.last_id_view                 = None
     self.last_id_sel                  = None
-    self.last_id_size                 = 0
     self.targets                      = []
     self.sels                         = []
     self.highlight_us                 = {}
