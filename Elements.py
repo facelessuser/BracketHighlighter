@@ -157,10 +157,7 @@ def get_tags(html, start_ix, mode='xhtml', use_threshold=True, search_thresh=200
 	return _find_pair(html, start_ix, use_threshold, search_thresh, mode, lambda op, cl=None, ix=0: (op, cl) if op and op.type == 'tag' else None)
 
 def is_tag(substr):
-	if(re.match(start_tag,substr) or re.match(end_tag,substr)):
-		return True
-	else:
-		return False
+	return (re.match(start_tag,substr) or re.match(end_tag,substr))
 
 def _find_pair(html, start_ix, use_threshold, search_threshold, mode='xhtml', action=make_range):
 	"""

@@ -69,5 +69,8 @@
 	"search_threshold"     : 2000,
 	"tag_search_threshold" : 2000,
 	"use_search_threshold"     : true,
-	"tag_use_search_threshold" : true
+	"tag_use_search_threshold" : true,
+
+	//Debounce delay in miliseconds
+	"debounce_delay" : 1000
 }

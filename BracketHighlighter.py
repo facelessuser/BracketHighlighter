@@ -33,6 +33,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.ignore_angle                 = bool(self.settings.get('ignore_non_tags'))
     self.tag_type                     = self.settings.get('tag_type')
     self.show_bracket                 = show
+    self.debounce_delay               = int(self.settings.get('debounce_delay',1000))
 
     # Search threshold
     self.adj_only             = adj_only if (adj_only != None) else bool(self.settings.get('match_adjacent_only'))
@@ -524,7 +525,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       self.debounce_type = debounce_type
       debounce_id = randrange(1,999999)
       self.debounce_id = debounce_id
-      sublime.set_timeout(lambda: self.check_debounce(debounce_id=debounce_id) ,100)
+      sublime.set_timeout(lambda: self.check_debounce(debounce_id=debounce_id) ,self.debounce_delay)
 
   def on_load(self, view):
     self.match(view)
