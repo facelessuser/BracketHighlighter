@@ -72,5 +72,5 @@
 	"tag_use_search_threshold" : true,
 
 	//Debounce delay in miliseconds
-	"debounce_delay" : 750
+	"debounce_delay" : 500
 }
