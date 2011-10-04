@@ -213,13 +213,14 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       sublime.status_message('In Block: Lines '+str(self.lines)+", Chars "+str(self.chars))
 
   def find_matches(self, sel):
+    offset    = self.adjacent_adjust(sel)
     start     = sel
     matched   = False
     is_string = False
     self.search_left  = self.search_threshold
 
     # Match quotes if enabled
-    if(self.quote_enable):
+    if(self.quote_enable and offset != -2):
       (matched, start, is_string) = self.match_quotes(start)
       # Found quotes; exit
       if (matched):
@@ -227,7 +228,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
     # Special considerations for cusrsor adjacent to bracket
     if(matched == False and is_string == False):
-      start += self.adjacent_adjust(start)
+      start += offset
     # If not adjacent to bracket and adjacent enabled, exit
     if(self.adj_only):
       if(not self.adj_bracket):
