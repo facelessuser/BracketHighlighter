@@ -8,19 +8,19 @@ BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT      = 2
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
-  def run(self, threshold=True, lines=True, show=None, adjacent=False, plugin={}):
-    BracketHighlighterCommand(threshold, lines, show, adjacent, plugin).match(self.window.active_view())
+  def run(self, threshold=True, lines=False, adjacent=False, plugin={}):
+    BracketHighlighterCommand(threshold, lines, adjacent, plugin).match(self.window.active_view())
 
 class BracketHighlighterCommand(sublime_plugin.EventListener):
   # Initialize
-  def __init__(self, override_thresh=False, count_lines=False, show=None, adj_only=None, plugin={}):
+  def __init__(self, override_thresh=False, count_lines=False, adj_only=None, plugin={}):
     self.settings = sublime.load_settings('BracketHighlighter.sublime-settings')
     self.settings.add_on_change('reload', lambda: self.setup())
-    self.setup(override_thresh, count_lines, show, adj_only, plugin)
+    self.setup(override_thresh, count_lines, adj_only, plugin)
     self.debounce_id = 0
     self.debounce_type = 0
 
-  def setup(self, override_thresh=False, count_lines=False, show=None, adj_only=None, plugin={}):
+  def setup(self, override_thresh=False, count_lines=False, adj_only=None, plugin={}):
     self.last_id_view                 = None
     self.last_id_sel                  = None
     self.targets                      = []
@@ -32,11 +32,24 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     self.count_lines                  = count_lines
     self.ignore_angle                 = bool(self.settings.get('ignore_non_tags'))
     self.tag_type                     = self.settings.get('tag_type')
-    self.show_bracket                 = show
+    self.new_select                   = False
     self.debounce_delay               = int(self.settings.get('debounce_delay', 1000))
-    self.quote_transform              = BracketPlugin(plugin['quote'])   if ('quote'   in plugin) else None
-    self.bracket_transform            = BracketPlugin(plugin['bracket']) if ('bracket' in plugin) else None
-    self.tag_transform                = BracketPlugin(plugin['tag'])     if ('tag'     in plugin) else None
+    self.transform                    = {
+      'plugin' : None,
+      'quote'  : False,
+      'bracket': False,
+      'tag'    : False
+    }
+    if ('command' in plugin):
+      self.plugin = BracketPlugin(plugin)
+      self.new_select = True
+    if ('type' in plugin):
+      if ('quote' in plugin['type']):
+        self.transform['quote']   = True
+      if ('bracket' in plugin['type']):
+        self.transform['bracket'] = True
+      if ('tag' in plugin['type']):
+        self.transform['tag']     = True
 
     # Search threshold
     self.adj_only             = adj_only if (adj_only != None) else bool(self.settings.get('match_adjacent_only'))
@@ -160,17 +173,11 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         view.erase_regions(bracket)
 
   def store_sel(self, left, right):
-    if(self.show_bracket == None):
-      return
-    if(self.show_bracket == 'left'):
-      self.sels.append(left)
-    elif(self.show_bracket == 'right'):
-      self.sels.append(right)
-    elif(self.show_bracket == 'select'):
+    if(self.new_select == True):
       self.sels.append(sublime.Region(left, right))
 
-  def go_brackets(self):
-    if(self.show_bracket != None and len(self.sels) > 0):
+  def change_sel(self):
+    if(self.new_select != None and len(self.sels) > 0):
       if (self.multi_select == False):
         self.view.show(self.sels[0])
       self.view.sel().clear()
@@ -216,24 +223,24 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
       # Process selections.
       for sel in view.sel():
-        self.find_matches(sel.a)
+        self.find_matches(sel)
 
     # Highlight, focus, and display lines etc.
-    self.go_brackets()
+    self.change_sel()
     self.highlight(view)
     if(self.count_lines):
       sublime.status_message('In Block: Lines '+str(self.lines)+', Chars '+str(self.chars))
 
   def find_matches(self, sel):
-    (offset, allow_quote_match) = self.adjacent_adjust(sel)
-    start                       = sel
+    (offset, allow_quote_match) = self.adjacent_adjust(sel.a)
+    start                       = sel.a
     matched                     = False
     is_string                   = False
     self.search_left            = self.search_threshold
 
     # Match quotes if enabled
     if(self.quote_enable and allow_quote_match):
-      (matched, start, is_string) = self.match_quotes(start)
+      (matched, start, is_string) = self.match_quotes(sel)
       # Found quotes; exit
       if (matched):
         return
@@ -258,6 +265,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       # Find right brace
       right = self.scout_right(start+1)
 
+    (sel_a, sel_b) = (sel.a, sel.b)
+
     # Bracket Matches found
     if(left != None and right != None):
 
@@ -267,16 +276,16 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if( self.tag_enable and 
             is_tag(self.view.substr(sublime.Region(left, right+1)))):
           # Found tag; quit
-          if (self.match_tags(left, right)):
+          if (self.match_tags(left, right, sel)):
             return
         # Continue higlighting angle unless required not to
         if(self.ignore_angle):
-          self.store_sel(sel, sel)
+          self.store_sel(sel.a, sel.b)
           return
 
       # Set higlight regions
-      if(self.bracket_transform != None and self.bracket_transform.is_enabled()):
-        (begin, end, content_start, content_end) = self.bracket_transform.run(left, right + 1, left + 1, right)
+      if(self.transform['bracket'] and self.plugin != None and self.plugin.is_enabled()):
+        (begin, end, content_start, content_end, sel_a, sel_b) = self.plugin.run(left, right + 1, left + 1, right)
         left  = begin
         right = end - 1
       if(self.brackets[self.bracket_type]['underline']):
@@ -288,9 +297,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       if(self.count_lines):
         self.lines += self.view.rowcol(right)[0] - self.view.rowcol(left)[0] + 1
         self.chars += right - 1 - left
-      self.store_sel(left + 1, right)
-    else:
-      self.store_sel(sel,sel)
+    self.store_sel(sel_a,sel_b)
 
   def scout_left(self, scout):
     count = {}
@@ -351,7 +358,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           brackets += 1
       scout += 1
 
-  def match_tags(self, start, end):
+  def match_tags(self, start, end, sel):
     self.search_left = self.tag_search_threshold
     matched = False
 
@@ -400,8 +407,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
       # Set Highlight Region
       if(matched):
-        if(self.tag_transform != None and self.tag_transform.is_enabled()):
-          (begin, end, content_start, content_end) = self.tag_transform.run(tag1['begin'], tag2['end'] + 1, tag1['end'] + 1, tag2['begin'])
+        (sel_a, sel_b) = (sel.a, sel.b)
+        if(self.transform['tag'] and self.plugin != None and self.plugin.is_enabled()):
+          (begin, end, content_start, content_end, sel_a, sel_b) = self.plugin.run(tag1['begin'], tag2['end'] + 1, tag1['end'] + 1, tag2['begin'])
           tag1['begin'] = begin
           tag2['end']   = end - 1
           tag1['end']   = content_start - 1
@@ -420,7 +428,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if(self.count_lines):
           self.lines += self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
           self.chars += tag2['begin'] - 1 - tag1['end']
-        self.store_sel(tag1['end'] + 1, tag2['begin'])
+        self.store_sel(sel_a, sel_b)
     return matched
 
   def underline_tag(self, regions):
@@ -433,7 +441,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         start += 1
     return underline
 
-  def match_quotes(self, start):
+  def match_quotes(self, sel):
+    start     = sel.a
     matched   = False
     bail      = False
     is_string = False
@@ -451,10 +460,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       # Calculate offset
       is_string = True
       offset  = -1 if(left_side_match == False) else 0
-      (matched, start) = self.find_quotes(start + offset)
+      (matched, start) = self.find_quotes(start + offset, sel)
     return (matched, start, is_string)
 
-  def find_quotes(self, start):
+  def find_quotes(self, start, sel):
     begin    = start
     end      = start
     scout    = start
@@ -517,8 +526,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           break
 
     if(matched):
-      if(self.quote_transform != None and self.quote_transform.is_enabled()):
-        (begin, end, content_start, content_end) = self.quote_transform.run(begin, end, begin + 1, end - 1)
+      (sel_a, sel_b) = (sel.a, sel.b)
+      if(self.transform['quote'] and self.plugin != None and self.plugin.is_enabled()):
+        (begin, end, content_start, content_end, sel_a, sel_b) = self.plugin.run(begin, end, begin + 1, end - 1)
       if(self.brackets['bh_quote']['underline']):
         self.highlight_us['bh_quote'].append(sublime.Region(begin))
         self.highlight_us['bh_quote'].append(sublime.Region(end-1))
@@ -528,7 +538,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
       if(self.count_lines):
         self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
         self.chars += end - 2 - begin
-      self.store_sel(begin+1, end-1)
+      self.store_sel(sel_a, sel_b)
     return (matched, begin-1)
 
   def check_debounce(self, debounce_id):
@@ -583,6 +593,4 @@ class BracketPlugin():
     self.args['content_start'] = content_start
     self.args['content_end']   = content_end
 
-    if(self.plugin != None):
-      return self.plugin().run(**self.args)
-    return (bracket_start, bracket_end, content_start, content_end)
+    return self.plugin().run(**self.args)

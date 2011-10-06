@@ -28,4 +28,4 @@ class swap_quotes():
     view.replace(edit, sublime.Region(bracket_start , bracket_start+1), new)
     view.replace(edit, sublime.Region(bracket_end - 1, bracket_end), new)
     view.end_edit(edit)
-    return (bracket_start, bracket_end, content_start, content_end)
+    return (bracket_start, bracket_end, content_start, content_end, content_end, content_end)

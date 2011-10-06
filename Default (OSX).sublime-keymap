@@ -1,13 +1,56 @@
 [
-	{ "keys": ["super+shift+b"], "command": "bracket_highlighter_key" },
-	{ "keys": ["alt+up"], "command": "bracket_highlighter_key", "args": {"show":"left" }},
-	{ "keys": ["alt+down"], "command": "bracket_highlighter_key", "args": {"show":"right" }},
-	{ "keys": ["super+alt+b"], "command": "bracket_highlighter_key", "args": {"show":"select" }},
-	{ "keys": ["super+shift+alt+b"], "command": "bracket_highlighter_key", "args":
+	{"keys": ["super+shift+b", "super+shift+b"],
+		"command": "bracket_highlighter_key",
+		"args": {"lines": true}
+	},
+	{
+		"keys": ["alt+up"],
+		"command": "bracket_highlighter_key",
+		"args":
 		{
-			"show"  : "right",
-			"lines" : false,
-			"plugin": {"quote": {"command" : "swapquotes.swap_quotes"}}
+			"lines" : true,
+			"plugin":
+			{
+				"type": ["quote","bracket","tag"],
+				"command": "bracketselect.select_bracket",
+				"args": {"select": "left"}
+			}
+		}
+	},
+	{
+		"keys": ["alt+down"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"lines" : true,
+			"plugin":
+			{
+				"type": ["quote","bracket","tag"],
+				"command": "bracketselect.select_bracket",
+				"args": {"select": "right"}
+			}
+		}
+	},
+	{
+		"keys": ["super+shift+b","super+shift+s"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"plugin":
+			{
+				"lines" : true,
+				"type": ["quote","bracket","tag"],
+				"command": "bracketselect.select_bracket",
+				"args": {"select": "select"}
+			}
+		}
+	},
+	{
+		"keys": ["super+shift+b","super+shift+q"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"plugin": {"type": ["quote"],"command" : "swapquotes.swap_quotes"}
 		}
 	}
 ]
