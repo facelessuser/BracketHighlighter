@@ -1,9 +1,10 @@
+import bracket_plugin
 import sublime
-class select_bracket():
-  def run(self, bracket_start, bracket_end, content_start, content_end, select):
-    (first,last) = (content_start, content_end)
+class select_bracket(bracket_plugin.BracketPluginCommand):
+  def run(self, bracket, content, selection, select=''):
+    (first,last) = (content.a, content.b)
     if(select == 'left'):
-      last = content_start
+      last = content.a
     elif(select == 'right'):
-      first = content_end
-    return (bracket_start, bracket_end, content_start, content_end, first, last)
+      first = content.b
+    return (bracket, content, [sublime.Region(first, last)])

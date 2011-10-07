@@ -1,5 +1,6 @@
 [
-	{"keys": ["super+shift+b", "super+shift+b"],
+	{
+		"keys": ["super+shift+b", "super+shift+b"],
 		"command": "bracket_highlighter_key",
 		"args": {"lines": true}
 	},
@@ -40,8 +41,20 @@
 			{
 				"lines" : true,
 				"type": ["quote","bracket","tag"],
-				"command": "bracketselect.select_bracket",
-				"args": {"select": "select"}
+				"command": "bracketselect.select_bracket"
+			}
+		}
+	},
+	{
+		"keys": ["super+shift+b","super+shift+t"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"ignore": ["quote"],
+			"plugin":
+			{
+				"type": ["tag"],
+				"command": "tagnameselect.select_tag"
 			}
 		}
 	},
