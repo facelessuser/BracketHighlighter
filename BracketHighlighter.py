@@ -455,11 +455,11 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     bail      = False
     is_string = False
     #Check if likely a string
-    left_side_match  = (self.view.score_selector(start, 'string.quoted') > 0)
-    right_side_match = (self.view.score_selector(start - 1, 'string.quoted') > 0)
+    left_side_match  = (self.view.score_selector(start, 'string') > 0)
+    right_side_match = (self.view.score_selector(start - 1, 'string') > 0)
     if(self.adj_only):
-      far_left_side_match  = (self.view.score_selector(start - 2, 'string.quoted') > 0)
-      far_right_side_match = (self.view.score_selector(start + 1, 'string.quoted') > 0)
+      far_left_side_match  = (self.view.score_selector(start - 2, 'string') > 0)
+      far_right_side_match = (self.view.score_selector(start + 1, 'string') > 0)
       bail = not ((left_side_match or right_side_match) and
                   ((left_side_match != right_side_match) or
                   not far_left_side_match or
@@ -486,7 +486,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if(self.search_left < 0):
           return (matched, scout)
       char = self.view.substr(scout)
-      if( self.view.score_selector(scout, 'string.quoted') > 0):
+      if( self.view.score_selector(scout, 'string') > 0):
         if(scout == 0):
           begin = scout
           if(char == "'" or char == '"'):
@@ -518,7 +518,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             self.search_left = -1
             return (matched, begin-1)
         char = self.view.substr(scout)
-        if( self.view.score_selector(scout, 'string.quoted') > 0):
+        if( self.view.score_selector(scout, 'string') > 0):
           if(scout == viewSize):
             if(char == quote and scout != begin):
               end = scout + 1
