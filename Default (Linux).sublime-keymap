@@ -59,6 +59,20 @@
 		}
 	},
 	{
+		"keys": ["ctrl+shift+b","ctrl+shift+n"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"ignore": ["quote"],
+			"plugin":
+			{
+				"type": ["tag"],
+				"command": "tagattrselect.select_attr",
+				"args": {"direction": "right"}
+			}
+		}
+	},
+	{
 		"keys": ["ctrl+shift+b","ctrl+shift+q"],
 		"command": "bracket_highlighter_key",
 		"args":
