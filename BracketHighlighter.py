@@ -9,12 +9,12 @@ BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT      = 2
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
-  def run(self, threshold=True, lines=False, adjacent=False,  ignore={}, plugin={}):
+  def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
     BracketHighlighterCommand(threshold, lines, adjacent, ignore, plugin).match(self.window.active_view())
 
 class BracketHighlighterCommand(sublime_plugin.EventListener):
   # Initialize
-  def __init__(self, override_thresh=False, count_lines=False, adj_only=None,  ignore={}, plugin={}):
+  def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
     self.settings = sublime.load_settings("BracketHighlighter.sublime-settings")
     self.settings.add_on_change('reload', lambda: self.setup())
     self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
@@ -369,6 +369,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
   def match_tags(self, start, end, sel):
     self.search_left = self.tag_search_threshold
     matched = False
+    tag_highlights = []
 
     # Go find tags. Limit search with threshold if required
     bufferSize   = self.view.size()
@@ -423,16 +424,27 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
           tag1['end']   = c_region.a - 1
           tag2['begin'] = c_region.b
 
+        # Set highlight regions
         if(self.brackets_only):
-          self.highlight_us['bh_tag'].append(sublime.Region(tag1['begin'], tag1['begin']+1))
-          self.highlight_us['bh_tag'].append(sublime.Region(tag1['end'], tag1['end'] + 1))
-          self.highlight_us['bh_tag'].append(sublime.Region(tag2['begin'], tag2['begin']+1))
-          self.highlight_us['bh_tag'].append(sublime.Region(tag2['end'], tag2['end'] + 1))
+          tag_highlights = [
+            sublime.Region(tag1['begin'], tag1['begin']+1),
+            sublime.Region(tag1['end'], tag1['end'] + 1),
+            sublime.Region(tag2['begin'], tag2['begin']+1),
+            sublime.Region(tag2['end'], tag2['end'] + 1)
+          ]
         else:
-          self.highlight_us['bh_tag'].append(sublime.Region(tag1['begin'], tag1['end'] + 1))
-          self.highlight_us['bh_tag'].append(sublime.Region(tag2['begin'], tag2['end'] + 1))
+          tag_highlights = [
+            sublime.Region(tag1['begin'], tag1['end'] + 1),
+            sublime.Region(tag2['begin'], tag2['end'] + 1)
+          ]
+
+        # Add highlight regions
         if(self.brackets['bh_tag']['underline']):
-          self.highlight_us['bh_tag'] = self.underline_tag(self.highlight_us['bh_tag'])
+          self.underline_tag(tag_highlights)
+        else:
+          for highlight in tag_highlights:
+            self.highlight_us['bh_tag'].append(highlight)
+
         if(self.count_lines):
           self.lines += self.view.rowcol(tag2['begin'])[0] - self.view.rowcol(tag1['end'])[0] + 1
           self.chars += tag2['begin'] - 1 - tag1['end']
@@ -440,14 +452,12 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
     return matched
 
   def underline_tag(self, regions):
-    underline = []
     for region in regions:
       start = region.begin()
       end   = region.end()
       while (start < end):
-        underline.append(sublime.Region(start))
+        self.highlight_us['bh_tag'].append(sublime.Region(start))
         start += 1
-    return underline
 
   def match_quotes(self, sel):
     start     = sel.a

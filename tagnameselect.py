@@ -4,4 +4,4 @@ class select_tag(bracket_plugin.BracketPluginCommand):
     tag_name = '[\w\:\-]+'
     region1  = self.view.find(tag_name,bracket.a)
     region2  = self.view.find(tag_name,content.b)
-    return (bracket, content, [region1, region2])
+    self.attr.set_selection([region1, region2])

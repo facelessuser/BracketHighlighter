@@ -32,4 +32,6 @@ class swap_quotes(bracket_plugin.BracketPluginCommand):
     view.replace(edit, sublime.Region(bracket.a, bracket.a + 1), new)
     view.replace(edit, sublime.Region(end - 1, end), new)
     view.end_edit(edit)
-    return(sublime.Region(bracket.a, end), sublime.Region(content.a, content_end), [sublime.Region(content_end, content_end)])
+    self.attr.set_bracket(sublime.Region(bracket.a, end))
+    self.attr.set_content(sublime.Region(content.a, content_end))
+    self.attr.set_selection([sublime.Region(content_end, content_end)])

@@ -7,4 +7,4 @@ class select_bracket(bracket_plugin.BracketPluginCommand):
       last = content.a
     elif(select == 'right'):
       first = content.b
-    return (bracket, content, [sublime.Region(first, last)])
+    self.attr.set_selection([sublime.Region(first, last)])

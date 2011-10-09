@@ -15,7 +15,7 @@ class select_attr(bracket_plugin.BracketPluginCommand):
         last = region
 
       while(region != None and region.b < content.a):
-        # Select attribute until you have closet to the left of selection
+        # Select attribute until you have closest to the left of selection
         if(current > region.b):
           selection = [region]
           last = None
@@ -42,5 +42,4 @@ class select_attr(bracket_plugin.BracketPluginCommand):
       # Wrap left
       if first != None:
         selection = [first]
-
-    return (bracket, content, selection)
+    self.attr.set_selection(selection)
