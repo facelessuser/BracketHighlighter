@@ -37,9 +37,9 @@
 		"command": "bracket_highlighter_key",
 		"args":
 		{
+			"lines" : true,
 			"plugin":
 			{
-				"lines" : true,
 				"type": ["quote","bracket","tag"],
 				"command": "bracketselect.select_bracket"
 			}

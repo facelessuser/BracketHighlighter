@@ -32,7 +32,7 @@ class BracketAttributes():
 
   def set_bracket(self, bracket):
     self.bracket = bracket
-  
+
   def set_content(self, content):
     self.content = content
 
