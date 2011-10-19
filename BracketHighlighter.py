@@ -528,7 +528,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                     not far_right_side_match
                 )
             )
-        if left_side_match or right_side_match and bail == False:
+        if (left_side_match or right_side_match) and bail == False:
             # Calculate offset
             is_string = True
             offset    = -1 if left_side_match == False else 0
