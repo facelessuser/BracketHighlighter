@@ -4,12 +4,12 @@ import sublime
 class BracketPlugin():
     def __init__(self, plugin):
         self.enabled = False
-        self.args    = plugin['args'] if ("args" in plugin) else {}
-        self.plugin  = None
+        self.args = plugin['args'] if ("args" in plugin) else {}
+        self.plugin = None
         if 'command' in plugin:
             try:
                 (module_name, class_name) = plugin['command'].split('.')
-                module   = __import__(module_name)
+                module = __import__(module_name)
                 self.plugin = getattr(module, class_name)
                 self.enabled = True
             except Exception:
@@ -19,8 +19,8 @@ class BracketPlugin():
         return self.enabled
 
     def run_command(self, bracket, content, selection):
-        self.args['bracket']   = bracket
-        self.args['content']   = content
+        self.args['bracket'] = bracket
+        self.args['content'] = content
         self.args['selection'] = selection
         plugin = self.plugin(bracket, content, selection)
         plugin.run(**self.args)
@@ -29,8 +29,8 @@ class BracketPlugin():
 
 class BracketAttributes():
     def __init__(self, bracket, content, selection):
-        self.bracket   = bracket
-        self.content   = content
+        self.bracket = bracket
+        self.content = content
         self.selection = selection
 
     def set_bracket(self, bracket):

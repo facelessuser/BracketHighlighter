@@ -12,13 +12,13 @@ class swap_quotes(bracket_plugin.BracketPluginCommand):
         return escaped
 
     def run(self, bracket, content, selection):
-        view  = self.view
+        view = self.view
         quote = view.substr(bracket.a)
         begin = bracket.a + 1
-        end   = bracket.b
-        new   = "'" if (quote == '"') else '"'
-        old   = '"' if (quote == '"') else "'"
-        edit  = view.begin_edit()
+        end = bracket.b
+        new = "'" if (quote == '"') else '"'
+        old = '"' if (quote == '"') else "'"
+        edit = view.begin_edit()
         content_end = content.b
         while begin < end:
             char = view.substr(begin)

@@ -3,11 +3,11 @@ import bracket_plugin
 
 class select_attr(bracket_plugin.BracketPluginCommand):
     def run(self, bracket, content, selection, direction='right'):
-        tag_name  = '[\w\:\-]+'
+        tag_name = '[\w\:\-]+'
         attr_name = '([\w\-:]+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:\'((?:\\.|[^\'])*)\')|([^>\s]+)))?'
-        name      = self.view.find(tag_name, bracket.a)
-        current   = selection[0].b
-        region    = self.view.find(attr_name, name.b)
+        name = self.view.find(tag_name, bracket.a)
+        current = selection[0].b
+        region = self.view.find(attr_name, name.b)
 
         if direction == 'left':
             last = None
