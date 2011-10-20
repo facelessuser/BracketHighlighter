@@ -3,9 +3,6 @@ This is a fork of pyparadigm's [SublimeBrackets](https://github.com/pyparadigm/S
 I forked this to fix some issues I had and to add some features I wanted.  I also wanted to improve the efficiency of the matching.
 I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the parallel searching that is now streamlined in one search.
 
-# Note
-The 10/05/11 commit will changes shortcuts.  I apologize for this, but it was needed. If the default shorcuts are undesirable, I am open to coming up with better ones.
-
 # Installation 
 * Latest version: [Click here to download.](https://github.com/facelessuser/BracketHighlighter/zipball/master "Click here to download lastest version.")
 - Must be running **Sublime Text 2 Build 2108** or higher.
