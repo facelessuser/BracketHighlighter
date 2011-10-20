@@ -90,6 +90,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         style = sublime.HIDE_ON_MINIMAP
         if self.settings.get(bracket + '_style') == "outline":
             style |= sublime.DRAW_OUTLINED
+        elif self.settings.get(bracket + '_style') == "none":
+            style |= sublime.HIDDEN
         elif self.settings.get(bracket + '_style') == "underline":
             style |= sublime.DRAW_EMPTY_AS_OVERWRITE
         return {
