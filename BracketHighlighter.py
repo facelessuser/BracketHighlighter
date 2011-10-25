@@ -108,7 +108,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
     def init_match(self):
         # Current language
-        language = basename(self.view.settings().get('syntax')).replace('.tmLanguage', '').lower()
+        syntax = self.view.settings().get('syntax')
+        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
         # Reset objects
         self.sels = []
         self.targets = []
