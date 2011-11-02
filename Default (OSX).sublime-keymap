@@ -73,7 +73,7 @@
 		}
 	},
 	{
-		"keys": ["super+shift+b","super+shift+q"],
+		"keys": ["super+shift+b","super+shift+w"],
 		"command": "bracket_highlighter_key",
 		"args":
 		{
