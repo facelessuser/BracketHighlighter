@@ -82,10 +82,14 @@
 	},
 	{
 		"keys": ["ctrl+shift+b","ctrl+shift+j"],
+		"command": "swap_brackets"
+	},
+	{
+		"keys": ["ctrl+shift+b","ctrl+shift+["],
 		"command": "bracket_highlighter_key",
 		"args":
 		{
-			"plugin": {"type": ["bracket"],"command" : "swapbrackets.swap_brackets"}
+			"plugin": {"type": ["quote", "tag", "bracket"],"command" : "foldbracket.fold_bracket"}
 		}
 	}
 ]

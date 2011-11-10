@@ -72,14 +72,14 @@
 	},
 	{
 		"caption": "Bracket Highlighter: Swap Brackets",
+		"command": "swap_brackets"
+	},
+	{
+		"caption": "Bracket Highlighter: Fold by Brackets",
 		"command": "bracket_highlighter_key",
 		"args":
 		{
-			"plugin":
-			{
-				"type": ["bracket"],
-				"command": "swapbrackets.swap_brackets"
-			}
+			"plugin": {"type": ["quote", "tag", "bracket"],"command" : "foldbracket.fold_bracket"}
 		}
 	}
 ]
