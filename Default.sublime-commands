@@ -69,5 +69,17 @@
 				"command": "swapquotes.swap_quotes"
 			}
 		}
+	},
+	{
+		"caption": "Bracket Highlighter: Swap Brackets",
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"plugin":
+			{
+				"type": ["bracket"],
+				"command": "swapbrackets.swap_brackets"
+			}
+		}
 	}
 ]

@@ -239,9 +239,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         return (offset, allow_quote_match)
 
     def match(self, view, force_match=True):
+        if view == None:
+            return
         # Setup views
         self.view = view
-        self.window = view.window()
         self.last_view = view
         self.multi_select = (len(view.sel()) > 1)
 

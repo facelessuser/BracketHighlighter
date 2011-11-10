@@ -79,5 +79,13 @@
 		{
 			"plugin": {"type": ["quote"],"command" : "swapquotes.swap_quotes"}
 		}
+	},
+	{
+		"keys": ["ctrl+shift+b","ctrl+shift+j"],
+		"command": "bracket_highlighter_key",
+		"args":
+		{
+			"plugin": {"type": ["bracket"],"command" : "swapbrackets.swap_brackets"}
+		}
 	}
 ]
