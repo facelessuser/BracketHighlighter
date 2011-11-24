@@ -4,10 +4,8 @@ I forked this to fix some issues I had and to add some features I wanted.  I als
 I also merged in pyparadigm's SublimeTagmatcher as well.  This cuts down on the parallel searching that is now streamlined in one search.
 
 # Installation 
-* Latest version: [Click here to download.](https://github.com/facelessuser/BracketHighlighter/zipball/master "Click here to download lastest version.")
-- Must be running **Sublime Text 2 Build 2108** or higher.
-- Drop the folder into your Sublime Text 2 packages directory.
-- You may need to restart Sublime Text 2
+- Download is available in Package Control or you can [download](https://github.com/facelessuser/BracketHighlighter/zipball/master "download") or clone directly and drop into your Sublime Text 2 packages directory (plugin folder must be named BracketHighlighter)
+- You may need to restart Sublime Text 2 after installation
 
 # Features
 - Customizable highlighting of brackets (),[],<>,{}
