@@ -635,11 +635,18 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         return (matched, begin - 1)
 
     def check_debounce(self, debounce_id):
-        if self.debounce_id == debounce_id:
-            force_match = True if self.debounce_type == BH_MATCH_TYPE_EDIT else False
-            self.match(sublime.active_window().active_view(), force_match)
+        if self.debounce_id != debounce_id:
+            debounce_id = randrange(1, 999999)
+            self.debounce_id = debounce_id
+            sublime.set_timeout(
+                lambda: self.check_debounce(debounce_id=debounce_id),
+                self.debounce_delay
+            )
+        else:
             self.debounce_id = 0
+            force_match = True if self.debounce_type == BH_MATCH_TYPE_EDIT else False
             self.debounce_type = BH_MATCH_TYPE_NONE
+            self.match(sublime.active_window().active_view(), force_match)
 
     def debounce(self, debounce_type):
         # Check if debunce not currently active, or if of same type,
@@ -651,11 +658,14 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         ):
             self.debounce_type = debounce_type
             debounce_id = randrange(1, 999999)
-            self.debounce_id = debounce_id
-            sublime.set_timeout(
-                lambda: self.check_debounce(debounce_id=debounce_id),
-                self.debounce_delay
-            )
+            if self.debounce_id == 0:
+                self.debounce_id = debounce_id
+                sublime.set_timeout(
+                    lambda: self.check_debounce(debounce_id=debounce_id),
+                    self.debounce_delay
+                )
+            else:
+                self.debounce_id = debounce_id
 
     def on_load(self, view):
         self.match(view)
