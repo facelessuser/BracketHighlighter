@@ -668,13 +668,13 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                 self.debounce_id = debounce_id
 
     def on_load(self, view):
-        self.match(view)
+        self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_modified(self, view):
         self.debounce(BH_MATCH_TYPE_EDIT)
 
     def on_activated(self, view):
-        self.match(view)
+        self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_selection_modified(self, view):
         self.debounce(BH_MATCH_TYPE_SELECTION)
