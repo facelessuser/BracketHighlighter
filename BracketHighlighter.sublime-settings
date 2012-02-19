@@ -71,6 +71,14 @@
 	"use_search_threshold"     : true,
 	"tag_use_search_threshold" : true,
 
+	// When matching quoted strings, match brackets internally in the string as well.
+	// Particularly useful for strings containing regex
+	"match_string_brackets": true,
+	// Allow targeting of regex strings like in javascript
+	// which are scoped as strings, but are not quoted but
+	// are instead surrounded by '/'s
+	"enable_forward_slash_regex_strings": true,
+
 	//Debounce delay in miliseconds
 	"debounce_delay" : 500
 }
