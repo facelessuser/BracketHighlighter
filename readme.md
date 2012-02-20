@@ -113,6 +113,9 @@ If you want more control of the colors, you can define your own scopes.
             <string>#FAF60A</string>
         </dict>
     </dict>
+    
+# Version 1.3
+- Fixed escaped brackets in string handling.  Also a bit more efficient.
 
 # Version 1.2
 - Fix angle bracket avoidance when finding brackets inside strings, and make it cleaner
