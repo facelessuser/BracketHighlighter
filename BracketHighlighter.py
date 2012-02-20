@@ -681,16 +681,18 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             char1 = self.view.substr(scout - 1)
             char2 = self.view.substr(scout)
             for bracket in self.targets:
-                if char2 == self.brackets[bracket]['open'] and char2 != "<" and not self.string_escaped(scout):
+                if bracket == "bh_angle":
+                    continue
+                if char2 == self.brackets[bracket]['open'] and not self.string_escaped(scout):
                     self.adj_bracket = True
-                if char1 == self.brackets[bracket]['open']  and char2 != "<" and not self.string_escaped(scout - 1):
+                if char1 == self.brackets[bracket]['open'] and not self.string_escaped(scout - 1):
                     offset = -1
                     self.adj_bracket = True
                     break
-                elif char1 == self.brackets[bracket]['close']  and char2 != ">" and not self.string_escaped(scout - 1):
+                elif char1 == self.brackets[bracket]['close'] and not self.string_escaped(scout - 1):
                     offset = -2
                     self.adj_bracket = True
-                elif char2 == self.brackets[bracket]['close']  and char2 != ">" and not self.string_escaped(scout) and offset != -2:
+                elif char2 == self.brackets[bracket]['close'] and not self.string_escaped(scout) and offset != -2:
                     offset = -1
                     self.adj_bracket = True
         return offset
@@ -719,7 +721,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             # Hit brackets.
             foundBracket = False
             for bracket in self.targets:
-                if char == self.brackets[bracket]['open'] and not self.string_escaped(scout) and char != "<":
+                if bracket == "bh_angle":
+                    continue
+                if char == self.brackets[bracket]['open'] and not self.string_escaped(scout):
                     if count[bracket] > 0:
                         count[bracket] -= 1
                         foundBracket = True
@@ -732,7 +736,9 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
             if foundBracket == False:
                 for bracket in self.targets:
-                    if char == self.brackets[bracket]['close'] and not self.string_escaped(scout) and char != ">":
+                    if bracket == "bh_angle":
+                        continue
+                    if char == self.brackets[bracket]['close'] and not self.string_escaped(scout):
                         count[bracket] += 1
                         break
             scout -= 1

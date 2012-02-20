@@ -114,6 +114,9 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.2
+- Fix angle bracket avoidance when finding brackets inside strings, and make it cleaner
+
 # Version 1.1
 - Add python raw string support for quote highlighting
 - Add highlighting of brackets in strings; will work in all strings, but mainly meant for regex.  True by default
