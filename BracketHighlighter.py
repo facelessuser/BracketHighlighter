@@ -3,12 +3,19 @@ from random import randrange
 from Elements import is_tag, match
 import sublime
 import sublime_plugin
+import time
 from bracket_plugin import BracketPlugin
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
 
+class Pref:
+  def load(self):
+    Pref.wait_time = 0.12
+    Pref.time = time.time()
+
+Pref().load();
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
@@ -19,7 +26,6 @@ class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
             ignore,
             plugin
         ).match(self.window.active_view())
-
 
 class BracketHighlighterCommand(sublime_plugin.EventListener):
     # Initialize
@@ -808,10 +814,22 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_modified(self, view):
+      now = time.time()
+      if now - Pref.time > Pref.wait_time:
+        Pref.time = now
         self.debounce(BH_MATCH_TYPE_EDIT)
+      else:
+        Pref.time = now
+
 
     def on_activated(self, view):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_selection_modified(self, view):
+      now = time.time()
+      if now - Pref.time > Pref.wait_time:
+        Pref.time = now
         self.debounce(BH_MATCH_TYPE_SELECTION)
+      else:
+        Pref.time = now
+
