@@ -699,10 +699,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             # Javascript flags
             lookback = 3
             to_match = "(i|g|m)"
-        elif self.view.score_selector(scout, 'source.perl') > 0  and quote == "/" and re.match("(i|g|x|s|o|e|m)", char):
+        elif self.view.score_selector(scout, 'source.perl') > 0  and quote == "/" and re.match("(i|g|s|o|e|m)", char):
             # Perl flags
-            lookback = 7
-            to_match = "(i|g|x|s|o|e|m)"
+            lookback = 6
+            to_match = "(i|g|s|o|e|m)"
         elif char == quote and scout != begin:
             end = scout + 1
             matched = True
