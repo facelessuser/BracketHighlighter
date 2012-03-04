@@ -4,6 +4,7 @@ from Elements import is_tag, match
 import sublime
 import sublime_plugin
 from bracket_plugin import BracketPlugin
+import re
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -80,7 +81,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.match_string_brackets = bool(self.settings.get('match_string_brackets'))
 
     def init_brackets(self):
-        quote_open = "r ' \""
+        quote_open = "r s m t ' \""
         quote_close = "' \""
         if bool(self.settings.get('enable_forward_slash_regex_strings', False)):
             quote_open += " /"
@@ -560,6 +561,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         quote = None
         lastChar = None
         matched = False
+        viewSize = self.view.size() - 1
 
         # Left quote
         while scout >= 0:
@@ -573,14 +575,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                     begin = scout
                     for char_type in self.brackets['bh_quote']['open'].split(' '):
                         if lastChar == char_type:
-                            if lastChar == 'r':
-                                # Python raw string support
-                                lastChar = self.view.substr(begin + 1)
-                                if lastChar == "'" or lastChar == '"':
-                                    begin += 1
-                                    quote = lastChar
-                            else:
-                                quote = lastChar
+                            quote, begin = self.check_special_strings_start(lastChar, begin, viewSize)
                     break
                 else:
                     scout -= 1
@@ -589,14 +584,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                 begin = scout + 1
                 for char_type in self.brackets['bh_quote']['open'].split(' '):
                     if lastChar == char_type:
-                        if lastChar == 'r':
-                            # Python raw string support
-                            lastChar = self.view.substr(begin + 1)
-                            if lastChar == "'" or lastChar == '"':
-                                begin += 1
-                                quote = lastChar
-                        else:
-                            quote = lastChar
+                        quote, begin = self.check_special_strings_start(lastChar, begin, viewSize)
                 break
 
         # If quote fails continue off from furthest left
@@ -607,7 +595,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         # Right quote
         if quote != None:
             scout = start
-            viewSize = self.view.size() - 1
             lastChar = None
             while scout <= viewSize:
                 if self.use_threshold:
@@ -618,17 +605,13 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                 char = self.view.substr(scout)
                 if self.view.score_selector(scout, 'string') > 0:
                     if scout == viewSize:
-                        if char == quote and scout != begin:
-                            end = scout + 1
-                            matched = True
+                        matched, end = self.check_special_strings_end(char, quote, scout, begin, end)
                         break
                     else:
                         scout += 1
                         lastChar = char
                 else:
-                    if lastChar == quote and scout - 1 != begin:
-                        end = scout
-                        matched = True
+                    matched, end = self.check_special_strings_end(lastChar, quote, scout - 1, begin, end)
                     break
 
         if matched:
@@ -672,6 +655,75 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                                 self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
             self.store_sel(regions)
         return (matched, begin - 1)
+
+    def check_special_strings_start(self, char, begin, view_size):
+        quote = None
+        pt = begin + 1
+        if char == 'r':
+            if self.view.score_selector(begin, 'source.python'):
+                # Python raw string support
+                if pt <= view_size:
+                    char = self.view.substr(pt)
+                    if char == "'" or char == '"':
+                        begin += 1
+                        quote = char
+        elif char == 'm' or char == 's':
+            if self.view.score_selector(begin, 'source.perl'):
+                # Perl match and substitution
+                if pt <= view_size:
+                    char = self.view.substr(pt)
+                    if char == "/":
+                        begin += 1
+                        quote = char
+        elif char == 't':
+            if self.view.score_selector(begin, 'source.perl'):
+                # Perl translations
+                if pt <= view_size:
+                    char = self.view.substr(pt)
+                    if char == "r" and (pt + 1) <= view_size:
+                        char = self.view.substr(pt + 1)
+                        if char == "/":
+                            begin += 2
+                            quote = char
+        else:
+            quote = char
+        return quote, begin
+
+    def check_special_strings_end(self, char, quote, scout, begin, end):
+        matched = False
+        string_end = end
+        lookback = 0
+        to_match = ""
+
+        if self.view.score_selector(scout, 'source.js') > 0 and quote == "/" and re.match("(i|g|m)", char):
+            # Javascript flags
+            lookback = 3
+            to_match = "(i|g|m)"
+        elif self.view.score_selector(scout, 'source.perl') > 0  and quote == "/" and re.match("(i|g|x|s|o|e|m)", char):
+            # Perl flags
+            lookback = 7
+            to_match = "(i|g|x|s|o|e|m)"
+        elif char == quote and scout != begin:
+            end = scout + 1
+            matched = True
+            return matched, end
+        else:
+            return matched, end
+
+        # Look back the max amount allowable by language to try and find "/"
+        lookback_offset = scout + lookback - 4
+        while lookback and lookback_offset > begin:
+            char = self.view.substr(lookback_offset)
+            if char == quote:
+                string_end = lookback_offset + 1
+                matched = True
+                break
+            elif re.match(to_match, char):
+                lookback -= 1
+                lookback_offset = scout + lookback - 4
+            else:
+                break
+        return matched, string_end
 
     def string_adjacent_adjust(self, scout):
         # Offset cursor

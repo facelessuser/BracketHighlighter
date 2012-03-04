@@ -3,7 +3,7 @@ This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are n
 
 ![Options Screenshot](https://github.com/facelessuser/BracketHighlighter/raw/master/example.png)
 
-# Installation 
+# Installation
 - Download is available in Package Control or you can [download](https://github.com/facelessuser/BracketHighlighter/zipball/master "download") or clone directly and drop into your Sublime Text 2 packages directory (plugin folder must be named BracketHighlighter)
 - You may need to restart Sublime Text 2 after installation
 
@@ -113,7 +113,11 @@ If you want more control of the colors, you can define your own scopes.
             <string>#FAF60A</string>
         </dict>
     </dict>
-    
+
+# Version 1.4
+- Account for perl regex, substitutions, and translations surrounded by "/" for string bracket matching
+- Account for regex modifiers when matching regex surrounded by "/" in javascript and perl
+
 # Version 1.3
 - Fixed escaped brackets in string handling.  Also a bit more efficient.
 
