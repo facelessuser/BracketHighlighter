@@ -114,6 +114,9 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.4.1
+- Make adjusment to regex modifier code to correctly count back modifiers in perl
+
 # Version 1.4
 - Account for perl regex, substitutions, and translations surrounded by "/" for string bracket matching
 - Account for regex modifiers when matching regex surrounded by "/" in javascript and perl

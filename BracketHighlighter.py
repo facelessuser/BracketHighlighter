@@ -711,7 +711,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             return matched, end
 
         # Look back the max amount allowable by language to try and find "/"
-        lookback_offset = scout + lookback - 4
+        lookback_adjust = lookback + 1
+        lookback_offset = scout + lookback - lookback_adjust
         while lookback and lookback_offset > begin:
             char = self.view.substr(lookback_offset)
             if char == quote:
@@ -720,7 +721,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                 break
             elif re.match(to_match, char):
                 lookback -= 1
-                lookback_offset = scout + lookback - 4
+                lookback_offset = scout + lookback - lookback_adjust
             else:
                 break
         return matched, string_end
