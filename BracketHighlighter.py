@@ -852,6 +852,7 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if Pref.modified == False:
             print 'running from bh_run'
             self.debounce(Pref.type)
+
 bh_run = BracketHighlighterCommand(sublime_plugin.EventListener).bh_run
 def bh_loop():
     while True:
