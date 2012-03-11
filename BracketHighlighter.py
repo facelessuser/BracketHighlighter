@@ -5,10 +5,22 @@ import sublime
 import sublime_plugin
 from bracket_plugin import BracketPlugin
 import re
+from time import time, sleep
+import thread
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
+
+
+class Pref:
+    def load(self):
+        Pref.wait_time = 0.12
+        Pref.time = time()
+        Pref.modified = True
+        Pref.type = BH_MATCH_TYPE_SELECTION
+
+Pref().load()
 
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
@@ -861,10 +873,48 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_modified(self, view):
-        self.debounce(BH_MATCH_TYPE_EDIT)
+        now = time()
+        Pref.type = BH_MATCH_TYPE_EDIT
+        if now - Pref.time > Pref.wait_time:
+            Pref.modified = False
+            Pref.time = now
+            self.debounce(BH_MATCH_TYPE_EDIT)
+        else:
+            Pref.modified = True
+            Pref.time = now
 
     def on_activated(self, view):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_selection_modified(self, view):
-        self.debounce(BH_MATCH_TYPE_SELECTION)
+        now = time()
+        Pref.type = BH_MATCH_TYPE_SELECTION
+        if now - Pref.time > Pref.wait_time:
+            Pref.modified = False
+            Pref.ignore_next = True
+            Pref.time = now
+            self.debounce(BH_MATCH_TYPE_SELECTION)
+        else:
+            if Pref.ignore_next == True:
+                Pref.ignore_next = False
+            else:
+                Pref.modified = True
+                Pref.time = now
+
+    def bh_run(self):
+        if Pref.modified == True:
+            Pref.modified = False
+            self.debounce(Pref.type)
+
+bh_run = BracketHighlighterCommand(sublime_plugin.EventListener).bh_run
+
+
+def bh_loop():
+    while True:
+        if Pref.modified == True and time() - Pref.time > Pref.wait_time:
+            sublime.set_timeout(lambda: bh_run(), 0)
+        sleep(0.5)
+
+if not 'running_bh_loop' in globals():
+    running_bh_loop = True
+    thread.start_new_thread(bh_loop, ())
