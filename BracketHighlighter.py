@@ -849,7 +849,8 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
                 Pref.time = now
 
     def bh_run(self):
-        if Pref.modified == False:
+        if Pref.modified == True:
+            Pref.modified = False
             print 'running from bh_run'
             self.debounce(Pref.type)
 
@@ -858,7 +859,6 @@ def bh_loop():
     while True:
         if Pref.modified == True and  time() - Pref.time > Pref.wait_time:
             sublime.set_timeout(lambda:bh_run(), 0)
-            Pref.modified = False
         sleep(0.5)
 
 if not 'running_bh_loop' in globals():
