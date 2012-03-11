@@ -3,8 +3,9 @@ from random import randrange
 from Elements import is_tag, match
 import sublime
 import sublime_plugin
-import time
+from time import time, sleep
 from bracket_plugin import BracketPlugin
+import thread
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -13,7 +14,9 @@ BH_MATCH_TYPE_EDIT = 2
 class Pref:
   def load(self):
     Pref.wait_time = 0.12
-    Pref.time = time.time()
+    Pref.time      = time()
+    Pref.modified  = True
+    Pref.type      = BH_MATCH_TYPE_SELECTION
 
 Pref().load();
 
@@ -814,22 +817,52 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_modified(self, view):
-      now = time.time()
-      if now - Pref.time > Pref.wait_time:
-        Pref.time = now
-        self.debounce(BH_MATCH_TYPE_EDIT)
-      else:
-        Pref.time = now
-
+        now = time()
+        if now - Pref.time > Pref.wait_time:
+            Pref.modified = False
+            Pref.time = now
+            Pref.type = BH_MATCH_TYPE_EDIT
+            self.debounce(BH_MATCH_TYPE_EDIT)
+            print 'running from on_modified'
+        else:
+            Pref.modified = True
+            Pref.time = now
 
     def on_activated(self, view):
         self.debounce(BH_MATCH_TYPE_SELECTION)
 
     def on_selection_modified(self, view):
-      now = time.time()
-      if now - Pref.time > Pref.wait_time:
-        Pref.time = now
-        self.debounce(BH_MATCH_TYPE_SELECTION)
-      else:
-        Pref.time = now
+        now = time()
+        if now - Pref.time > Pref.wait_time:
+            Pref.modified = False
+            Pref.ignore_next = True
+            Pref.time = now
+            Pref.type = BH_MATCH_TYPE_SELECTION
+            self.debounce(BH_MATCH_TYPE_SELECTION)
+            print 'running from on_selection_modified'
+        else:
+            if Pref.ignore_next == True:
+                print 'ignore_next'
+                Pref.ignore_next = False
+            else:
+                Pref.modified = True
+                Pref.time = now
+
+    def bh_run(self):
+        if Pref.modified == False:
+            print 'running from bh_run'
+            self.debounce(Pref.type)
+
+bh_run = BracketHighlighterCommand(sublime_plugin.EventListener).bh_run
+def bh_loop():
+    while True:
+        if Pref.modified == True and  time() - Pref.time > Pref.wait_time:
+            sublime.set_timeout(lambda:bh_run(), 0)
+            Pref.modified = False
+        sleep(0.5)
+
+if not 'running_bh_loop' in globals():
+    running_bh_loop = True
+    thread.start_new_thread(bh_loop, ())
+
 
