@@ -1,5 +1,4 @@
 from os.path import basename
-from random import randrange
 from Elements import is_tag, match
 import sublime
 import sublime_plugin
@@ -17,7 +16,7 @@ class Pref:
     def load(self):
         Pref.wait_time = 0.12
         Pref.time = time()
-        Pref.modified = True
+        Pref.modified = False
         Pref.type = BH_MATCH_TYPE_SELECTION
 
 Pref().load()
@@ -25,7 +24,7 @@ Pref().load()
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
-        BracketHighlighterCommand(
+        BracketHighlighter(
             threshold,
             lines,
             adjacent,
@@ -34,14 +33,12 @@ class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
         ).match(self.window.active_view())
 
 
-class BracketHighlighterCommand(sublime_plugin.EventListener):
+class BracketHighlighter():
     # Initialize
     def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
         self.settings = sublime.load_settings("BracketHighlighter.sublime-settings")
         self.settings.add_on_change('reload', lambda: self.setup())
         self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
-        self.debounce_id = 0
-        self.debounce_type = 0
 
     def setup(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
         self.last_id_view = None
@@ -56,7 +53,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         self.ignore_angle = bool(self.settings.get('ignore_non_tags'))
         self.tag_type = self.settings.get('tag_type')
         self.new_select = False
-        self.debounce_delay = int(self.settings.get('debounce_delay', 1000))
 
         # On demand ignore
         self.ignore = ignore
@@ -836,77 +832,53 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
             scout += 1
         return None
 
-    def check_debounce(self, debounce_id):
-        if self.debounce_id != debounce_id:
-            debounce_id = randrange(1, 999999)
-            self.debounce_id = debounce_id
-            sublime.set_timeout(
-                lambda: self.check_debounce(debounce_id=debounce_id),
-                self.debounce_delay
-            )
-        else:
-            self.debounce_id = 0
-            force_match = True if self.debounce_type == BH_MATCH_TYPE_EDIT else False
-            self.debounce_type = BH_MATCH_TYPE_NONE
-            self.match(sublime.active_window().active_view(), force_match)
+bh_match = BracketHighlighter().match
 
-    def debounce(self, debounce_type):
-        # Check if debounce not currently active, or if of same type,
-        # but let edit override selection for undos
-        if (
-            self.debounce_type == BH_MATCH_TYPE_NONE or
-            debounce_type == BH_MATCH_TYPE_EDIT or
-            self.debounce_type == debounce_type
-        ):
-            self.debounce_type = debounce_type
-            debounce_id = randrange(1, 999999)
-            if self.debounce_id == 0:
-                self.debounce_id = debounce_id
-                sublime.set_timeout(
-                    lambda: self.check_debounce(debounce_id=debounce_id),
-                    self.debounce_delay
-                )
-            else:
-                self.debounce_id = debounce_id
 
+class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
     def on_load(self, view):
-        self.debounce(BH_MATCH_TYPE_SELECTION)
+        if view.settings().get('is_widget'):
+            return
+        Pref.type = BH_MATCH_TYPE_SELECTION
+        sublime.set_timeout(lambda: bh_run(), 0)
 
     def on_modified(self, view):
+        if view.settings().get('is_widget'):
+            return
         now = time()
         Pref.type = BH_MATCH_TYPE_EDIT
-        if now - Pref.time > Pref.wait_time:
-            Pref.modified = False
-            Pref.time = now
-            self.debounce(BH_MATCH_TYPE_EDIT)
+        if time() - Pref.time > Pref.wait_time:
+            sublime.set_timeout(lambda: bh_run(), 0)
         else:
             Pref.modified = True
             Pref.time = now
 
     def on_activated(self, view):
-        self.debounce(BH_MATCH_TYPE_SELECTION)
+        if view.settings().get('is_widget'):
+            return
+        Pref.type = BH_MATCH_TYPE_SELECTION
+        sublime.set_timeout(lambda: bh_run(), 0)
 
     def on_selection_modified(self, view):
+        if view.settings().get('is_widget'):
+            return
+        if Pref.type != BH_MATCH_TYPE_EDIT:
+            Pref.type = BH_MATCH_TYPE_SELECTION
         now = time()
-        Pref.type = BH_MATCH_TYPE_SELECTION
         if now - Pref.time > Pref.wait_time:
-            Pref.modified = False
-            Pref.ignore_next = True
-            Pref.time = now
-            self.debounce(BH_MATCH_TYPE_SELECTION)
+            sublime.set_timeout(lambda: bh_run(), 0)
         else:
-            if Pref.ignore_next == True:
-                Pref.ignore_next = False
-            else:
-                Pref.modified = True
-                Pref.time = now
+            Pref.modified = True
+            Pref.time = now
 
-    def bh_run(self):
-        if Pref.modified == True:
-            Pref.modified = False
-            self.debounce(Pref.type)
 
-bh_run = BracketHighlighterCommand(sublime_plugin.EventListener).bh_run
+def bh_run():
+    Pref.modified = False
+    window = sublime.active_window()
+    view = window.active_view() if window != None else None
+    bh_match(view, True if Pref.type == BH_MATCH_TYPE_EDIT else False)
+    print "run"
+    Pref.time = time()
 
 
 def bh_loop():
