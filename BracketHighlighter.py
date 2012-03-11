@@ -818,10 +818,10 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
     def on_modified(self, view):
         now = time()
+        Pref.type = BH_MATCH_TYPE_EDIT
         if now - Pref.time > Pref.wait_time:
             Pref.modified = False
             Pref.time = now
-            Pref.type = BH_MATCH_TYPE_EDIT
             self.debounce(BH_MATCH_TYPE_EDIT)
             print 'running from on_modified'
         else:
@@ -833,11 +833,11 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
 
     def on_selection_modified(self, view):
         now = time()
+        Pref.type = BH_MATCH_TYPE_SELECTION
         if now - Pref.time > Pref.wait_time:
             Pref.modified = False
             Pref.ignore_next = True
             Pref.time = now
-            Pref.type = BH_MATCH_TYPE_SELECTION
             self.debounce(BH_MATCH_TYPE_SELECTION)
             print 'running from on_selection_modified'
         else:
@@ -852,7 +852,6 @@ class BracketHighlighterCommand(sublime_plugin.EventListener):
         if Pref.modified == False:
             print 'running from bh_run'
             self.debounce(Pref.type)
-
 bh_run = BracketHighlighterCommand(sublime_plugin.EventListener).bh_run
 def bh_loop():
     while True:
@@ -864,5 +863,3 @@ def bh_loop():
 if not 'running_bh_loop' in globals():
     running_bh_loop = True
     thread.start_new_thread(bh_loop, ())
-
-
