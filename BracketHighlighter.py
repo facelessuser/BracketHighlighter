@@ -845,13 +845,9 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
     def on_modified(self, view):
         if view.settings().get('is_widget'):
             return
-        now = time()
         Pref.type = BH_MATCH_TYPE_EDIT
-        if time() - Pref.time > Pref.wait_time:
-            sublime.set_timeout(lambda: bh_run(), 0)
-        else:
-            Pref.modified = True
-            Pref.time = now
+        Pref.modified = True
+        Pref.time = time()
 
     def on_activated(self, view):
         if view.settings().get('is_widget'):
@@ -866,25 +862,27 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
             Pref.type = BH_MATCH_TYPE_SELECTION
         now = time()
         if now - Pref.time > Pref.wait_time:
+            print 'running from on_selection_modified'
             sublime.set_timeout(lambda: bh_run(), 0)
         else:
             Pref.modified = True
             Pref.time = now
 
 
-def bh_run():
+def bh_run(from_thread = False):
     Pref.modified = False
     window = sublime.active_window()
     view = window.active_view() if window != None else None
     bh_match(view, True if Pref.type == BH_MATCH_TYPE_EDIT else False)
-    print "run"
+    if from_thread:
+        print "running from thread"
     Pref.time = time()
 
 
 def bh_loop():
     while True:
         if Pref.modified == True and time() - Pref.time > Pref.wait_time:
-            sublime.set_timeout(lambda: bh_run(), 0)
+            sublime.set_timeout(lambda: bh_run(True), 0)
         sleep(0.5)
 
 if not 'running_bh_loop' in globals():
