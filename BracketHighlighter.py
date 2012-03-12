@@ -836,6 +836,9 @@ bh_match = BracketHighlighter().match
 
 
 class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
+    # Manage when to kick off bracket matching.
+    # Try and reduce redundant requests by letting the
+    # background thread ensure certain needed match occurs
     def on_load(self, view):
         if view.settings().get('is_widget'):
             return
@@ -845,13 +848,9 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
     def on_modified(self, view):
         if view.settings().get('is_widget'):
             return
-        now = time()
         Pref.type = BH_MATCH_TYPE_EDIT
-        if time() - Pref.time > Pref.wait_time:
-            sublime.set_timeout(lambda: bh_run(), 0)
-        else:
-            Pref.modified = True
-            Pref.time = now
+        Pref.modified = True
+        Pref.time = time()
 
     def on_activated(self, view):
         if view.settings().get('is_widget'):
@@ -872,15 +871,18 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
             Pref.time = now
 
 
+# Kick off matching of brackets
 def bh_run():
     Pref.modified = False
     window = sublime.active_window()
     view = window.active_view() if window != None else None
     bh_match(view, True if Pref.type == BH_MATCH_TYPE_EDIT else False)
-    print "run"
     Pref.time = time()
 
 
+# Start thread that will ensure highlighting happens after a barage of events
+# Initial highlight is instant, but subsequent events in close succession will
+# be ignored and then accounted for with one match by this thread
 def bh_loop():
     while True:
         if Pref.modified == True and time() - Pref.time > Pref.wait_time:
