@@ -845,14 +845,9 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
     def on_modified(self, view):
         if view.settings().get('is_widget'):
             return
-        now = time()
         Pref.type = BH_MATCH_TYPE_EDIT
-        if time() - Pref.time > Pref.wait_time:
-            print 'running from on_modified'
-            sublime.set_timeout(lambda: bh_run(), 0)
-        else:
-            Pref.modified = True
-            Pref.time = now
+        Pref.modified = True
+        Pref.time = time()
 
     def on_activated(self, view):
         if view.settings().get('is_widget'):
