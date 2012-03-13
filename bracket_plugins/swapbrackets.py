@@ -29,7 +29,7 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
             "bracket_highlighter_key", {
                 "plugin": {
                     "type": ["bracket"],
-                    "command": "swapbrackets.swap_brackets_transform",
+                    "command": "bracket_plugins.swap_brackets_transform",
                     "args": {"bracket_type": brackets[value]}
                 }
             }

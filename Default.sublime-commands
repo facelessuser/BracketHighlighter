@@ -1,85 +1,85 @@
 [
-	{
-		"caption": "Bracket Highlighter: Match Brackets",
-		"command": "bracket_highlighter_key",
-		"args": {"lines": true}
-	},
-	{
-		"caption": "Bracket Highlighter: Show Left Bracket",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"lines" : true,
-			"plugin":
-			{
-				"type": ["quote","bracket","tag"],
-				"command": "bracketselect.select_bracket",
-				"args": {"select": "left"}
-			}
-		}
-	},
-	{
-		"caption": "Bracket Highlighter: Show Right Bracket",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"lines" : true,
-			"plugin":
-			{
-				"type": ["quote","bracket","tag"],
-				"command": "bracketselect.select_bracket",
-				"args": {"select": "right"}
-			}
-		}
-	},
-	{
-		"caption": "Bracket Highlighter: Select Bracket Content",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"lines" : true,
-			"plugin":
-			{
-				"type": ["quote","bracket","tag"],
-				"command": "bracketselect.select_bracket"
-			}
-		}
-	},
-	{
-		"caption": "Bracket Highlighter: Select Tag",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"ignore": ["quote"],
-			"plugin":
-			{
-				"type": ["tag"],
-				"command": "tagnameselect.select_tag"
-			}
-		}
-	},
-	{
-		"caption": "Bracket Highlighter: Swap Quotes",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"plugin":
-			{
-				"type": ["quote"],
-				"command": "swapquotes.swap_quotes"
-			}
-		}
-	},
-	{
-		"caption": "Bracket Highlighter: Swap Brackets",
-		"command": "swap_brackets"
-	},
-	{
-		"caption": "Bracket Highlighter: Fold by Brackets",
-		"command": "bracket_highlighter_key",
-		"args":
-		{
-			"plugin": {"type": ["quote", "tag", "bracket"],"command" : "foldbracket.fold_bracket"}
-		}
-	}
+    {
+        "caption": "Bracket Highlighter: Match Brackets",
+        "command": "bracket_highlighter_key",
+        "args": {"lines": true}
+    },
+    {
+        "caption": "Bracket Highlighter: Show Left Bracket",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["quote","bracket","tag"],
+                "command": "bracket_plugins.select_bracket",
+                "args": {"select": "left"}
+            }
+        }
+    },
+    {
+        "caption": "Bracket Highlighter: Show Right Bracket",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["quote","bracket","tag"],
+                "command": "bracket_plugins.select_bracket",
+                "args": {"select": "right"}
+            }
+        }
+    },
+    {
+        "caption": "Bracket Highlighter: Select Bracket Content",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["quote","bracket","tag"],
+                "command": "bracket_plugins.select_bracket"
+            }
+        }
+    },
+    {
+        "caption": "Bracket Highlighter: Select Tag",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "ignore": ["quote"],
+            "plugin":
+            {
+                "type": ["tag"],
+                "command": "bracket_plugins.select_tag"
+            }
+        }
+    },
+    {
+        "caption": "Bracket Highlighter: Swap Quotes",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "plugin":
+            {
+                "type": ["quote"],
+                "command": "bracket_plugins.swap_quotes"
+            }
+        }
+    },
+    {
+        "caption": "Bracket Highlighter: Swap Brackets",
+        "command": "swap_brackets"
+    },
+    {
+        "caption": "Bracket Highlighter: Fold by Brackets",
+        "command": "bracket_highlighter_key",
+        "args":
+        {
+            "plugin": {"type": ["quote", "tag", "bracket"],"command" : "bracket_plugins.fold_bracket"}
+        }
+    }
 ]

@@ -19,6 +19,7 @@ This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are n
 - Shortcut for chaning quote style (accounts for escaped quotes as well)
 - Works with multi-select
 - Bracket related plugins
+- Configurable custom gutter icons
 
 # Included Plugins
 - bracketselect: move cursor to opening bracket or closing bracket or select all content between brackets
@@ -36,8 +37,8 @@ This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are n
 #Changing Colors
 The color is based on the scope you assign to the highlight. The color of the scope is defined by your theme file.  By default, the scope is "entity.name.class", but you could change it to "keyword" or any other scope in your theme.
 
-    //Scope? (Defined in theme files.) ->
-    //Examples: (keyword/string/number)
+    //Scope? (Defined in theme files.)
+    //Examples: (keyword|string|number)
     "quote_scope" : "entity.name.class",
     "curly_scope" : "entity.name.class",
     "round_scope" : "entity.name.class",
@@ -113,6 +114,11 @@ If you want more control of the colors, you can define your own scopes.
             <string>#FAF60A</string>
         </dict>
     </dict>
+
+# Version 1.5
+- More responsive highlighting (thanks tito); delay setting no longer needed
+- Organize bracket plugins
+- Included more configurable custom gutter icons
 
 # Version 1.4.1
 - Make adjusment to regex modifier code to correctly count back modifiers in perl

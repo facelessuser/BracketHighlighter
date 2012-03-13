@@ -1,4 +1,11 @@
 import sublime
+import sys
+import os
+
+# Pull in built-in plugin directory
+built_in_plugins = os.path.join(sublime.packages_path(), 'BracketHighlighter')
+if not built_in_plugins in sys.path:
+    sys.path.append(built_in_plugins)
 
 
 class BracketPlugin():
@@ -53,3 +60,6 @@ class BracketPluginCommand():
 
     def run(self, bracket, content, selection):
         pass
+
+# Register sublime commands from built-in plugins
+from bracket_plugins.sublime_commands import *

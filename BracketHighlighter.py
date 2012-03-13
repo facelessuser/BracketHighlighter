@@ -104,19 +104,29 @@ class BracketHighlighter():
         }
 
     def get_bracket_settings(self, bracket, opening, closing):
+        # Style
+        highlight_style = self.settings.get(bracket + '_style', "none")
         style = sublime.HIDE_ON_MINIMAP
-        if self.settings.get(bracket + '_style') == "outline":
+        if highlight_style == "outline":
             style |= sublime.DRAW_OUTLINED
-        elif self.settings.get(bracket + '_style') == "none":
+        elif highlight_style == "none":
             style |= sublime.HIDDEN
-        elif self.settings.get(bracket + '_style') == "underline":
+        elif highlight_style == "underline":
             style |= sublime.DRAW_EMPTY_AS_OVERWRITE
+
+        # Icon
+        highlight_icon = self.settings.get(bracket + '_icon', "")
+        icon = ""
+        icon_path = self.settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
+        if not highlight_icon == "none" and not highlight_icon == "":
+            icon = "../%s/%s" % (icon_path, highlight_icon)
+
         return {
             'enable':    bool(self.settings.get(bracket + '_enable')),
             'scope':     self.settings.get(bracket + '_scope'),
             'style':     style,
-            'underline': (self.settings.get(bracket + '_style') == "underline"),
-            'icon':      self.settings.get(bracket + '_icon'),
+            'underline': (highlight_style == "underline"),
+            'icon':      icon,
             'list':      map(lambda x: x.lower(), self.settings.get(bracket + '_language_list')),
             'filter':    self.settings.get(bracket + '_language_filter'),
             'open':      opening,
