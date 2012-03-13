@@ -18,12 +18,16 @@ class Pref:
         Pref.time = time()
         Pref.modified = False
         Pref.type = BH_MATCH_TYPE_SELECTION
+        Pref.ignore_all = False
 
 Pref().load()
 
 
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
+        # Override events
+        Pref.ignore_all = True
+        Pref.modified = False
         BracketHighlighter(
             threshold,
             lines,
@@ -31,6 +35,9 @@ class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
             ignore,
             plugin
         ).match(self.window.active_view())
+        # Reset event settings
+        Pref.ignore_all = False
+        Pref.time = time()
 
 
 class BracketHighlighter():
@@ -850,26 +857,26 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
     # Try and reduce redundant requests by letting the
     # background thread ensure certain needed match occurs
     def on_load(self, view):
-        if view.settings().get('is_widget'):
+        if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(lambda: bh_run(), 0)
 
     def on_modified(self, view):
-        if view.settings().get('is_widget'):
+        if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_EDIT
         Pref.modified = True
         Pref.time = time()
 
     def on_activated(self, view):
-        if view.settings().get('is_widget'):
+        if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(lambda: bh_run(), 0)
 
     def on_selection_modified(self, view):
-        if view.settings().get('is_widget'):
+        if self.ignore_event(view):
             return
         if Pref.type != BH_MATCH_TYPE_EDIT:
             Pref.type = BH_MATCH_TYPE_SELECTION
@@ -880,13 +887,18 @@ class BracketHighlighterListenerCommand(sublime_plugin.EventListener):
             Pref.modified = True
             Pref.time = now
 
+    def ignore_event(self, view):
+        return (view.settings().get('is_widget') or Pref.ignore_all)
+
 
 # Kick off matching of brackets
 def bh_run():
     Pref.modified = False
     window = sublime.active_window()
     view = window.active_view() if window != None else None
+    Pref.ignore_all = True
     bh_match(view, True if Pref.type == BH_MATCH_TYPE_EDIT else False)
+    Pref.ignore_all = False
     Pref.time = time()
 
 

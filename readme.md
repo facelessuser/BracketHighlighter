@@ -115,6 +115,9 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.5.1
+- Ignore selection/edit events inside the main routine
+
 # Version 1.5
 - More responsive highlighting (thanks tito); delay setting no longer needed
 - Organize bracket plugins
