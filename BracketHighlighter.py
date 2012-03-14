@@ -1,4 +1,4 @@
-from os.path import basename
+from os.path import basename, exists, join, normpath
 from Elements import is_tag, match
 import sublime
 import sublime_plugin
@@ -124,20 +124,28 @@ class BracketHighlighter():
         # Icon
         highlight_icon = self.settings.get(bracket + '_icon', "")
         icon = ""
+        small_icon = ""
         icon_path = self.settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
-        if not highlight_icon == "none" and not highlight_icon == "":
+        # Icon exist?
+        if (
+            exists(normpath(join(sublime.packages_path(), icon_path, highlight_icon + ".png"))) and
+            not highlight_icon == "none" and not highlight_icon == ""
+        ):
             icon = "../%s/%s" % (icon_path, highlight_icon)
+            if exists(normpath(join(sublime.packages_path(), icon_path, highlight_icon + "_small.png"))):
+                small_icon = "../%s/%s" % (icon_path, highlight_icon + "_small")
 
         return {
-            'enable':    bool(self.settings.get(bracket + '_enable')),
-            'scope':     self.settings.get(bracket + '_scope'),
-            'style':     style,
-            'underline': (highlight_style == "underline"),
-            'icon':      icon,
-            'list':      map(lambda x: x.lower(), self.settings.get(bracket + '_language_list')),
-            'filter':    self.settings.get(bracket + '_language_filter'),
-            'open':      opening,
-            'close':     closing
+            'enable':     bool(self.settings.get(bracket + '_enable')),
+            'scope':      self.settings.get(bracket + '_scope'),
+            'style':      style,
+            'underline':  (highlight_style == "underline"),
+            'icon':       icon,
+            'small_icon': small_icon,
+            'list':       map(lambda x: x.lower(), self.settings.get(bracket + '_language_list')),
+            'filter':     self.settings.get(bracket + '_language_filter'),
+            'open':       opening,
+            'close':      closing
         }
 
     def init_match(self):
@@ -214,13 +222,14 @@ class BracketHighlighter():
 
     def highlight(self, view):
         # Perform highlight on brackets and tags
+        icon_type = "small_icon" if view.line_height() < 16 else "icon"
         for bracket in self.brackets:
             if bracket in self.highlight_us:
                 view.add_regions(
                     bracket,
                     self.highlight_us[bracket],
                     self.brackets[bracket]['scope'],
-                    self.brackets[bracket]['icon'],
+                    self.brackets[bracket][icon_type],
                     self.brackets[bracket]['style']
                 )
             else:

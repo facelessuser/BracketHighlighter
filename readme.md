@@ -115,6 +115,11 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.5.2
+- Use tiny icons when line height is less than 16
+- Use no icon if icon cannot be found
+- Optimize png icons
+
 # Version 1.5.1
 - Ignore selection/edit events inside the main routine
 
