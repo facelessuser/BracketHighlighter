@@ -54,6 +54,9 @@
     // Path to gutter icons (relative to Packages)
     "icon_path" : "BracketHighlighter/icons",
 
+    // Disable gutter icons when doing multi-select
+    "no_multi_select_icons": false,
+
     // Icon? (dot|circle|bookmark|quote|curly_bracket|round_bracket|square_bracket|angle_bracket|none)
     "quote_icon" : "quote",
     "curly_icon" : "curly_bracket",

@@ -57,8 +57,9 @@ class BracketHighlighter():
         self.lines = 0
         self.chars = 0
         self.count_lines = count_lines
-        self.ignore_angle = bool(self.settings.get('ignore_non_tags'))
-        self.tag_type = self.settings.get('tag_type')
+        self.ignore_angle = bool(self.settings.get('ignore_non_tags', False))
+        self.tag_type = self.settings.get('tag_type', 'html')
+        self.no_multi_select_icons = bool(self.settings.get('no_multi_select_icons', False))
         self.new_select = False
 
         # On demand ignore
@@ -83,17 +84,17 @@ class BracketHighlighter():
                     self.transform['tag'] = True
 
         # Search threshold
-        self.adj_only = adj_only if adj_only != None else bool(self.settings.get('match_adjacent_only'))
-        self.use_threshold = False if override_thresh else bool(self.settings.get('use_search_threshold'))
-        self.tag_use_threshold = False if override_thresh else bool(self.settings.get('tag_use_search_threshold'))
-        self.search_threshold = int(self.settings.get('search_threshold'))
-        self.tag_search_threshold = int(self.settings.get('tag_search_threshold'))
+        self.adj_only = adj_only if adj_only != None else bool(self.settings.get('match_adjacent_only', False))
+        self.use_threshold = False if override_thresh else bool(self.settings.get('use_search_threshold', True))
+        self.tag_use_threshold = False if override_thresh else bool(self.settings.get('tag_use_search_threshold', True))
+        self.search_threshold = int(self.settings.get('search_threshold', 2000))
+        self.tag_search_threshold = int(self.settings.get('tag_search_threshold', 2000))
 
         # Tag special options
-        self.brackets_only = bool(self.settings.get('tag_brackets_only'))
+        self.brackets_only = bool(self.settings.get('tag_brackets_only', False))
 
         # Match brackets in strings
-        self.match_string_brackets = bool(self.settings.get('match_string_brackets'))
+        self.match_string_brackets = bool(self.settings.get('match_string_brackets', True))
 
     def init_brackets(self):
         quote_open = "r s m t ' \""
@@ -136,14 +137,15 @@ class BracketHighlighter():
                 small_icon = "../%s/%s" % (icon_path, highlight_icon + "_small")
 
         return {
-            'enable':     bool(self.settings.get(bracket + '_enable')),
+            'enable':     bool(self.settings.get(bracket + '_enable', True)),
             'scope':      self.settings.get(bracket + '_scope'),
             'style':      style,
             'underline':  (highlight_style == "underline"),
             'icon':       icon,
             'small_icon': small_icon,
-            'list':       map(lambda x: x.lower(), self.settings.get(bracket + '_language_list')),
-            'filter':     self.settings.get(bracket + '_language_filter'),
+            'no_icon':    "",
+            'list':       map(lambda x: x.lower(), self.settings.get(bracket + '_language_list', [])),
+            'filter':     self.settings.get(bracket + '_language_filter', []),
             'open':       opening,
             'close':      closing
         }
@@ -157,7 +159,6 @@ class BracketHighlighter():
         self.targets = []
         self.highlight_us = {}
         self.lines = 0
-        self.multi_select = False
         self.adj_bracket = False
 
         # Standard Brackets
@@ -222,7 +223,9 @@ class BracketHighlighter():
 
     def highlight(self, view):
         # Perform highlight on brackets and tags
-        icon_type = "small_icon" if view.line_height() < 16 else "icon"
+        icon_type = "no_icon"
+        if not self.no_multi_select_icons or not self.multi_select:
+            icon_type = "small_icon" if view.line_height() < 16 else "icon"
         for bracket in self.brackets:
             if bracket in self.highlight_us:
                 view.add_regions(

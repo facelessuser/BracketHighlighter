@@ -115,6 +115,11 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.5.3
+- Allow turning off gutter icons for multi-select via settings
+- Fix multi-select detection
+- Default the internal settings if setting is not found
+
 # Version 1.5.2
 - Use tiny icons when line height is less than 16
 - Use no icon if icon cannot be found
