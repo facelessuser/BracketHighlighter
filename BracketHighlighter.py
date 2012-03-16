@@ -597,6 +597,7 @@ class BracketHighlighter():
         start = sel.a
         matched = False
         bail = False
+        suppress = False
         is_string = False
         #Check if likely a string
         left_side_match = (self.view.score_selector(start, 'string') > 0)
@@ -612,14 +613,16 @@ class BracketHighlighter():
                     not far_right_side_match
                 )
             )
-        if (left_side_match or right_side_match) and bail == False:
+            if bail and self.match_string_brackets:
+                suppress = True
+        if (left_side_match or right_side_match) and (bail == False or suppress == True):
             # Calculate offset
             is_string = True
             offset = -1 if left_side_match == False else 0
-            (matched, start) = self.find_quotes(start, offset, sel)
+            (matched, start) = self.find_quotes(start, offset, sel, suppress)
         return (matched, start, is_string)
 
-    def find_quotes(self, start, offset, sel):
+    def find_quotes(self, start, offset, sel, suppress):
         actual_start = start
         start += offset
         begin = start
@@ -683,27 +686,28 @@ class BracketHighlighter():
 
         if matched:
             regions = [sublime.Region(sel.a, sel.b)]
-            if (
-                self.transform['quote'] and
-                self.plugin != None and
-                self.plugin.is_enabled()
-            ):
-                (b_region, c_region, regions) = self.plugin.run_command(
-                    sublime.Region(begin, end),
-                    sublime.Region(begin + 1, end - 1),
-                    regions
-                )
-                begin = b_region.a
-                end = b_region.b
-            if self.brackets['bh_quote']['underline']:
-                self.highlight_us['bh_quote'].append(sublime.Region(begin))
-                self.highlight_us['bh_quote'].append(sublime.Region(end - 1))
-            else:
-                self.highlight_us['bh_quote'].append(sublime.Region(begin, begin + 1))
-                self.highlight_us['bh_quote'].append(sublime.Region(end - 1, end))
-            if self.count_lines:
-                self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
-                self.chars += end - 2 - begin
+            if not suppress:
+                if (
+                    self.transform['quote'] and
+                    self.plugin != None and
+                    self.plugin.is_enabled()
+                ):
+                    (b_region, c_region, regions) = self.plugin.run_command(
+                        sublime.Region(begin, end),
+                        sublime.Region(begin + 1, end - 1),
+                        regions
+                    )
+                    begin = b_region.a
+                    end = b_region.b
+                if self.brackets['bh_quote']['underline']:
+                    self.highlight_us['bh_quote'].append(sublime.Region(begin))
+                    self.highlight_us['bh_quote'].append(sublime.Region(end - 1))
+                else:
+                    self.highlight_us['bh_quote'].append(sublime.Region(begin, begin + 1))
+                    self.highlight_us['bh_quote'].append(sublime.Region(end - 1, end))
+                if self.count_lines:
+                    self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
+                    self.chars += end - 2 - begin
 
             if self.match_string_brackets and start != begin and start != end + 1:
                 start = actual_start
@@ -720,7 +724,8 @@ class BracketHighlighter():
                             else:
                                 self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
                                 self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
-            self.store_sel(regions)
+            if not suppress:
+                self.store_sel(regions)
         return (matched, begin - 1)
 
     def check_special_strings_start(self, char, begin, view_size):
