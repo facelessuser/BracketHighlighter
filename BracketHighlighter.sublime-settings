@@ -83,5 +83,8 @@
     // Allow targeting of regex strings like in javascript
     // which are scoped as strings, but are not quoted but
     // are instead surrounded by '/'s
-    "enable_forward_slash_regex_strings": true
+    "enable_forward_slash_regex_strings": true,
+
+    // Match brackets only when cursor is between the brackets
+    "match_brackets_only_when_between": false
 }

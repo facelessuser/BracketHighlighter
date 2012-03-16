@@ -115,6 +115,9 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.6
+- Add setting to match only when cursor is between brackets
+
 # Version 1.5.3
 - Allow turning off gutter icons for multi-select via settings
 - Fix multi-select detection

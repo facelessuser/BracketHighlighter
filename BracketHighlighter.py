@@ -61,6 +61,9 @@ class BracketHighlighter():
         self.tag_type = self.settings.get('tag_type', 'html')
         self.no_multi_select_icons = bool(self.settings.get('no_multi_select_icons', False))
         self.new_select = False
+        match_between = bool(self.settings.get('match_brackets_only_when_between', True))
+        self.adj_adjust = self.adjacent_adjust_inside if match_between else self.adjacent_adjust
+        self.string_adj_adjust = self.string_adjacent_adjust_inside if match_between else self.string_adjacent_adjust
 
         # On demand ignore
         self.ignore = ignore
@@ -250,6 +253,34 @@ class BracketHighlighter():
             self.view.sel().clear()
             map(lambda x: self.view.sel().add(x), self.sels)
 
+    def adjacent_adjust_inside(self, scout):
+        # Offset cursor
+        offset = 0
+        allow_quote_match = True
+        # If quotes enbaled, kick out of adjacent check if in middle of string
+        if (
+            self.view.score_selector(scout, 'string') > 0 and
+            self.view.score_selector(scout - 1, 'string') > 0 and
+            self.quote_enable
+        ):
+            return (offset, allow_quote_match)
+        allow_quote_match = False
+        char1 = self.view.substr(scout - 1)
+        char2 = self.view.substr(scout)
+        for bracket in self.targets:
+            if char2 == self.brackets[bracket]['close']:
+                offset = -1
+                self.adj_bracket = True
+                break
+            if char2 == self.brackets[bracket]['open'] and offset != -1:
+                offset = -1
+            if char1 == self.brackets[bracket]['open']:
+                if offset != -1:
+                    offset = -1
+                self.adj_bracket = True
+                break
+        return (offset, allow_quote_match)
+
     def adjacent_adjust(self, scout):
         # Offset cursor
         offset = 0
@@ -261,25 +292,24 @@ class BracketHighlighter():
             self.quote_enable
         ):
             return (offset, allow_quote_match)
-        if offset == 0:
-            char1 = self.view.substr(scout - 1)
-            char2 = self.view.substr(scout)
-            for bracket in self.targets:
-                if char2 == self.brackets[bracket]['open']:
-                    self.adj_bracket = True
-                if char1 == self.brackets[bracket]['open']:
-                    offset = -1
-                    self.adj_bracket = True
-                    allow_quote_match = False
-                    break
-                elif char1 == self.brackets[bracket]['close']:
-                    offset = -2
-                    self.adj_bracket = True
-                    allow_quote_match = False
-                elif char2 == self.brackets[bracket]['close'] and offset != -2:
-                    offset = -1
-                    self.adj_bracket = True
-                    allow_quote_match = True
+        char1 = self.view.substr(scout - 1)
+        char2 = self.view.substr(scout)
+        for bracket in self.targets:
+            if char2 == self.brackets[bracket]['open']:
+                self.adj_bracket = True
+            if char1 == self.brackets[bracket]['open']:
+                offset = -1
+                self.adj_bracket = True
+                allow_quote_match = False
+                break
+            elif char1 == self.brackets[bracket]['close']:
+                offset = -2
+                self.adj_bracket = True
+                allow_quote_match = False
+            elif char2 == self.brackets[bracket]['close'] and offset != -2:
+                offset = -1
+                self.adj_bracket = True
+                allow_quote_match = True
         if offset == 0:
             allow_quote_match = True
         return (offset, allow_quote_match)
@@ -307,7 +337,7 @@ class BracketHighlighter():
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
 
     def find_matches(self, sel):
-        (offset, allow_quote_match) = self.adjacent_adjust(sel.a)
+        (offset, allow_quote_match) = self.adj_adjust(sel.a)
         start = sel.a
         matched = False
         is_string = False
@@ -677,7 +707,7 @@ class BracketHighlighter():
 
             if self.match_string_brackets and start != begin and start != end + 1:
                 start = actual_start
-                offset = self.string_adjacent_adjust(start)
+                offset = self.string_adj_adjust(start)
                 start += offset
                 if (self.adj_only and self.adj_bracket) or not self.adj_only:
                     left = self.string_scout_left(start, begin)
@@ -763,30 +793,50 @@ class BracketHighlighter():
                 break
         return matched, string_end
 
+    def string_adjacent_adjust_inside(self, scout):
+        # Offset cursor
+        offset = 0
+        char1 = self.view.substr(scout - 1)
+        char1_escaped = self.string_escaped(scout - 1)
+        char2 = self.view.substr(scout)
+        char2_escaped = self.string_escaped(scout)
+        for bracket in self.targets:
+            if char2 == self.brackets[bracket]['close'] and not char2_escaped:
+                offset = -1
+                self.adj_bracket = True
+                break
+            if char2 == self.brackets[bracket]['open'] and not char2_escaped and offset != -1:
+                offset = -1
+            if char1 == self.brackets[bracket]['open'] and not char1_escaped:
+                if offset != -1:
+                    offset = -1
+                self.adj_bracket = True
+                break
+        return offset
+
     def string_adjacent_adjust(self, scout):
         # Offset cursor
         offset = 0
         self.adj_bracket = False
-        if offset == 0:
-            char1 = self.view.substr(scout - 1)
-            char1_escaped = self.string_escaped(scout - 1)
-            char2 = self.view.substr(scout)
-            char2_escaped = self.string_escaped(scout)
-            for bracket in self.targets:
-                if bracket == "bh_angle":
-                    continue
-                if char2 == self.brackets[bracket]['open'] and not char2_escaped:
-                    self.adj_bracket = True
-                if char1 == self.brackets[bracket]['open'] and not char1_escaped:
-                    offset = -1
-                    self.adj_bracket = True
-                    break
-                elif char1 == self.brackets[bracket]['close'] and not char1_escaped:
-                    offset = -2
-                    self.adj_bracket = True
-                elif char2 == self.brackets[bracket]['close'] and not char2_escaped and offset != -2:
-                    offset = -1
-                    self.adj_bracket = True
+        char1 = self.view.substr(scout - 1)
+        char1_escaped = self.string_escaped(scout - 1)
+        char2 = self.view.substr(scout)
+        char2_escaped = self.string_escaped(scout)
+        for bracket in self.targets:
+            if bracket == "bh_angle":
+                continue
+            if char2 == self.brackets[bracket]['open'] and not char2_escaped:
+                self.adj_bracket = True
+            if char1 == self.brackets[bracket]['open'] and not char1_escaped:
+                offset = -1
+                self.adj_bracket = True
+                break
+            elif char1 == self.brackets[bracket]['close'] and not char1_escaped:
+                offset = -2
+                self.adj_bracket = True
+            elif char2 == self.brackets[bracket]['close'] and not char2_escaped and offset != -2:
+                offset = -1
+                self.adj_bracket = True
         return offset
 
     def string_escaped(self, scout):
