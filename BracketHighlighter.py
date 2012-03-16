@@ -724,8 +724,8 @@ class BracketHighlighter():
                             else:
                                 self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
                                 self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
-            if not suppress:
-                self.store_sel(regions)
+
+            self.store_sel(regions)
         return (matched, begin - 1)
 
     def check_special_strings_start(self, char, begin, view_size):
