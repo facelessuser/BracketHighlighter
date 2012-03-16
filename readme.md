@@ -115,6 +115,9 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.6.2
+- Fix adjacent_only with multi_select
+
 # Version 1.6.1
 - Suppress string highlighting when adjacent_only is set, but allow internal string brackets to still get highlighted with adjacent_only settings if match_string_brackets is true
 

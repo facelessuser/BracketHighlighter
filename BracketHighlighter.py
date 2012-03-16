@@ -162,7 +162,6 @@ class BracketHighlighter():
         self.targets = []
         self.highlight_us = {}
         self.lines = 0
-        self.adj_bracket = False
 
         # Standard Brackets
         if self.exclude_bracket('bh_curly', language) == False:
@@ -256,6 +255,7 @@ class BracketHighlighter():
     def adjacent_adjust_inside(self, scout):
         # Offset cursor
         offset = 0
+        self.adj_bracket = False
         allow_quote_match = True
         # If quotes enbaled, kick out of adjacent check if in middle of string
         if (
@@ -284,6 +284,7 @@ class BracketHighlighter():
     def adjacent_adjust(self, scout):
         # Offset cursor
         offset = 0
+        self.adj_bracket = False
         allow_quote_match = True
         # If quotes enbaled, kick out of adjacent check if in middle of string
         if (
@@ -801,6 +802,7 @@ class BracketHighlighter():
     def string_adjacent_adjust_inside(self, scout):
         # Offset cursor
         offset = 0
+        self.adj_bracket = False
         char1 = self.view.substr(scout - 1)
         char1_escaped = self.string_escaped(scout - 1)
         char2 = self.view.substr(scout)
