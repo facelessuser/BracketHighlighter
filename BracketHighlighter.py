@@ -714,12 +714,7 @@ class BracketHighlighter():
                     if left != None:
                         right = self.string_scout_right(start + 1, end)
                         if right != None:
-                            if self.brackets[self.bracket_type]['underline']:
-                                self.highlight_us[self.bracket_type].append(sublime.Region(left))
-                                self.highlight_us[self.bracket_type].append(sublime.Region(right))
-                            else:
-                                self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
-                                self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
+                            # Need to run plugin?
                             if (
                                 self.transform['bracket'] and
                                 self.plugin != None and
@@ -730,8 +725,21 @@ class BracketHighlighter():
                                     sublime.Region(left + 1, right),
                                     regions
                                 )
-                                left = b_region.a
-                                right = b_region.b - 1
+                                begin = b_region.a
+                                end = b_region.b - 1
+                            else:
+                                # Copy range over
+                                begin = left
+                                end = right
+                            if self.brackets[self.bracket_type]['underline']:
+                                self.highlight_us[self.bracket_type].append(sublime.Region(begin))
+                                self.highlight_us[self.bracket_type].append(sublime.Region(end))
+                            else:
+                                self.highlight_us[self.bracket_type].append(sublime.Region(begin, begin + 1))
+                                self.highlight_us[self.bracket_type].append(sublime.Region(end, end + 1))
+                            if self.count_lines:
+                                self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
+                                self.chars += end - 1 - begin
                             suppress = True
                         elif self.ignore_string_bracket_parent or not_quoted:
                             matched = False
