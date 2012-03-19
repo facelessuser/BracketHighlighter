@@ -687,7 +687,8 @@ class BracketHighlighter():
                             matched = True
                             end = scout
                         else:
-                            matched, end = self.check_special_strings_end(char, quote, scout, begin, end)
+                            matched = True
+                            end = scout
                         break
                     else:
                         scout += 1
