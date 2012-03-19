@@ -697,14 +697,47 @@ class BracketHighlighter():
                     if not_quoted:
                         suppress = True
                         matched = True
-                        end = scout - 1
+                        end = scout
                     else:
                         matched = True
-                        end = scout - 1
+                        end = scout
                     break
 
         if matched:
             regions = [sublime.Region(sel.a, sel.b)]
+            if self.match_string_brackets and start != begin and start != end + 1:
+                start = actual_start
+                offset = self.string_adj_adjust(start)
+                start += offset
+                if (self.adj_only and self.adj_bracket) or not self.adj_only:
+                    left = self.string_scout_left(start, begin)
+                    if left != None:
+                        right = self.string_scout_right(start + 1, end)
+                        if right != None:
+                            if self.brackets[self.bracket_type]['underline']:
+                                self.highlight_us[self.bracket_type].append(sublime.Region(left))
+                                self.highlight_us[self.bracket_type].append(sublime.Region(right))
+                            else:
+                                self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
+                                self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
+                            if (
+                                self.transform['bracket'] and
+                                self.plugin != None and
+                                self.plugin.is_enabled()
+                            ):
+                                (b_region, c_region, regions) = self.plugin.run_command(
+                                    sublime.Region(left, right + 1),
+                                    sublime.Region(left + 1, right),
+                                    regions
+                                )
+                                left = b_region.a
+                                right = b_region.b - 1
+                            suppress = True
+                        elif self.ignore_string_bracket_parent or not_quoted:
+                            matched = False
+                    elif self.ignore_string_bracket_parent or not_quoted:
+                        matched = False
+
             if not suppress:
                 if (
                     self.transform['quote'] and
@@ -727,26 +760,6 @@ class BracketHighlighter():
                 if self.count_lines:
                     self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
                     self.chars += end - 2 - begin
-
-            if self.match_string_brackets and start != begin and start != end + 1:
-                start = actual_start
-                offset = self.string_adj_adjust(start)
-                start += offset
-                if (self.adj_only and self.adj_bracket) or not self.adj_only:
-                    left = self.string_scout_left(start, begin)
-                    if left != None:
-                        right = self.string_scout_right(start + 1, end)
-                        if right != None:
-                            if self.brackets[self.bracket_type]['underline']:
-                                self.highlight_us[self.bracket_type].append(sublime.Region(left))
-                                self.highlight_us[self.bracket_type].append(sublime.Region(right))
-                            else:
-                                self.highlight_us[self.bracket_type].append(sublime.Region(left, left + 1))
-                                self.highlight_us[self.bracket_type].append(sublime.Region(right, right + 1))
-                        elif self.ignore_string_bracket_parent or not_quoted:
-                            matched = False
-                    elif self.ignore_string_bracket_parent or not_quoted:
-                        matched = False
 
             self.store_sel(regions)
         return (matched, begin - 1)
