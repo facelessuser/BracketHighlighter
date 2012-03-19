@@ -649,6 +649,7 @@ class BracketHighlighter():
                             quote, begin = self.check_special_strings_start(lastChar, begin, viewSize)
                             break
                     if quote == None and self.find_brackets_in_any_string:
+                        # Not a quoted string
                         not_quoted = True
                     break
                 else:
@@ -661,6 +662,7 @@ class BracketHighlighter():
                         quote, begin = self.check_special_strings_start(lastChar, begin, viewSize)
                         break
                 if quote == None and self.find_brackets_in_any_string:
+                    # Not a quoted string
                     not_quoted = True
                 break
 
@@ -683,6 +685,7 @@ class BracketHighlighter():
                 if self.view.score_selector(scout, 'string') > 0:
                     if scout == viewSize:
                         if not_quoted:
+                            # Not a quoted string; don't highlight string quotes
                             suppress = True
                             matched = True
                             end = scout
@@ -695,6 +698,7 @@ class BracketHighlighter():
                         lastChar = char
                 else:
                     if not_quoted:
+                        # Not a quoted string; don't highlight string quotes
                         suppress = True
                         matched = True
                         end = scout
@@ -731,15 +735,18 @@ class BracketHighlighter():
                                 # Copy range over
                                 begin = left
                                 end = right
+                            # Highlighting
                             if self.brackets[self.bracket_type]['underline']:
                                 self.highlight_us[self.bracket_type].append(sublime.Region(begin))
                                 self.highlight_us[self.bracket_type].append(sublime.Region(end))
                             else:
                                 self.highlight_us[self.bracket_type].append(sublime.Region(begin, begin + 1))
                                 self.highlight_us[self.bracket_type].append(sublime.Region(end, end + 1))
+                            # Line and char counts
                             if self.count_lines:
                                 self.lines += self.view.rowcol(end)[0] - self.view.rowcol(begin)[0] + 1
                                 self.chars += end - 1 - begin
+                            # Don't highlight string quotes
                             suppress = True
                         elif self.ignore_string_bracket_parent or not_quoted:
                             matched = False
