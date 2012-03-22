@@ -115,6 +115,12 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.7
+- Hide parent quote highlighting when child quotes are highlighted
+- Allow the searching for brackets in non-quoted code scoped as strings (like regex)
+- Add setting "highlight_string_brackets_only" which allows never highlites quotes but leaves internal string bracket highlighting on
+- deprecate "enable_forward_slash_regex_strings" in favor of "find_brackets_in any_strings"
+
 # Version 1.6.2
 - Fix adjacent_only with multi_select
 
