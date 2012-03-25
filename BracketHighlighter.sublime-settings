@@ -77,6 +77,9 @@
     "use_search_threshold"     : true,
     "tag_use_search_threshold" : true,
 
+    // Selection threshold; max multi-selection allowed for auto-highlight
+    "auto_selection_threshold" : 20,
+
     // When matching quoted strings, match brackets internally in the string as well.
     // Particularly useful for strings containing regex
     "match_string_brackets": true,

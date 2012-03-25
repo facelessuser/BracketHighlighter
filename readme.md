@@ -115,6 +115,10 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.7.1
+- Reorganize some settings
+- Limit auto-highlight selections by configurable threshold setting
+
 # Version 1.7
 - Hide parent quote highlighting when child quotes are highlighted
 - Allow the searching for brackets in non-quoted code scoped as strings (like regex)
