@@ -86,7 +86,7 @@ class BracketHighlighter():
         self.use_selection_threshold = False if override_thresh else True
         self.search_threshold = int(self.settings.get('search_threshold', 2000))
         self.tag_search_threshold = int(self.settings.get('tag_search_threshold', 2000))
-        self.selection_threshold = int(self.settings.get('auto_selection_threshold', 20))
+        self.selection_threshold = int(self.settings.get('auto_selection_threshold', 10))
         self.no_multi_select_icons = bool(self.settings.get('no_multi_select_icons', False))
 
         # Match convention
