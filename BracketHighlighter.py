@@ -401,7 +401,8 @@ class BracketHighlighter():
                 (b_region, c_region, regions) = self.plugin.run_command(
                     sublime.Region(left, right + 1),
                     sublime.Region(left + 1, right),
-                    regions
+                    regions,
+                    "bracket"
                 )
                 left = b_region.a
                 right = b_region.b - 1
@@ -560,7 +561,8 @@ class BracketHighlighter():
                     (b_region, c_region, regions) = self.plugin.run_command(
                         sublime.Region(tag1['begin'], tag2['end'] + 1),
                         sublime.Region(tag1['end'] + 1, tag2['begin']),
-                        regions
+                        regions,
+                        "tag"
                     )
                     tag1['begin'] = b_region.a
                     tag2['end'] = b_region.b - 1
@@ -738,7 +740,8 @@ class BracketHighlighter():
                                 (b_region, c_region, regions) = self.plugin.run_command(
                                     sublime.Region(left, right + 1),
                                     sublime.Region(left + 1, right),
-                                    regions
+                                    regions,
+                                    "bracket"
                                 )
                                 begin = b_region.a
                                 end = b_region.b - 1
@@ -773,7 +776,8 @@ class BracketHighlighter():
                     (b_region, c_region, regions) = self.plugin.run_command(
                         sublime.Region(begin, end),
                         sublime.Region(begin + 1, end - 1),
-                        regions
+                        regions,
+                        "string"
                     )
                     begin = b_region.a
                     end = b_region.b

@@ -115,6 +115,10 @@ If you want more control of the colors, you can define your own scopes.
         </dict>
     </dict>
 
+# Version 1.7.2
+- Feed general bracket type to bracket plugins
+- Adjust bracket select plugin to better handle HTML tags
+
 # Version 1.7.1
 - Reorganize some settings
 - Limit auto-highlight selections by configurable threshold setting

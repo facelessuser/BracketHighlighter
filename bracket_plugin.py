@@ -25,20 +25,21 @@ class BracketPlugin():
     def is_enabled(self):
         return self.enabled
 
-    def run_command(self, bracket, content, selection):
+    def run_command(self, bracket, content, selection, bracket_type):
         self.args['bracket'] = bracket
         self.args['content'] = content
         self.args['selection'] = selection
-        plugin = self.plugin(bracket, content, selection)
+        plugin = self.plugin(bracket, content, selection, bracket_type)
         plugin.run(**self.args)
         return plugin.attr.get_attr()
 
 
 class BracketAttributes():
-    def __init__(self, bracket, content, selection):
+    def __init__(self, bracket, content, selection, bracket_type):
         self.bracket = bracket
         self.content = content
         self.selection = selection
+        self.bracket_type = bracket_type
 
     def set_bracket(self, bracket):
         self.bracket = bracket
@@ -49,14 +50,17 @@ class BracketAttributes():
     def set_selection(self, selection):
         self.selection = selection
 
+    def get_type(self):
+        return self.bracket_type
+
     def get_attr(self):
         return (self.bracket, self.content, self.selection)
 
 
 class BracketPluginCommand():
-    def __init__(self, bracket, content, selection):
+    def __init__(self, bracket, content, selection, bracket_type):
         self.view = sublime.active_window().active_view()
-        self.attr = BracketAttributes(bracket, content, selection)
+        self.attr = BracketAttributes(bracket, content, selection, bracket_type)
 
     def run(self, bracket, content, selection):
         pass
