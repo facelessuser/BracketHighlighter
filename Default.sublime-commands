@@ -1,5 +1,13 @@
 [
     {
+        "caption": "Bracket Highlighter: Toggle Bracket String Escape Mode",
+        "command": "toggle_bracket_string_escape_mode"
+    },
+    {
+        "caption": "Bracket Highlighter: Show Bracket String Escape Mode",
+        "command": "show_bracket_string_escape_mode"
+    },
+    {
         "caption": "Bracket Highlighter: Match Brackets",
         "command": "bracket_highlighter_key",
         "args": {"lines": true}

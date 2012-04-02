@@ -91,5 +91,10 @@
     "highlight_string_brackets_only": false,
 
     // Match brackets only when cursor is between the brackets
-    "match_brackets_only_when_between": false
+    "match_brackets_only_when_between": false,
+
+    // Default string escape mode for string brackets (string|regex)
+    // string escape: \\{
+    // regex escape: \{
+    "default_bracket_string_escape_mode": "regex"
 }

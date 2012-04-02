@@ -22,6 +22,23 @@ class Pref:
 Pref().load()
 
 
+class ToggleBracketStringEscapeModeCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('default_bracket_string_escape_mode', 'regex')
+        if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
+            self.view.settings().set('bracket_string_escape_mode', "string")
+            sublime.status_message("Bracket String Escape Mode: string")
+        else:
+            self.view.settings().set('bracket_string_escape_mode', "regex")
+            sublime.status_message("Bracket String Escape Mode: regex")
+
+
+class ShowBracketStringEscapeModeCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('default_bracket_string_escape_mode', 'regex')
+        sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
+
+
 class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
         # Override events
@@ -860,8 +877,14 @@ class BracketHighlighter():
         escaped = False
         start = scout
         start -= 1
+        first = False
+        if self.view.settings().get('bracket_string_escape_mode', "regex") == "regex":
+            first = True
         while self.view.substr(start) == "\\":
-            escaped = False if escaped else True
+            if not first:
+                first = True
+            else:
+                escaped = False if escaped else True
             start -= 1
         return escaped
 
