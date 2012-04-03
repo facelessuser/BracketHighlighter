@@ -11,15 +11,16 @@ BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
 
 
-class Pref:
-    def load(self):
-        Pref.wait_time = 0.12
-        Pref.time = time()
-        Pref.modified = False
-        Pref.type = BH_MATCH_TYPE_SELECTION
-        Pref.ignore_all = False
+class Pref(object):
+    @classmethod
+    def load(cls):
+        cls.wait_time = 0.12
+        cls.time = time()
+        cls.modified = False
+        cls.type = BH_MATCH_TYPE_SELECTION
+        cls.ignore_all = False
 
-Pref().load()
+Pref.load()
 
 
 class ToggleBracketStringEscapeModeCommand(sublime_plugin.TextCommand):
@@ -56,7 +57,7 @@ class BracketHighlighterKeyCommand(sublime_plugin.WindowCommand):
         Pref.time = time()
 
 
-class BracketHighlighter():
+class BracketHighlighter(object):
     # Initialize
     def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
         self.settings = sublime.load_settings("BracketHighlighter.sublime-settings")

@@ -8,7 +8,7 @@ if not built_in_plugins in sys.path:
     sys.path.append(built_in_plugins)
 
 
-class BracketPlugin():
+class BracketPlugin(object):
     def __init__(self, plugin):
         self.enabled = False
         self.args = plugin['args'] if ("args" in plugin) else {}
@@ -34,7 +34,7 @@ class BracketPlugin():
         return plugin.attr.get_attr()
 
 
-class BracketAttributes():
+class BracketAttributes(object):
     def __init__(self, bracket, content, selection, bracket_type):
         self.bracket = bracket
         self.content = content
@@ -57,7 +57,7 @@ class BracketAttributes():
         return (self.bracket, self.content, self.selection)
 
 
-class BracketPluginCommand():
+class BracketPluginCommand(object):
     def __init__(self, bracket, content, selection, bracket_type):
         self.view = sublime.active_window().active_view()
         self.attr = BracketAttributes(bracket, content, selection, bracket_type)
