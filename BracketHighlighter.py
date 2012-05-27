@@ -662,7 +662,7 @@ class BracketHighlighter(object):
         quote = None
         lastChar = None
         matched = False
-        viewSize = self.view.size() - 1
+        viewSize = self.view.size()
         not_quoted = False
 
         # Left quote
