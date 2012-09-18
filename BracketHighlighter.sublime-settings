@@ -68,7 +68,10 @@
     // Higlight brackets of tag only instead of entire tag
     "tag_brackets_only" : false,
 
-    // Type of tag selection? (html/xhtml)
+    // Detect self closing tags (experimental)
+    "detect_self_closing_tags": false,
+
+    // Type of tag selection? (html|xhtml|cfml) (experimental:cfml)
     "tag_type" : "html",
 
     // Threshold distance to search
