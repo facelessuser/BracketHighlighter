@@ -124,7 +124,7 @@ class BracketHighlighter(object):
         self.ignore_string_bracket_parent = bool(self.settings.get('highlight_string_brackets_only', False))
 
     def init_brackets(self):
-        quote_open = "r ' \""
+        quote_open = "r u ' \""
         quote_close = "' \""
         return {
             'bh_curly':  self.get_bracket_settings('curly', '{', '}'),
@@ -817,7 +817,7 @@ class BracketHighlighter(object):
     def check_special_strings_start(self, char, begin, view_size):
         quote = None
         pt = begin + 1
-        if char == 'r':
+        if char in ('r', 'u'):
             if self.view.score_selector(begin, 'source.python'):
                 # Python raw string support
                 if pt <= view_size:
