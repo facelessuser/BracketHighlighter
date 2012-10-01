@@ -40,27 +40,27 @@ This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are n
 # CFML support
 CFML support is currently experimental.  In order to enable it, you must add the CFML lanugage name to the whitelist (or exclude it from the list if using blacklist).  If using the ColdFusion from https://github.com/SublimeText/ColdFusion, you can follow the example below:
 
-``` JSON
+```js
 "angle_language_list" : ["HTML","HTML 5","XML","PHP", "ColdFusion", "ColdFusionCFC"],
 "tag_language_list"   : ["HTML","HTML 5","XML","PHP", "ColdFusion", "ColdFusionCFC"],
 ```
 
 After that, you must make sure ```tag_type``` is set to ```cmfl``` like below:
 
-``` JSON
+```js
 "tag_type" : "cfml",
 ```
 
 It is also good to make sure that self-closing detection is enalbed (this is also experimental):
 
-``` JSON
+```js
 "detect_self_closing_tags": true,
 ```
 
 #Changing Colors
 The color is based on the scope you assign to the highlight. The color of the scope is defined by your theme file.  By default, the scope is "entity.name.class", but you could change it to "keyword" or any other scope in your theme.
 
-``` JSON
+```js
 //Scope? (Defined in theme files.)
 //Examples: (keyword|string|number)
 "quote_scope" : "entity.name.class",
@@ -73,7 +73,7 @@ The color is based on the scope you assign to the highlight. The color of the sc
 
 If you want more control of the colors, you can define your own scopes.
 
-``` XML
+```xml
 <dict>
     <key>name</key>
     <string>Bracket Tag</string>
