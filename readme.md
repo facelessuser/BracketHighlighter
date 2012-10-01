@@ -78,7 +78,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Tag</string>
     <key>scope</key>
-    <string>bracket.tag</string>
+    <string>brackethighlighter.tag</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
@@ -89,7 +89,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Curly</string>
     <key>scope</key>
-    <string>bracket.curly</string>
+    <string>brackethighlighter.curly</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
@@ -100,7 +100,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Round</string>
     <key>scope</key>
-    <string>bracket.round</string>
+    <string>brackethighlighter.round</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
@@ -111,7 +111,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Square</string>
     <key>scope</key>
-    <string>bracket.square</string>
+    <string>brackethighlighter.square</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
@@ -122,7 +122,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Angle</string>
     <key>scope</key>
-    <string>bracket.angle</string>
+    <string>brackethighlighter.angle</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
@@ -133,7 +133,7 @@ If you want more control of the colors, you can define your own scopes.
     <key>name</key>
     <string>Bracket Quote</string>
     <key>scope</key>
-    <string>bracket.quote</string>
+    <string>brackethighlighter.quote</string>
     <key>settings</key>
     <dict>
         <key>foreground</key>
