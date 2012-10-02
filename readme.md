@@ -146,6 +146,25 @@ If you want more control of the colors, you can define your own scopes.
 - Add experimental CFML support (defaulted off)
 - Add auto-detection of self-closing tags (defaulted on)
 
+##Solarized Theme
+
+The [Solarized][Solarized] theme available through Sublime Package Control as 
+`Solarized Color Scheme (TextMate)` includes support for colored brackets
+consistent with its scheme.  To use this colorization, configure the scopes like:
+
+```javascript
+{
+  "quote_scope" : "brackethighlighter.all",
+  "curly_scope" : "brackethighlighter.all",
+  "round_scope" : "brackethighlighter.all",
+  "square_scope": "brackethighlighter.all",
+  "angle_scope" : "brackethighlighter.all",
+  "tag_scope"   : "brackethighlighter.all"
+}
+```
+
+[Solarized]: https://github.com/deplorableword/textmate-solarized
+
 # Version 1.8.0
 - Add new commands: "Show Bracket String Escape Mode" and "Toggle Bracket String Escape Mode".  Default is "regex"
 
