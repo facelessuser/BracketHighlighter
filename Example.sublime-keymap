@@ -1,0 +1,151 @@
+[
+    // Search to end of file for bracket
+    {
+        "keys": ["ctrl+alt+super+b"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true
+        }
+    },
+    // Go to left bracket
+    {
+        "keys": ["ctrl+alt+super+up"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "left"}
+            }
+        }
+    },
+    // Go to right bracket
+    {
+        "keys": ["ctrl+alt+super+down"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "right"}
+            }
+        }
+    },
+    {
+        "keys": ["ctrl+alt+super+x"],
+        "command": "bh_toggle_string_escape_mode"
+    },
+    // Select text between brackets
+    {
+        "keys": ["ctrl+alt+super+s"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect"
+            }
+        }
+    },
+    // Select tag name of HTML/XML tag (both opening name and closing)
+    {
+        "keys": ["ctrl+alt+super+t"],
+        "command": "bh_key",
+        "args":
+        {
+            "plugin":
+            {
+                "type": ["tag"],
+                "command": "bh_modules.tagnameselect"
+            }
+        }
+    },
+    // Select the attribute to the right of the cursor (will wrap inside the tag)
+    {
+        "keys": ["ctrl+alt+super+right"],
+        "command": "bh_key",
+        "args":
+        {
+            "plugin":
+            {
+                "type": ["tag"],
+                "command": "bh_modules.tagattrselect",
+                "args": {"direction": "right"}
+            }
+        }
+    },
+    // Select the attribute to the left of the cursor (will wrap inside the tag)
+    {
+        "keys": ["ctrl+alt+super+left"],
+        "command": "bh_key",
+        "args":
+        {
+            "plugin":
+            {
+                "type": ["tag"],
+                "command": "bh_modules.tagattrselect",
+                "args": {"direction": "left"}
+            }
+        }
+    },
+    // Convert single quote string to double quoted string and vice versa
+    // Will handle escaping or unescaping quotes within the string
+    {
+        "keys": ["ctrl+alt+super+q"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["quote", "pyquote"],
+                "command": "bh_modules.swapquotes"
+            }
+        }
+    },
+    // Fold contents between brackets
+    {
+        "keys": ["ctrl+alt+super+["],
+        "command": "bh_key",
+        "args":
+        {
+            "plugin": {
+                "type": ["__all__"],
+                "command" : "bh_modules.foldbracket"
+            }
+        }
+    },
+    // Not implemented yet
+    {
+        "keys": ["ctrl+alt+super+e"],
+        "command": "swap_brackets"
+    },
+    // Surround selection with brackets from quick panel
+    {
+        "keys": ["ctrl+alt+super+w"],
+        "command": "wrap_brackets"
+    },
+    // Navigate tabstops in wrapped selection
+    {
+        "keys": ["tab"],
+        "command": "bh_next_wrap_sel",
+        "context":
+        [
+            {
+                "operand": true,
+                "operator": "equal",
+                "match_all": true,
+                "key": "bh_wrapping"
+            }
+        ]
+    }
+]

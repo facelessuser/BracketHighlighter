@@ -1,1 +1,0 @@
-from swapbrackets import SwapBracketsCommand

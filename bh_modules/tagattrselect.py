@@ -1,22 +1,25 @@
-import bracket_plugin
+import bh_plugin
 
 
-class select_attr(bracket_plugin.BracketPluginCommand):
-    def run(self, bracket, content, selection, direction='right'):
+class SelectAttr(bh_plugin.BracketPluginCommand):
+    def run(self, name, direction='right'):
+        if name != "tag" or self.left.size() <= 1:
+            return
         tag_name = '[\w\:\-]+'
         attr_name = '([\w\-:]+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:\'((?:\\.|[^\'])*)\')|([^>\s]+)))?'
-        name = self.view.find(tag_name, bracket.a)
-        current = selection[0].b
-        region = self.view.find(attr_name, name.b)
+        tname = self.view.find(tag_name, self.left.begin)
+        current = self.selection[0].b
+        region = self.view.find(attr_name, tname.b)
+        selection = self.selection
 
         if direction == 'left':
             last = None
 
             # Keep track of last attr
-            if region != None and current <= region.b and region.b < content.a:
+            if region != None and current <= region.b and region.b < self.left.end:
                 last = region
 
-            while region != None and region.b < content.a:
+            while region != None and region.b < self.left.end:
                 # Select attribute until you have closest to the left of selection
                 if current > region.b:
                     selection = [region]
@@ -31,10 +34,10 @@ class select_attr(bracket_plugin.BracketPluginCommand):
         else:
             first = None
             # Keep track of first attr
-            if region != None and region.b < content.a:
+            if region != None and region.b < self.left.end:
                 first = region
 
-            while region != None and region.b < content.a:
+            while region != None and region.b < self.left.end:
                 # Select closest attr to the right of the selection
                 if current < region.b:
                     selection = [region]
@@ -44,4 +47,8 @@ class select_attr(bracket_plugin.BracketPluginCommand):
             # Wrap left
             if first != None:
                 selection = [first]
-        self.attr.set_selection(selection)
+        self.selection = selection
+
+
+def plugin():
+    return SelectAttr
