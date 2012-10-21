@@ -76,18 +76,24 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         self.insert_regions.append(sublime.Region(sel.begin(), sel.begin() + first_end))
 
         if indent:
-            first = True
-            for l in range(line_offset, self.total_lines + line_offset):
-                pt = self.view.text_point(self.first_line + l, 0)
-                if first:
-                    second_start += ti.insert(pt, self.indent_to_col + "\t")
-                    first = False
-                else:
-                    second_start += ti.insert(pt, "\t")
+            second_start += self.indent_content(ti, line_offset)
         else:
             pt = self.view.text_point(self.first_line + line_offset, 0)
             second_start += ti.insert(pt, self.indent_to_col)
+
         self.insert_regions.append(sublime.Region(first_end + second_start, first_end + second_start + second_end))
+
+    def indent_content(self, ti, line_offset):
+        first = True
+        offset = 0
+        for l in range(line_offset, self.total_lines + line_offset):
+            pt = self.view.text_point(self.first_line + l, 0)
+            if first:
+                offset += ti.insert(pt, self.indent_to_col + "\t")
+                first = False
+            else:
+                offset += ti.insert(pt, "\t")
+        return offset
 
     def calculate_lines(self, sel):
         self.first_line, self.col_position = self.view.rowcol(sel.begin())
@@ -140,6 +146,8 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         if value < 0:
             return
 
+        # Use new edit object since the main run has already exited
+        # and the old edit is more than likely closed now
         edit = self.view.begin_edit()
 
         # Wrap selections with brackets
