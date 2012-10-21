@@ -232,7 +232,7 @@
     "match_only_adjacent": false,
 
     // Character threshold to search
-    "search_threshold": 10000,
+    "search_threshold": 5000,
 
     // Set mode for string escapes to ignore (regex|string)
     "bracket_string_escape_mode": "string",
