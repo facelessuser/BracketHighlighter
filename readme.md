@@ -5,7 +5,6 @@ This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are n
 
 # TODO
 - Bracket Swap Plugin
-- Bracket Remove Plugin
 - Documentation
 
 # Version 1.9.0

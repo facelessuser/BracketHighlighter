@@ -11,7 +11,7 @@ class SwapBrackets(bh_plugin.BracketPluginCommand):
         spaces = col_position - tab_count
         return "\t" * tab_count + "\t" * (spaces / tab_size) + " " * (spaces % tab_size if spaces >= tab_size else spaces)
 
-    def run(self, name, brackets=None):
+    def run(self, edit, name, brackets=None):
         if brackets is None:
             return
 
@@ -19,19 +19,16 @@ class SwapBrackets(bh_plugin.BracketPluginCommand):
         sel = self.selection[0]
         new_sel = [sublime.Region(sel.begin() + len(brackets[0]))]
 
-        edit = self.view.begin_edit()
-
         # Swap the brackets
-        self.view.replace(edit, sublime.Region(self.right.begin, self.right.end), brackets[-1])
+        self.view.replace(edit, self.right.toregion(), brackets[-1])
         if len(brackets) > 2:
             # Set up indentation and insertion points
             insert_point = self.right.begin
             indent_to_col = self.calculate_indentation(sel)
             for b in reversed(brackets[1:len(brackets) - 1]):
                     self.view.replace(edit, sublime.Region(insert_point), b + "\n" + indent_to_col)
-        self.view.replace(edit, sublime.Region(self.left.begin, self.left.end), brackets[0])
+        self.view.replace(edit, self.left.toregion(), brackets[0])
 
-        self.view.end_edit(edit)
         self.selection = new_sel
 
 

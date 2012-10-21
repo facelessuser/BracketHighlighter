@@ -8,6 +8,7 @@ import sys
 import imp
 from bh_plugin import BracketPlugin, BracketRegion, BH_MODULES
 from collections import namedtuple
+import traceback
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -119,10 +120,22 @@ class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=
     def move(self, begin, end):
         return self._replace(begin=begin, end=end)
 
+    def size(self):
+        return abs(self.begin - self.end)
+
+    def toregion(self):
+        return sublime.Region(self.begin, self.end)
+
 
 class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False)):
     def move(self, begin, end):
         return self._replace(begin=begin, end=end)
+
+    def size(self):
+        return abs(self.begin - self.end)
+
+    def toregion(self):
+        return sublime.Region(self.begin, self.end)
 
 
 class BracketSearch(object):
@@ -548,18 +561,18 @@ class BhCore(object):
                 self.chars += abs(right.begin - left.end)
                 self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
             if bracket.underline:
-                bracket.selections += underline((sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)))
+                bracket.selections += underline((left.toregion(), right.toregion()))
             else:
-                bracket.selections += [sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)]
+                bracket.selections += [left.toregion(), right.toregion()]
             self.store_sel(regions)
             return True
         elif left is not None or right is not None:
             found = left if left is not None else right
             bracket = self.incomplete
             if bracket.underline:
-                bracket.selections += underline((sublime.Region(found.begin, found.end),))
+                bracket.selections += underline((found.toregion(),))
             else:
-                bracket.selections += [sublime.Region(found.begin, found.end)]
+                bracket.selections += [found.toregion()]
             return True
         return False
 
@@ -579,9 +592,9 @@ class BhCore(object):
                 self.chars += abs(right.begin - left.end)
                 self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
             if bracket.underline:
-                bracket.selections += underline((sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)))
+                bracket.selections += underline((left.toregion(), right.toregion()))
             else:
-                bracket.selections += [sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)]
+                bracket.selections += [left.toregion(), right.toregion()]
             self.store_sel(regions)
             return True
         return False
@@ -602,9 +615,9 @@ class BhCore(object):
                 self.chars += abs(right.begin - left.end)
                 self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
             if bracket.underline:
-                bracket.selections += underline((sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)))
+                bracket.selections += underline((left.toregion(), right.toregion()))
             else:
-                bracket.selections += [sublime.Region(left.begin, left.end), sublime.Region(right.begin, right.end)]
+                bracket.selections += [left.toregion(), right.toregion()]
             self.store_sel(regions)
 
         # Unmatched brackets
@@ -612,9 +625,9 @@ class BhCore(object):
             found = left if left is not None else right
             bracket = self.incomplete
             if bracket.underline:
-                bracket.selections += underline((sublime.Region(found.begin, found.end),))
+                bracket.selections += underline((found.toregion(),))
             else:
-                bracket.selections += [sublime.Region(found.begin, found.end)]
+                bracket.selections += [found.toregion()]
 
     def escaped(self, pt, ignore_string_escape, scope):
         if not ignore_string_escape:
@@ -672,12 +685,15 @@ class BhCore(object):
         if match:
             bracket = self.scopes[left.scope]["brackets"][left.type]
             match = True
-            if bracket.compare is not None:
-                match = bracket.compare(
-                    BracketRegion(left.begin, left.end, bracket.name),
-                    BracketRegion(right.begin, right.end, bracket.name),
-                    bfr
-                )
+            try:
+                if bracket.compare is not None:
+                    match = bracket.compare(
+                        BracketRegion(left.begin, left.end, bracket.name),
+                        BracketRegion(right.begin, right.end, bracket.name),
+                        bfr
+                    )
+            except:
+                print "BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc())
         return match
 
     def scope_post_match(self, left, right, center, bfr):
@@ -693,24 +709,26 @@ class BhCore(object):
             return left, right
 
         if bracket.post_match is not None:
-            lbracket, rbracket, bracket_name = bracket.post_match(
-                self.view,
-                bracket.name,
-                BracketRegion(left.begin, left.end) if left is not None else None,
-                BracketRegion(right.begin, right.end) if right is not None else None,
-                center,
-                bfr,
-                self.search_window
-            )
-            if bracket_name != bracket.name:
-                left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
-                right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
-                if left is not None or right is not None:
-                    return left, right
+            try:
+                lbracket, rbracket, bracket_name = bracket.post_match(
+                    self.view,
+                    bracket.name,
+                    BracketRegion(left.begin, left.end) if left is not None else None,
+                    BracketRegion(right.begin, right.end) if right is not None else None,
+                    center,
+                    bfr,
+                    self.search_window
+                )
+                if bracket_name != bracket.name:
+                    left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
+                    right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
+                    if left is not None or right is not None:
+                        return left, right
 
-            left = ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
-            right = ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
-
+                left = ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
+                right = ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+            except:
+                print "BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc())
         return left, right
 
     def post_match(self, left, right, center, bfr):
@@ -724,22 +742,25 @@ class BhCore(object):
             return left, right
 
         if bracket.post_match is not None:
-            lbracket, rbracket, bracket_name = bracket.post_match(
-                self.view,
-                bracket.name,
-                BracketRegion(left.begin, left.end) if left is not None else None,
-                BracketRegion(right.begin, right.end) if right is not None else None,
-                center,
-                bfr,
-                self.search_window
-            )
-            if bracket_name != bracket.name:
-                left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
-                right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
-                if left is not None or right is not None:
-                    return left, right
-            left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
-            right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
+            try:
+                lbracket, rbracket, bracket_name = bracket.post_match(
+                    self.view,
+                    bracket.name,
+                    BracketRegion(left.begin, left.end) if left is not None else None,
+                    BracketRegion(right.begin, right.end) if right is not None else None,
+                    center,
+                    bfr,
+                    self.search_window
+                )
+                if bracket_name != bracket.name:
+                    left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
+                    right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
+                    if left is not None or right is not None:
+                        return left, right
+                left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
+                right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
+            except:
+                print "BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc())
 
         return left, right
 
@@ -753,8 +774,8 @@ class BhCore(object):
             self.plugin.is_enabled()
         ):
             lbracket, rbracket, regions = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
-            left = left.move(lbracket.begin, lbracket.end)
-            right = right.move(rbracket.begin, rbracket.end)
+            left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
+            right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
         return left, right, regions
 
     def match_scope_brackets(self, bfr, sel):

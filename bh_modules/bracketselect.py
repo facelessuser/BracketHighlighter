@@ -3,7 +3,7 @@ import sublime
 
 
 class SelectBracket(bh_plugin.BracketPluginCommand):
-    def run(self, name, select=''):
+    def run(self, edit, name, select=''):
         left, right = self.left, self.right
         first, last = left.end, right.begin
         if select == 'left':

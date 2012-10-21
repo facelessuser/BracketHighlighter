@@ -2,7 +2,7 @@ import bh_plugin
 
 
 class TagNameSelect(bh_plugin.BracketPluginCommand):
-    def run(self, name):
+    def run(self, edit, name):
         if name == "tag" and self.left.size() > 1:
             tag_name = '[\w\:\-\.]+'
             region1 = self.view.find(tag_name, self.left.begin)

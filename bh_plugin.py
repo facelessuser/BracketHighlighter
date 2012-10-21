@@ -4,6 +4,7 @@ from os.path import normpath, join, exists
 import imp
 from collections import namedtuple
 import sys
+import traceback
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
@@ -12,6 +13,9 @@ class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False
 
     def size(self):
         return abs(self.begin - self.end)
+
+    def toregion(self):
+        return sublime.Region(self.begin, self.end)
 
 
 # Pull in built-in and custom plugin directory
@@ -50,9 +54,8 @@ class BracketPlugin(object):
                 self.plugin = getattr(module, 'plugin')()
                 loaded.add(plib)
                 self.enabled = True
-            except Exception, e:
-                print e
-                sublime.error_message('Can not load plugin: ' + plugin['command'])
+            except Exception:
+                print 'BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc())
 
     def is_enabled(self):
         return self.enabled
@@ -63,9 +66,16 @@ class BracketPlugin(object):
         setattr(plugin, "right", right)
         setattr(plugin, "view", view)
         setattr(plugin, "selection", selection)
+        edit = view.begin_edit()
+        self.args["edit"] = edit
         self.args["name"] = name
-        plugin.run(**self.args)
-        return plugin.left, plugin.right, plugin.selection
+        try:
+            plugin.run(**self.args)
+            left, right, selection = plugin.left, plugin.right, plugin.selection
+        except Exception:
+            print "BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc())
+        view.end_edit(edit)
+        return left, right, selection
 
 
 class BracketPluginCommand(object):

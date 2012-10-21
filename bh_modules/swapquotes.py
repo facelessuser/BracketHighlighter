@@ -11,7 +11,7 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
             idx -= 1
         return escaped
 
-    def run(self, name):
+    def run(self, edit, name):
         view = self.view
         quote = view.substr(self.left.begin)
         if quote != "'" and quote != '"':
@@ -20,7 +20,6 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
         old = quote
         begin = self.left.begin + 1
         end = self.right.end
-        edit = view.begin_edit()
         content_end = self.right.begin
         while begin < end:
             char = view.substr(begin)
@@ -34,16 +33,16 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
                 content_end += 1
             begin += 1
         if name == "pyquote" and self.left.size() == 3:
-            view.replace(edit, sublime.Region(self.left.begin, self.left.end), new * 3)
+            view.replace(edit, self.left.toregion(), new * 3)
         else:
             view.replace(edit, sublime.Region(self.left.begin, self.left.begin + 1), new)
         if name == "pyquote" and self.right.size() == 3:
             view.replace(edit, sublime.Region(content_end, end), new * 3)
         else:
             view.replace(edit, sublime.Region(content_end, end), new)
-        view.end_edit(edit)
+
         self.right = self.right.move(content_end, end)
-        self.selection = [sublime.Region(content_end, content_end)]
+        self.selection = [sublime.Region(content_end)]
 
 
 def plugin():
