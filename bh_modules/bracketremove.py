@@ -16,7 +16,6 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
                     self.view.replace(edit, line, m.group(1) + m.group(2))
 
     def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):
-        print "here"
         if remove_content:
             self.view.replace(edit, sublime.Region(self.left.begin, self.right.end), "")
         else:
