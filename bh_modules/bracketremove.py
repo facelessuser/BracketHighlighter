@@ -7,7 +7,7 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
     def decrease_indent_level(self, edit, row_first, row_last):
         tab_size = self.view.settings().get("tab_size", 4)
         indents = re.compile(r"^(?:\t| {%d}| *)((?:\t| {%d}| )*)([\s\S]*)" % (tab_size, tab_size))
-        if row_first <= row_last:
+        if not self.single_line:
             for x in reversed(range(row_first, row_last + 1)):
                 line = self.view.full_line(self.view.text_point(x, 0))
                 text = self.view.substr(line)
@@ -21,13 +21,14 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
         else:
             row_first = self.view.rowcol(self.left.end)[0] + 1
             row_last = self.view.rowcol(self.right.begin)[0] - 1
-            if remove_block:
+            self.single_line = not row_first <= row_last
+            if remove_block and not self.single_line:
                 self.view.replace(edit, self.view.full_line(self.right.toregion()), "")
             else:
                 self.view.replace(edit, self.right.toregion(), "")
             if remove_indent:
                 self.decrease_indent_level(edit, row_first, row_last)
-            if remove_block:
+            if remove_block and not self.single_line:
                 self.view.replace(edit, self.view.full_line(self.left.toregion()), "")
             else:
                 self.view.replace(edit, self.left.toregion(), "")
