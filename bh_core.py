@@ -555,6 +555,8 @@ class BhCore(object):
 
         if left is not None and right is not None:
             left, right, regions = self.run_plugin(bracket.name, left, right, regions)
+            if left is None and right is None:
+                return True
 
         if left is not None and right is not None:
             if self.count_lines:
