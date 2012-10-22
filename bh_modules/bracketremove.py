@@ -1,5 +1,6 @@
 import bh_plugin
 import re
+import sublime
 
 
 class BracketRemove(bh_plugin.BracketPluginCommand):
@@ -14,13 +15,23 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
                 if m:
                     self.view.replace(edit, line, m.group(1) + m.group(2))
 
-    def run(self, edit, name, remove_indent=False):
-        row_first = self.view.rowcol(self.left.end)[0] + 1
-        row_last = self.view.rowcol(self.right.begin)[0] - 1
-        self.view.replace(edit, self.right.toregion(), "")
-        if remove_indent:
-            self.decrease_indent_level(edit, row_first, row_last)
-        self.view.replace(edit, self.left.toregion(), "")
+    def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):
+        print "here"
+        if remove_content:
+            self.view.replace(edit, sublime.Region(self.left.begin, self.right.end), "")
+        else:
+            row_first = self.view.rowcol(self.left.end)[0] + 1
+            row_last = self.view.rowcol(self.right.begin)[0] - 1
+            if remove_block:
+                self.view.replace(edit, self.view.full_line(self.right.toregion()), "")
+            else:
+                self.view.replace(edit, self.right.toregion(), "")
+            if remove_indent:
+                self.decrease_indent_level(edit, row_first, row_last)
+            if remove_block:
+                self.view.replace(edit, self.view.full_line(self.left.toregion()), "")
+            else:
+                self.view.replace(edit, self.left.toregion(), "")
 
         self.left = None
         self.right = None

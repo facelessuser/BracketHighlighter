@@ -41,29 +41,7 @@
     // Remove brackets
     {
         "keys": ["ctrl+alt+super+r"],
-        "command": "bh_key",
-        "args":
-        {
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketremove"
-            }
-        }
-    },
-    // Remove brackets and reduce content indent level
-    {
-        "keys": ["shift+ctrl+alt+super+r"],
-        "command": "bh_key",
-        "args":
-        {
-            "plugin":
-            {
-                "type": ["__all__"],
-                "command": "bh_modules.bracketremove",
-                "args": {"remove_indent": true}
-            }
-        }
+        "command": "bh_remove_brackets"
     },
     // Toggle string escape mode for sub bracket search in strings
     {
