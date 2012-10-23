@@ -206,38 +206,38 @@ class BracketSearch(object):
 
 
 class BracketDefinition(object):
-    def __init__(self, bracket, settings):
+    def __init__(self, bracket, settings, default_highlight):
         self.name = bracket["name"]
-        self.color = bracket["color"]
+        self.color = bracket.get("color", default_highlight["color"])
         self.selections = []
         self.compare = bracket.get("compare")
         self.find_in_sub_search = bracket.get("find_in_sub_search", False)
         self.post_match = bracket.get("post_match")
         self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
         self.scope_exclude = bracket.get("scope_exclude", [])
-        self.style = select_bracket_style(bracket["style"])
+        self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        self.icon, self.small_icon = select_bracket_icons(bracket["icon"], settings)
+        self.icon, self.small_icon = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
         self.ignore_string_escape = bracket.get("ignore_string_escape", False)
         self.no_icon = ""
 
 
 class ScopeDefinition(object):
-    def __init__(self, bracket, settings):
+    def __init__(self, bracket, settings, default_highlight):
         self.open = re.compile("\\A" + bracket.get("open", "."), re.MULTILINE | re.IGNORECASE)
         self.close = re.compile(bracket.get("close", ".") + "\\Z", re.MULTILINE | re.IGNORECASE)
         self.selections = []
         self.name = bracket["name"]
-        self.color = bracket["color"]
+        self.color = bracket.get("color", default_highlight["color"])
         sub_search = bracket.get("sub_bracket_search", "false")
         self.sub_search_only = sub_search == "only"
         self.sub_search = self.sub_search_only == True or sub_search == "true"
         self.compare = bracket.get("compare")
         self.post_match = bracket.get("post_match")
         self.scopes = bracket["scopes"]
-        self.style = select_bracket_style(bracket["style"])
+        self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        self.icon, self.small_icon = select_bracket_icons(bracket["icon"], settings)
+        self.icon, self.small_icon = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
         self.no_icon = ""
 
 
@@ -278,7 +278,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 class BhCore(object):
     def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
         self.settings = sublime.load_settings("bh_core.sublime-settings")
-        self.settings.add_on_change('reload', lambda: self.setup())
+        self.settings.add_on_change('reload', self.setup)
         self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
 
     def setup(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
@@ -292,6 +292,11 @@ class BhCore(object):
         self.no_multi_select_icons = bool(self.settings.get("no_multi_select_icons", False))
         self.count_lines = count_lines
         self.default_string_escape_mode = self.settings.get('bracket_string_escape_mode', "string")
+        self.default_highlight = {
+            "icon": self.settings.get("default_icon", "dot"),
+            "style": self.settings.get("default_style", "underline"),
+            "color": self.settings.get("default_color", "brackethighlighter.default")
+        }
 
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", [])
@@ -306,7 +311,7 @@ class BhCore(object):
             }
         )
         incomplete["name"] = "incomplete"
-        self.incomplete = BracketDefinition(incomplete, self.settings)
+        self.incomplete = BracketDefinition(incomplete, self.settings, self.default_highlight)
 
         self.scope_types = self.settings.get("scope_brackets", [])
 
@@ -357,7 +362,7 @@ class BhCore(object):
                 if params["open"] is not None and params["close"] is not None:
                     try:
                         load_modules(params, loaded_modules)
-                        entry = BracketDefinition(params, self.settings)
+                        entry = BracketDefinition(params, self.settings, self.default_highlight)
                         self.brackets.append(entry)
                         self.find_regex_close += "(" + params["close"] + ")|"
                         self.find_regex_open += "(" + params["open"] + ")|"
@@ -379,7 +384,7 @@ class BhCore(object):
                 if params["open"] is not None and params["close"] is not None:
                     try:
                         load_modules(params, loaded_modules)
-                        entry = ScopeDefinition(params, self.settings)
+                        entry = ScopeDefinition(params, self.settings, self.default_highlight)
                         for x in entry.scopes:
                             if x not in scopes:
                                 scopes[x] = scope_count
@@ -959,7 +964,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
-        sublime.set_timeout(lambda: bh_run(), 0)
+        sublime.set_timeout(bh_run, 0)
 
     def on_modified(self, view):
         if self.ignore_event(view):
@@ -972,7 +977,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
-        sublime.set_timeout(lambda: bh_run(), 0)
+        sublime.set_timeout(bh_run, 0)
 
     def on_selection_modified(self, view):
         if self.ignore_event(view):
@@ -981,7 +986,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             Pref.type = BH_MATCH_TYPE_SELECTION
         now = time()
         if now - Pref.time > Pref.wait_time:
-            sublime.set_timeout(lambda: bh_run(), 0)
+            sublime.set_timeout(bh_run, 0)
         else:
             Pref.modified = True
             Pref.time = now
@@ -1013,7 +1018,7 @@ def bh_loop():
 
     while True:
         if Pref.modified == True and time() - Pref.time > Pref.wait_time:
-            sublime.set_timeout(lambda: bh_run(), 0)
+            sublime.set_timeout(bh_run, 0)
         sleep(0.5)
 
 if not 'running_bh_loop' in globals():

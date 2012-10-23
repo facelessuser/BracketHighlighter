@@ -2,6 +2,11 @@
     // Path to find icons at
     "icon_path": "BracketHighlighter/icons",
 
+    // Global defaults to use if a bracket does not define its own
+    "default_icon": "dot",
+    "default_style": "underline",
+    "default_color": "brackethighlighter.default",
+
     // When only either the left or right bracket can be found
     // this defines how to highlight the single bracket.
     "incomplete" : {
