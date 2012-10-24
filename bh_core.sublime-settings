@@ -208,12 +208,13 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "\\b(if|until|while|def\\s*[a-zA-Z_]+)\\b",
+            "open": "(^\\s*\\b(?:if|until|unless|while|begin|class|module|def\\b\\s*[a-zA-Z_]+)|do)\\b",
             "close": "\\b(end)\\b",
             "icon": "dot",
             "color": "keyword",
             "style": "underline",
             "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
             "language_list": ["Ruby"],
             "enabled": true
