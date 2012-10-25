@@ -116,6 +116,10 @@ class Pref(object):
 Pref.load()
 
 
+class BhThreadMgr(object):
+    restart = False
+
+
 class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False)):
     def move(self, begin, end):
         return self._replace(begin=begin, end=end)
@@ -1016,11 +1020,18 @@ def bh_loop():
     be ignored and then accounted for with one match by this thread
     """
 
-    while True:
+    while not BhThreadMgr.restart:
         if Pref.modified == True and time() - Pref.time > Pref.wait_time:
             sublime.set_timeout(bh_run, 0)
         sleep(0.5)
 
+    if BhThreadMgr.restart:
+        BhThreadMgr.restart = False
+        sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
+
+
 if not 'running_bh_loop' in globals():
     running_bh_loop = True
     thread.start_new_thread(bh_loop, ())
+else:
+    BhThreadMgr.restart
