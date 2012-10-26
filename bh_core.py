@@ -142,6 +142,16 @@ class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], ver
         return sublime.Region(self.begin, self.end)
 
 
+class BracketSearchSide(object):
+    left = 0
+    right = 1
+
+
+class BracektSearchType(object):
+    opening = 0
+    closing = 1
+
+
 class BracketSearch(object):
     def __init__(self, bfr, window, center, pattern, scope_check, scope):
         self.center = center
@@ -175,13 +185,9 @@ class BracketSearch(object):
                 end = m.end(g)
             except:
                 continue
-            mod = bool(g % 2)
-            if mod:
-                bracket_id = (g / 2)
-                match_type = 0
-            else:
-                bracket_id = (g / 2) - 1
-                match_type = 1
+
+            match_type = int(not bool(g % 2))
+            bracket_id = (g / 2) - match_type
 
             if not self.scope_check(start, bracket_id, self.scope):
                 if (end <= self.center if match_type else start < self.center):
@@ -190,11 +196,11 @@ class BracketSearch(object):
                     self.right[match_type].append(BracketEntry(start, end, bracket_id))
 
     def get_open(self, bracket_code):
-        for b in self._get_bracket(bracket_code, 0):
+        for b in self._get_bracket(bracket_code, BracektSearchType.opening):
             yield b
 
     def get_close(self, bracket_code):
-        for b in self._get_bracket(bracket_code, 1):
+        for b in self._get_bracket(bracket_code, BracektSearchType.closing):
             yield b
 
     def _get_bracket(self, bracket_code, match_type):
@@ -203,7 +209,7 @@ class BracketSearch(object):
         if self.return_prev[match_type]:
             self.return_prev[match_type] = False
             yield self.prev_match[match_type]
-        if bracket_code == 0:
+        if bracket_code == BracketSearchSide.left:
             if self.start[match_type] is None:
                 self.start[match_type] = len(self.left[match_type])
             for x in reversed(range(0, self.start[match_type])):
@@ -904,17 +910,17 @@ class BhCore(object):
         right = None
         stack = []
         bsearch = BracketSearch(bfr, window, center, self.pattern, self.is_illegal_scope, scope)
-        for o in bsearch.get_open(0):
-            if len(stack) and bsearch.done[1]:
+        for o in bsearch.get_open(BracketSearchSide.left):
+            if len(stack) and bsearch.done[BracektSearchType.closing]:
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
-            for c in bsearch.get_close(0):
+            for c in bsearch.get_close(BracketSearchSide.left):
                 if o.end <= c.begin:
                     stack.append(c)
                     continue
                 elif len(stack):
-                    bsearch.remember(1)
+                    bsearch.remember(BracektSearchType.closing)
                     break
 
             if len(stack):
@@ -930,17 +936,17 @@ class BhCore(object):
 
         # Grab each closest closing right side bracket and attempt to match it.
         # If the closing bracket cannot be matched, select it.
-        for c in bsearch.get_close(1):
-            if len(stack) and bsearch.done[0]:
+        for c in bsearch.get_close(BracketSearchSide.right):
+            if len(stack) and bsearch.done[BracektSearchType.opening]:
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
-            for o in bsearch.get_open(1):
+            for o in bsearch.get_open(BracketSearchSide.right):
                 if o.end <= c.begin:
                     stack.append(o)
                     continue
                 else:
-                    bsearch.remember(0)
+                    bsearch.remember(BracektSearchType.opening)
                     break
 
             if len(stack):
