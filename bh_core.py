@@ -143,70 +143,84 @@ class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], ver
 
 
 class BracketSearch(object):
-    def __init__(self, bfr, window, center, pattern, scope_check, scope, match_type):
+    def __init__(self, bfr, window, center, pattern, scope_check, scope):
         self.center = center
         self.pattern = pattern
-        self.match_type = match_type
         self.bfr = bfr
         self.scope = scope
         self.scope_check = scope_check
-        self.prev_match = None
-        self.return_prev = False
-        self.done = False
-        self.start = None
-        self.left = []
-        self.right = []
+        self.prev_match = [None, None]
+        self.return_prev = [False, False]
+        self.done = [False, False]
+        self.start = [None, None]
+        self.left = [[], []]
+        self.right = [[], []]
         self.findall(window)
 
     def reset_end_state(self):
-        self.start = None
-        self.done = False
-        self.prev_match = None
-        self.return_prev = False
+        self.start = [None, None]
+        self.done = [False, False]
+        self.prev_match = [None, None]
+        self.return_prev = [False, False]
 
-    def remember(self):
-        self.return_prev = True
-        self.done = False
+    def remember(self, match_type):
+        self.return_prev[match_type] = True
+        self.done[match_type] = False
 
     def findall(self, window):
         for m in self.pattern.finditer(self.bfr, window[0], window[1]):
             g = m.lastindex
             try:
-                start = m.start(g + 1)
-                end = m.end(g + 1)
+                start = m.start(g)
+                end = m.end(g)
             except:
                 continue
-            bracket_id = (g - 1) / 2
-            if not self.scope_check(start, bracket_id, self.scope):
-                if (end <= self.center if self.match_type else start < self.center):
-                    self.left.append(BracketEntry(start, end, bracket_id))
-                elif (end > self.center if self.match_type else start >= self.center):
-                    self.right.append(BracketEntry(start, end, bracket_id))
+            mod = bool(g % 2)
+            if mod:
+                bracket_id = (g / 2)
+                match_type = 0
+            else:
+                bracket_id = (g / 2) - 1
+                match_type = 1
 
-    def get_brackets(self, bracket_code):
-        if self.done:
+            if not self.scope_check(start, bracket_id, self.scope):
+                if (end <= self.center if match_type else start < self.center):
+                    self.left[match_type].append(BracketEntry(start, end, bracket_id))
+                elif (end > self.center if match_type else start >= self.center):
+                    self.right[match_type].append(BracketEntry(start, end, bracket_id))
+
+    def get_open(self, bracket_code):
+        for b in self._get_bracket(bracket_code, 0):
+            yield b
+
+    def get_close(self, bracket_code):
+        for b in self._get_bracket(bracket_code, 1):
+            yield b
+
+    def _get_bracket(self, bracket_code, match_type):
+        if self.done[match_type]:
             return
-        if self.return_prev:
-            self.return_prev = False
-            yield self.prev_match
+        if self.return_prev[match_type]:
+            self.return_prev[match_type] = False
+            yield self.prev_match[match_type]
         if bracket_code == 0:
-            if self.start is None:
-                self.start = len(self.left)
-            for x in reversed(range(0, self.start)):
-                b = self.left[x]
-                self.prev_match = b
-                self.start -= 1
+            if self.start[match_type] is None:
+                self.start[match_type] = len(self.left[match_type])
+            for x in reversed(range(0, self.start[match_type])):
+                b = self.left[match_type][x]
+                self.prev_match[match_type] = b
+                self.start[match_type] -= 1
                 yield b
         else:
-            if self.start is None:
-                self.start = 0
-            for x in range(self.start, len(self.right)):
-                b = self.right[x]
-                self.prev_match = b
-                self.start += 1
+            if self.start[match_type] is None:
+                self.start[match_type] = 0
+            for x in range(self.start[match_type], len(self.right[match_type])):
+                b = self.right[match_type][x]
+                self.prev_match[match_type] = b
+                self.start[match_type] += 1
                 yield b
 
-        self.done = True
+        self.done[match_type] = True
 
 
 class BracketDefinition(object):
@@ -339,8 +353,7 @@ class BhCore(object):
                     self.transform.add(t)
 
     def init_brackets(self, language):
-        self.find_regex_open = "(?:"
-        self.find_regex_close = "(?:"
+        self.find_regex = "(?:"
         self.index_open = {}
         self.index_close = {}
         self.brackets = []
@@ -371,8 +384,7 @@ class BhCore(object):
                         load_modules(params, loaded_modules)
                         entry = BracketDefinition(params, self.settings, self.default_highlight)
                         self.brackets.append(entry)
-                        self.find_regex_close += "(" + params["close"] + ")|"
-                        self.find_regex_open += "(" + params["open"] + ")|"
+                        self.find_regex += params["open"] + "|" + params["close"] + "|"
                         current_brackets.append(entry.name)
                     except Exception, e:
                         print e
@@ -404,10 +416,8 @@ class BhCore(object):
                         print e
 
         if len(self.brackets):
-            self.find_regex_open = self.find_regex_open[0:len(self.find_regex_open) - 1] + ")"
-            self.find_regex_close = self.find_regex_close[0:len(self.find_regex_close) - 1] + ")"
-            self.pattern_open = re.compile(self.find_regex_open, re.MULTILINE | re.IGNORECASE)
-            self.pattern_close = re.compile(self.find_regex_close, re.MULTILINE | re.IGNORECASE)
+            # print self.find_regex[0:len(self.find_regex) - 1] + ")"
+            self.pattern = re.compile(self.find_regex[0:len(self.find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
             self.enabled = True
         self.view.settings().set("bh_registered_brackets", current_brackets)
 
@@ -893,19 +903,18 @@ class BhCore(object):
         left = None
         right = None
         stack = []
-        osearch = BracketSearch(bfr, window, center, self.pattern_open, self.is_illegal_scope, scope, 0)
-        csearch = BracketSearch(bfr, window, center, self.pattern_close, self.is_illegal_scope, scope, 1)
-        for o in osearch.get_brackets(0):
-            if len(stack) and csearch.done:
+        bsearch = BracketSearch(bfr, window, center, self.pattern, self.is_illegal_scope, scope)
+        for o in bsearch.get_open(0):
+            if len(stack) and bsearch.done[1]:
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
-            for c in csearch.get_brackets(0):
+            for c in bsearch.get_close(0):
                 if o.end <= c.begin:
                     stack.append(c)
                     continue
                 elif len(stack):
-                    csearch.remember()
+                    bsearch.remember(1)
                     break
 
             if len(stack):
@@ -916,23 +925,22 @@ class BhCore(object):
                 left = o
             break
 
-        osearch.reset_end_state()
-        csearch.reset_end_state()
+        bsearch.reset_end_state()
         stack = []
 
         # Grab each closest closing right side bracket and attempt to match it.
         # If the closing bracket cannot be matched, select it.
-        for c in csearch.get_brackets(1):
-            if len(stack) and osearch.done:
+        for c in bsearch.get_close(1):
+            if len(stack) and bsearch.done[0]:
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
-            for o in osearch.get_brackets(1):
+            for o in bsearch.get_open(1):
                 if o.end <= c.begin:
                     stack.append(o)
                     continue
                 else:
-                    osearch.remember()
+                    bsearch.remember(0)
                     break
 
             if len(stack):
