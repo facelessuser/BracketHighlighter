@@ -203,6 +203,9 @@ class BracketSearch(object):
         for b in self._get_bracket(bracket_code, BracektSearchType.closing):
             yield b
 
+    def is_done(self, match_type):
+        return self.done[match_type]
+
     def _get_bracket(self, bracket_code, match_type):
         if self.done[match_type]:
             return
@@ -911,7 +914,7 @@ class BhCore(object):
         stack = []
         bsearch = BracketSearch(bfr, window, center, self.pattern, self.is_illegal_scope, scope)
         for o in bsearch.get_open(BracketSearchSide.left):
-            if len(stack) and bsearch.done[BracektSearchType.closing]:
+            if len(stack) and bsearch.is_done(BracektSearchType.closing):
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
@@ -937,7 +940,7 @@ class BhCore(object):
         # Grab each closest closing right side bracket and attempt to match it.
         # If the closing bracket cannot be matched, select it.
         for c in bsearch.get_close(BracketSearchSide.right):
-            if len(stack) and bsearch.done[BracektSearchType.opening]:
+            if len(stack) and bsearch.is_done(BracektSearchType.opening):
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
