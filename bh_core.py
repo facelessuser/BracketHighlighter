@@ -280,9 +280,11 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
 
 class BhCore(object):
-    def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
+    def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}, keycommand=False):
         self.settings = sublime.load_settings("bh_core.sublime-settings")
-        self.settings.add_on_change('reload', self.setup)
+        if not keycommand:
+            self.settings.clear_on_change('reload')
+            self.settings.add_on_change('reload', self.setup)
         self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
 
     def setup(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
