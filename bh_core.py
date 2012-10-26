@@ -272,7 +272,8 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             lines,
             adjacent,
             ignore,
-            plugin
+            plugin,
+            True
         ).match(self.window.active_view())
         # Reset event settings
         Pref.ignore_all = False
