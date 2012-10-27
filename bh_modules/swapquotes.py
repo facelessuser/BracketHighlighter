@@ -18,30 +18,27 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
             return
         new = "'" if (quote == '"') else '"'
         old = quote
-        begin = self.left.begin + 1
-        end = self.right.end
+        begin = self.left.end
+        end = self.right.begin
         content_end = self.right.begin
-        while begin < end:
+
+        view.replace(edit, self.left.toregion(), view.substr(self.left.toregion()).replace(old, new))
+        view.replace(edit, self.right.toregion(), view.substr(self.right.toregion()).replace(old, new))
+
+        offset = 0
+        while begin < end + offset:
             char = view.substr(begin)
             if char == old and self.escaped(begin - 1):
                 view.replace(edit, sublime.Region(begin - 1, begin), '')
-                end -= 1
+                offset -= 1
                 content_end -= 1
             elif char == new and not self.escaped(begin - 1):
                 view.insert(edit, begin, "\\")
-                end += 1
+                offset += 1
                 content_end += 1
             begin += 1
-        if name == "pyquote" and self.left.size() == 3:
-            view.replace(edit, self.left.toregion(), new * 3)
-        else:
-            view.replace(edit, sublime.Region(self.left.begin, self.left.begin + 1), new)
-        if name == "pyquote" and self.right.size() == 3:
-            view.replace(edit, sublime.Region(content_end, end), new * 3)
-        else:
-            view.replace(edit, sublime.Region(content_end, end), new)
 
-        self.right = self.right.move(content_end, end)
+        self.right = self.right.move(content_end, end + offset)
         self.selection = [sublime.Region(content_end)]
 
 

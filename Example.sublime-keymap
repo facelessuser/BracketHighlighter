@@ -113,7 +113,7 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["quote", "pyquote"],
+                "type": ["single_quote", "double_quote", "py_single_quote", "py_double_quote"],
                 "command": "bh_modules.swapquotes"
             }
         }

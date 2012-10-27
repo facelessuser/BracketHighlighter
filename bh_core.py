@@ -71,16 +71,35 @@ def select_bracket_style(option):
 def select_bracket_icons(option, settings):
     icon = ""
     small_icon = ""
+    open_icon = ""
+    small_open_icon = ""
+    close_icon = ""
+    small_close_icon = ""
     icon_path = settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
     # Icon exist?
-    if (
-        exists(normpath(join(sublime.packages_path(), icon_path, option + ".png"))) and
-        not option == "none" and not option == ""
-    ):
-        icon = "../%s/%s" % (icon_path, option)
+    if not option == "none" and not option == "":
+        if exists(normpath(join(sublime.packages_path(), icon_path, option + ".png"))):
+            icon = "../%s/%s" % (icon_path, option)
         if exists(normpath(join(sublime.packages_path(), icon_path, option + "_small.png"))):
             small_icon = "../%s/%s" % (icon_path, option + "_small")
-    return icon, small_icon
+        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_open.png"))):
+            open_icon = "../%s/%s" % (icon_path, option + "_open")
+        else:
+            open_icon = icon
+        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_open_small.png"))):
+            small_open_icon = "../%s/%s" % (icon_path, option + "_open_small")
+        else:
+            small_open_icon = small_icon
+        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_close.png"))):
+            close_icon = "../%s/%s" % (icon_path, option + "_close")
+        else:
+            close_icon = icon
+        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_close_small.png"))):
+            small_close_icon = "../%s/%s" % (icon_path, option + "_close_small")
+        else:
+            small_close_icon = small_icon
+
+    return icon, small_icon, open_icon, small_open_icon, close_icon, small_close_icon
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
@@ -237,6 +256,8 @@ class BracketDefinition(object):
         self.name = bracket["name"]
         self.color = bracket.get("color", default_highlight["color"])
         self.selections = []
+        self.open_selections = []
+        self.close_selections = []
         self.compare = bracket.get("compare")
         self.find_in_sub_search = bracket.get("find_in_sub_search", False)
         self.post_match = bracket.get("post_match")
@@ -244,7 +265,10 @@ class BracketDefinition(object):
         self.scope_exclude = bracket.get("scope_exclude", [])
         self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        self.icon, self.small_icon = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
+        (
+            self.icon, self.small_icon, self.open_icon,
+            self.small_open_icon, self.close_icon, self.small_close_icon
+        ) = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
         self.ignore_string_escape = bracket.get("ignore_string_escape", False)
         self.no_icon = ""
 
@@ -254,6 +278,8 @@ class ScopeDefinition(object):
         self.open = re.compile("\\A" + bracket.get("open", "."), re.MULTILINE | re.IGNORECASE)
         self.close = re.compile(bracket.get("close", ".") + "\\Z", re.MULTILINE | re.IGNORECASE)
         self.selections = []
+        self.open_selections = []
+        self.close_selections = []
         self.name = bracket["name"]
         self.color = bracket.get("color", default_highlight["color"])
         sub_search = bracket.get("sub_bracket_search", "false")
@@ -264,7 +290,10 @@ class ScopeDefinition(object):
         self.scopes = bracket["scopes"]
         self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        self.icon, self.small_icon = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
+        (
+            self.icon, self.small_icon, self.open_icon,
+            self.small_open_icon, self.close_icon, self.small_close_icon
+        ) = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
         self.no_icon = ""
 
 
@@ -441,9 +470,13 @@ class BhCore(object):
         else:
             for b in (self.brackets + [self.incomplete]):
                 b.selections = []
+                b.open_selections = []
+                b.close_selections = []
             for s in self.scopes:
                 for b in s["brackets"]:
                     b.selections = []
+                    b.open_selections = []
+                    b.close_selections = []
 
     def get_bracket_type(self, name, begin, end):
         entry = None
@@ -483,35 +516,38 @@ class BhCore(object):
             self.view.sel().clear()
             map(lambda x: self.view.sel().add(x), self.sels)
 
+    def highlight_regions(self, name, icon_type, selections, bracket, regions):
+        if len(selections):
+            self.view.add_regions(
+                name,
+                getattr(bracket, selections),
+                bracket.color,
+                getattr(bracket, icon_type),
+                bracket.style
+            )
+            regions.append(name)
+
     def highlight(self, view):
         for region_key in self.view.settings().get("bh_regions", []):
             self.view.erase_regions(region_key)
 
         regions = []
         icon_type = "no_icon"
+        open_icon_type = "no_icon"
+        close_icon_type = "no_icon"
         if not self.no_multi_select_icons or not self.multi_select:
             icon_type = "small_icon" if self.view.line_height() < 16 else "icon"
+            open_icon_type = "small_open_icon" if self.view.line_height() < 16 else "open_icon"
+            close_icon_type = "small_close_icon" if self.view.line_height() < 16 else "close_icon"
         for b in (self.brackets + [self.incomplete]):
-            if len(b.selections):
-                self.view.add_regions(
-                    "bh_" + b.name,
-                    b.selections,
-                    b.color,
-                    getattr(b, icon_type),
-                    b.style
-                )
-                regions.append("bh_" + b.name)
+            self.highlight_regions("bh_" + b.name, icon_type, "selections", b, regions)
+            self.highlight_regions("bh_" + b.name + "_open", open_icon_type, "open_selections", b, regions)
+            self.highlight_regions("bh_" + b.name + "_close", close_icon_type, "close_selections", b, regions)
         for s in self.scopes:
             for b in s["brackets"]:
-                if len(b.selections):
-                    self.view.add_regions(
-                        "bh_" + b.name,
-                        b.selections,
-                        b.color,
-                        getattr(b, icon_type),
-                        b.style
-                    )
-                    regions.append("bh_" + b.name)
+                self.highlight_regions("bh_" + b.name, icon_type, "selections", b, regions)
+                self.highlight_regions("bh_" + b.name + "_open", open_icon_type, "open_selections", b, regions)
+                self.highlight_regions("bh_" + b.name + "_close", close_icon_type, "close_selections", b, regions)
         self.view.settings().set("bh_regions", regions)
 
     def get_search_bfr(self, sel):
@@ -577,37 +613,33 @@ class BhCore(object):
         if self.count_lines:
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
 
-    def find_scopes(self, bfr, sel):
-        # Search buffer
-        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel)
-        if sub_matched:
-            return True
-        regions = [sublime.Region(sel.a, sel.b)]
+    def save_incomplete_regions(self, left, right, regions):
+        found = left if left is not None else right
+        bracket = self.incomplete
+        if bracket.underline:
+            bracket.selections += underline((found.toregion(),))
+        else:
+            bracket.selections += [found.toregion()]
+        self.store_sel(regions)
 
-        if left is not None and right is not None:
-            left, right, regions = self.run_plugin(bracket.name, left, right, regions)
-            if left is None and right is None:
-                return True
-
-        if left is not None and right is not None:
-            if self.count_lines:
-                self.chars += abs(right.begin - left.end)
-                self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
-            if bracket.underline:
+    def save_regions(self, left, right, bracket, regions):
+        lines = abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
+        if self.count_lines:
+            self.chars += abs(right.begin - left.end)
+            self.lines += lines
+        if bracket.underline:
+            if lines <= 1:
                 bracket.selections += underline((left.toregion(), right.toregion()))
             else:
+                bracket.open_selections += underline((left.toregion(),))
+                bracket.close_selections += underline((right.toregion(),))
+        else:
+            if lines <= 1:
                 bracket.selections += [left.toregion(), right.toregion()]
-            self.store_sel(regions)
-            return True
-        elif left is not None or right is not None:
-            found = left if left is not None else right
-            bracket = self.incomplete
-            if bracket.underline:
-                bracket.selections += underline((found.toregion(),))
             else:
-                bracket.selections += [found.toregion()]
-            return True
-        return False
+                bracket.open_selections += [left.toregion()]
+                bracket.close_selections += [right.toregion()]
+        self.store_sel(regions)
 
     def sub_search(self, sel, search_window, bfr, scope=None):
         bracket = None
@@ -621,14 +653,27 @@ class BhCore(object):
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
-            if self.count_lines:
-                self.chars += abs(right.begin - left.end)
-                self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
-            if bracket.underline:
-                bracket.selections += underline((left.toregion(), right.toregion()))
-            else:
-                bracket.selections += [left.toregion(), right.toregion()]
-            self.store_sel(regions)
+            self.save_regions(left, right, bracket, regions)
+            return True
+        return False
+
+    def find_scopes(self, bfr, sel):
+        # Search buffer
+        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel)
+        if sub_matched:
+            return True
+        regions = [sublime.Region(sel.a, sel.b)]
+
+        if left is not None and right is not None:
+            left, right, regions = self.run_plugin(bracket.name, left, right, regions)
+            if left is None and right is None:
+                return True
+
+        if left is not None and right is not None:
+            self.save_regions(left, right, bracket, regions)
+            return True
+        elif left is not None or right is not None:
+            self.save_incomplete_regions(left, right, regions)
             return True
         return False
 
@@ -644,23 +689,11 @@ class BhCore(object):
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
-            if self.count_lines:
-                self.chars += abs(right.begin - left.end)
-                self.lines += abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
-            if bracket.underline:
-                bracket.selections += underline((left.toregion(), right.toregion()))
-            else:
-                bracket.selections += [left.toregion(), right.toregion()]
-            self.store_sel(regions)
+            self.save_regions(left, right, bracket, regions)
 
         # Unmatched brackets
         elif left is not None or right is not None:
-            found = left if left is not None else right
-            bracket = self.incomplete
-            if bracket.underline:
-                bracket.selections += underline((found.toregion(),))
-            else:
-                bracket.selections += [found.toregion()]
+            self.save_incomplete_regions(left, right, regions)
 
     def escaped(self, pt, ignore_string_escape, scope):
         if not ignore_string_escape:

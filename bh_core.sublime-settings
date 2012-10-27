@@ -24,10 +24,10 @@
     "scope_brackets": [
         // Quotes
         {
-            "name": "pyquote",
-            "open": "u?r?((?:\"\")?\"|(?:'')?')",
-            "close": "((?:\"\")?\"|(?:'')?')",
-            "icon": "quote",
+            "name": "py_single_quote",
+            "open": "u?r?((?:'')?')",
+            "close": "((?:'')?')",
+            "icon": "single_quote",
             "color": "brackethighlighter.quote",
             "style": "underline",
             "scopes": ["string"],
@@ -37,10 +37,36 @@
             "enabled": true
         },
         {
-            "name": "quote",
-            "open": "(\"|')",
-            "close": "(\"|')",
-            "icon": "quote",
+            "name": "py_double_quote",
+            "open": "u?r?((?:\"\")?\")",
+            "close": "((?:\"\")?\")",
+            "icon": "double_quote",
+            "color": "brackethighlighter.quote",
+            "style": "underline",
+            "scopes": ["string"],
+            "language_filter": "whitelist",
+            "language_list": ["Python"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
+            "name": "single_quote",
+            "open": "(')",
+            "close": "(')",
+            "icon": "single_quote",
+            "color": "brackethighlighter.quote",
+            "style": "underline",
+            "scopes": ["string"],
+            "language_filter": "blacklist",
+            "language_list": ["Plain text"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
+            "name": "double_quote",
+            "open": "(\")",
+            "close": "(\")",
+            "icon": "double_quote",
             "color": "brackethighlighter.quote",
             "style": "underline",
             "scopes": ["string"],
