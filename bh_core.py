@@ -13,6 +13,18 @@ import traceback
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
+DEFAULT_STYLES = {
+    "default": {
+        "icon": "dot",
+        "color": "brackethighlighter.default",
+        "style": "underline"
+    },
+    "unmatched": {
+        "icon": "question",
+        "color": "brackethighlighter.unmatched",
+        "style": "outline"
+    }
+}
 
 
 def underline(regions):
@@ -68,14 +80,13 @@ def select_bracket_style(option):
     return style
 
 
-def select_bracket_icons(option, settings):
+def select_bracket_icons(option, icon_path):
     icon = ""
     small_icon = ""
     open_icon = ""
     small_open_icon = ""
     close_icon = ""
     small_close_icon = ""
-    icon_path = settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
     # Icon exist?
     if not option == "none" and not option == "":
         if exists(normpath(join(sublime.packages_path(), icon_path, option + ".png"))):
@@ -252,48 +263,44 @@ class BracketSearch(object):
 
 
 class BracketDefinition(object):
-    def __init__(self, bracket, settings, default_highlight):
+    def __init__(self, bracket):
         self.name = bracket["name"]
-        self.color = bracket.get("color", default_highlight["color"])
-        self.selections = []
-        self.open_selections = []
-        self.close_selections = []
+        self.style = bracket.get("style", "default")
         self.compare = bracket.get("compare")
         self.find_in_sub_search = bracket.get("find_in_sub_search", False)
         self.post_match = bracket.get("post_match")
         self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
         self.scope_exclude = bracket.get("scope_exclude", [])
-        self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
-        self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        (
-            self.icon, self.small_icon, self.open_icon,
-            self.small_open_icon, self.close_icon, self.small_close_icon
-        ) = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
         self.ignore_string_escape = bracket.get("ignore_string_escape", False)
-        self.no_icon = ""
 
 
 class ScopeDefinition(object):
-    def __init__(self, bracket, settings, default_highlight):
+    def __init__(self, bracket):
+        self.style = bracket.get("style", "default")
         self.open = re.compile("\\A" + bracket.get("open", "."), re.MULTILINE | re.IGNORECASE)
         self.close = re.compile(bracket.get("close", ".") + "\\Z", re.MULTILINE | re.IGNORECASE)
-        self.selections = []
-        self.open_selections = []
-        self.close_selections = []
         self.name = bracket["name"]
-        self.color = bracket.get("color", default_highlight["color"])
         sub_search = bracket.get("sub_bracket_search", "false")
         self.sub_search_only = sub_search == "only"
         self.sub_search = self.sub_search_only == True or sub_search == "true"
         self.compare = bracket.get("compare")
         self.post_match = bracket.get("post_match")
         self.scopes = bracket["scopes"]
-        self.style = select_bracket_style(bracket.get("style", default_highlight["style"]))
+
+
+class StyleDefinition(object):
+    def __init__(self, name, style, default_highlight, icon_path):
+        self.name = name
+        self.selections = []
+        self.open_selections = []
+        self.close_selections = []
+        self.color = style.get("color", default_highlight["color"])
+        self.style = select_bracket_style(style.get("style", default_highlight["style"]))
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
         (
             self.icon, self.small_icon, self.open_icon,
             self.small_open_icon, self.close_icon, self.small_close_icon
-        ) = select_bracket_icons(bracket.get("icon", default_highlight["icon"]), settings)
+        ) = select_bracket_icons(style.get("icon", default_highlight["icon"]), icon_path)
         self.no_icon = ""
 
 
@@ -350,33 +357,17 @@ class BhCore(object):
         self.auto_selection_threshold = int(self.settings.get("auto_selection_threshold", 10))
         self.no_multi_select_icons = bool(self.settings.get("no_multi_select_icons", False))
         self.count_lines = count_lines
-        self.default_string_escape_mode = self.settings.get('bracket_string_escape_mode', "string")
-        self.default_highlight = {
-            "icon": self.settings.get("default_icon", "dot"),
-            "style": self.settings.get("default_style", "underline"),
-            "color": self.settings.get("default_color", "brackethighlighter.default")
-        }
+        self.default_string_escape_mode = str(self.settings.get('bracket_string_escape_mode', "string"))
+        self.show_unmatched = bool(self.settings.get("show_unmatched", True))
 
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", [])
-        incomplete = self.settings.get(
-            "incomplete",
-            {
-                "icon": "dot",
-                "color": "keyword",
-                "style": "outline",
-                "scope_exclude": [],
-                "enabled": True
-            }
-        )
-        incomplete["name"] = "incomplete"
-        self.incomplete = BracketDefinition(incomplete, self.settings, self.default_highlight)
 
         self.scope_types = self.settings.get("scope_brackets", [])
 
         # Init selection params
         self.use_selection_threshold = True
-        self.selection_threshold = self.settings.get("search_threshold", 5000)
+        self.selection_threshold = int(self.settings.get("search_threshold", 5000))
         self.new_select = False
         self.loaded_modules = set([])
 
@@ -390,6 +381,23 @@ class BhCore(object):
                 for t in plugin["type"]:
                     self.transform.add(t)
 
+    def init_bracket_regions(self):
+        self.bracket_regions = {}
+        styles = self.settings.get("bracket_styles", DEFAULT_STYLES)
+        icon_path = self.settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
+        # Make sure default and unmatched styles in styles
+        for key, value in DEFAULT_STYLES.items():
+            if key not in styles:
+                styles[key] = value
+                continue
+            for k, v in value.items():
+                if k not in styles[key]:
+                    styles[key][k] = v
+        # Initialize styles
+        default_settings = styles["default"]
+        for k, v in styles.items():
+            self.bracket_regions[k] = StyleDefinition(k, v, default_settings, icon_path)
+
     def init_brackets(self, language):
         self.find_regex = "(?:"
         self.index_open = {}
@@ -402,10 +410,7 @@ class BhCore(object):
         self.multi_select = False
         scopes = {}
         loaded_modules = self.loaded_modules.copy()
-        current_brackets = []
-
-        # Initialize brackets
-        self.incomplete.selections = []
+        # current_brackets = []
 
         for params in self.bracket_types:
             if (
@@ -420,10 +425,10 @@ class BhCore(object):
                 if params["open"] is not None and params["close"] is not None:
                     try:
                         load_modules(params, loaded_modules)
-                        entry = BracketDefinition(params, self.settings, self.default_highlight)
+                        entry = BracketDefinition(params)
                         self.brackets.append(entry)
                         self.find_regex += params["open"] + "|" + params["close"] + "|"
-                        current_brackets.append(entry.name)
+                        # current_brackets.append(entry.name)
                     except Exception, e:
                         print e
 
@@ -441,7 +446,7 @@ class BhCore(object):
                 if params["open"] is not None and params["close"] is not None:
                     try:
                         load_modules(params, loaded_modules)
-                        entry = ScopeDefinition(params, self.settings, self.default_highlight)
+                        entry = ScopeDefinition(params)
                         for x in entry.scopes:
                             if x not in scopes:
                                 scopes[x] = scope_count
@@ -449,7 +454,7 @@ class BhCore(object):
                                 self.scopes.append({"name": x, "brackets": [entry]})
                             else:
                                 self.scopes[scopes[x]]["brackets"].append(entry)
-                            current_brackets.append(entry.name)
+                            # current_brackets.append(entry.name)
                     except Exception, e:
                         print e
 
@@ -457,7 +462,7 @@ class BhCore(object):
             # print self.find_regex[0:len(self.find_regex) - 1] + ")"
             self.pattern = re.compile(self.find_regex[0:len(self.find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
             self.enabled = True
-        self.view.settings().set("bh_registered_brackets", current_brackets)
+        # self.view.settings().set("bh_registered_brackets", current_brackets)
 
     def init_match(self):
         self.chars = 0
@@ -466,33 +471,13 @@ class BhCore(object):
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
 
         if language != self.view_tracker[0] or self.view.id() != self.view_tracker[1]:
+            self.init_bracket_regions()
             self.init_brackets(language)
         else:
-            for b in (self.brackets + [self.incomplete]):
-                b.selections = []
-                b.open_selections = []
-                b.close_selections = []
-            for s in self.scopes:
-                for b in s["brackets"]:
-                    b.selections = []
-                    b.open_selections = []
-                    b.close_selections = []
-
-    def get_bracket_type(self, name, begin, end):
-        entry = None
-        count = 0
-        for b in (self.brackets + [self.incomplete]):
-            if b.name == name:
-                entry = BracketEntry(begin, end, count)
-            count += 1
-        count = 0
-        for s in self.scopes:
-            sub_count = 0
-            for b in s["brackets"]:
-                if b.name == name:
-                    entry = ScopeEntry(begin, end, count, sub_count)
-                sub_count += 1
-        return entry
+            for r in self.bracket_regions.values():
+                r.selections = []
+                r.open_selections = []
+                r.close_selections = []
 
     def unique(self):
         id_view = self.view.id()
@@ -539,15 +524,10 @@ class BhCore(object):
             icon_type = "small_icon" if self.view.line_height() < 16 else "icon"
             open_icon_type = "small_open_icon" if self.view.line_height() < 16 else "open_icon"
             close_icon_type = "small_close_icon" if self.view.line_height() < 16 else "close_icon"
-        for b in (self.brackets + [self.incomplete]):
-            self.highlight_regions("bh_" + b.name, icon_type, "selections", b, regions)
-            self.highlight_regions("bh_" + b.name + "_open", open_icon_type, "open_selections", b, regions)
-            self.highlight_regions("bh_" + b.name + "_close", close_icon_type, "close_selections", b, regions)
-        for s in self.scopes:
-            for b in s["brackets"]:
-                self.highlight_regions("bh_" + b.name, icon_type, "selections", b, regions)
-                self.highlight_regions("bh_" + b.name + "_open", open_icon_type, "open_selections", b, regions)
-                self.highlight_regions("bh_" + b.name + "_close", close_icon_type, "close_selections", b, regions)
+        for name, r in self.bracket_regions.items():
+            self.highlight_regions("bh_" + name, icon_type, "selections", r, regions)
+            self.highlight_regions("bh_" + name + "_open", open_icon_type, "open_selections", r, regions)
+            self.highlight_regions("bh_" + name + "_close", close_icon_type, "close_selections", r, regions)
         self.view.settings().set("bh_regions", regions)
 
     def get_search_bfr(self, sel):
@@ -615,14 +595,15 @@ class BhCore(object):
 
     def save_incomplete_regions(self, left, right, regions):
         found = left if left is not None else right
-        bracket = self.incomplete
+        bracket = self.bracket_regions["unmatched"]
         if bracket.underline:
             bracket.selections += underline((found.toregion(),))
         else:
             bracket.selections += [found.toregion()]
         self.store_sel(regions)
 
-    def save_regions(self, left, right, bracket, regions):
+    def save_regions(self, left, right, regions):
+        bracket = self.bracket_regions.get(self.bracket_style, self.bracket_regions["default"])
         lines = abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
         if self.count_lines:
             self.chars += abs(right.begin - left.end)
@@ -653,7 +634,7 @@ class BhCore(object):
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
-            self.save_regions(left, right, bracket, regions)
+            self.save_regions(left, right, regions)
             return True
         return False
 
@@ -670,9 +651,9 @@ class BhCore(object):
                 return True
 
         if left is not None and right is not None:
-            self.save_regions(left, right, bracket, regions)
+            self.save_regions(left, right, regions)
             return True
-        elif left is not None or right is not None:
+        elif (left is not None or right is not None) and self.show_invalid:
             self.save_incomplete_regions(left, right, regions)
             return True
         return False
@@ -689,11 +670,14 @@ class BhCore(object):
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
-            self.save_regions(left, right, bracket, regions)
+            self.save_regions(left, right, regions)
 
         # Unmatched brackets
-        elif left is not None or right is not None:
+        elif (left is not None or right is not None) and self.show_unmatched:
             self.save_incomplete_regions(left, right, regions)
+
+        else:
+            self.store_sel(regions)
 
     def escaped(self, pt, ignore_string_escape, scope):
         if not ignore_string_escape:
@@ -774,22 +758,20 @@ class BhCore(object):
         else:
             return left, right
 
+        self.bracket_style = bracket.style
+
         if bracket.post_match is not None:
             try:
-                lbracket, rbracket, bracket_name = bracket.post_match(
+                lbracket, rbracket, self.bracket_style = bracket.post_match(
                     self.view,
                     bracket.name,
+                    bracket.style,
                     BracketRegion(left.begin, left.end) if left is not None else None,
                     BracketRegion(right.begin, right.end) if right is not None else None,
                     center,
                     bfr,
                     self.search_window
                 )
-                if bracket_name != bracket.name:
-                    left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
-                    right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
-                    if left is not None or right is not None:
-                        return left, right
 
                 left = ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
                 right = ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
@@ -807,22 +789,21 @@ class BhCore(object):
         else:
             return left, right
 
+        self.bracket_style = bracket.style
+
         if bracket.post_match is not None:
             try:
-                lbracket, rbracket, bracket_name = bracket.post_match(
+                lbracket, rbracket, self.bracket_style = bracket.post_match(
                     self.view,
                     bracket.name,
+                    bracket.style,
                     BracketRegion(left.begin, left.end) if left is not None else None,
                     BracketRegion(right.begin, right.end) if right is not None else None,
                     center,
                     bfr,
                     self.search_window
                 )
-                if bracket_name != bracket.name:
-                    left = self.get_bracket_type(bracket_name, lbracket.begin, lbracket.end) if lbracket is not None else None
-                    right = self.get_bracket_type(bracket_name, rbracket.begin, rbracket.end) if rbracket is not None else None
-                    if left is not None or right is not None:
-                        return left, right
+
                 left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
                 right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
             except:
@@ -885,6 +866,7 @@ class BhCore(object):
                         break
 
             if extent is None:
+                scope_count += 1
                 continue
 
             # Search the bracket patterns of this scope

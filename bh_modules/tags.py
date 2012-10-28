@@ -32,7 +32,7 @@ def compare_languge(language, lang_list):
 
 
 def get_tag_mode(view, tag_mode_config):
-    default_mode = "html"
+    default_mode = None
     syntax = view.settings().get('syntax')
     language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
     for mode in ["html", "xhtml", "cfml"]:
@@ -41,24 +41,21 @@ def get_tag_mode(view, tag_mode_config):
     return default_mode
 
 
-def post_match(view, name, first, second, center, bfr, threshold):
+def post_match(view, name, style, first, second, center, bfr, threshold):
     left, right = first, second
     threshold = [0, len(bfr)] if threshold is None else threshold
-    tag_mode = get_tag_mode(view, sublime.load_settings("bh_core.sublime-settings").get("tag_mode", {}))
+    tag_settings = sublime.load_settings("bh_core.sublime-settings")
+    tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
+    tag_style = tag_settings.get("tag_style", "angle")
+    bracket_style = style
 
-    if first is not None:
-        bracket_name = name
+    if first is not None and tag_mode is not None:
         matcher = TagMatch(view, bfr, threshold, first, second, center, tag_mode)
         left, right = matcher.match()
-        if matcher.no_tag:
-            if "angle" in view.settings().get("bh_registered_brackets", []):
-                bracket_name = "angle"
-    else:
-        if "angle" in view.settings().get("bh_registered_brackets", []):
-            bracket_name = "angle"
-        else:
-            bracket_name = second.name
-    return left, right, bracket_name
+        if not matcher.no_tag:
+            bracket_style = tag_style
+
+    return left, right, bracket_style
 
 
 class TagSearch(object):

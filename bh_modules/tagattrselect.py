@@ -3,7 +3,7 @@ import bh_plugin
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
     def run(self, edit, name, direction='right'):
-        if name != "tag" or self.left.size() <= 1:
+        if name != "angle" or self.left.size() <= 1:
             return
         tag_name = '[\w\:\-]+'
         attr_name = '([\w\-:]+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:\'((?:\\.|[^\'])*)\')|([^>\s]+)))?'

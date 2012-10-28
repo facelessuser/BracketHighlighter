@@ -21,7 +21,7 @@
             ]
         },
         {
-            "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
+            "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
                 {"name": "HTML/XML Tag", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"]},
                 {"name": "HTML/XML Tag - Block", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"], "insert_style": "block"},
                 {"name": "HTML/XML Tag - Block Indent", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"], "insert_style": "indent_block"}
@@ -39,7 +39,6 @@
                 {"name": "C/C++: #if, #else", "brackets": ["#if (${BH_SEL:/* CONDITION */})", "#else\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": "block"},
                 {"name": "C/C++: #if, #elif", "brackets": ["#if (${BH_SEL:/* CONDITION */})", "#elif (${BH_TAB:/* CONDITION */})\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": "block"},
                 {"name": "C/C++: #ifdef", "brackets": ["#ifdef ${BH_SEL:/* DEFINE */}", "#endif"], "insert_style": "block"},
-                {"name": "C/C++: #ifdef, #else", "brackets": ["#ifdef ${BH_SEL:/* DEFINE */}", "#else\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": "block"},
                 {"name": "C/C++: #ifdef, #else", "brackets": ["#ifdef ${BH_SEL:/* DEFINE */}", "#else\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": "block"},
                 {"name": "C/C++: #ifndef", "brackets": ["#ifndef ${BH_SEL:/* DEFINE */}", "#endif"], "insert_style": "block"},
                 {"name": "C/C++: #ifndef, #else", "brackets": ["#ifndef ${BH_SEL:/* DEFINE */}", "#else\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": "block"}

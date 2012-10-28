@@ -1,11 +1,15 @@
 # About
-This is a fork of pyparadigm's SublimeBrackets and SublimeTagmatcher (both are no longer available).  I forked this to fix some issues I had and to add some features I wanted.  I also wanted to improve the efficiency of the matching.  This cuts down on the parallel searching that is now streamlined in one search.  Since then, many new features have been added as well.
+This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available).  I forked this to fix some issues I had and to add some features I wanted.  I also wanted to improve the efficiency of the matching.  This cuts down on the parallel searching that is now streamlined in one search.  Since then, many new features have been added as well.
 
-![Options Screenshot](https://github.com/facelessuser/BracketHighlighter/raw/master/example.png)
+<img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
 # TODO
 - Bracket Swap Plugin
 - Documentation
+
+# Credits
+- pyparadigm: for his original efforrts with SublimeBrackets and SublimeTagmatcher which has which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
+- BoundInCode: for his Tag icon
 
 # Version 1.9.0
 - Add experimental CFML support (defaulted off)

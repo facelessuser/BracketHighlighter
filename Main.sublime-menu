@@ -1,0 +1,237 @@
+[
+    {
+        "id": "tools",
+        "caption": "Tools",
+        "children":
+        [
+            {
+                "id": "packages",
+                "caption": "Packages",
+                "children":
+                [
+                    {
+                        "id": "brackethighlighter",
+                        "caption": "BracketHighlighter",
+                        "children":
+                        [
+                            // Search to end of file for bracket
+                            {
+                                "caption": "Match Brackets (ignore threshold)",
+                                "command": "bh_key",
+                                "args": {"lines" : true}
+                            },
+                            // Remove brackets
+                            {
+                                "caption": "Remove Brackets",
+                                "command": "bh_remove_brackets"
+                            },
+                            // Go to left bracket
+                            {
+                                "caption": "Jump to Left Bracket",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "lines" : true,
+                                    "plugin":
+                                    {
+                                        "type": ["__all__"],
+                                        "command": "bh_modules.bracketselect",
+                                        "args": {"select": "left"}
+                                    }
+                                }
+                            },
+                            // Go to right bracket
+                            {
+                                "caption": "Jump to Right Bracket",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "lines" : true,
+                                    "plugin":
+                                    {
+                                        "type": ["__all__"],
+                                        "command": "bh_modules.bracketselect",
+                                        "args": {"select": "right"}
+                                    }
+                                }
+                            },
+                            // Select text between brackets
+                            {
+                                "keys": "Select Bracket Content",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "lines" : true,
+                                    "plugin":
+                                    {
+                                        "type": ["__all__"],
+                                        "command": "bh_modules.bracketselect"
+                                    }
+                                }
+                            },
+                            // Fold contents between brackets
+                            {
+                                "caption": "Fold Bracket Content",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "plugin": {
+                                        "type": ["__all__"],
+                                        "command" : "bh_modules.foldbracket"
+                                    }
+                                }
+                            },
+                            { "caption": "-" },
+                            // Toggle between string and regex escape mode for string brackets
+                            {
+                                "caption": "Toggle String Bracket Escape Mode",
+                                "command": "bh_toggle_string_escape_mode"
+                            },
+                            { "caption": "-" },
+                            // Select tag name of HTML/XML tag (both opening name and closing)
+                            {
+                                "caption": "Select Tag Name (closing and opening)",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "plugin":
+                                    {
+                                        "type": ["angle"],
+                                        "command": "bh_modules.tagnameselect"
+                                    }
+                                }
+                            },
+                            // Select the attribute to the right of the cursor (will wrap inside the tag)
+                            {
+                                "caption": "Select Next Attribute (right)",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "plugin":
+                                    {
+                                        "type": ["angle"],
+                                        "command": "bh_modules.tagattrselect",
+                                        "args": {"direction": "right"}
+                                    }
+                                }
+                            },
+                            // Select the attribute to the left of the cursor (will wrap inside the tag)
+                            {
+                                "caption": "Select Next Attribute (left)",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "plugin":
+                                    {
+                                        "type": ["angle"],
+                                        "command": "bh_modules.tagattrselect",
+                                        "args": {"direction": "left"}
+                                    }
+                                }
+                            },
+                            { "caption": "-" },
+                            // Convert single quote string to double quoted string and vice versa
+                            // Will handle escaping or unescaping quotes within the string
+                            {
+                                "caption": "Swap Quotes",
+                                "command": "bh_key",
+                                "args":
+                                {
+                                    "lines" : true,
+                                    "plugin":
+                                    {
+                                        "type": ["single_quote", "double_quote", "py_single_quote", "py_double_quote"],
+                                        "command": "bh_modules.swapquotes"
+                                    }
+                                }
+                            },
+                            // Not implemented yet
+                            {
+                                "caption": "Swap Brackets (NOT IMPLEMENTED)",
+                                "command": "swap_brackets"
+                            },
+                            // Surround selection with brackets from quick panel
+                            {
+                                "caption": "Wrap Selections with Brackets",
+                                "command": "wrap_brackets"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
+        "children":
+        [
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children":
+                [
+                    {
+                        "caption": "Bracket Highlighter",
+                        "children":
+                        [
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/BracketHighlighter/bh_core.sublime-settings"},
+                                "caption": "Bracket Settings – Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/BracketHighlighter/bh_wrapping.sublime-settings"},
+                                "caption": "Wrap Settings – Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/User/bh_core.sublime-settings"},
+                                "caption": "Bracket Settings – User"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/User/bh_wrapping.sublime-settings"},
+                                "caption": "Wrap Settings – User"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/BracketHighlighter/Example.sublime-keymap"},
+                                "caption": "Example Key Bindings"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
+                                    "platform": "Windows"
+                                },
+                                "caption": "Key Bindings – User"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
+                                    "platform": "OSX"
+                                },
+                                "caption": "Key Bindings – User"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
+                                    "platform": "Linux"
+                                },
+                                "caption": "Key Bindings – User"
+                            },
+                            { "caption": "-" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -2,34 +2,25 @@
     // Path to find icons at
     "icon_path": "BracketHighlighter/icons",
 
-    // Global defaults to use if a bracket does not define its own
-    "default_icon": "dot",
-    "default_style": "underline",
-    "default_color": "brackethighlighter.default",
-
     // When only either the left or right bracket can be found
-    // this defines how to highlight the single bracket.
-    "incomplete" : {
-        "icon": "question",
-        "color": "brackethighlighter.invalid",
-        "style": "outline",
-        "enabled": true
-    },
+    // this defines if the unmatched bracket should be shown.
+    "show_unmatched" : true,
 
-    // Brackets that are defined by a common scope
+    // Rules that define find and matching brackets
+    // that are contained in a common scope.
     // Useful for bracket pairs that are the same but
     // share a common scope.  Brackets are found by
     // Finding the extent of the scope and using regex
     // to look at the beginning and end to identify bracket.
+    // Use only if they cannot be targeted with traditional bracket
+    // rules.
     "scope_brackets": [
         // Quotes
         {
             "name": "py_single_quote",
             "open": "u?r?((?:'')?')",
             "close": "((?:'')?')",
-            "icon": "single_quote",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "single_quote",
             "scopes": ["string"],
             "language_filter": "whitelist",
             "language_list": ["Python"],
@@ -40,9 +31,7 @@
             "name": "py_double_quote",
             "open": "u?r?((?:\"\")?\")",
             "close": "((?:\"\")?\")",
-            "icon": "double_quote",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "double_quote",
             "scopes": ["string"],
             "language_filter": "whitelist",
             "language_list": ["Python"],
@@ -53,9 +42,7 @@
             "name": "single_quote",
             "open": "(')",
             "close": "(')",
-            "icon": "single_quote",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "single_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
@@ -66,9 +53,7 @@
             "name": "double_quote",
             "open": "(\")",
             "close": "(\")",
-            "icon": "double_quote",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "double_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
@@ -80,9 +65,7 @@
             "name": "jsregex",
             "open": " *(/)",
             "close": "(/)[igm]*",
-            "icon": "star",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "regex",
             "scopes": ["string"],
             "language_filter": "whitelist",
             "language_list": ["JavaScript"],
@@ -93,9 +76,7 @@
             "name": "perlregex",
             "open": "(?:m|s|tr)(.|\n)",
             "close": "(.|\n)(?:[igmos]*)",
-            "icon": "star",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "regex",
             "scopes": ["string.regexp"],
             "language_filter": "whitelist",
             "language_list": ["Perl"],
@@ -106,9 +87,7 @@
             "name": "rubyregex",
             "open": " *(/)",
             "close": "(/)[imxo]*",
-            "icon": "star",
-            "color": "brackethighlighter.quote",
-            "style": "underline",
+            "style": "regex",
             "scopes": ["string"],
             "language_filter": "whitelist",
             "language_list": ["Ruby"],
@@ -120,9 +99,7 @@
             "name": "mditalic",
             "open": "(\\*|_)",
             "close": "(\\*|_)",
-            "icon": "dot",
-            "color": "brackethighlighter.curly",
-            "style": "underline",
+            "style": "default",
             "scopes": ["markup.italic"],
             "language_filter": "whitelist",
             "language_list": ["Markdown"],
@@ -133,9 +110,7 @@
             "name": "mdbold",
             "open": "(\\*\\*|__)",
             "close": "(\\*\\*|__)",
-            "icon": "dot",
-            "color": "keyword",
-            "style": "underline",
+            "style": "default",
             "scopes": ["markup.bold"],
             "language_filter": "whitelist",
             "language_list": ["Markdown"],
@@ -143,8 +118,11 @@
             "enabled": true
         }
     ],
-    // Regex search of file buffer for brackets.
-    // Once all are found, the closet pair wrapped around
+
+    // Rule definitions for finding and matching brackets.
+    // Brackets are found by using regex and can use scope
+    // qualifiers exclude certain matches.
+    // Once all matches are found, the closest pair surrounding
     // the cursor are selected.
     "brackets": [
         // Basic brackets
@@ -152,9 +130,7 @@
             "name": "curly",
             "open": "(\\{)",
             "close": "(\\})",
-            "icon": "curly_bracket",
-            "color": "brackethighlighter.curly",
-            "style": "underline",
+            "style": "curly",
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
             "language_filter": "blacklist",
@@ -167,9 +143,7 @@
             "name": "round",
             "open": "(\\()",
             "close": "(\\))",
-            "icon": "round_bracket",
-            "color": "brackethighlighter.round",
-            "style": "underline",
+            "style": "round",
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
             "scope_exclude": ["string", "comment"],
             "language_filter": "blacklist",
@@ -182,9 +156,7 @@
             "name": "square",
             "open": "(\\[)",
             "close": "(\\])",
-            "icon": "square_bracket",
-            "color": "brackethighlighter.square",
-            "style": "underline",
+            "style": "square",
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
             "language_filter": "blacklist",
@@ -193,39 +165,24 @@
             "ignore_string_escape": true,
             "enabled": true
         },
-        // HTML Tags
-        {
-            "name": "tag",
-            "open": "(<)",
-            "close": "(>)",
-            "icon": "tag",
-            "color": "brackethighlighter.tag",
-            "style": "outline",
-            "language_filter": "whitelist",
-            "scope_exclude": ["string", "comment", "keyword.operator"],
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
-            "plugin_library": "bh_modules.tags",
-            "enabled": true
-        },
+        // Angle brackets and tags
         {
             "name": "angle",
             "open": "(<)",
             "close": "(>)",
-            "icon": "angle_bracket",
-            "color": "brackethighlighter.angle",
-            "style": "underline",
+            "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator"],
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "plugin_library": "bh_modules.tags",
             "enabled": true
         },
+        // CSSedit groups
         {
             "name": "cssedit_groups",
             "open": "(/\\* *@group .*\\*/)",
             "close": "(/\\* *@end *\\*/)",
-            "icon": "dot",
-            "color": "brackethighlighter.curly",
-            "style": "underline",
+            "style": "default",
             "scope_exclude": [],
             "language_filter": "whitelist",
             "language_list": ["CSS"],
@@ -236,9 +193,7 @@
             "name": "ruby",
             "open": "(^\\s*\\b(?:if|until|unless|while|begin|class|module|def\\b\\s*[a-zA-Z_]+)|do)\\b",
             "close": "\\b(end)\\b",
-            "icon": "dot",
-            "color": "keyword",
-            "style": "underline",
+            "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
@@ -250,15 +205,82 @@
             "name": "c_compile_switch",
             "open": "(\\#(?:if|ifdef|ifndef))\\b",
             "close": "(\\#endif)\\b",
-            "icon": "dot",
-            "color": "keyword",
-            "style": "underline",
+            "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
             "language_list": ["C++", "C"],
             "enabled": true
         }
     ],
+
+    // Define region highlight styles
+    "bracket_styles": {
+        // "default" and "unmatched" styles are special
+        // styles. If they are not defined here,
+        // they will be generated internally with
+        // internal defaults.
+
+        // "default" style defines attributes that
+        // will be used for any style that does not
+        // explicitly define that attribute.  So if
+        // a style does not define a color, it will
+        // use the color from the "default" style.
+        "default": {
+            "icon": "dot",
+            "color": "brackethighlighter.default",
+            "style": "underline"
+        },
+
+        // This particular style is used to highlight
+        // unmatched bracekt pairs.  It is a special
+        // style.
+        "unmatched": {
+            "icon": "question",
+            // "color": "brackethighlighter.unmatched",
+            "style": "outline"
+        },
+        // User defined region styles
+        "curly": {
+            "icon": "curly_bracket"
+            // "color": "brackethighlighter.curly",
+            // "style": "underline"
+        },
+        "round": {
+            "icon": "round_bracket"
+            // "color": "brackethighlighter.round",
+            // "style": "underline"
+        },
+        "square": {
+            "icon": "square_bracket"
+            // "color": "brackethighlighter.square",
+            // "style": "underline"
+        },
+        "angle": {
+            "icon": "angle_bracket"
+            // "color": "brackethighlighter.angle",
+            // "style": "underline"
+        },
+        "tag": {
+            "icon": "tag",
+            // "color": "brackethighlighter.tag",
+            "style": "outline"
+        },
+        "single_quote": {
+            "icon": "single_quote"
+            // "color": "brackethighlighter.quote",
+            // "style": "underline"
+        },
+        "double_quote": {
+            "icon": "double_quote"
+            // "color": "brackethighlighter.quote",
+            // "style": "underline"
+        },
+        "regex": {
+            "icon": "regex"
+            // "color": "brackethighlighter.quote",
+            // "style": "underline"
+        }
+    },
 
     // Match brackets only when the cursor is touching the inside of the bracket
     "match_only_adjacent": false,
@@ -275,12 +297,15 @@
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,
 
-    // Tag Match Settings
+    /* Plugin settings */
+
+    // Style to use for matched tags
+    "tag_style": "tag",
+
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
         "html": ["HTML", "HTML 5", "PHP"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
-
 }

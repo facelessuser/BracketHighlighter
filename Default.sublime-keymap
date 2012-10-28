@@ -1,0 +1,16 @@
+[
+    // Navigate tabstops in wrapped selection
+    {
+        "keys": ["tab"],
+        "command": "bh_next_wrap_sel",
+        "context":
+        [
+            {
+                "operand": true,
+                "operator": "equal",
+                "match_all": true,
+                "key": "bh_wrapping"
+            }
+        ]
+    }
+]
