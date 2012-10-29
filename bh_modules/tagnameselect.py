@@ -1,7 +1,5 @@
 import bh_plugin
 
-DEFAULT_TAGS = ["cfml", "html", "angle"]
-
 
 class TagNameSelect(bh_plugin.BracketPluginCommand):
     def run(self, edit, name):

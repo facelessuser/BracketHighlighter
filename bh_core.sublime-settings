@@ -175,7 +175,8 @@
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP"],
             "plugin_library": "bh_modules.tags",
-            "enabled": true
+            "find_in_sub_search": true,
+            "enabled": false
         },
         // CFML
         {
@@ -187,7 +188,8 @@
             "language_filter": "whitelist",
             "language_list": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "plugin_library": "bh_modules.tags",
-            "enabled": true
+            "find_in_sub_search": true,
+            "enabled": false
         },
         // Angle
         {
@@ -198,6 +200,7 @@
             "scope_exclude": ["string", "comment", "keyword.operator"],
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "plugin_library": "bh_modules.tags",
             "enabled": true
         },
         // CSSedit groups
