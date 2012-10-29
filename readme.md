@@ -8,7 +8,7 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 - Documentation
 
 # Credits
-- pyparadigm: for his original efforrts with SublimeBrackets and SublimeTagmatcher which has which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
+- pyparadigm: for his original efforrts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
 
 # Version 1.9.0

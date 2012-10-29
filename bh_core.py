@@ -398,6 +398,17 @@ class BhCore(object):
         for k, v in styles.items():
             self.bracket_regions[k] = StyleDefinition(k, v, default_settings, icon_path)
 
+    def is_valid_definition(self, params, language):
+        return (
+            not exclude_bracket(
+                params.get("enabled", True),
+                params.get("language_filter", "blacklist"),
+                params.get("language_list", []),
+                language
+            ) and
+            params["open"] is not None and params["close"] is not None
+        )
+
     def init_brackets(self, language):
         self.find_regex = "(?:"
         self.index_open = {}
@@ -413,50 +424,32 @@ class BhCore(object):
         # current_brackets = []
 
         for params in self.bracket_types:
-            if (
-                not exclude_bracket(
-                    params.get("enabled", True),
-                    params.get("language_filter", "blacklist"),
-                    params.get("language_list", []),
-                    language
-                )
-            ):
-                # reload_modules(params, reloaded)
-                if params["open"] is not None and params["close"] is not None:
-                    try:
-                        load_modules(params, loaded_modules)
-                        entry = BracketDefinition(params)
-                        self.brackets.append(entry)
-                        self.find_regex += params["open"] + "|" + params["close"] + "|"
-                        # current_brackets.append(entry.name)
-                    except Exception, e:
-                        print e
+            if self.is_valid_definition(params, language):
+                try:
+                    load_modules(params, loaded_modules)
+                    entry = BracketDefinition(params)
+                    self.brackets.append(entry)
+                    self.find_regex += params["open"] + "|" + params["close"] + "|"
+                    # current_brackets.append(entry.name)
+                except Exception, e:
+                    print e
 
         scope_count = 0
         for params in self.scope_types:
-            if (
-                not exclude_bracket(
-                    params.get("enabled", True),
-                    params.get("language_filter", "blacklist"),
-                    params.get("language_list", []),
-                    language
-                )
-            ):
-                # reload_modules(params, reloaded)
-                if params["open"] is not None and params["close"] is not None:
-                    try:
-                        load_modules(params, loaded_modules)
-                        entry = ScopeDefinition(params)
-                        for x in entry.scopes:
-                            if x not in scopes:
-                                scopes[x] = scope_count
-                                scope_count += 1
-                                self.scopes.append({"name": x, "brackets": [entry]})
-                            else:
-                                self.scopes[scopes[x]]["brackets"].append(entry)
-                            # current_brackets.append(entry.name)
-                    except Exception, e:
-                        print e
+            if self.is_valid_definition(params, language):
+                try:
+                    load_modules(params, loaded_modules)
+                    entry = ScopeDefinition(params)
+                    for x in entry.scopes:
+                        if x not in scopes:
+                            scopes[x] = scope_count
+                            scope_count += 1
+                            self.scopes.append({"name": x, "brackets": [entry]})
+                        else:
+                            self.scopes[scopes[x]]["brackets"].append(entry)
+                        # current_brackets.append(entry.name)
+                except Exception, e:
+                    print e
 
         if len(self.brackets):
             # print self.find_regex[0:len(self.find_regex) - 1] + ")"
