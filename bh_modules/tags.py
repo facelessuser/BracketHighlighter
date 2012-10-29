@@ -70,11 +70,11 @@ class TagSearch(object):
         self.return_prev = False
         self.done = False
         self.view = view
+        self.scope_exclude = sublime.load_settings("bh_core.sublime-settings").get("tag_scope_exclude")
 
     def scope_check(self, pt):
-        scope_exclude = ["string", "comment"]
         illegal_scope = False
-        for exclude in scope_exclude:
+        for exclude in self.scope_exclude:
             illegal_scope |= bool(self.view.score_selector(pt, exclude))
         return illegal_scope
 

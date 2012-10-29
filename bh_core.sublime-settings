@@ -302,6 +302,8 @@
     // Style to use for matched tags
     "tag_style": "tag",
 
+    "tag_scope_exclude": ["string", "comment"],
+
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
