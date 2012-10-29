@@ -710,43 +710,39 @@ class BhCore(object):
             illegal_scope = True
         return illegal_scope
 
-    def compare(self, first, second, bfr):
-        bracket = self.brackets[first.type]
-        match = first.type == second.type
-        if bracket.compare is not None and match:
-            match = bracket.compare(
-                bracket.name,
-                BracketRegion(first.begin, first.end),
-                BracketRegion(second.begin, second.end),
-                bfr
-            )
-        return match
-
-    def scope_compare(self, left, right, bfr):
-        left, right = None, None
-        match = right and left
+    def compare(self, first, second, bfr, scope_bracket=False):
+        if scope_bracket:
+            match = first is not None and second is not None
+        else:
+            match = first.type == second.type
         if match:
-            bracket = self.scopes[left.scope]["brackets"][left.type]
-            match = True
+            bracket = self.scopes[first.scope]["brackets"][first.type] if scope_bracket else self.brackets[first.type]
             try:
-                if bracket.compare is not None:
+                if bracket.compare is not None and match:
                     match = bracket.compare(
-                        BracketRegion(left.begin, left.end, bracket.name),
-                        BracketRegion(right.begin, right.end, bracket.name),
+                        bracket.name,
+                        BracketRegion(first.begin, first.end),
+                        BracketRegion(second.begin, second.end),
                         bfr
                     )
             except:
                 print "BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc())
         return match
 
-    def scope_post_match(self, left, right, center, bfr):
+    def post_match(self, left, right, center, bfr, scope_bracket=False):
         if left is not None:
-            bracket = self.scopes[left.scope]["brackets"][left.type]
-            bracket_scope = left.scope
+            if scope_bracket:
+                bracket = self.scopes[left.scope]["brackets"][left.type]
+                bracket_scope = left.scope
+            else:
+                bracket = self.brackets[left.type]
             bracket_type = left.type
         elif right is not None:
-            bracket = self.scopes[right.scope]["brackets"][right.type]
-            bracket_scope = right.scope
+            if scope_bracket:
+                bracket = self.scopes[right.scope]["brackets"][right.type]
+                bracket_scope = right.scope
+            else:
+                bracket = self.brackets[right.type]
             bracket_type = right.type
         else:
             return left, right
@@ -766,42 +762,14 @@ class BhCore(object):
                     self.search_window
                 )
 
-                left = ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
-                right = ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+                if scope_bracket:
+                    left = ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
+                    right = ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+                else:
+                    left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
+                    right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
             except:
                 print "BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc())
-        return left, right
-
-    def post_match(self, left, right, center, bfr):
-        if left is not None:
-            bracket = self.brackets[left.type]
-            bracket_type = left.type
-        elif right is not None:
-            bracket = self.brackets[right.type]
-            bracket_type = right.type
-        else:
-            return left, right
-
-        self.bracket_style = bracket.style
-
-        if bracket.post_match is not None:
-            try:
-                lbracket, rbracket, self.bracket_style = bracket.post_match(
-                    self.view,
-                    bracket.name,
-                    bracket.style,
-                    BracketRegion(left.begin, left.end) if left is not None else None,
-                    BracketRegion(right.begin, right.end) if right is not None else None,
-                    center,
-                    bfr,
-                    self.search_window
-                )
-
-                left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
-                right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
-            except:
-                print "BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc())
-
         return left, right
 
     def run_plugin(self, name, left, right, regions):
@@ -873,7 +841,8 @@ class BhCore(object):
                 m = b.close.search(scope_bfr)
                 if m and m.group(1):
                     right = ScopeEntry(extent.begin() + m.start(1), extent.begin() + m.end(1), scope_count, bracket_count)
-                self.scope_compare(left, right, bfr)
+                if not self.compare(left, right, bfr, scope_bracket=True):
+                    left, right = None, None
                 # Track partial matches.  If a full match isn't found,
                 # return the first partial match at the end.
                 if partial_find is None and bool(left) != bool(right):
@@ -912,7 +881,7 @@ class BhCore(object):
         if self.adj_only:
             left, right = self.adjacent_check(left, right, center)
 
-        left, right = self.scope_post_match(left, right, center, bfr)
+        left, right = self.post_match(left, right, center, bfr, scope_bracket=True)
         return left, right, bracket, False
 
     def match_brackets(self, bfr, window, sel, scope=None):
