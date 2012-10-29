@@ -4,8 +4,8 @@ import sublime
 from os.path import basename
 
 FLAGS = re.MULTILINE | re.IGNORECASE
-HTML_START = re.compile(r'<([\w\:\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^>\s]+))?)*)\s*(\/?)>', FLAGS)
-CFML_START = re.compile(r'<((?:cf)?[\w\:\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^>\s]+))?)*)\s*(\/?)>', FLAGS)
+HTML_START = re.compile(r'''<([\w\:\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>''', FLAGS)
+CFML_START = re.compile(r'''<([\w\:\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>''', FLAGS)
 START_TAG = {
     "html": HTML_START,
     "xhtml": HTML_START,
@@ -236,5 +236,8 @@ class TagMatch(object):
                     stack.append(o)
             if len(stack):
                 self.left = self.resolve_self_closing(stack, self.right)
+        elif self.right is None and self.left is not None and self.left.self_closing:
+            # Account for the opening tag that was found being a self closing
+            self.right = self.left
 
         return self.left, self.right

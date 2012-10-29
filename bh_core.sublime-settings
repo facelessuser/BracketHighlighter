@@ -165,7 +165,31 @@
             "ignore_string_escape": true,
             "enabled": true
         },
-        // Angle brackets and tags
+        // HTML
+        {
+            "name": "html",
+            "open": "(<)(?=[\\w\\:\\-]+(?:(?:\\s+[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*)\\s*\\/?>|\\/[\\w\\:\\-]+[^>]*>)",
+            "close": "(?<=<)(?:[\\w\\:\\-]+(?:(?:\\s+[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*)\\s*\\/?|\\/[\\w\\:\\-]+[^>]*)(>)",
+            "style": "tag",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["HTML", "HTML 5", "XML", "PHP"],
+            "plugin_library": "bh_modules.tags",
+            "enabled": true
+        },
+        // CFML
+        {
+            "name": "cfml",
+            "open": "(<)(?=[\\w\\:\\-]+(?:(?:\\s+[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*\\/?>|\\/[\\w\\:\\-]+[^>]*>)",
+            "close": "(?<=<)(?:[\\w\\:\\-]+(?:(?:\\s+[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*\\/?|\\/[\\w\\:\\-]+[^>]*)(>)",
+            "style": "tag",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "plugin_library": "bh_modules.tags",
+            "enabled": true
+        },
+        // Angle
         {
             "name": "angle",
             "open": "(<)",
@@ -174,7 +198,6 @@
             "scope_exclude": ["string", "comment", "keyword.operator"],
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
-            "plugin_library": "bh_modules.tags",
             "enabled": true
         },
         // CSSedit groups

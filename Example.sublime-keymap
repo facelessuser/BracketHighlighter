@@ -70,7 +70,7 @@
         {
             "plugin":
             {
-                "type": ["angle"],
+                "type": ["cfml", "html", "angle"],
                 "command": "bh_modules.tagnameselect"
             }
         }
@@ -83,7 +83,7 @@
         {
             "plugin":
             {
-                "type": ["angle"],
+                "type": ["cfml", "html", "angle"],
                 "command": "bh_modules.tagattrselect",
                 "args": {"direction": "right"}
             }
@@ -97,7 +97,7 @@
         {
             "plugin":
             {
-                "type": ["angle"],
+                "type": ["cfml", "html", "angle"],
                 "command": "bh_modules.tagattrselect",
                 "args": {"direction": "left"}
             }

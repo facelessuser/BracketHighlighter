@@ -3,10 +3,10 @@ import bh_plugin
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
     def run(self, edit, name, direction='right'):
-        if name != "angle" or self.left.size() <= 1:
+        if self.left.size() <= 1:
             return
-        tag_name = '[\w\:\-]+'
-        attr_name = '([\w\-:]+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:\'((?:\\.|[^\'])*)\')|([^>\s]+)))?'
+        tag_name = r'[\w\:\-]+'
+        attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:(?:"((?:\.|[^"])*)")|(?:'((?:\.|[^'])*)')|([^>\s]+)))?'''
         tname = self.view.find(tag_name, self.left.begin)
         current = self.selection[0].b
         region = self.view.find(attr_name, tname.b)

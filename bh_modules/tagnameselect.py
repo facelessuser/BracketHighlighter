@@ -1,10 +1,12 @@
 import bh_plugin
 
+DEFAULT_TAGS = ["cfml", "html", "angle"]
+
 
 class TagNameSelect(bh_plugin.BracketPluginCommand):
     def run(self, edit, name):
-        if name == "angle" and self.left.size() > 1:
-            tag_name = '[\w\:\-\.]+'
+        if self.left.size() > 1:
+            tag_name = '[\w\:\-]+'
             region1 = self.view.find(tag_name, self.left.begin)
             region2 = self.view.find(tag_name, self.right.begin)
             self.selection = [region1, region2]

@@ -411,6 +411,7 @@ class BhCore(object):
 
     def init_brackets(self, language):
         self.find_regex = "(?:"
+        self.sub_find_regex = "(?:"
         self.index_open = {}
         self.index_close = {}
         self.brackets = []
@@ -429,7 +430,14 @@ class BhCore(object):
                     load_modules(params, loaded_modules)
                     entry = BracketDefinition(params)
                     self.brackets.append(entry)
-                    self.find_regex += params["open"] + "|" + params["close"] + "|"
+                    if not params.get("find_in_sub_search_only", False):
+                        self.find_regex += params["open"] + "|" + params["close"] + "|"
+                    else:
+                        self.find_regex += r"([^\s\S])|([^\s\S])|"
+                    if params.get("find_in_sub_search", False):
+                        self.sub_find_regex += params["open"] + "|" + params["close"] + "|"
+                    else:
+                        self.sub_find_regex += r"([^\s\S])|([^\s\S])|"
                     # current_brackets.append(entry.name)
                 except Exception, e:
                     print e
@@ -453,6 +461,7 @@ class BhCore(object):
 
         if len(self.brackets):
             # print self.find_regex[0:len(self.find_regex) - 1] + ")"
+            self.sub_pattern = re.compile(self.sub_find_regex[0:len(self.sub_find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
             self.pattern = re.compile(self.find_regex[0:len(self.find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
             self.enabled = True
         # self.view.settings().set("bh_registered_brackets", current_brackets)
@@ -889,7 +898,8 @@ class BhCore(object):
         left = None
         right = None
         stack = []
-        bsearch = BracketSearch(bfr, window, center, self.pattern, self.is_illegal_scope, scope)
+        pattern = self.pattern if not self.sub_search_mode else self.sub_pattern
+        bsearch = BracketSearch(bfr, window, center, pattern, self.is_illegal_scope, scope)
         for o in bsearch.get_open(BracketSearchSide.left):
             if len(stack) and bsearch.is_done(BracektSearchType.closing):
                 if self.compare(o, stack[-1], bfr):
