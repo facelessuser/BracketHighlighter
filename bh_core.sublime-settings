@@ -223,7 +223,7 @@
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
-            "language_list": ["Ruby"],
+            "language_list": ["Ruby", "Ruby on Rails", "HTML (Rails)"],
             "enabled": true
         },
         // C/C++ compile switches
