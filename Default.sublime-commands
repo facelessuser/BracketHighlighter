@@ -42,7 +42,7 @@
     },
     // Select text between brackets
     {
-        "keys": "BracketHighlighter: Select Bracket Content",
+        "caption": "BracketHighlighter: Select Bracket Content",
         "command": "bh_key",
         "args":
         {
