@@ -234,7 +234,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C"],
+            "language_list": ["C++", "C", "Objective-C"],
             "enabled": true
         }
     ],
