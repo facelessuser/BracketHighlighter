@@ -236,6 +236,17 @@
             "language_filter": "whitelist",
             "language_list": ["C++", "C", "Objective-C"],
             "enabled": true
+        },
+        // Erlang conditional statements
+        {
+            "name": "erlang",
+            "open": "\\s*(\\b(?:if|case|begin|try|fun|receive)\\b)",
+            "close": "\\b(end)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Erlang", "HTML (Erlang)"],
+            "enabled": true
         }
     ],
 
