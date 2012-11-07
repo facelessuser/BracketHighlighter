@@ -410,8 +410,8 @@ class BhCore(object):
         )
 
     def init_brackets(self, language):
-        self.find_regex = "(?:"
-        self.sub_find_regex = "(?:"
+        self.find_regex = []
+        self.sub_find_regex = []
         self.index_open = {}
         self.index_close = {}
         self.brackets = []
@@ -431,13 +431,18 @@ class BhCore(object):
                     entry = BracketDefinition(params)
                     self.brackets.append(entry)
                     if not params.get("find_in_sub_search_only", False):
-                        self.find_regex += params["open"] + "|" + params["close"] + "|"
+                        self.find_regex.append(params["open"])
+                        self.find_regex.append(params["close"])
                     else:
-                        self.find_regex += r"([^\s\S])|([^\s\S])|"
+                        self.find_regex.append(r"([^\s\S])")
+                        self.find_regex.append(r"([^\s\S])")
+
                     if params.get("find_in_sub_search", False):
-                        self.sub_find_regex += params["open"] + "|" + params["close"] + "|"
+                        self.sub_find_regex.append(params["open"])
+                        self.sub_find_regex.append(params["close"])
                     else:
-                        self.sub_find_regex += r"([^\s\S])|([^\s\S])|"
+                        self.sub_find_regex.append(r"([^\s\S])")
+                        self.sub_find_regex.append(r"([^\s\S])")
                     # current_brackets.append(entry.name)
                 except Exception, e:
                     print e
@@ -460,9 +465,11 @@ class BhCore(object):
                     print e
 
         if len(self.brackets):
-            # print self.find_regex[0:len(self.find_regex) - 1] + ")"
-            self.sub_pattern = re.compile(self.sub_find_regex[0:len(self.sub_find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
-            self.pattern = re.compile(self.find_regex[0:len(self.find_regex) - 1] + ")", re.MULTILINE | re.IGNORECASE)
+            # print "BracketHighlighter: Search patterns:"
+            # print "(?:%s)" % '|'.join(self.find_regex)
+            # print "(?:%s)" % '|'.join(self.sub_find_regex)
+            self.sub_pattern = re.compile("(?:%s)" % '|'.join(self.sub_find_regex), re.MULTILINE | re.IGNORECASE)
+            self.pattern = re.compile("(?:%s)" % '|'.join(self.find_regex), re.MULTILINE | re.IGNORECASE)
             self.enabled = True
         # self.view.settings().set("bh_registered_brackets", current_brackets)
 
