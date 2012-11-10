@@ -72,6 +72,11 @@
         "caption": "BracketHighlighter: Toggle String Bracket Escape Mode",
         "command": "bh_toggle_string_escape_mode"
     },
+    // Toggle high visibility mode
+    {
+        "caption": "BracketHighlighter: Toggle High Visibility Mode",
+        "command": "bh_toggle_high_visibility"
+    },
     { "caption": "-" },
     // Select tag name of HTML/XML tag (both opening name and closing)
     {

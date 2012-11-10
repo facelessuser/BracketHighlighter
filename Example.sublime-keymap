@@ -139,5 +139,10 @@
     {
         "keys": ["ctrl+alt+super+w"],
         "command": "wrap_brackets"
+    },
+    // Toggle high visibility mode
+    {
+        "keys": ["ctrl+alt+super+v"],
+        "command": "bh_toggle_high_visibility"
     }
 ]

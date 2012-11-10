@@ -25,6 +25,9 @@ DEFAULT_STYLES = {
         "style": "outline"
     }
 }
+HV_RSVD_VALUES = ["__default__", "__bracket__"]
+
+HIGH_VISIBILITY = True
 
 
 def underline(regions):
@@ -321,6 +324,12 @@ class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
         sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
 
 
+class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
+    def run(self):
+        global HIGH_VISIBILITY
+        HIGH_VISIBILITY = not HIGH_VISIBILITY
+
+
 class BhKeyCommand(sublime_plugin.WindowCommand):
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
         # Override events
@@ -362,7 +371,6 @@ class BhCore(object):
 
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", [])
-
         self.scope_types = self.settings.get("scope_brackets", [])
 
         # Init selection params
@@ -370,6 +378,10 @@ class BhCore(object):
         self.selection_threshold = int(self.settings.get("search_threshold", 5000))
         self.new_select = False
         self.loaded_modules = set([])
+
+        # High Visibility options
+        self.hv_style = select_bracket_style(self.settings.get("high_visibility_style", HV_RSVD_VALUES[1]))
+        self.hv_color = self.settings.get("high_visibility_color", HV_RSVD_VALUES[1])
 
         # Init plugin
         self.plugin = None
@@ -510,14 +522,22 @@ class BhCore(object):
             self.view.sel().clear()
             map(lambda x: self.view.sel().add(x), self.sels)
 
+    def hv_highlight_color(self, b_value):
+        color = self.hv_color
+        if self.hv_color == HV_RSVD_VALUES[0]:
+            color = self.bracket_regions["default"].color
+        elif self.hv_color == HV_RSVD_VALUES[1]:
+            color = b_value
+        return color
+
     def highlight_regions(self, name, icon_type, selections, bracket, regions):
         if len(selections):
             self.view.add_regions(
                 name,
                 getattr(bracket, selections),
-                bracket.color,
+                self.hv_highlight_color(bracket.color) if HIGH_VISIBILITY else bracket.color,
                 getattr(bracket, icon_type),
-                bracket.style
+                self.hv_style if HIGH_VISIBILITY else bracket.style
             )
             regions.append(name)
 
@@ -617,7 +637,9 @@ class BhCore(object):
         if self.count_lines:
             self.chars += abs(right.begin - left.end)
             self.lines += lines
-        if bracket.underline:
+        if HIGH_VISIBILITY:
+            bracket.selections += [sublime.Region(left.begin, right.end)]
+        elif bracket.underline:
             if lines <= 1:
                 bracket.selections += underline((left.toregion(), right.toregion()))
             else:

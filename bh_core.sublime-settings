@@ -6,6 +6,12 @@
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
 
+    // High visibilty style and color for high visibility mode
+    // (solid|outline)
+    "high_visibility_style": "outline",
+    // (scope|__default__|__bracket__)
+    "high_visibility_color": "__bracket__",
+
     // Rules that define find and matching brackets
     // that are contained in a common scope.
     // Useful for bracket pairs that are the same but
