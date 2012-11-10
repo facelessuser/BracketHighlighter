@@ -7,7 +7,7 @@
     "show_unmatched" : true,
 
     // High visibilty style and color for high visibility mode
-    // (solid|outline)
+    // (solid|outline|underline)
     "high_visibility_style": "outline",
     // (scope|__default__|__bracket__)
     "high_visibility_color": "__bracket__",
