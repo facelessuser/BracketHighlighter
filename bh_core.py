@@ -27,7 +27,7 @@ DEFAULT_STYLES = {
 }
 HV_RSVD_VALUES = ["__default__", "__bracket__"]
 
-HIGH_VISIBILITY = True
+HIGH_VISIBILITY = False
 
 
 def underline(regions):
