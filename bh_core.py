@@ -638,7 +638,11 @@ class BhCore(object):
             self.chars += abs(right.begin - left.end)
             self.lines += lines
         if HIGH_VISIBILITY:
-            bracket.selections += [sublime.Region(left.begin, right.end)]
+            if lines <= 1:
+                bracket.selections += [sublime.Region(left.begin, right.end)]
+            else:
+                bracket.open_selections += [sublime.Region(left.begin, right.end)]
+                bracket.close_selections += [sublime.Region(right.begin)]
         elif bracket.underline:
             if lines <= 1:
                 bracket.selections += underline((left.toregion(), right.toregion()))
