@@ -8,7 +8,7 @@
 
     // High visibilty style and color for high visibility mode
     // (solid|outline|underline)
-    "high_visibility_style": "outline",
+    "high_visibility_style": "underline",
     // (scope|__default__|__bracket__)
     "high_visibility_color": "__bracket__",
 
@@ -141,7 +141,7 @@
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
-            "find_in_sub_search": true,
+            "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
         },
@@ -154,7 +154,7 @@
             "scope_exclude": ["string", "comment"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
-            "find_in_sub_search": true,
+            "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
         },
@@ -167,7 +167,7 @@
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
-            "find_in_sub_search": true,
+            "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
         },
@@ -181,7 +181,7 @@
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP"],
             "plugin_library": "bh_modules.tags",
-            "find_in_sub_search": true,
+            "find_in_sub_search": "only",
             "enabled": false
         },
         // CFML
@@ -194,7 +194,7 @@
             "language_filter": "whitelist",
             "language_list": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "plugin_library": "bh_modules.tags",
-            "find_in_sub_search": true,
+            "find_in_sub_search": "only",
             "enabled": false
         },
         // Angle

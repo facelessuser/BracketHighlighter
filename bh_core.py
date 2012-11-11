@@ -270,7 +270,9 @@ class BracketDefinition(object):
         self.name = bracket["name"]
         self.style = bracket.get("style", "default")
         self.compare = bracket.get("compare")
-        self.find_in_sub_search = bracket.get("find_in_sub_search", False)
+        sub_search = bracket.get("find_in_sub_search", "false")
+        self.find_in_sub_search_only = sub_search == "only"
+        self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
         self.post_match = bracket.get("post_match")
         self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
         self.scope_exclude = bracket.get("scope_exclude", [])
@@ -444,14 +446,14 @@ class BhCore(object):
                     load_modules(params, loaded_modules)
                     entry = BracketDefinition(params)
                     self.brackets.append(entry)
-                    if not params.get("find_in_sub_search_only", False):
+                    if not entry.find_in_sub_search_only:
                         self.find_regex.append(params["open"])
                         self.find_regex.append(params["close"])
                     else:
                         self.find_regex.append(r"([^\s\S])")
                         self.find_regex.append(r"([^\s\S])")
 
-                    if params.get("find_in_sub_search", False):
+                    if entry.find_in_sub_search:
                         self.sub_find_regex.append(params["open"])
                         self.sub_find_regex.append(params["close"])
                     else:
