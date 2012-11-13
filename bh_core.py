@@ -31,6 +31,10 @@ HIGH_VISIBILITY = False
 
 
 def underline(regions):
+    """
+    Convert sublime regions into underline regions
+    """
+
     r = []
     for region in regions:
         start = region.begin()
@@ -42,6 +46,10 @@ def underline(regions):
 
 
 def load_modules(obj, loaded):
+    """
+    Load bracket plugin modules
+    """
+
     plib = obj.get("plugin_library")
     if plib is None:
         return
@@ -73,6 +81,10 @@ def load_modules(obj, loaded):
 
 
 def select_bracket_style(option):
+    """
+    Configure style of region based on option
+    """
+
     style = sublime.HIDE_ON_MINIMAP
     if option == "outline":
         style |= sublime.DRAW_OUTLINED
@@ -84,6 +96,10 @@ def select_bracket_style(option):
 
 
 def select_bracket_icons(option, icon_path):
+    """
+    Configure custom gutter icons if they can be located.
+    """
+
     icon = ""
     small_icon = ""
     open_icon = ""
@@ -117,6 +133,10 @@ def select_bracket_icons(option, icon_path):
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
+    """
+    Exclude or include brackets based on filter lists.
+    """
+
     exclude = True
     if enabled:
         # Black list languages
@@ -138,8 +158,17 @@ def exclude_bracket(enabled, filter_type, language_list, language):
 
 
 class Pref(object):
+    """
+    Object to manage when bracket events should be launched.
+    """
+
     @classmethod
     def load(cls):
+        """
+        Initialize variables for determining
+        when to initiate a bracket matching event.
+        """
+
         cls.wait_time = 0.12
         cls.time = time()
         cls.modified = False
@@ -150,42 +179,79 @@ Pref.load()
 
 
 class BhThreadMgr(object):
+    """
+    Object to help track when a new thread needs to be started.
+    """
+
     restart = False
 
 
-class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False)):
+class BhEntry(object):
+    """
+    Generic object for bracket regions.
+    """
+
     def move(self, begin, end):
+        """
+        Create a new object with the points moved to the specified locations.
+        """
+
         return self._replace(begin=begin, end=end)
 
     def size(self):
+        """
+        Size of bracket selection.
+        """
+
         return abs(self.begin - self.end)
 
     def toregion(self):
+        """
+        Convert to sublime Region.
+        """
+
         return sublime.Region(self.begin, self.end)
 
 
-class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False)):
-    def move(self, begin, end):
-        return self._replace(begin=begin, end=end)
+class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False), BhEntry):
+    """
+    Bracket object.
+    """
 
-    def size(self):
-        return abs(self.begin - self.end)
+    pass
 
-    def toregion(self):
-        return sublime.Region(self.begin, self.end)
+
+class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False), BhEntry):
+    """
+    Scope bracket object.
+    """
+
+    pass
 
 
 class BracketSearchSide(object):
+    """
+    Userful structure to specify bracket matching direction.
+    """
+
     left = 0
     right = 1
 
 
 class BracektSearchType(object):
+    """
+    Userful structure to specify bracket matching direction.
+    """
+
     opening = 0
     closing = 1
 
 
 class BracketSearch(object):
+    """
+    Object that performs regex search on the view's buffer and finds brackets.
+    """
+
     def __init__(self, bfr, window, center, pattern, scope_check, scope):
         self.center = center
         self.pattern = pattern
@@ -352,7 +418,14 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
 
 class BhCore(object):
+    """
+    Bracket matching class.
+    """
+
     def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}, keycommand=False):
+        """
+        Load settings and setup reload events if settings changes.
+        """
         self.settings = sublime.load_settings("bh_core.sublime-settings")
         if not keycommand:
             self.settings.clear_on_change('reload')
@@ -360,6 +433,10 @@ class BhCore(object):
         self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
 
     def setup(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
+        """
+        Initialize class settings from settings file and inputs.
+        """
+
         # Init view params
         self.last_id_view = None
         self.last_id_sel = None
@@ -398,6 +475,10 @@ class BhCore(object):
                     self.transform.add(t)
 
     def init_bracket_regions(self):
+        """
+        Load up styled regions for brackets to use.
+        """
+
         self.bracket_regions = {}
         styles = self.settings.get("bracket_styles", DEFAULT_STYLES)
         icon_path = self.settings.get("icon_path", "Theme - Default").replace('\\', '/').strip('/')
@@ -415,6 +496,10 @@ class BhCore(object):
             self.bracket_regions[k] = StyleDefinition(k, v, default_settings, icon_path)
 
     def is_valid_definition(self, params, language):
+        """
+        Ensure bracket definition should be and can be loaded.
+        """
+
         return (
             not exclude_bracket(
                 params.get("enabled", True),
@@ -426,6 +511,10 @@ class BhCore(object):
         )
 
     def init_brackets(self, language):
+        """
+        Initialize bracket match definition objects from settings file.
+        """
+
         self.find_regex = []
         self.sub_find_regex = []
         self.index_open = {}
@@ -438,7 +527,6 @@ class BhCore(object):
         self.multi_select = False
         scopes = {}
         loaded_modules = self.loaded_modules.copy()
-        # current_brackets = []
 
         for params in self.bracket_types:
             if self.is_valid_definition(params, language):
@@ -459,7 +547,6 @@ class BhCore(object):
                     else:
                         self.sub_find_regex.append(r"([^\s\S])")
                         self.sub_find_regex.append(r"([^\s\S])")
-                    # current_brackets.append(entry.name)
                 except Exception, e:
                     print e
 
@@ -476,7 +563,6 @@ class BhCore(object):
                             self.scopes.append({"name": x, "brackets": [entry]})
                         else:
                             self.scopes[scopes[x]]["brackets"].append(entry)
-                        # current_brackets.append(entry.name)
                 except Exception, e:
                     print e
 
@@ -487,9 +573,12 @@ class BhCore(object):
             self.sub_pattern = re.compile("(?:%s)" % '|'.join(self.sub_find_regex), re.MULTILINE | re.IGNORECASE)
             self.pattern = re.compile("(?:%s)" % '|'.join(self.find_regex), re.MULTILINE | re.IGNORECASE)
             self.enabled = True
-        # self.view.settings().set("bh_registered_brackets", current_brackets)
 
     def init_match(self):
+        """
+        Initialize matching for the current view's syntax.
+        """
+
         self.chars = 0
         self.lines = 0
         syntax = self.view.settings().get('syntax')
@@ -506,6 +595,10 @@ class BhCore(object):
                 r.center_selections = []
 
     def unique(self):
+        """
+        Check if the current selection(s) is different from the last.
+        """
+
         id_view = self.view.id()
         id_sel = "".join([str(sel.a) for sel in self.view.sel()])
         is_unique = False
@@ -516,11 +609,19 @@ class BhCore(object):
         return is_unique
 
     def store_sel(self, regions):
+        """
+        Store the current selection selection to be set at the end.
+        """
+
         if self.new_select:
             for region in regions:
                 self.sels.append(region)
 
     def change_sel(self):
+        """
+        Change the view's selections.
+        """
+
         if self.new_select and len(self.sels) > 0:
             if self.multi_select == False:
                 self.view.show(self.sels[0])
@@ -528,6 +629,10 @@ class BhCore(object):
             map(lambda x: self.view.sel().add(x), self.sels)
 
     def hv_highlight_color(self, b_value):
+        """
+        High visibility highlight decesions.
+        """
+
         color = self.hv_color
         if self.hv_color == HV_RSVD_VALUES[0]:
             color = self.bracket_regions["default"].color
@@ -536,6 +641,10 @@ class BhCore(object):
         return color
 
     def highlight_regions(self, name, icon_type, selections, bracket, regions):
+        """
+        Apply the highlightes for the highlight region.
+        """
+
         if len(selections):
             self.view.add_regions(
                 name,
@@ -547,6 +656,10 @@ class BhCore(object):
             regions.append(name)
 
     def highlight(self, view):
+        """
+        Highlight all bracket regions.
+        """
+
         for region_key in self.view.settings().get("bh_regions", []):
             self.view.erase_regions(region_key)
 
@@ -563,9 +676,14 @@ class BhCore(object):
             self.highlight_regions("bh_" + name + "_center", "no_icon", "center_selections", r, regions)
             self.highlight_regions("bh_" + name + "_open", open_icon_type, "open_selections", r, regions)
             self.highlight_regions("bh_" + name + "_close", close_icon_type, "close_selections", r, regions)
+        # Track which regions were set in the view so that they can be cleaned up later.
         self.view.settings().set("bh_regions", regions)
 
     def get_search_bfr(self, sel):
+        """
+        Read in the view's buffer for scanning for brackets etc.
+        """
+
         # Determine how much of the buffer to search
         view_min = 0
         view_max = self.view.size()
@@ -588,6 +706,10 @@ class BhCore(object):
         return self.view.substr(sublime.Region(0, view_max))
 
     def match(self, view, force_match=True):
+        """
+        Preform matching brackets surround the selection(s)
+        """
+
         if view == None:
             return
         # Setup views
@@ -629,6 +751,10 @@ class BhCore(object):
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
 
     def save_incomplete_regions(self, left, right, regions):
+        """
+        Store single incomplete brackets for highlighting.
+        """
+
         found = left if left is not None else right
         bracket = self.bracket_regions["unmatched"]
         if bracket.underline:
@@ -638,6 +764,10 @@ class BhCore(object):
         self.store_sel(regions)
 
     def save_regions(self, left, right, regions):
+        """
+        Saved matched regions.  Perform any special considerations for region formatting.
+        """
+
         bracket = self.bracket_regions.get(self.bracket_style, self.bracket_regions["default"])
         lines = abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
         if self.count_lines:
@@ -675,6 +805,10 @@ class BhCore(object):
         self.store_sel(regions)
 
     def sub_search(self, sel, search_window, bfr, scope=None):
+        """
+        Search a scope bracket match for bracekts within.
+        """
+
         bracket = None
         left, right = self.match_brackets(bfr, search_window, sel, scope)
 
@@ -691,6 +825,10 @@ class BhCore(object):
         return False
 
     def find_scopes(self, bfr, sel):
+        """
+        Find brackets by scope definition.
+        """
+
         # Search buffer
         left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel)
         if sub_matched:
@@ -711,6 +849,10 @@ class BhCore(object):
         return False
 
     def find_matches(self, bfr, sel):
+        """
+        Find bracket matches
+        """
+
         bracket = None
         left, right = self.match_brackets(bfr, self.search_window, sel)
 
@@ -732,6 +874,10 @@ class BhCore(object):
             self.store_sel(regions)
 
     def escaped(self, pt, ignore_string_escape, scope):
+        """
+        Check if sub bracket in string scope is escaped.
+        """
+
         if not ignore_string_escape:
             return False
         if scope and scope.startswith("string"):
@@ -739,6 +885,11 @@ class BhCore(object):
         return False
 
     def string_escaped(self, pt):
+        """
+        Check if bracket is follows escaping characters.
+        Account for if in string or regex string scope.
+        """
+
         escaped = False
         start = pt - 1
         first = False
@@ -753,6 +904,10 @@ class BhCore(object):
         return escaped
 
     def is_illegal_scope(self, pt, bracket_id, scope=None):
+        """
+        Check if scope at pt X should be ignored.
+        """
+
         bracket = self.brackets[bracket_id]
         if self.sub_search_mode and not bracket.find_in_sub_search:
             return True
@@ -770,6 +925,10 @@ class BhCore(object):
         return illegal_scope
 
     def compare(self, first, second, bfr, scope_bracket=False):
+        """
+        Compare brackets.  This function allows bracket plugins to add aditional logic.
+        """
+
         if scope_bracket:
             match = first is not None and second is not None
         else:
@@ -789,6 +948,11 @@ class BhCore(object):
         return match
 
     def post_match(self, left, right, center, bfr, scope_bracket=False):
+        """
+        Peform special logic after a match has been made.
+        This function allows bracket plugins to add aditional logic.
+        """
+
         if left is not None:
             if scope_bracket:
                 bracket = self.scopes[left.scope]["brackets"][left.type]
@@ -832,6 +996,10 @@ class BhCore(object):
         return left, right
 
     def run_plugin(self, name, left, right, regions):
+        """
+        Run a bracket plugin.
+        """
+
         lbracket = BracketRegion(left.begin, left.end)
         rbracket = BracketRegion(right.begin, right.end)
 
@@ -846,6 +1014,11 @@ class BhCore(object):
         return left, right, regions
 
     def match_scope_brackets(self, bfr, sel):
+        """
+        See if scope should be searched, and then check
+        endcaps to determine if valid scope bracket.
+        """
+
         center = sel.a
         left = None
         right = None
@@ -944,6 +1117,10 @@ class BhCore(object):
         return left, right, bracket, False
 
     def match_brackets(self, bfr, window, sel, scope=None):
+        """
+        Regex bracket matching.
+        """
+
         center = sel.a
         left = None
         right = None
