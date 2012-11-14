@@ -253,6 +253,10 @@ class BracketSearch(object):
     """
 
     def __init__(self, bfr, window, center, pattern, scope_check, scope):
+        """
+        Prepare the search object
+        """
+
         self.center = center
         self.pattern = pattern
         self.bfr = bfr
@@ -267,16 +271,32 @@ class BracketSearch(object):
         self.findall(window)
 
     def reset_end_state(self):
+        """
+        Reset the the current search flags etc.
+        This is usually done before searching the other direction.
+        """
+
         self.start = [None, None]
         self.done = [False, False]
         self.prev_match = [None, None]
         self.return_prev = [False, False]
 
     def remember(self, match_type):
+        """
+        Remember the current match.
+        Don't get the next bracket on the next
+        request, but return the current one again.
+        """
+
         self.return_prev[match_type] = True
         self.done[match_type] = False
 
     def findall(self, window):
+        """
+        Find all of the brackets and sort them
+        to "left of the cursor" and "right of the cursor"
+        """
+
         for m in self.pattern.finditer(self.bfr, window[0], window[1]):
             g = m.lastindex
             try:
@@ -295,17 +315,38 @@ class BracketSearch(object):
                     self.right[match_type].append(BracketEntry(start, end, bracket_id))
 
     def get_open(self, bracket_code):
+        """
+        Get opening bracket.  Accepts a bracket code that
+        determines which side of the cursor the next match is returned from.
+        """
+
         for b in self._get_bracket(bracket_code, BracektSearchType.opening):
             yield b
 
     def get_close(self, bracket_code):
+        """
+        Get closing bracket.  Accepts a bracket code that
+        determines which side of the cursor the next match is returned from.
+        """
+
         for b in self._get_bracket(bracket_code, BracektSearchType.closing):
             yield b
 
     def is_done(self, match_type):
+        """
+        Retrieve done flag.
+        """
+
         return self.done[match_type]
 
     def _get_bracket(self, bracket_code, match_type):
+        """
+        Get the next bracket.  Accepts bracket code that determines
+        which side of the cursor the next match is returned from and
+        the match type which determines whether a opening or closing
+        bracket is desired.
+        """
+
         if self.done[match_type]:
             return
         if self.return_prev[match_type]:
@@ -332,7 +373,15 @@ class BracketSearch(object):
 
 
 class BracketDefinition(object):
+    """
+    Normal bracket definition.
+    """
+
     def __init__(self, bracket):
+        """
+        Setup the bracket object by reading the passed in dictionary.
+        """
+
         self.name = bracket["name"]
         self.style = bracket.get("style", "default")
         self.compare = bracket.get("compare")
@@ -346,7 +395,15 @@ class BracketDefinition(object):
 
 
 class ScopeDefinition(object):
+    """
+    Scope bracket definition.
+    """
+
     def __init__(self, bracket):
+        """
+        Setup the bracket object by reading the passed in dictionary.
+        """
+
         self.style = bracket.get("style", "default")
         self.open = re.compile("\\A" + bracket.get("open", "."), re.MULTILINE | re.IGNORECASE)
         self.close = re.compile(bracket.get("close", ".") + "\\Z", re.MULTILINE | re.IGNORECASE)
@@ -360,7 +417,16 @@ class ScopeDefinition(object):
 
 
 class StyleDefinition(object):
+    """
+    Styling definition.
+    """
+
     def __init__(self, name, style, default_highlight, icon_path):
+        """
+        Setup the style object by reading the
+        passed in dictionary. And other parameters.
+        """
+
         self.name = name
         self.selections = []
         self.open_selections = []
@@ -377,6 +443,11 @@ class StyleDefinition(object):
 
 
 class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
+    """
+    Toggle between regex escape and
+    string escape for brackets in strings.
+    """
+
     def run(self, edit):
         default_mode = sublime.load_settings("bh_core.sublime-settings").get('bracket_string_escape_mode', 'string')
         if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
@@ -388,18 +459,32 @@ class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
 
 
 class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
+    """
+    Shoe current string escape mode for sub brackets in strings.
+    """
+
     def run(self, edit):
         default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('bracket_string_escape_mode', 'string')
         sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
 
 
 class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
+    """
+    Toggle a high visibility mode that
+    highlights the entire bracket extent.
+    """
+
     def run(self):
         global HIGH_VISIBILITY
         HIGH_VISIBILITY = not HIGH_VISIBILITY
 
 
 class BhKeyCommand(sublime_plugin.WindowCommand):
+    """
+    Command to process shortcuts, menu calls, and command palette calls.
+    This is how BhCore is called with different options.
+    """
+
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
         # Override events
         Pref.ignore_all = True
@@ -1199,12 +1284,20 @@ class BhListenerCommand(sublime_plugin.EventListener):
     """
 
     def on_load(self, view):
+        """
+        Search brackets on view load.
+        """
+
         if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(bh_run, 0)
 
     def on_modified(self, view):
+        """
+        Update highlighted brackets when the text changes.
+        """
+
         if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_EDIT
@@ -1212,12 +1305,20 @@ class BhListenerCommand(sublime_plugin.EventListener):
         Pref.time = time()
 
     def on_activated(self, view):
+        """
+        Highlight brackets when the view gains focus again.
+        """
+
         if self.ignore_event(view):
             return
         Pref.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(bh_run, 0)
 
     def on_selection_modified(self, view):
+        """
+        Highlight brackets when the selections change.
+        """
+
         if self.ignore_event(view):
             return
         if Pref.type != BH_MATCH_TYPE_EDIT:
@@ -1230,6 +1331,11 @@ class BhListenerCommand(sublime_plugin.EventListener):
             Pref.time = now
 
     def ignore_event(self, view):
+        """
+        Ignore request to highlight if the view is a widget,
+        or if it is too soon to accept an event.
+        """
+
         return (view.settings().get('is_widget') or Pref.ignore_all)
 
 
