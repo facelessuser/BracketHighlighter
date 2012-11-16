@@ -157,7 +157,7 @@ def exclude_bracket(enabled, filter_type, language_list, language):
     return exclude
 
 
-class Pref(object):
+class BhEventMgr(object):
     """
     Object to manage when bracket events should be launched.
     """
@@ -175,7 +175,7 @@ class Pref(object):
         cls.type = BH_MATCH_TYPE_SELECTION
         cls.ignore_all = False
 
-Pref.load()
+BhEventMgr.load()
 
 
 class BhThreadMgr(object):
@@ -487,8 +487,8 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
     def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
         # Override events
-        Pref.ignore_all = True
-        Pref.modified = False
+        BhEventMgr.ignore_all = True
+        BhEventMgr.modified = False
         BhCore(
             threshold,
             lines,
@@ -498,8 +498,8 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             True
         ).match(self.window.active_view())
         # Reset event settings
-        Pref.ignore_all = False
-        Pref.time = time()
+        BhEventMgr.ignore_all = False
+        BhEventMgr.time = time()
 
 
 class BhCore(object):
@@ -1290,7 +1290,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        Pref.type = BH_MATCH_TYPE_SELECTION
+        BhEventMgr.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(bh_run, 0)
 
     def on_modified(self, view):
@@ -1300,9 +1300,9 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        Pref.type = BH_MATCH_TYPE_EDIT
-        Pref.modified = True
-        Pref.time = time()
+        BhEventMgr.type = BH_MATCH_TYPE_EDIT
+        BhEventMgr.modified = True
+        BhEventMgr.time = time()
 
     def on_activated(self, view):
         """
@@ -1311,7 +1311,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        Pref.type = BH_MATCH_TYPE_SELECTION
+        BhEventMgr.type = BH_MATCH_TYPE_SELECTION
         sublime.set_timeout(bh_run, 0)
 
     def on_selection_modified(self, view):
@@ -1321,14 +1321,14 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        if Pref.type != BH_MATCH_TYPE_EDIT:
-            Pref.type = BH_MATCH_TYPE_SELECTION
+        if BhEventMgr.type != BH_MATCH_TYPE_EDIT:
+            BhEventMgr.type = BH_MATCH_TYPE_SELECTION
         now = time()
-        if now - Pref.time > Pref.wait_time:
+        if now - BhEventMgr.time > BhEventMgr.wait_time:
             sublime.set_timeout(bh_run, 0)
         else:
-            Pref.modified = True
-            Pref.time = now
+            BhEventMgr.modified = True
+            BhEventMgr.time = now
 
     def ignore_event(self, view):
         """
@@ -1336,7 +1336,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         or if it is too soon to accept an event.
         """
 
-        return (view.settings().get('is_widget') or Pref.ignore_all)
+        return (view.settings().get('is_widget') or BhEventMgr.ignore_all)
 
 
 def bh_run():
@@ -1344,13 +1344,13 @@ def bh_run():
     Kick off matching of brackets
     """
 
-    Pref.modified = False
+    BhEventMgr.modified = False
     window = sublime.active_window()
     view = window.active_view() if window != None else None
-    Pref.ignore_all = True
-    bh_match(view, True if Pref.type == BH_MATCH_TYPE_EDIT else False)
-    Pref.ignore_all = False
-    Pref.time = time()
+    BhEventMgr.ignore_all = True
+    bh_match(view, True if BhEventMgr.type == BH_MATCH_TYPE_EDIT else False)
+    BhEventMgr.ignore_all = False
+    BhEventMgr.time = time()
 
 
 def bh_loop():
@@ -1361,7 +1361,7 @@ def bh_loop():
     """
 
     while not BhThreadMgr.restart:
-        if Pref.modified == True and time() - Pref.time > Pref.wait_time:
+        if BhEventMgr.modified == True and time() - BhEventMgr.time > BhEventMgr.wait_time:
             sublime.set_timeout(bh_run, 0)
         sleep(0.5)
 
