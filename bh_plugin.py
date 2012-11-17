@@ -8,13 +8,29 @@ import traceback
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
+    """
+    Bracket Regions for plugins
+    """
+
     def move(self, begin, end):
+        """
+        Move bracket region to different points
+        """
+
         return self._replace(begin=begin, end=end)
 
     def size(self):
+        """
+        Get the size of the region
+        """
+
         return abs(self.begin - self.end)
 
     def toregion(self):
+        """
+        Convert to sublime region
+        """
+
         return sublime.Region(self.begin, self.end)
 
 
@@ -26,11 +42,23 @@ if BH_MODULES not in sys.path:
 
 
 def is_bracket_region(obj):
+    """
+    Check if object is a BracketRegion
+    """
+
     return isinstance(obj, BracketRegion)
 
 
 class BracketPlugin(object):
+    """
+    Class for preparing and running plugins
+    """
+
     def __init__(self, plugin, loaded):
+        """
+        Load plugin module
+        """
+
         self.enabled = False
         self.args = plugin['args'] if ("args" in plugin) else {}
         self.plugin = None
@@ -58,9 +86,17 @@ class BracketPlugin(object):
                 print 'BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc())
 
     def is_enabled(self):
+        """
+        Check if plugin is enabled
+        """
+
         return self.enabled
 
     def run_command(self, view, name, left, right, selection):
+        """
+        Load arguments into plugin and run
+        """
+
         plugin = self.plugin()
         setattr(plugin, "left", left)
         setattr(plugin, "right", right)
@@ -79,11 +115,13 @@ class BracketPlugin(object):
 
 
 class BracketPluginCommand(object):
-    def __setattr__(self, name, value):
-        # if name in ["left", "right"] and not is_bracket_region(value):
-        #     print type(value)
-        #     raise TypeError
-        super(BracketPluginCommand, self).__setattr__(name, value)
+    """
+    Bracket Plugin base class
+    """
 
     def run(self, bracket, content, selection):
+        """
+        Runs the plugin class
+        """
+
         pass

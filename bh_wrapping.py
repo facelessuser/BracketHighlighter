@@ -11,6 +11,10 @@ OUT_REGION = "bh_plugin_wrapping_outlier"
 
 
 def exclude_entry(enabled, filter_type, language_list, language):
+    """
+    Exclude bracket wrapping entry by filter
+    """
+
     exclude = True
     if enabled:
         # Black list languages
@@ -32,25 +36,48 @@ def exclude_entry(enabled, filter_type, language_list, language):
 
 
 class TextInsertion(object):
+    """
+    Wrapper class for inserting text
+    """
+
     def __init__(self, view, edit):
+        """
+        Store view and edit objects
+        """
+
         self.view = view
         self.edit = edit
 
     def insert(self, pt, text):
+        """
+        Peform insertion
+        """
+
         return self.view.insert(self.edit, pt, text)
 
 
 class WrapBracketsCommand(sublime_plugin.TextCommand):
+    """
+    Wrap the current selection(s) with the defined wrapping options
+    """
+
     def inline(self, edit, sel):
+        """
+        Inline wrap
+        """
+
         ti = TextInsertion(self.view, edit)
 
-        # self.insert_regions.append(sublime.Region(sel.begin() + len(self.brackets[0])))
         offset1 = ti.insert(sel.begin(), self.brackets[0])
         self.insert_regions.append(sublime.Region(sel.begin(), sel.begin() + offset1))
         offset2 = ti.insert(sel.end() + offset1, self.brackets[1])
         self.insert_regions.append(sublime.Region(sel.end() + offset1, sel.end() + offset1 + offset2))
 
     def block(self, edit, sel, indent=False):
+        """
+        Wrap brackets around selection and block off the content
+        """
+
         # Calculate number of lines between brackets
         self.calculate_lines(sel)
         # Calculate the current indentation of first bracket
@@ -84,6 +111,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         self.insert_regions.append(sublime.Region(first_end + second_start, first_end + second_start + second_end))
 
     def indent_content(self, ti, line_offset):
+        """
+        Indent the block content
+        """
+
         first = True
         offset = 0
         for l in range(line_offset, self.total_lines + line_offset):
@@ -96,17 +127,29 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         return offset
 
     def calculate_lines(self, sel):
+        """
+        Calculate lines between brackets
+        """
+
         self.first_line, self.col_position = self.view.rowcol(sel.begin())
         last_line = self.view.rowcol(sel.end())[0]
         self.total_lines = last_line - self.first_line + 1
 
     def calculate_indentation(self, sel):
+        """
+        Calculate how much lines should be indented
+        """
+
         tab_size = self.view.settings().get("tab_size", 4)
         tab_count = self.view.substr(sublime.Region(sel.begin() - self.col_position, sel.begin())).count('\t')
         spaces = self.col_position - tab_count
         self.indent_to_col = "\t" * tab_count + "\t" * (spaces / tab_size) + " " * (spaces % tab_size if spaces >= tab_size else spaces)
 
     def select(self, edit):
+        """
+        Select defined regions after wrapping
+        """
+
         self.view.sel().clear()
         map(lambda x: self.view.sel().add(x), self.insert_regions)
 
@@ -143,6 +186,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
             self.view.sel().add(final_sel[0])
 
     def wrap_brackets(self, value):
+        """
+        Wrap selection(s) with defined brackets
+        """
+
         if value < 0:
             return
 
@@ -169,6 +216,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         self.view.end_edit(edit)
 
     def read_wrap_entries(self):
+        """
+        Read wrap entries from the settings file
+        """
+
         settings = sublime.load_settings("bh_wrapping.sublime-settings")
         syntax = self.view.settings().get('syntax')
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
@@ -187,6 +238,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
                         pass
 
     def run(self, edit):
+        """
+        Display the wrapping menu
+        """
+
         self._menu = []
         self._brackets = []
         self._insert = []
@@ -200,7 +255,15 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
 
 
 class BhNextWrapSelCommand(sublime_plugin.TextCommand):
+    """
+    Navigate wrapping tab stop regions
+    """
+
     def run(self, edit):
+        """
+        Look for the next wrapping tab stop region
+        """
+
         regions = self.view.get_regions(SEL_REGION) + self.view.get_regions(OUT_REGION)
         if len(regions):
             self.view.sel().clear()
@@ -212,7 +275,15 @@ class BhNextWrapSelCommand(sublime_plugin.TextCommand):
 
 
 class BhWrapListener(sublime_plugin.EventListener):
+    """
+    Listen for wrapping tab stop tabbing
+    """
+
     def on_query_context(self, view, key, operator, operand, match_all):
+        """
+        Mark the next regions to navigate to.
+        """
+
         accept_query = False
         if key == "bh_wrapping":
             select = []
