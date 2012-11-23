@@ -9,6 +9,12 @@ TAB_REGION = "bh_plugin_wrapping_tabstop"
 SEL_REGION = "bh_plugin_wrapping_select"
 OUT_REGION = "bh_plugin_wrapping_outlier"
 
+VALID_INSERT_STYLES = (
+    ("inline", "Inline Insert"),
+    ("block", "Block Insert"),
+    ("indent_block", "Indented Block Insert")
+)
+
 
 def exclude_entry(enabled, filter_type, language_list, language):
     """
@@ -185,36 +191,6 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         elif len(final_sel):
             self.view.sel().add(final_sel[0])
 
-    def wrap_brackets(self, value):
-        """
-        Wrap selection(s) with defined brackets
-        """
-
-        if value < 0:
-            return
-
-        # Use new edit object since the main run has already exited
-        # and the old edit is more than likely closed now
-        edit = self.view.begin_edit()
-
-        # Wrap selections with brackets
-        self.brackets = self._brackets[value]
-        style = self._insert[value]
-        self.insert_regions = []
-
-        for sel in self.view.sel():
-            # Determine indentation style
-            if style == "indent_block":
-                self.block(edit, sel, True)
-            elif style == "block":
-                self.block(edit, sel)
-            else:
-                self.inline(edit, sel)
-
-        self.select(edit)
-
-        self.view.end_edit(edit)
-
     def read_wrap_entries(self):
         """
         Read wrap entries from the settings file
@@ -230,12 +206,65 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
                     try:
                         menu_entry = j["name"]
                         bracket_entry = j["brackets"]
-                        insert_style = j.get("insert_style", "normal")
+                        insert_style = j.get("insert_style", ["inline"])
                         self._menu.append(menu_entry)
                         self._brackets.append(bracket_entry)
                         self._insert.append(insert_style)
                     except Exception:
                         pass
+
+    def wrap_brackets(self, value):
+        """
+        Wrap selection(s) with defined brackets
+        """
+
+        if value < 0:
+            return
+
+        # Use new edit object since the main run has already exited
+        # and the old edit is more than likely closed now
+        edit = self.view.begin_edit()
+
+        # Wrap selections with brackets
+        style = self._style[value]
+        self.insert_regions = []
+
+        for sel in self.view.sel():
+            # Determine indentation style
+            if style == "indent_block":
+                self.block(edit, sel, True)
+            elif style == "block":
+                self.block(edit, sel)
+            else:
+                self.inline(edit, sel)
+
+        self.select(edit)
+
+        self.view.end_edit(edit)
+
+    def wrap_style(self, value):
+        """
+        Choose insert style for wrapping.
+        """
+
+        if value < 0:
+            return
+
+        style = []
+
+        self.brackets = self._brackets[value]
+        for s in VALID_INSERT_STYLES:
+            self._style.append(s[0])
+            if s[0] in self._insert[value]:
+                style.append(s[1])
+
+        if len(style) > 1:
+            self.view.window().show_quick_panel(
+                style,
+                self.wrap_brackets
+            )
+        else:
+            self.wrap_brackets(0)
 
     def run(self, edit):
         """
@@ -245,12 +274,13 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         self._menu = []
         self._brackets = []
         self._insert = []
+        self._style = []
         self.read_wrap_entries()
 
         if len(self._menu):
             self.view.window().show_quick_panel(
                 self._menu,
-                self.wrap_brackets
+                self.wrap_style
             )
 
 
