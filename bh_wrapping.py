@@ -62,10 +62,18 @@ class TextInsertion(object):
         return self.view.insert(self.edit, pt, text)
 
 
-class WrapBracketsCommand(sublime_plugin.TextCommand):
+class WrapBrackets(object):
     """
     Wrap the current selection(s) with the defined wrapping options
     """
+
+    def __init__(self, view, setting_file):
+        self.view = view
+        self._menu = []
+        self._brackets = []
+        self._insert = []
+        self._style = []
+        self.read_wrap_entries(setting_file)
 
     def inline(self, edit, sel):
         """
@@ -191,12 +199,12 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         elif len(final_sel):
             self.view.sel().add(final_sel[0])
 
-    def read_wrap_entries(self):
+    def read_wrap_entries(self, setting_file):
         """
         Read wrap entries from the settings file
         """
 
-        settings = sublime.load_settings("bh_wrapping.sublime-settings")
+        settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
         wrapping = settings.get("wrapping", [])
@@ -254,8 +262,8 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
 
         self.brackets = self._brackets[value]
         for s in VALID_INSERT_STYLES:
-            self._style.append(s[0])
             if s[0] in self._insert[value]:
+                self._style.append(s[0])
                 style.append(s[1])
 
         if len(style) > 1:
@@ -266,6 +274,8 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         else:
             self.wrap_brackets(0)
 
+
+class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
     def run(self, edit):
         """
         Display the wrapping menu
@@ -275,7 +285,7 @@ class WrapBracketsCommand(sublime_plugin.TextCommand):
         self._brackets = []
         self._insert = []
         self._style = []
-        self.read_wrap_entries()
+        self.read_wrap_entries("bh_wrapping.sublime-settings")
 
         if len(self._menu):
             self.view.window().show_quick_panel(
