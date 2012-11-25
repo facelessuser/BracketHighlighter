@@ -4,9 +4,7 @@ import sublime_plugin
 from time import time, sleep
 import thread
 import re
-import sys
-import imp
-from bh_plugin import BracketPlugin, BracketRegion, BH_MODULES
+from bh_plugin import BracketPlugin, BracketRegion, ImportModule
 from collections import namedtuple
 import traceback
 
@@ -54,24 +52,8 @@ def load_modules(obj, loaded):
     if plib is None:
         return
 
-    if plib.startswith("bh_modules"):
-        if "bh_modules" not in loaded:
-            imp.load_source("bh_modules", join(BH_MODULES, "bh_modules", "__init__.py"))
-            loaded.add("bh_modules")
-        path_name = join(BH_MODULES, normpath(plib.replace('.', '/')))
-    else:
-        path_name = join(sublime.packages_path(), normpath(plib.replace('.', '/')))
-
-    if not exists(path_name):
-        path_name += ".py"
-        if not exists(path_name):
-            print "BracketHighlighter: Could not load module %s" % plib
-            return
     try:
-        if plib in loaded:
-            module = sys.modules[plib]
-        else:
-            module = imp.load_source(plib, path_name)
+        module = ImportModule.import_module(plib, loaded)
         obj["compare"] = getattr(module, "compare", None)
         obj["post_match"] = getattr(module, "post_match", None)
         loaded.add(plib)

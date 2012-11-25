@@ -49,6 +49,28 @@ def is_bracket_region(obj):
     return isinstance(obj, BracketRegion)
 
 
+class ImportModule(object):
+    @classmethod
+    def import_module(cls, module_name, loaded=None):
+        if module_name.startswith("bh_modules."):
+            path_name = join(BH_MODULES, normpath(module_name.replace('.', '/')))
+            module_name = module_name.replace("bh_modules.", "")
+        else:
+            path_name = join(sublime.packages_path(), normpath(module_name.replace('.', '/')))
+        if not exists(path_name):
+            path_name += ".py"
+            assert exists(path_name)
+        if loaded is not None and module_name in loaded:
+            module = sys.modules[module_name]
+        else:
+            module = imp.load_source(module_name, path_name)
+        return module
+
+    @classmethod
+    def import_from(cls, module_name, attribute):
+        return getattr(cls.import_module(module_name), attribute)
+
+
 class BracketPlugin(object):
     """
     Class for preparing and running plugins
@@ -65,20 +87,7 @@ class BracketPlugin(object):
         if 'command' in plugin:
             plib = plugin['command']
             try:
-                if plib.startswith("bh_modules"):
-                    if "bh_modules" not in loaded:
-                        imp.load_source("bh_modules", join(BH_MODULES, "bh_modules", "__init__.py"))
-                        loaded.add("bh_modules")
-                    path_name = join(BH_MODULES, normpath(plib.replace('.', '/')))
-                else:
-                    path_name = join(sublime.packages_path(), normpath(plib.replace('.', '/')))
-                if not exists(path_name):
-                    path_name += ".py"
-                    assert exists(path_name)
-                if plib in loaded:
-                    module = sys.modules[plib]
-                else:
-                    module = imp.load_source(plib, path_name)
+                module = ImportModule.import_module(plib, loaded)
                 self.plugin = getattr(module, 'plugin')()
                 loaded.add(plib)
                 self.enabled = True
