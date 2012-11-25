@@ -67,13 +67,13 @@ class WrapBrackets(object):
     Wrap the current selection(s) with the defined wrapping options
     """
 
-    def __init__(self, view, setting_file):
+    def __init__(self, view, setting_file, attribute):
         self.view = view
         self._menu = []
         self._brackets = []
         self._insert = []
         self._style = []
-        self.read_wrap_entries(setting_file)
+        self.read_wrap_entries(setting_file, attribute)
 
     def inline(self, edit, sel):
         """
@@ -199,7 +199,7 @@ class WrapBrackets(object):
         elif len(final_sel):
             self.view.sel().add(final_sel[0])
 
-    def read_wrap_entries(self, setting_file):
+    def read_wrap_entries(self, setting_file, attribute):
         """
         Read wrap entries from the settings file
         """
@@ -207,7 +207,7 @@ class WrapBrackets(object):
         settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
-        wrapping = settings.get("wrapping", [])
+        wrapping = settings.get(attribute, [])
         for i in wrapping:
             if not exclude_entry(i["enabled"], i["language_filter"], i["language_list"], language):
                 for j in i.get("entries", []):
@@ -285,7 +285,7 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
         self._brackets = []
         self._insert = []
         self._style = []
-        self.read_wrap_entries("bh_wrapping.sublime-settings")
+        self.read_wrap_entries("bh_wrapping.sublime-settings", "wrapping")
 
         if len(self._menu):
             self.view.window().show_quick_panel(
