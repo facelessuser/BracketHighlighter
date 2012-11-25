@@ -21,6 +21,18 @@
             ]
         },
         {
+            "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
+                {"name": "'' Single Quotes", "brackets": ["'", "'${BH_SEL}"], "insert_style": ["inline"]},
+                {"name": "\"\" Double Quotes", "brackets": ["\"", "\"${BH_SEL}"], "insert_style": ["inline"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["Python"], "language_filter": "whitelist", "entries": [
+                {"name": "'''''' Triple Single Quotes", "brackets": ["'''", "'''${BH_SEL}"], "insert_style": ["inline", "block"]},
+                {"name": "\"\"\"\"\"\" Triple Double Quotes", "brackets": ["\"\"\"", "\"\"\"${BH_SEL}"], "insert_style": ["inline", "block"]}
+            ]
+        },
+        {
             "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
                 {"name": "HTML/XML Tag", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"], "insert_style": ["inline", "block", "indent_block"]}
             ]
