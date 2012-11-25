@@ -137,7 +137,7 @@
     },
     // Not implemented yet
     {
-        "caption": "BracketHighlighter: Swap Brackets (NOT IMPLEMENTED)",
+        "caption": "BracketHighlighter: Swap Brackets",
         "command": "swap_brackets"
     },
     // Surround selection with brackets from quick panel

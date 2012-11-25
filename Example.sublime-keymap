@@ -130,7 +130,7 @@
             }
         }
     },
-    // Not implemented yet
+    // Swap brackets with another type
     {
         "keys": ["ctrl+alt+super+e"],
         "command": "swap_brackets"

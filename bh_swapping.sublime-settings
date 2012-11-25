@@ -1,0 +1,46 @@
+{
+    "swapping": [
+        {
+            "enabled": true, "language_list": [], "language_filter": "whitelist", "entries": [
+                {"name": "<> Angle", "brackets": ["<", ">${BH_SEL}"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
+                {"name": "{} Curly", "brackets": ["{", "}${BH_SEL}"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
+                {"name": "() Round", "brackets": ["(", ")${BH_SEL}"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
+                {"name": "[] Square", "brackets": ["[", "]${BH_SEL}"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
+                {"name": "HTML/XML Tag", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["Markdown"], "language_filter": "whitelist", "entries": [
+                {"name": "Mardown: Bold", "brackets": ["**", "**${BH_SEL}"]},
+                {"name": "Mardown: Italic", "brackets": ["_", "_${BH_SEL}"]}
+            ]
+        },
+        {
+            "enabled": true, "language_list": ["C++", "C"], "language_filter": "whitelist", "entries": [
+                {"name": "C/C++: #if", "brackets": ["#if ${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #if, #else", "brackets": ["#if${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #if, #elif", "brackets": ["#if${BH_SEL}", "#elif ${BH_TAB:/* CONDITION */}\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #ifdef", "brackets": ["#ifdef${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #ifdef, #else", "brackets": ["#ifdef${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #ifndef", "brackets": ["#ifndef${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #ifndef, #else", "brackets": ["#ifndef${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]}
+            ]
+        }
+    ]
+}

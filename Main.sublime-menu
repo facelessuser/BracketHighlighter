@@ -152,7 +152,7 @@
                             },
                             // Not implemented yet
                             {
-                                "caption": "Swap Brackets (NOT IMPLEMENTED)",
+                                "caption": "Swap Brackets",
                                 "command": "swap_brackets"
                             },
                             // Surround selection with brackets from quick panel

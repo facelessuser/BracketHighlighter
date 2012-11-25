@@ -4,7 +4,6 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
 # TODO
-- Bracket Swap Plugin
 - Documentation
 
 # Credits
