@@ -905,6 +905,7 @@ class BhCore(object):
         if left is not None and right is not None:
             left, right, regions = self.run_plugin(bracket.name, left, right, regions)
             if left is None and right is None:
+                self.store_sel(regions)
                 return True
 
         if left is not None and right is not None:
