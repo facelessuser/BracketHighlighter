@@ -12,7 +12,7 @@
     // (scope|__default__|__bracket__)
     "high_visibility_color": "__bracket__",
 
-    // Rules that define find and matching brackets
+    // Rules that define the finding and matching of brackets
     // that are contained in a common scope.
     // Useful for bracket pairs that are the same but
     // share a common scope.  Brackets are found by
@@ -246,8 +246,8 @@
         // PHP conditional keywords
         {
             "name": "php_keywords",
-            "open": "^\\s*\\b(if|foreach|for|while|switch)\\b(?=.*:$)",
-            "close": "^\\s*\\b(endif|endfor|endforeach|endwhile|endswitch)\\b(?=;$)",
+            "open": "(?:^\\s*|<\\?(?:php)?\\s*)?\\b(if|foreach|for|while|switch)\\b(?=.*:\\s*(?:\\?>\\s*)?$)",
+            "close": "(?:^\\s*|<\\?(?:php)?\\s*)?\\b(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*;\\s*(?:\\?>\\s*)?$)",
             "style": "default",
             "language_filter": "whitelist",
             "scope_exclude": ["string", "comment"],
@@ -346,6 +346,7 @@
     // Style to use for matched tags
     "tag_style": "tag",
 
+    // Scopes to exclude from tag searches
     "tag_scope_exclude": ["string", "comment"],
 
     // Determine which style of tag-matching to use in which syntax
