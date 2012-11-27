@@ -3,78 +3,46 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
-# TODO
-- Documentation
+## Overview
+Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, ```{}```, ```""```, ```''```, ```<tag></tag>```, and even custom brackets.
+
+# FeatureList
+- Customizable to highlight almost any bracket
+- Customizable bracket highlight style
+- High visibility bracket highlight mode
+- Selectively disable or enable specific matching of tags, brackets, or quotes
+- Selectively whitelist or blacklist matching of specific tags, brackets, or quotes based on language
+- When bound to a shortcut, allow option to show line count and char count between match in the status bar
+- Highlight basic brackets within strings
+- Works with multi-select
+- Configurable custom gutter icons
+- Toggle bracket escape mode for string brackets (regex|string)
+- Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
+
+# General Use
+Todo
+
+# Configuring Shortcuts
+No shortcuts are provided by default so as not to conflict with other plugins or with default Sublime Text shortcuts, but an example shortcut file has been provided that can be adapted to fit a user's need.
+
+# Configuring Brackets
+Todo
+
+# Configuring Highlight Style
+Todo
+
+# Built-in Bracket Plugins
+Todo
+
+# Bracket Plugin API
+Todo
 
 # Credits
 - pyparadigm: for his original efforrts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
 
-# Version 1.9.0
-- Add experimental CFML support (defaulted off)
-- Add auto-detection of self-closing tags (defaulted on)
+# Version 2.0.0
+- Re-write of BracketHighlighter
 
-# Version 1.8.0
-- Add new commands: "Show Bracket String Escape Mode" and "Toggle Bracket String Escape Mode".  Default is "regex"
-
-# Version 1.7.2
-- Feed general bracket type to bracket plugins
-- Adjust bracket select plugin to better handle HTML tags
-
-# Version 1.7.1
-- Reorganize some settings
-- Limit auto-highlight selections by configurable threshold setting
-
-# Version 1.7.0
-- Hide parent quote highlighting when child quotes are highlighted
-- Allow the searching for brackets in non-quoted code scoped as strings (like regex)
-- Add setting "highlight_string_brackets_only" which allows never highlighting quotes but leaves internal string bracket highlighting on
-- deprecate "enable_forward_slash_regex_strings" in favor of "find_brackets_in any_strings"
-
-# Version 1.6.2
-- Fix adjacent_only with multi_select
-
-# Version 1.6.1
-- Suppress string highlighting when adjacent_only is set, but allow internal string brackets to still get highlighted with adjacent_only settings if match_string_brackets is true
-
-# Version 1.6.0
-- Add setting to match only when cursor is between brackets
-
-# Version 1.5.3
-- Allow turning off gutter icons for multi-select via settings
-- Fix multi-select detection
-- Default the internal settings if setting is not found
-
-# Version 1.5.2
-- Use tiny icons when line height is less than 16
-- Use no icon if icon cannot be found
-- Optimize png icons
-
-# Version 1.5.1
-- Ignore selection/edit events inside the main routine
-
-# Version 1.5.0
-- More responsive highlighting (thanks tito); delay setting no longer needed
-- Organize bracket plugins
-- Included more configurable custom gutter icons
-
-# Version 1.4.1
-- Make adjusment to regex modifier code to correctly count back modifiers in perl
-
-# Version 1.4.0
-- Account for perl regex, substitutions, and translations surrounded by "/" for string bracket matching
-- Account for regex modifiers when matching regex surrounded by "/" in javascript and perl
-
-# Version 1.3.0
-- Fixed escaped brackets in string handling.  Also a bit more efficient.
-
-# Version 1.2.0
-- Fix angle bracket avoidance when finding brackets inside strings, and make it cleaner
-
-# Version 1.1.0
-- Add python raw string support for quote highlighting
-- Add highlighting of brackets in strings; will work in all strings, but mainly meant for regex.  True by default
-- Add support for targetting regex strings like in javascript that are scoped as strings, but are not quoted, but use '/'s. True by default
-
-# Version 1.0.0
-- All previous work and releases
+# Version Older
+- See [Complete Changelog](https://github.com/facelessuser/BracketHighlighter/blob/BH2/CHANGELOG.md)
