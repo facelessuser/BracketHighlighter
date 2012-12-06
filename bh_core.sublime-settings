@@ -254,6 +254,17 @@
             "plugin_library": "bh_modules.phpkeywords",
             "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "enabled": true
+        },
+        // Erlang conditional statements
+        {
+            "name": "erlang",
+            "open": "\\s*(\\b(?:if|case|begin|try|fun(?=\\s*\\()|receive)\\b)",
+            "close": "\\b(end)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Erlang", "HTML (Erlang)"],
+            "enabled": true
         }
     ],
 
