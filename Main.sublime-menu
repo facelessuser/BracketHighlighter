@@ -57,7 +57,7 @@
                             },
                             // Select text between brackets
                             {
-                                "keys": "Select Bracket Content",
+                                "caption": "Select Bracket Content",
                                 "command": "bh_key",
                                 "args":
                                 {
@@ -150,7 +150,7 @@
                                     }
                                 }
                             },
-                            // Not implemented yet
+                            // Swap brackets
                             {
                                 "caption": "Swap Brackets",
                                 "command": "swap_brackets"
