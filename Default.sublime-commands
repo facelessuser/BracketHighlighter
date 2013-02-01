@@ -135,7 +135,7 @@
             }
         }
     },
-    // Not implemented yet
+    // Swap Brackets
     {
         "caption": "BracketHighlighter: Swap Brackets",
         "command": "swap_brackets"
