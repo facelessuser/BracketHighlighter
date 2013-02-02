@@ -119,7 +119,6 @@
             }
         }
     },
-    { "caption": "-" },
     // Convert single quote string to double quoted string and vice versa
     // Will handle escaping or unescaping quotes within the string
     {

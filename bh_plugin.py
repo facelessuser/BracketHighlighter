@@ -1,10 +1,23 @@
 import sublime
+import sublime_plugin
 import os
 from os.path import normpath, join, exists
 import imp
 from collections import namedtuple
 import sys
 import traceback
+
+
+class Payload(object):
+    status = False
+    plugin = None
+    args = None
+
+    @classmethod
+    def clear(cls):
+        cls.status = False
+        cls.plugin = None
+        cls.args = None
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
@@ -34,13 +47,6 @@ class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False
         return sublime.Region(self.begin, self.end)
 
 
-# Pull in built-in and custom plugin directory
-BH_MODULES = os.path.join(sublime.packages_path(), 'BracketHighlighter')
-
-if BH_MODULES not in sys.path:
-    sys.path.append(BH_MODULES)
-
-
 def is_bracket_region(obj):
     """
     Check if object is a BracketRegion
@@ -52,14 +58,18 @@ def is_bracket_region(obj):
 class ImportModule(object):
     @classmethod
     def import_module(cls, module_name, loaded=None):
+        # Pull in built-in and custom plugin directory
+        BH_MODULES = join(sublime.packages_path(), 'BracketHighlighter')
+        # if BH_MODULES not in sys.path:
+        #     sys.path.append(BH_MODULES)
         if module_name.startswith("bh_modules."):
             path_name = join(BH_MODULES, normpath(module_name.replace('.', '/')))
             module_name = module_name.replace("bh_modules.", "")
         else:
             path_name = join(sublime.packages_path(), normpath(module_name.replace('.', '/')))
+        path_name += ".py"
         if not exists(path_name):
-            path_name += ".py"
-            assert exists(path_name)
+            raise AssertionError(path_name)
         if loaded is not None and module_name in loaded:
             module = sys.modules[module_name]
         else:
@@ -69,6 +79,17 @@ class ImportModule(object):
     @classmethod
     def import_from(cls, module_name, attribute):
         return getattr(cls.import_module(module_name), attribute)
+
+
+class BracketPluginRunCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        try:
+            Payload.args["edit"] = edit
+            Payload.plugin.run(**Payload.args)
+            Payload.status = True
+        except Exception:
+            print("BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc()))
+
 
 
 class BracketPlugin(object):
@@ -92,7 +113,7 @@ class BracketPlugin(object):
                 loaded.add(plib)
                 self.enabled = True
             except Exception:
-                print 'BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc())
+                print('BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc()))
 
     def is_enabled(self):
         """
@@ -106,20 +127,23 @@ class BracketPlugin(object):
         Load arguments into plugin and run
         """
 
-        plugin = self.plugin()
-        setattr(plugin, "left", left)
-        setattr(plugin, "right", right)
-        setattr(plugin, "view", view)
-        setattr(plugin, "selection", selection)
-        edit = view.begin_edit()
-        self.args["edit"] = edit
+        Payload.status = False
+        Payload.plugin = self.plugin()
+        setattr(Payload.plugin, "left", left)
+        setattr(Payload.plugin, "right", right)
+        setattr(Payload.plugin, "view", view)
+        setattr(Payload.plugin, "selection", selection)
+        self.args["edit"] = None
         self.args["name"] = name
-        try:
-            plugin.run(**self.args)
-            left, right, selection = plugin.left, plugin.right, plugin.selection
-        except Exception:
-            print "BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc())
-        view.end_edit(edit)
+        Payload.args = self.args
+
+        # Call a TextCommand to run the plugin so it can feed in the Edit object
+        view.run_command("bracket_plugin_run")
+
+        if Payload.status:
+            left, right, selection = Payload.plugin.left, Payload.plugin.right, Payload.plugin.selection
+        Payload.clear()
+
         return left, right, selection
 
 

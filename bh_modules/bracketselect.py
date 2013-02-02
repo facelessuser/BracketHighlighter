@@ -1,4 +1,4 @@
-import bh_plugin
+import BracketHighlighter.bh_plugin as bh_plugin
 import sublime
 
 DEFAULT_TAGS = ["cfml", "html", "angle"]

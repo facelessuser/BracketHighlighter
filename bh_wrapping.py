@@ -41,6 +41,16 @@ def exclude_entry(enabled, filter_type, language_list, language):
     return exclude
 
 
+class WrapInstance(object):
+    obj = None
+    value = None
+
+    @classmethod
+    def clear(cls):
+        cls.obj = None
+        cls.value = None
+
+
 class TextInsertion(object):
     """
     Wrapper class for inserting text
@@ -60,6 +70,26 @@ class TextInsertion(object):
         """
 
         return self.view.insert(self.edit, pt, text)
+
+
+class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        obj = WrapInstance.obj
+        value = WrapInstance.value
+        # Wrap selections with brackets
+        style = obj._style[value]
+        obj.insert_regions = []
+
+        for sel in obj.view.sel():
+            # Determine indentation style
+            if style == "indent_block":
+                obj.block(edit, sel, True)
+            elif style == "block":
+                obj.block(edit, sel)
+            else:
+                obj.inline(edit, sel)
+
+        obj.select(edit)
 
 
 class WrapBrackets(object):
@@ -157,7 +187,7 @@ class WrapBrackets(object):
         tab_size = self.view.settings().get("tab_size", 4)
         tab_count = self.view.substr(sublime.Region(sel.begin() - self.col_position, sel.begin())).count('\t')
         spaces = self.col_position - tab_count
-        self.indent_to_col = "\t" * tab_count + "\t" * (spaces / tab_size) + " " * (spaces % tab_size if spaces >= tab_size else spaces)
+        self.indent_to_col = "\t" * tab_count + "\t" * int(spaces / tab_size) + " " * int(spaces % tab_size if spaces >= tab_size else spaces)
 
     def select(self, edit):
         """
@@ -231,24 +261,12 @@ class WrapBrackets(object):
 
         # Use new edit object since the main run has already exited
         # and the old edit is more than likely closed now
-        edit = self.view.begin_edit()
+        WrapInstance.obj = self
+        WrapInstance.value = value
 
-        # Wrap selections with brackets
-        style = self._style[value]
-        self.insert_regions = []
+        self.view.run_command("execute_wrap_instance")
 
-        for sel in self.view.sel():
-            # Determine indentation style
-            if style == "indent_block":
-                self.block(edit, sel, True)
-            elif style == "block":
-                self.block(edit, sel)
-            else:
-                self.inline(edit, sel)
-
-        self.select(edit)
-
-        self.view.end_edit(edit)
+        WrapInstance.clear()
 
     def wrap_style(self, value):
         """

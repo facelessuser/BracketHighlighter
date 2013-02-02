@@ -1,4 +1,4 @@
-import bh_plugin
+import BracketHighlighter.bh_plugin as bh_plugin
 
 
 class SelectAttr(bh_plugin.BracketPluginCommand):

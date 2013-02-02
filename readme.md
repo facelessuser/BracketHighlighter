@@ -43,6 +43,7 @@ Todo
 
 # Version 2.0.0
 - Re-write of BracketHighlighter
+- Configured for ST3
 
 # Version Older
 - See [Complete Changelog](https://github.com/facelessuser/BracketHighlighter/blob/BH2/CHANGELOG.md)

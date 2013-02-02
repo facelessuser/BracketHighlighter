@@ -60,8 +60,8 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
 class TagSearch(object):
     def __init__(self, view, bfr, window, center, pattern, match_type):
-        self.start = window[0]
-        self.end = window[1]
+        self.start = int(window[0])
+        self.end = int(window[1])
         self.center = center
         self.pattern = pattern
         self.match_type = match_type

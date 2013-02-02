@@ -1,5 +1,5 @@
 import sublime
-from bh_plugin import ImportModule as ImpMod
+from BracketHighlighter.bh_plugin import ImportModule as ImpMod
 BracketRemove = ImpMod.import_from("bh_modules.bracketremove", "BracketRemove")
 
 

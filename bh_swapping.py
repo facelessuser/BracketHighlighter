@@ -1,5 +1,5 @@
 import sublime_plugin
-import bh_wrapping
+import BracketHighlighter.bh_wrapping as bh_wrapping
 
 
 class SwapBrackets(bh_wrapping.WrapBrackets):

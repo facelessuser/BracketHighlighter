@@ -2,9 +2,9 @@ from os.path import basename, exists, join, normpath
 import sublime
 import sublime_plugin
 from time import time, sleep
-import thread
+import _thread as thread
 import re
-from bh_plugin import BracketPlugin, BracketRegion, ImportModule
+from BracketHighlighter.bh_plugin import BracketPlugin, BracketRegion, ImportModule
 from collections import namedtuple
 import traceback
 
@@ -58,7 +58,7 @@ def load_modules(obj, loaded):
         obj["post_match"] = getattr(module, "post_match", None)
         loaded.add(plib)
     except:
-        print "BracketHighlighter: Could not load module %s" % plib
+        print("BracketHighlighter: Could not load module %s" % plib)
         raise
 
 
@@ -279,7 +279,7 @@ class BracketSearch(object):
         to "left of the cursor" and "right of the cursor"
         """
 
-        for m in self.pattern.finditer(self.bfr, window[0], window[1]):
+        for m in self.pattern.finditer(self.bfr, int(window[0]), int(window[1])):
             g = m.lastindex
             try:
                 start = m.start(g)
@@ -288,7 +288,7 @@ class BracketSearch(object):
                 continue
 
             match_type = int(not bool(g % 2))
-            bracket_id = (g / 2) - match_type
+            bracket_id = int((g / 2) - match_type)
 
             if not self.scope_check(start, bracket_id, self.scope):
                 if (end <= self.center if match_type else start < self.center):
@@ -493,6 +493,7 @@ class BhCore(object):
         """
         Load settings and setup reload events if settings changes.
         """
+
         self.settings = sublime.load_settings("bh_core.sublime-settings")
         if not keycommand:
             self.settings.clear_on_change('reload')
@@ -614,8 +615,8 @@ class BhCore(object):
                     else:
                         self.sub_find_regex.append(r"([^\s\S])")
                         self.sub_find_regex.append(r"([^\s\S])")
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print(e)
 
         scope_count = 0
         for params in self.scope_types:
@@ -630,13 +631,13 @@ class BhCore(object):
                             self.scopes.append({"name": x, "brackets": [entry]})
                         else:
                             self.scopes[scopes[x]]["brackets"].append(entry)
-                except Exception, e:
-                    print e
+                except Exception as e:
+                    print (e)
 
         if len(self.brackets):
-            # print "BracketHighlighter: Search patterns:"
-            # print "(?:%s)" % '|'.join(self.find_regex)
-            # print "(?:%s)" % '|'.join(self.sub_find_regex)
+            # print("BracketHighlighter: Search patterns:")
+            # print("(?:%s)" % '|'.join(self.find_regex))
+            # print("(?:%s)" % '|'.join(self.sub_find_regex))
             self.sub_pattern = re.compile("(?:%s)" % '|'.join(self.sub_find_regex), re.MULTILINE | re.IGNORECASE)
             self.pattern = re.compile("(?:%s)" % '|'.join(self.find_regex), re.MULTILINE | re.IGNORECASE)
             self.enabled = True
@@ -693,7 +694,7 @@ class BhCore(object):
             if self.multi_select == False:
                 self.view.show(self.sels[0])
             self.view.sel().clear()
-            map(lambda x: self.view.sel().add(x), self.sels)
+            self.view.sel().add_all(self.sels)
 
     def hv_highlight_color(self, b_value):
         """
@@ -1012,7 +1013,7 @@ class BhCore(object):
                         bfr
                     )
             except:
-                print "BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc())
+                print("BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc()))
         return match
 
     def post_match(self, left, right, center, bfr, scope_bracket=False):
@@ -1060,7 +1061,7 @@ class BhCore(object):
                     left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
                     right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
             except:
-                print "BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc())
+                print("BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
         return left, right
 
     def run_plugin(self, name, left, right, regions):
@@ -1256,8 +1257,6 @@ class BhCore(object):
             left, right = None, None
         return left, right
 
-bh_match = BhCore().match
-
 
 class BhListenerCommand(sublime_plugin.EventListener):
     """
@@ -1353,8 +1352,13 @@ def bh_loop():
         sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
 
 
-if not 'running_bh_loop' in globals():
-    running_bh_loop = True
-    thread.start_new_thread(bh_loop, ())
-else:
-    BhThreadMgr.restart
+def plugin_loaded():
+    global bh_match
+    bh_match = BhCore().match
+
+    if not 'running_bh_loop' in globals():
+        global running_bh_loop
+        running_bh_loop = True
+        thread.start_new_thread(bh_loop, ())
+    else:
+        BhThreadMgr.restart
