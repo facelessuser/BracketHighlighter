@@ -195,7 +195,7 @@ class WrapBrackets(object):
         """
 
         self.view.sel().clear()
-        map(lambda x: self.view.sel().add(x), self.insert_regions)
+        self.view.sel().add_all(self.insert_regions)
 
         final_sel = []
         initial_sel = []
@@ -225,7 +225,7 @@ class WrapBrackets(object):
         # Re-position cursor
         self.view.sel().clear()
         if len(initial_sel):
-            map(lambda x: self.view.sel().add(x), initial_sel)
+            self.view.sel().add_all(initial_sel)
         elif len(final_sel):
             self.view.sel().add(final_sel[0])
 
@@ -325,7 +325,7 @@ class BhNextWrapSelCommand(sublime_plugin.TextCommand):
         regions = self.view.get_regions(SEL_REGION) + self.view.get_regions(OUT_REGION)
         if len(regions):
             self.view.sel().clear()
-            map(lambda x: self.view.sel().add(x), regions)
+            self.view.sel().add_all(regions)
 
         # Clean up unneed sections
         self.view.erase_regions(SEL_REGION)
