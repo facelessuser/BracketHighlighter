@@ -1,4 +1,5 @@
 from os.path import basename, exists, join, normpath
+from os import makedirs
 import sublime
 import sublime_plugin
 from time import time, sleep
@@ -1355,6 +1356,10 @@ def bh_loop():
 def plugin_loaded():
     global bh_match
     bh_match = BhCore().match
+
+    icon_path = join(sublime.packages_path(), "Theme - Default")
+    if not exists(icon_path):
+        makedirs(icon_path)
 
     if not 'running_bh_loop' in globals():
         global running_bh_loop
