@@ -1,4 +1,7 @@
 {
+    //Debug logging
+    "debug_enable": false,
+
     // Path to find icons at
     "icon_path": "BracketHighlighter/icons",
 

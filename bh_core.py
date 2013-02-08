@@ -29,6 +29,15 @@ HV_RSVD_VALUES = ["__default__", "__bracket__"]
 HIGH_VISIBILITY = False
 
 
+def bh_logging(msg):
+    print(msg)
+
+
+def bh_debug(msg):
+    if sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False):
+        bh_logging(msg)
+
+
 def underline(regions):
     """
     Convert sublime regions into underline regions
@@ -59,7 +68,7 @@ def load_modules(obj, loaded):
         obj["post_match"] = getattr(module, "post_match", None)
         loaded.add(plib)
     except:
-        print("BracketHighlighter: Could not load module %s" % plib)
+        bh_logging("BracketHighlighter: Could not load module %s" % plib)
         raise
 
 
@@ -617,7 +626,7 @@ class BhCore(object):
                         self.sub_find_regex.append(r"([^\s\S])")
                         self.sub_find_regex.append(r"([^\s\S])")
                 except Exception as e:
-                    print(e)
+                    bh_logging(e)
 
         scope_count = 0
         for params in self.scope_types:
@@ -633,12 +642,14 @@ class BhCore(object):
                         else:
                             self.scopes[scopes[x]]["brackets"].append(entry)
                 except Exception as e:
-                    print (e)
+                    bh_logging(e)
 
         if len(self.brackets):
-            # print("BracketHighlighter: Search patterns:")
-            # print("(?:%s)" % '|'.join(self.find_regex))
-            # print("(?:%s)" % '|'.join(self.sub_find_regex))
+            bh_debug(
+                "BracketHighlighter: Search patterns:\n" +
+                "(?:%s)\n" % '|'.join(self.find_regex) +
+                "(?:%s)" % '|'.join(self.sub_find_regex)
+            )
             self.sub_pattern = re.compile("(?:%s)" % '|'.join(self.sub_find_regex), re.MULTILINE | re.IGNORECASE)
             self.pattern = re.compile("(?:%s)" % '|'.join(self.find_regex), re.MULTILINE | re.IGNORECASE)
             self.enabled = True
@@ -1014,7 +1025,7 @@ class BhCore(object):
                         bfr
                     )
             except:
-                print("BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc()))
+                bh_logging("BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc()))
         return match
 
     def post_match(self, left, right, center, bfr, scope_bracket=False):
@@ -1062,7 +1073,7 @@ class BhCore(object):
                     left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
                     right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
             except:
-                print("BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
+                bh_logging("BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
         return left, right
 
     def run_plugin(self, name, left, right, regions):
@@ -1331,6 +1342,10 @@ def bh_run():
     window = sublime.active_window()
     view = window.active_view() if window != None else None
     BhEventMgr.ignore_all = True
+    # Strangley bh_match on occasions goes missing in ST3
+    # Attempt to reload if it goes missing
+    if not 'bh_match' in globals():
+        init_bh_match()
     bh_match(view, True if BhEventMgr.type == BH_MATCH_TYPE_EDIT else False)
     BhEventMgr.ignore_all = False
     BhEventMgr.time = time()
@@ -1353,9 +1368,14 @@ def bh_loop():
         sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
 
 
-def plugin_loaded():
+def init_bh_match():
     global bh_match
     bh_match = BhCore().match
+    bh_debug("BracketHighlighter: Match object loaded.")
+
+
+def plugin_loaded():
+    init_bh_match()
 
     icon_path = join(sublime.packages_path(), "Theme - Default")
     if not exists(icon_path):
@@ -1365,5 +1385,7 @@ def plugin_loaded():
         global running_bh_loop
         running_bh_loop = True
         thread.start_new_thread(bh_loop, ())
+        bh_debug("BracketHighlighter: Starting Thread")
     else:
+        bh_debug("BracketHighlighter: Restarting Thread")
         BhThreadMgr.restart
