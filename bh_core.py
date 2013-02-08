@@ -1344,8 +1344,8 @@ def bh_run():
     BhEventMgr.ignore_all = True
     # Strangley bh_match on occasions goes missing in ST3
     # Attempt to reload if it goes missing
-    if not 'bh_match' in globals():
-        init_bh_match()
+    # if not 'bh_match' in globals():
+    #     init_bh_match()
     bh_match(view, True if BhEventMgr.type == BH_MATCH_TYPE_EDIT else False)
     BhEventMgr.ignore_all = False
     BhEventMgr.time = time()
@@ -1388,4 +1388,4 @@ def plugin_loaded():
         bh_debug("BracketHighlighter: Starting Thread")
     else:
         bh_debug("BracketHighlighter: Restarting Thread")
-        BhThreadMgr.restart
+        BhThreadMgr.restart = True
