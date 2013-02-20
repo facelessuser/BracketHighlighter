@@ -1357,4 +1357,4 @@ if not 'running_bh_loop' in globals():
     running_bh_loop = True
     thread.start_new_thread(bh_loop, ())
 else:
-    BhThreadMgr.restart
+    BhThreadMgr.restart = True
