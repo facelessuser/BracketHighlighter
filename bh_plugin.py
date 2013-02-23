@@ -59,21 +59,17 @@ class ImportModule(object):
     @classmethod
     def import_module(cls, module_name, loaded=None):
         # Pull in built-in and custom plugin directory
-        BH_MODULES = join(sublime.packages_path(), 'BracketHighlighter')
-        # if BH_MODULES not in sys.path:
-        #     sys.path.append(BH_MODULES)
         if module_name.startswith("bh_modules."):
-            path_name = join(BH_MODULES, normpath(module_name.replace('.', '/')))
-            module_name = module_name.replace("bh_modules.", "")
+            path_name = join("Packages", "BracketHighlighter", normpath(module_name.replace('.', '/')))
         else:
-            path_name = join(sublime.packages_path(), normpath(module_name.replace('.', '/')))
+            path_name = join("Packages", normpath(module_name.replace('.', '/')))
         path_name += ".py"
-        if not exists(path_name):
-            raise AssertionError(path_name)
         if loaded is not None and module_name in loaded:
             module = sys.modules[module_name]
         else:
-            module = imp.load_source(module_name, path_name)
+            module = imp.new_module(module_name)
+            sys.modules[module_name] = module
+            exec(compile(sublime.load_resource(path_name), module_name, 'exec'), sys.modules[module_name].__dict__)
         return module
 
     @classmethod

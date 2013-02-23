@@ -2,9 +2,6 @@
     //Debug logging
     "debug_enable": false,
 
-    // Path to find icons at
-    "icon_path": "BracketHighlighter/icons",
-
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
