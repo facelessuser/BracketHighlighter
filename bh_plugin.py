@@ -6,6 +6,7 @@ import imp
 from collections import namedtuple
 import sys
 import traceback
+import re
 
 
 class Payload(object):
@@ -55,6 +56,12 @@ def is_bracket_region(obj):
     return isinstance(obj, BracketRegion)
 
 
+def sublime_format_path(pth):
+    if sublime.platform() == "windows" and re.match(r"(^[A-Za-z]{1}:(?:/|\\))", pth) != None:
+        pth = "/" + pth
+    return pth.replace("\\", "/")
+
+
 class ImportModule(object):
     @classmethod
     def import_module(cls, module_name, loaded=None):
@@ -69,7 +76,7 @@ class ImportModule(object):
         else:
             module = imp.new_module(module_name)
             sys.modules[module_name] = module
-            exec(compile(sublime.load_resource(path_name), module_name, 'exec'), sys.modules[module_name].__dict__)
+            exec(compile(sublime.load_resource(sublime_format_path(path_name)), module_name, 'exec'), sys.modules[module_name].__dict__)
         return module
 
     @classmethod
