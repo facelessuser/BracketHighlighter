@@ -82,11 +82,23 @@ def select_bracket_style(option):
 
     style = sublime.HIDE_ON_MINIMAP
     if option == "outline":
-        style |= sublime.DRAW_OUTLINED
+        style |= sublime.DRAW_NO_FILL
     elif option == "none":
         style |= sublime.HIDDEN
     elif option == "underline":
         style |= sublime.DRAW_EMPTY_AS_OVERWRITE
+    elif option == "thin_underline":
+        style |= sublime.DRAW_NO_FILL
+        style |= sublime.DRAW_NO_OUTLINE
+        style |= sublime.DRAW_SOLID_UNDERLINE
+    elif option == "squiggly":
+        style |= sublime.DRAW_NO_FILL
+        style |= sublime.DRAW_NO_OUTLINE
+        style |= sublime.DRAW_SQUIGGLY_UNDERLINE
+    elif option == "stippled":
+        style |= sublime.DRAW_NO_FILL
+        style |= sublime.DRAW_NO_OUTLINE
+        style |= sublime.DRAW_STIPPLED_UNDERLINE
     return style
 
 
@@ -103,26 +115,46 @@ def select_bracket_icons(option, icon_path):
     small_close_icon = ""
     # Icon exist?
     if not option == "none" and not option == "":
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + ".png"))):
-            icon = "../%s/%s" % (icon_path, option)
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_small.png"))):
-            small_icon = "../%s/%s" % (icon_path, option + "_small")
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_open.png"))):
-            open_icon = "../%s/%s" % (icon_path, option + "_open")
-        else:
+        try:
+            pth = "%s/%s.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            icon = pth
+        except:
+            pass
+        try:
+            pth = "%s/%s_small.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            small_icon = pth
+        except:
+            pass
+        try:
+            pth = "%s/%s_open.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            open_icon = pth
+        except:
             open_icon = icon
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_open_small.png"))):
-            small_open_icon = "../%s/%s" % (icon_path, option + "_open_small")
-        else:
+            pass
+        try:
+            pth = "%s/%s_open_small.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            small_open_icon = pth
+        except:
             small_open_icon = small_icon
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_close.png"))):
-            close_icon = "../%s/%s" % (icon_path, option + "_close")
-        else:
+            pass
+        try:
+            pth = "%s/%s_close.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            close_icon = pth
+        except:
             close_icon = icon
-        if exists(normpath(join(sublime.packages_path(), icon_path, option + "_close_small.png"))):
-            small_close_icon = "../%s/%s" % (icon_path, option + "_close_small")
-        else:
+            pass
+        try:
+            pth = "%s/%s_close_small.png" % (icon_path, option)
+            sublime.load_binary_resource(pth)
+            small_close_icon = pth
+        except:
             small_close_icon = small_icon
+            pass
 
     return icon, small_icon, open_icon, small_open_icon, close_icon, small_close_icon
 
@@ -562,7 +594,8 @@ class BhCore(object):
 
         self.bracket_regions = {}
         styles = self.settings.get("bracket_styles", DEFAULT_STYLES)
-        icon_path = "Theme - BracketHighlighter/icons"
+        icon_path = "Packages/BracketHighlighter/icons"
+        # icon_path = "Theme - BracketHighlighter/icons"
         # Make sure default and unmatched styles in styles
         for key, value in DEFAULT_STYLES.items():
             if key not in styles:
@@ -1373,53 +1406,54 @@ def init_bh_match():
     bh_debug("BracketHighlighter: Match object loaded.")
 
 
-def init_icons():
-    theme_path = join(sublime.packages_path(), "Theme - Default")
-    bh_path = join(sublime.packages_path(), "Theme - BracketHighlighter")
-    icon_path = join(bh_path, "icons")
-    version = sublime.load_resource("Packages/BracketHighlighter/icons/icon_version.json")
-    current_version = int(json.JSONDecoder(strict=False).decode(version)["version"])
-    if not exists(theme_path):
-        makedirs(theme_path)
+# def init_icons():
+#     theme_path = join(sublime.packages_path(), "Theme - Default")
+#     bh_path = join(sublime.packages_path(), "Theme - BracketHighlighter")
+#     icon_path = join(bh_path, "icons")
+#     version = sublime.load_resource("Packages/BracketHighlighter/icons/icon_version.json")
+#     current_version = int(json.JSONDecoder(strict=False).decode(version)["version"])
+#     if not exists(theme_path):
+#         makedirs(theme_path)
 
-    if not exists(bh_path):
-        makedirs(bh_path)
+#     if not exists(bh_path):
+#         makedirs(bh_path)
 
-    if exists(icon_path):
-        remove = False
-        try:
-            with open(join(icon_path, "icon_version.json"), 'r') as f:
-                if int(json.JSONDecoder(strict=False).decode(f.read())["version"]) != current_version:
-                    remove = True
-        except:
-            remove = True
+#     if exists(icon_path):
+#         remove = False
+#         try:
+#             with open(join(icon_path, "icon_version.json"), 'r') as f:
+#                 if int(json.JSONDecoder(strict=False).decode(f.read())["version"]) != current_version:
+#                     remove = True
+#         except:
+#             remove = True
 
-        if remove:
-            bh_debug("BracketHighlighter: Upgrade Icons")
-            shutil.rmtree(icon_path)
+#         if remove:
+#             bh_debug("BracketHighlighter: Upgrade Icons")
+#             shutil.rmtree(icon_path)
 
-    if not exists(icon_path):
-        bh_debug("BracketHighlighter: Unpack Icons")
-        makedirs(icon_path)
-        icons = [png for png in sublime_api.find_resources('*.png') if re.match(r"^Packages/BracketHighlighter/icons/.*", png) is not None]
-        for i in icons:
-            try:
-                icon = sublime.load_binary_resource(i)
-                with open(join(icon_path, basename(i)), 'wb') as f:
-                    f.write(icon)
-            except:
-                bh_debug("BracketHighlighter: Could not unpack %s" % basename(i))
-        try:
-            with open(join(icon_path, "icon_version.json"), 'w') as f:
-                f.write(version)
-        except:
-            bh_debug("BracketHighlighter: Could not unpack icon_version.json")
+#     if not exists(icon_path):
+#         bh_debug("BracketHighlighter: Unpack Icons")
+#         makedirs(icon_path)
+#         icons = [png for png in sublime_api.find_resources('*.png') if re.match(r"^Packages/BracketHighlighter/icons/.*", png) is not None]
+#         for i in icons:
+#             try:
+#                 icon = sublime.load_binary_resource(i)
+#                 with open(join(icon_path, basename(i)), 'wb') as f:
+#                     f.write(icon)
+#             except:
+#                 bh_debug("BracketHighlighter: Could not unpack %s" % basename(i))
+#         try:
+#             with open(join(icon_path, "icon_version.json"), 'w') as f:
+#                 f.write(version)
+#         except:
+#             bh_debug("BracketHighlighter: Could not unpack icon_version.json")
 
 
 def plugin_loaded():
     init_bh_match()
 
-    init_icons()
+    # if int(sublime.version()) == 3013:
+    #     init_icons()
 
     if not 'running_bh_loop' in globals():
         global running_bh_loop
