@@ -1406,54 +1406,8 @@ def init_bh_match():
     bh_debug("BracketHighlighter: Match object loaded.")
 
 
-# def init_icons():
-#     theme_path = join(sublime.packages_path(), "Theme - Default")
-#     bh_path = join(sublime.packages_path(), "Theme - BracketHighlighter")
-#     icon_path = join(bh_path, "icons")
-#     version = sublime.load_resource("Packages/BracketHighlighter/icons/icon_version.json")
-#     current_version = int(json.JSONDecoder(strict=False).decode(version)["version"])
-#     if not exists(theme_path):
-#         makedirs(theme_path)
-
-#     if not exists(bh_path):
-#         makedirs(bh_path)
-
-#     if exists(icon_path):
-#         remove = False
-#         try:
-#             with open(join(icon_path, "icon_version.json"), 'r') as f:
-#                 if int(json.JSONDecoder(strict=False).decode(f.read())["version"]) != current_version:
-#                     remove = True
-#         except:
-#             remove = True
-
-#         if remove:
-#             bh_debug("BracketHighlighter: Upgrade Icons")
-#             shutil.rmtree(icon_path)
-
-#     if not exists(icon_path):
-#         bh_debug("BracketHighlighter: Unpack Icons")
-#         makedirs(icon_path)
-#         icons = [png for png in sublime_api.find_resources('*.png') if re.match(r"^Packages/BracketHighlighter/icons/.*", png) is not None]
-#         for i in icons:
-#             try:
-#                 icon = sublime.load_binary_resource(i)
-#                 with open(join(icon_path, basename(i)), 'wb') as f:
-#                     f.write(icon)
-#             except:
-#                 bh_debug("BracketHighlighter: Could not unpack %s" % basename(i))
-#         try:
-#             with open(join(icon_path, "icon_version.json"), 'w') as f:
-#                 f.write(version)
-#         except:
-#             bh_debug("BracketHighlighter: Could not unpack icon_version.json")
-
-
 def plugin_loaded():
     init_bh_match()
-
-    # if int(sublime.version()) == 3013:
-    #     init_icons()
 
     if not 'running_bh_loop' in globals():
         global running_bh_loop
