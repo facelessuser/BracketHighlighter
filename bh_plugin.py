@@ -1,10 +1,10 @@
 import sublime
-import os
-from os.path import normpath, join, exists
+from os.path import normpath, join
 import imp
 from collections import namedtuple
 import sys
 import traceback
+import warnings
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
@@ -34,13 +34,6 @@ class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False
         return sublime.Region(self.begin, self.end)
 
 
-# Pull in built-in and custom plugin directory
-BH_MODULES = os.path.join(sublime.packages_path(), 'BracketHighlighter')
-
-if BH_MODULES not in sys.path:
-    sys.path.append(BH_MODULES)
-
-
 def is_bracket_region(obj):
     """
     Check if object is a BracketRegion
@@ -52,19 +45,30 @@ def is_bracket_region(obj):
 class ImportModule(object):
     @classmethod
     def import_module(cls, module_name, loaded=None):
+        # Pull in built-in and custom plugin directory
         if module_name.startswith("bh_modules."):
-            path_name = join(BH_MODULES, normpath(module_name.replace('.', '/')))
-            module_name = module_name.replace("bh_modules.", "")
+            path_name = join(sublime.packages_path(), "BracketHighlighter", normpath(module_name.replace('.', '/')))
         else:
             path_name = join(sublime.packages_path(), normpath(module_name.replace('.', '/')))
-        if not exists(path_name):
-            path_name += ".py"
-            assert exists(path_name)
+        path_name += ".py"
         if loaded is not None and module_name in loaded:
             module = sys.modules[module_name]
         else:
-            module = imp.load_source(module_name, path_name)
+            with warnings.catch_warnings(record=True) as w:
+                # Ignore warnings about plugin folder not being a python package
+                warnings.simplefilter("always")
+                module = imp.new_module(module_name)
+                sys.modules[module_name] = module
+                source = None
+                with open(path_name) as f:
+                    source = f.read()
+                cls.__execute_module(source, module_name)
+                w = filter(lambda i: issubclass(i.category, UserWarning), w)
         return module
+
+    @classmethod
+    def __execute_module(cls, source, module_name):
+        exec(compile(source, module_name, 'exec'), sys.modules[module_name].__dict__)
 
     @classmethod
     def import_from(cls, module_name, attribute):
