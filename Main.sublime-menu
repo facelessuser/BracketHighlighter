@@ -189,18 +189,30 @@
                             },
                             {
                                 "command": "open_file",
+                                "args": {"file": "${packages}/User/bh_core.sublime-settings"},
+                                "caption": "Bracket Settings – User"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "open_file",
                                 "args": {"file": "${packages}/BracketHighlighter/bh_wrapping.sublime-settings"},
                                 "caption": "Wrap Settings – Default"
                             },
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/bh_core.sublime-settings"},
-                                "caption": "Bracket Settings – User"
+                                "args": {"file": "${packages}/User/bh_wrapping.sublime-settings"},
+                                "caption": "Wrap Settings – User"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/BracketHighlighter/bh_swapping.sublime-settings"},
+                                "caption": "Swap Settings – Default"
                             },
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/User/bh_wrapping.sublime-settings"},
-                                "caption": "Wrap Settings – User"
+                                "args": {"file": "${packages}/User/bh_swapping.sublime-settings"},
+                                "caption": "Swap Settings – User"
                             },
                             { "caption": "-" },
                             {
