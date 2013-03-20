@@ -1,4 +1,9 @@
 [
+    // Toggle Global Enable
+    {
+        "caption": "BracketHighlighter: Toggle Global Enable",
+        "command": "bh_toggle_enable"
+    },
     // Search to end of file for bracket
     {
         "caption": "BracketHighlighter: Match Brackets (ignore threshold)",

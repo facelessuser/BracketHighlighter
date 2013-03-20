@@ -31,6 +31,8 @@ HV_RSVD_VALUES = ["__default__", "__bracket__"]
 
 HIGH_VISIBILITY = False
 
+GLOBAL_ENABLE = True
+
 
 def bh_logging(msg):
     print(msg)
@@ -506,6 +508,16 @@ class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
         HIGH_VISIBILITY = not HIGH_VISIBILITY
 
 
+class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
+    """
+    Toggle global enable for BracketHighlighter.
+    """
+
+    def run(self):
+        global GLOBAL_ENABLE
+        GLOBAL_ENABLE = not GLOBAL_ENABLE
+
+
 class BhKeyCommand(sublime_plugin.WindowCommand):
     """
     Command to process shortcuts, menu calls, and command palette calls.
@@ -828,6 +840,11 @@ class BhCore(object):
 
         if view == None:
             return
+        if not GLOBAL_ENABLE:
+            for region_key in view.settings().get("bh_regions", []):
+                view.erase_regions(region_key)
+            return
+
         # Setup views
         self.view = view
         self.last_view = view
