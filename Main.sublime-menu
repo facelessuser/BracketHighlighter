@@ -14,6 +14,12 @@
                         "caption": "BracketHighlighter",
                         "children":
                         [
+                            // Toggle Global Enable
+                            {
+                                "caption": "BracketHighlighter: Toggle Global Enable",
+                                "command": "bh_toggle_enable"
+                            },
+                            { "caption": "-" },
                             // Search to end of file for bracket
                             {
                                 "caption": "Match Brackets (ignore threshold)",

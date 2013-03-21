@@ -1,4 +1,9 @@
 [
+    // Toggle Global Enable
+    {
+        "keys": ["ctrl+alt+super+e"],
+        "command": "bh_toggle_enable"
+    },
     // Search to end of file for bracket
     {
         "keys": ["ctrl+alt+super+b"],
