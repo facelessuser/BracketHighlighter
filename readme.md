@@ -390,7 +390,7 @@ Example of run instance plugin getting called:
 The ```plugin``` paramter is a dictionary that contains 3 parameters to define what plugin should get run, with what arguments, and on what bracket defintion.
 
 - **type**: an array containing the bracket definition names that the plugin should be run on.  Use ```__all__``` for all bracket definitions.
-- **command**: the plugin to run.  For internal plugins, they are referenced by ``bh_modules.<plugin name>```.  For custom plugins, you should use the folder path releative to ```Packages```.  So if I had a plugin called ```myplugin.py``` in my ```User``` folder, I would use ```User.myplugin```.
+- **command**: the plugin to run.  For internal plugins, they are referenced by ```bh_modules.<plugin name>```.  For custom plugins, you should use the folder path releative to ```Packages```.  So if I had a plugin called ```myplugin.py``` in my ```User``` folder, I would use ```User.myplugin```.
 - **args**: a dictionary contianing the arguments to feed into the plugin.
 
 You create ```run instance``` plugins by deriving a class from the ```BracketPluginCommand``` class.  Then you provide a method called ```plugin``` that returns the class.
