@@ -201,6 +201,7 @@ Python Single Quote bracket will be used as an eample (not all options are shown
 - **language_list**: an array of tmLanguage file names that should be avoided or included for highlighting.  Looks to ```language_filter``` to determine if avoidance or inclusion is used.
 - **sub_bracket_search**: should this scope bracket also search for sub brackets (like curly brackets in strings etc.).
 - **enabled**: disable or enable rule
+- **plugin_library (optional)**: defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins)
 
 ## Configuring Highlight Style
 Each bracket definition (described in ```Configuring Scope Brackets``` and ```Configuring Brackets```) has a ```style``` setting that you give a style definition to.  Style definitions are defined under ```bracket_styles``` in ```bh_core.sublime-settings```.
@@ -239,7 +240,7 @@ There are two special style definitions whose names are reserved: ```default``` 
 - **color**: scope to define color
 - **style**: higlight style.  Available options are (solid|outline|underline|thin_underline|squiggly|stippled|none)
 
-As shown in the example above, if a option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default``` for the ```color``` and ```style```.
+As shown in the example above, if an option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default``` for the ```color``` and ```style```.
 
 To customize the color for ```curly``` you can create your own custom scope.
 
@@ -268,7 +269,171 @@ And then use the scope:
 ```
 
 # Bracket Plugin API
-Todo
+There are two kinds of plugins that can be written ```definition``` plugins (plugins attached to bracket definitions via the ```plugin_library``` option) or ```run instance``` plugins (plugins that are that are fed in the BracketHighligher via the command parameter ```plugin```).
+
+Bracket plugins use ```BracketRegions```. ```BracketRegions``` are simple objects containing a begin pt and end pt of a bracket.
+
+Class:
+
+- **BracketRegion(begin_pt, end_pt)**
+
+Attributes of BracketRegion:
+
+- **begin**: the start pt of the BracketRegion
+- **end**: the end pt of the BracketRegion
+
+Methods of BracketRegion:
+
+- **size()**: returns size of region
+- **move(begin_pt, end_pt)**: returns a new BracketRegion object with the points moved as specified by the parameters
+- **toregion**: returns a sublime Region() object
+
+## 'Defintion' Plugins
+These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kids of plugins have two methods you can provide ```post_match``` and/or ```compare```.
+
+### compare
+```compare``` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or regect a the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
+
+The ```compare``` method receives the following paramters:
+
+- **name**: the name of the bracket definition being evaluated
+- **first**:  a bracket region for the opening bracket
+- **second**: a bracket region for the closing bracket
+- **bfr**: the file buffer
+
+Returns:
+
+- **Boolean**: indicating whether the the comparison yields a suitable match
+
+Example (from phphekywords.py):
+```python
+def compare(name, first, second, bfr):
+    return "end" + bfr[first.begin:first.end].lower() == bfr[second.begin:second.end].lower()
+```
+
+### post_match
+```post_match``` is run after the brackets have been matched.  You can do things like alter the highlighting region and change the bracket_style if needed. You should not change the text in the view during this operation.
+
+The ```post_match``` method receives the following parameters:
+
+- **name**: the name of the bracket definition being evaluated
+- **style**: the style definition name that is to be used to highlight the region
+- **first**:  a bracket region for the opening bracket
+- **second**: a bracket region for the closing bracket
+- **center**: position (pt) of cursor (in retrospect, probably not the most intuitive name; not sure why I named it such)
+- **bfr**: the file buffer
+- **threshold**: the calculated search window of the buffer that is being searched
+
+Returns:
+
+- **BracketRegion**: opening bracket region
+- **BracketRegion**: closing bracekt region
+- **style**: the name of the style definition to use
+
+Example (from rubykeywords.py):
+```python
+import re
+
+
+def post_match(view, name, style, first, second, center, bfr, threshold):
+    if first is not None:
+        # Strip whitespace from the beginning of first bracket
+        open_bracket = bfr[first.begin:first.end]
+        if open_bracket != "do":
+            m = re.match(r"^(\s*\b)[\w\W]*", open_bracket)
+            if m:
+                first = first.move(first.begin + m.end(1), first.end)
+    return first, second, style
+```
+
+Example (snippet from tags.py)
+```python
+def post_match(view, name, style, first, second, center, bfr, threshold):
+    left, right = first, second
+    threshold = [0, len(bfr)] if threshold is None else threshold
+    tag_settings = sublime.load_settings("bh_core.sublime-settings")
+    tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
+    tag_style = tag_settings.get("tag_style", "angle")
+    bracket_style = style
+
+    if first is not None and tag_mode is not None:
+        matcher = TagMatch(view, bfr, threshold, first, second, center, tag_mode)
+        left, right = matcher.match()
+        if not matcher.no_tag:
+            bracket_style = tag_style
+
+    return left, right, bracket_style
+```
+
+## Run Instance Plugins
+```Run instance``` plugins are fed into the command executing a BracketHighlighter match via the ```plugin``` parameter.
+
+Example of run instance plugin getting called:
+```javascript
+// Go to left bracket
+    {
+        "caption": "BracketHighlighter: Jump to Left Bracket",
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "left"}
+            }
+        }
+    },
+```
+
+The ```plugin``` paramter is a dictionary that contains 3 parameters to define what plugin should get run, with what arguments, and on what bracket defintion.
+
+- **type**: an array containing the bracket definition names that the plugin should be run on.  Use ```__all__``` for all bracket definitions.
+- **command**: the plugin to run.  For internal plugins, they are referenced by ``bh_modules.<plugin name>```.  For custom plugins, you should use the folder path releative to ```Packages```.  So if I had a plugin called ```myplugin.py``` in my ```User``` folder, I would use ```User.myplugin```.
+- **args**: a dictionary contianing the arguments to feed into the plugin.
+
+You create ```run instance``` plugins by deriving a class from the ```BracketPluginCommand``` class.  Then you provide a method called ```plugin``` that returns the class.
+
+Class:
+
+- **BracketPluginCommand()**
+
+Parameters of BracketPluginCommand:
+
+- **edit**: sublime edit object
+- **name**: name of tag definition being evaluated
+
+Attributes of BracketPluginCommand:
+
+- **view**: the sublime view containg the bracket (don't change this)
+- **left**:  a bracket region for the opening bracket (can be changed)
+- **right**: a bracket region for the closing bracket (can be changed)
+- **selection**: an array containing the selection that triggered the match (can be changed)
+
+Methods of BracketPluginCommand:
+
+- **run(edit, name, <args>)**: (edit is a sublime edit object and name is the bracket definition being evaluated)
+
+Example (from foldbracket.py):
+```python
+import BracketHighlighter.bh_plugin as bh_plugin
+import sublime
+
+
+class FoldBrackets(bh_plugin.BracketPluginCommand):
+    def run(self, edit, name):
+        content = sublime.Region(self.left.end, self.right.begin)
+        new_content = [content]
+        if content.size() > 0:
+            if self.view.fold(content) == False:
+                new_content = self.view.unfold(content)
+        self.selection = new_content
+
+
+def plugin():
+    return FoldBrackets
+```
 
 # Credits
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
