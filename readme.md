@@ -129,6 +129,8 @@ BH is extremely flexible and be customized and extended to fit a User's needs.  
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define ```scope_brackets``` (search file for scope regions and then use regex to test for opening and closing brackets) and ```brackets``` (use regex to find opening and closing brackets).  ```bracket``` type should usually be the preferred type.  ```scope_brackets``` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 ### Configuring Brackets
+Brackets are defined under ```brackets``` in ```bh_core.sublime-settings```.
+
 Angle and Curly bracket will be used as an eample (not all options may be shown in these examples):
 
 ```javascript
@@ -172,6 +174,8 @@ Angle and Curly bracket will be used as an eample (not all options may be shown 
 - **ignore_string_escape (optional)**: Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set.
 
 ### Configuring Scope Brackets
+Scope Brackets are defined under ```scope_brackets``` in ```bh_core.sublime-settings```.
+
 Python Single Quote bracket will be used as an eample (not all options are shown in this example):
 
 ```javascript
@@ -199,13 +203,75 @@ Python Single Quote bracket will be used as an eample (not all options are shown
 - **enabled**: disable or enable rule
 
 ## Configuring Highlight Style
-Todo
+Each bracket definition (described in ```Configuring Scope Brackets``` and ```Configuring Brackets```) has a ```style``` setting that you give a style definition to.  Style definitions are defined under ```bracket_styles``` in ```bh_core.sublime-settings```.
+
+There are two special style definitions whose names are reserved: ```default``` and ```unmatched```, but you can configure them.  All other custom style definitions follow the same pattern (see ```curly``` below and compare to the special style defintions; format is the same)  All custom styles follow this pattern.  See description below:
+
+```javascript
+        // "default" style defines attributes that
+        // will be used for any style that does not
+        // explicitly define that attribute.  So if
+        // a style does not define a color, it will
+        // use the color from the "default" style.
+        "default": {
+            "icon": "dot",
+            "color": "brackethighlighter.default",
+            "style": "underline"
+        },
+
+        // This particular style is used to highlight
+        // unmatched bracekt pairs.  It is a special
+        // style.
+        "unmatched": {
+            "icon": "question",
+            // "color": "brackethighlighter.unmatched",
+            "style": "outline"
+        },
+        // User defined region styles
+        "curly": {
+            "icon": "curly_bracket"
+            // "color": "brackethighlighter.curly",
+            // "style": "underline"
+        },
+```
+
+- **icon**: icon to show in gutter. Available options are (angle|round|curly|square|tag|star|dot|bookmark|question|quote|double_quote|single_quote|single_quote_offset|double_quote_offset|none)
+- **color**: scope to define color
+- **style**: higlight style.  Available options are (solid|outline|underline|thin_underline|squiggly|stippled|none)
+
+As shown in the example above, if a option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default`` for the ```color``` and ```style```.
+
+To customize the color for ```curly`` you can create your own custom scope.
+
+Add this to your color scheme:
+```XML
+        <dict>
+            <key>name</key>
+            <string>Bracket Curly</string>
+            <key>scope</key>
+            <string>brackethighlighter.curly</string>
+            <key>settings</key>
+            <dict>
+                <key>foreground</key>
+                <string>#CC99CC</string>
+            </dict>
+        </dict>
+```
+
+And then use the scope:
+```javascript
+        "curly": {
+            "icon": "curly_bracket"
+            "color": "brackethighlighter.curly",
+            // "style": "underline"
+        },
+```
 
 # Bracket Plugin API
 Todo
 
 # Credits
-- pyparadigm: for his original efforrts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
+- pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
 
 # Version 2.0.0
