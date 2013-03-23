@@ -107,6 +107,27 @@ Folds the content of the current surrounding brackets.
 ### Swap Quotes Plugin
 Swap the quotes style of surrounding quotes from double to single or vice versa.  It also handlings escaping and unescaping of sub quotes.
 
+### Tag Plugin
+Plugin used to help highlight tags
+
+Additional tag settings found in ```bh_core.sublime-settings```:
+```javascript
+    /* Plugin settings */
+
+    // Style to use for matched tags
+    "tag_style": "tag",
+
+    // Scopes to exclude from tag searches
+    "tag_scope_exclude": ["string", "comment"],
+
+    // Determine which style of tag-matching to use in which syntax
+    "tag_mode": {
+        "xhtml": ["XML"],
+        "html": ["HTML", "HTML 5", "PHP"],
+        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+    }
+```
+
 ### Tag Attribute Select Plugin
 Cycle through selecting tag attributes of tags.
 
@@ -114,10 +135,10 @@ Cycle through selecting tag attributes of tags.
 Select the opening and closing tag name of current tag.
 
 ### Bracket Wrapping Plugin
-Wrap the current selection with supported bracket of your choice.
+Wrap the current selection with supported bracket of your choice.  Wrapping definitions are configured in ```bh_wrapping.sublime-settings```.
 
 ### Bracket Swapping Plugin
-Swap the current surrounding bracket with supported bracket of your choice.
+Swap the current surrounding bracket with supported bracket of your choice.  Swapping definitions are configured in ```bh_swapping.sublime-settings```.
 
 ## Shortcuts
 By default BH provides no shortcuts to avoid shortcut conflicts, but you can view the included ```Example.sublime-keymaps``` file to get an idea how to set up your own.
