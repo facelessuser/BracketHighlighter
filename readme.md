@@ -241,7 +241,7 @@ There are two special style definitions whose names are reserved: ```default``` 
 
 As shown in the example above, if a option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default``` for the ```color``` and ```style```.
 
-To customize the color for ```curly`` you can create your own custom scope.
+To customize the color for ```curly``` you can create your own custom scope.
 
 Add this to your color scheme:
 ```XML
