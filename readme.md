@@ -239,7 +239,7 @@ There are two special style definitions whose names are reserved: ```default``` 
 - **color**: scope to define color
 - **style**: higlight style.  Available options are (solid|outline|underline|thin_underline|squiggly|stippled|none)
 
-As shown in the example above, if a option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default`` for the ```color``` and ```style```.
+As shown in the example above, if a option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default``` for the ```color``` and ```style```.
 
 To customize the color for ```curly`` you can create your own custom scope.
 
