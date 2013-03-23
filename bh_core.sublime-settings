@@ -1,4 +1,7 @@
 {
+    //Debug logging
+    "debug_enable": false,
+
     // Path to find icons at
     "icon_path": "BracketHighlighter/icons",
 
@@ -11,6 +14,21 @@
     "high_visibility_style": "outline",
     // (scope|__default__|__bracket__)
     "high_visibility_color": "__bracket__",
+
+    // Match brackets only when the cursor is touching the inside of the bracket
+    "match_only_adjacent": false,
+
+    // Character threshold to search
+    "search_threshold": 5000,
+
+    // Set mode for string escapes to ignore (regex|string)
+    "bracket_string_escape_mode": "string",
+
+    // Set max number of multi-select brackets that will be searched automatically
+    "auto_selection_threshold" : 10,
+
+    // Disable gutter icons when doing multi-select
+    "no_multi_select_icons": false,
 
     // Rules that define the finding and matching of brackets
     // that are contained in a common scope.
@@ -336,21 +354,6 @@
             // "style": "underline"
         }
     },
-
-    // Match brackets only when the cursor is touching the inside of the bracket
-    "match_only_adjacent": false,
-
-    // Character threshold to search
-    "search_threshold": 5000,
-
-    // Set mode for string escapes to ignore (regex|string)
-    "bracket_string_escape_mode": "string",
-
-    // Set max number of multi-select brackets that will be searched automatically
-    "auto_selection_threshold" : 10,
-
-    // Disable gutter icons when doing multi-select
-    "no_multi_select_icons": false,
 
     /* Plugin settings */
 
