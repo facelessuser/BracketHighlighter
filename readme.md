@@ -168,8 +168,8 @@ Angle and Curly bracket will be used as an eample (not all options may be shown 
 - **enabled**: disable or enable rule
 - **scope_exclude_exceptions (optional)***: used to ignore exluding of sub scopes such as in the curly example above where ```string``` is excluded, but not ```string.other.math.block.environment.latex```.
 - **plugin_library (optional)**: defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins)
-- ***find_in_sub_search (optional)***: this rule should be included when doing sub bracket matching in ```scope_brackets``` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a ```scope_bracket```.
-- ***ignore_string_escape (optional)***: Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set.
+- **find_in_sub_search (optional)**: this rule should be included when doing sub bracket matching in ```scope_brackets``` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a ```scope_bracket```.
+- **ignore_string_escape (optional)**: Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set.
 
 ### Configuring Scope Brackets
 Python Single Quote bracket will be used as an eample (not all options are shown in this example):
