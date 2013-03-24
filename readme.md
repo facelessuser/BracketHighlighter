@@ -131,9 +131,6 @@ Additional tag settings found in ```bh_core.sublime-settings```:
 ### Tag Attribute Select Plugin
 Cycle through selecting tag attributes of tags.
 
-### Tag Attribute Select Plugin
-Cycle through selecting tag attributes of tags.
-
 ### Tag Name Select Plugin
 Select the opening and closing tag name of current tag.
 
