@@ -3,6 +3,9 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
+# Sublime Text 3 Support?
+ST3 support is found here (at the present time):  https://github.com/facelessuser/BracketHighlighter/tree/BH2ST3
+
 ## Overview
 Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, ```{}```, ```""```, ```''```, ```<tag></tag>```, and even custom brackets.
 
