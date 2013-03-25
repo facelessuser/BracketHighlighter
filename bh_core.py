@@ -35,7 +35,7 @@ GLOBAL_ENABLE = True
 
 
 def bh_logging(msg):
-    print(msg)
+    print("BracketHighlighter: %s" % msg)
 
 
 def bh_debug(msg):
@@ -73,7 +73,7 @@ def load_modules(obj, loaded):
         obj["post_match"] = getattr(module, "post_match", None)
         loaded.add(plib)
     except:
-        bh_logging("BracketHighlighter: Could not load module %s" % plib)
+        bh_logging("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))
         raise
 
 
@@ -694,7 +694,7 @@ class BhCore(object):
 
         if len(self.brackets):
             bh_debug(
-                "BracketHighlighter: Search patterns:\n" +
+                "Search patterns:\n" +
                 "(?:%s)\n" % '|'.join(self.find_regex) +
                 "(?:%s)" % '|'.join(self.sub_find_regex)
             )
@@ -1078,7 +1078,7 @@ class BhCore(object):
                         bfr
                     )
             except:
-                bh_logging("BracketHighlighter: Plugin Compare Error:\n%s" % str(traceback.format_exc()))
+                bh_logging("Plugin Compare Error:\n%s" % str(traceback.format_exc()))
         return match
 
     def post_match(self, left, right, center, bfr, scope_bracket=False):
@@ -1126,7 +1126,7 @@ class BhCore(object):
                     left = BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
                     right = BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
             except:
-                bh_logging("BracketHighlighter: Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
+                bh_logging("Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
         return left, right
 
     def run_plugin(self, name, left, right, regions):
@@ -1420,7 +1420,7 @@ def bh_loop():
 def init_bh_match():
     global bh_match
     bh_match = BhCore().match
-    bh_debug("BracketHighlighter: Match object loaded.")
+    bh_debug("Match object loaded.")
 
 
 def plugin_loaded():
@@ -1430,7 +1430,7 @@ def plugin_loaded():
         global running_bh_loop
         running_bh_loop = True
         thread.start_new_thread(bh_loop, ())
-        bh_debug("BracketHighlighter: Starting Thread")
+        bh_debug("Starting Thread")
     else:
-        bh_debug("BracketHighlighter: Restarting Thread")
+        bh_debug("Restarting Thread")
         BhThreadMgr.restart = True
