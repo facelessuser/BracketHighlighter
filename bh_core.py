@@ -509,12 +509,15 @@ class BhCore(object):
     """
     Bracket matching class.
     """
+    plugin_reload = False
 
     def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}, keycommand=False):
         """
         Load settings and setup reload events if settings changes.
         """
+
         self.settings = sublime.load_settings("bh_core.sublime-settings")
+        self.keycommand = keycommand
         if not keycommand:
             self.settings.clear_on_change('reload')
             self.settings.add_on_change('reload', self.setup)
@@ -806,6 +809,13 @@ class BhCore(object):
             for region_key in view.settings().get("bh_regions", []):
                 view.erase_regions(region_key)
             return
+
+        if self.keycommand:
+            BhCore.plugin_reload = True
+
+        if not self.keycommand and BhCore.plugin_reload:
+            self.setup()
+            BhCore.plugin_reload = False
 
         # Setup views
         self.view = view
