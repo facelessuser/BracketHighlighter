@@ -61,7 +61,7 @@ class ImportModule(object):
                 sys.modules[module_name] = module
                 source = None
                 with open(path_name) as f:
-                    source = f.read()
+                    source = f.read().replace('\r', '')
                 cls.__execute_module(source, module_name)
                 w = filter(lambda i: issubclass(i.category, UserWarning), w)
         return module
