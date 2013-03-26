@@ -492,15 +492,20 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
         # Override events
         BhEventMgr.ignore_all = True
         BhEventMgr.modified = False
-        BhCore(
+        self.bh = BhCore(
             threshold,
             lines,
             adjacent,
             ignore,
             plugin,
             True
-        ).match(self.window.active_view())
-        # Reset event settings
+        )
+        self.view = self.window.active_view()
+        sublime.set_timeout(self.execute, 100)
+
+    def execute(self):
+        bh_debug("Key Event")
+        self.bh.match(self.view)
         BhEventMgr.ignore_all = False
         BhEventMgr.time = time()
 
