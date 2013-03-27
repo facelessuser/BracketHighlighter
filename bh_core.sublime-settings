@@ -241,7 +241,7 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "(^\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b\\s*[a-zA-Z_\\d]+)|do)\\b",
+            "open": "(^\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b\\s*[a-zA-Z_\\d]+)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
