@@ -965,7 +965,6 @@ class BhCore(object):
             bracket = self.brackets[left.type]
             left, right, regions, nobracket = self.run_plugin(bracket.name, left, right, regions)
             if nobracket:
-                # self.store_sel(regions)
                 return True
 
         # Matched brackets
