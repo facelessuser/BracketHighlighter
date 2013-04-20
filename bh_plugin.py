@@ -115,16 +115,18 @@ class BracketPlugin(object):
         setattr(plugin, "right", right)
         setattr(plugin, "view", view)
         setattr(plugin, "selection", selection)
+        setattr(plugin, "nobracket", False)
         edit = view.begin_edit()
         self.args["edit"] = edit
         self.args["name"] = name
         try:
+            nobracket = False
             plugin.run(**self.args)
-            left, right, selection = plugin.left, plugin.right, plugin.selection
+            left, right, selection, nobracket = plugin.left, plugin.right, plugin.selection, plugin.nobracket
         except Exception:
             print "BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc())
         view.end_edit(edit)
-        return left, right, selection
+        return left, right, selection, nobracket
 
 
 class BracketPluginCommand(object):

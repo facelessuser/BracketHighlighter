@@ -35,6 +35,7 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
 
         self.left = None
         self.right = None
+        self.nobracket = True
 
 
 def plugin():
