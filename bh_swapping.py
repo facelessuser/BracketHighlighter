@@ -1,3 +1,4 @@
+import sublime
 import sublime_plugin
 import bh_wrapping
 
@@ -14,6 +15,13 @@ class SwapBrackets(bh_wrapping.WrapBrackets):
 
 
 class SwapBracketsCommand(sublime_plugin.WindowCommand):
+    def finalize(self, callback):
+        if self.view is not None:
+            if not self.view.settings().get("BracketHighlighterBusy", False):
+                callback()
+            else:
+                sublime.set_timeout(lambda: self.finalize(callback), 100)
+
     def swap_brackets(self, value):
         if value < 0:
             return
@@ -29,7 +37,10 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
                 }
             }
         )
-        self.wrap.wrap(value)
+
+        self.view = self.window.active_view()
+
+        sublime.set_timeout(lambda: self.finalize(lambda: self.wrap.wrap(value)), 100)
 
     def run(self):
         view = self.window.active_view()

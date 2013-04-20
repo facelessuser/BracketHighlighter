@@ -808,6 +808,8 @@ class BhCore(object):
         Preform matching brackets surround the selection(s)
         """
 
+        view.settings().set("BracketHighlighterBusy", True)
+
         if view == None:
             return
         if not GLOBAL_ENABLE:
@@ -859,6 +861,7 @@ class BhCore(object):
         self.highlight(view)
         if self.count_lines:
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
+        view.settings().set("BracketHighlighterBusy", False)
 
     def save_incomplete_regions(self, left, right, regions):
         """
