@@ -963,7 +963,10 @@ class BhCore(object):
 
         if left is not None and right is not None:
             bracket = self.brackets[left.type]
-            left, right, regions = self.run_plugin(bracket.name, left, right, regions)
+            left, right, regions, nobracket = self.run_plugin(bracket.name, left, right, regions)
+            if nobracket:
+                # self.store_sel(regions)
+                return True
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
@@ -983,7 +986,7 @@ class BhCore(object):
         regions = [sublime.Region(sel.a, sel.b)]
 
         if left is not None and right is not None:
-            left, right, regions = self.run_plugin(bracket.name, left, right, regions)
+            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
             if left is None and right is None:
                 self.store_sel(regions)
                 return True
@@ -1008,7 +1011,7 @@ class BhCore(object):
 
         if left is not None and right is not None:
             bracket = self.brackets[left.type]
-            left, right, regions = self.run_plugin(bracket.name, left, right, regions)
+            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
 
         # Matched brackets
         if left is not None and right is not None and bracket is not None:
@@ -1150,16 +1153,17 @@ class BhCore(object):
 
         lbracket = BracketRegion(left.begin, left.end)
         rbracket = BracketRegion(right.begin, right.end)
+        nobracket = False
 
         if (
             ("__all__" in self.transform or name in self.transform) and
             self.plugin != None and
             self.plugin.is_enabled()
         ):
-            lbracket, rbracket, regions = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
+            lbracket, rbracket, regions, nobracket = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
             left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
             right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
-        return left, right, regions
+        return left, right, regions, nobracket
 
     def match_scope_brackets(self, bfr, sel):
         """

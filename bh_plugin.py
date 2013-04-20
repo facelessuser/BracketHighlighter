@@ -137,6 +137,7 @@ class BracketPlugin(object):
         setattr(Payload.plugin, "right", right)
         setattr(Payload.plugin, "view", view)
         setattr(Payload.plugin, "selection", selection)
+        setattr(Payload.plugin, "nobracket", False)
         self.args["edit"] = None
         self.args["name"] = name
         Payload.args = self.args
@@ -145,10 +146,10 @@ class BracketPlugin(object):
         view.run_command("bracket_plugin_run")
 
         if Payload.status:
-            left, right, selection = Payload.plugin.left, Payload.plugin.right, Payload.plugin.selection
+            left, right, selection, nobracket = Payload.plugin.left, Payload.plugin.right, Payload.plugin.selection, Payload.plugin.nobracket
         Payload.clear()
 
-        return left, right, selection
+        return left, right, selection, nobracket
 
 
 class BracketPluginCommand(object):
