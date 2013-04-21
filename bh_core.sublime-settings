@@ -300,7 +300,8 @@
         // use the color from the "default" style.
         "default": {
             "icon": "dot",
-            "color": "brackethighlighter.default",
+            "color": "entity.name.class",
+            // "color": "brackethighlighter.default",
             "style": "underline"
         },
 
