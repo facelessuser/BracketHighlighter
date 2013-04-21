@@ -808,13 +808,15 @@ class BhCore(object):
         Preform matching brackets surround the selection(s)
         """
 
-        view.settings().set("BracketHighlighterBusy", True)
-
         if view == None:
             return
+
+        view.settings().set("BracketHighlighterBusy", True)
+
         if not GLOBAL_ENABLE:
             for region_key in view.settings().get("bh_regions", []):
                 view.erase_regions(region_key)
+            view.settings().set("BracketHighlighterBusy", False)
             return
 
         if self.keycommand:
@@ -836,11 +838,13 @@ class BhCore(object):
 
             # Nothing to search for
             if not self.enabled:
+                view.settings().set("BracketHighlighterBusy", False)
                 return
 
             # Abort if selections are beyond the threshold
             if self.use_selection_threshold and num_sels >= self.selection_threshold:
                 self.highlight(view)
+                view.settings().set("BracketHighlighterBusy", False)
                 return
 
             multi_select_count = 0
