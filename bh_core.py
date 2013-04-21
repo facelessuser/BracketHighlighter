@@ -808,10 +808,11 @@ class BhCore(object):
         Preform matching brackets surround the selection(s)
         """
 
-        view.settings().set("BracketHighlighterBusy", True)
-
         if view == None:
             return
+
+        view.settings().set("BracketHighlighterBusy", True)
+
         if not GLOBAL_ENABLE:
             for region_key in view.settings().get("bh_regions", []):
                 view.erase_regions(region_key)
