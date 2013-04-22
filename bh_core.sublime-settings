@@ -21,6 +21,9 @@
     // Character threshold to search
     "search_threshold": 5000,
 
+    // Ignore threshold
+    "ignore_threshold": false,
+
     // Set mode for string escapes to ignore (regex|string)
     "bracket_string_escape_mode": "string",
 
