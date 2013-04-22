@@ -537,7 +537,7 @@ class BhCore(object):
         self.last_id_view = None
         self.last_id_sel = None
         self.view_tracker = (None, None)
-        self.ignore_threshold = override_thresh
+        self.ignore_threshold = override_thresh or bool(self.settings.get("ignore_threshold", False))
         self.adj_only = adj_only if adj_only is not None else bool(self.settings.get("match_only_adjacent", False))
         self.auto_selection_threshold = int(self.settings.get("auto_selection_threshold", 10))
         self.no_multi_select_icons = bool(self.settings.get("no_multi_select_icons", False))
