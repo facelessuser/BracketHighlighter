@@ -147,7 +147,7 @@ def search(pattern, string, flags=0):
     """
     search after parsing unicode properties and set flag to unicode
     """
-    re.search(parse_unicode_properties(pattern), string, flags=0)
+    re.search(parse_unicode_properties(pattern), string, flags | re.UNICODE)
 
 
 def match(pattern, string, flags=0):
