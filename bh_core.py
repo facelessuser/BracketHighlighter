@@ -4,13 +4,13 @@ import sublime
 import sublime_plugin
 from time import time, sleep
 import _thread as thread
-import re
 from BracketHighlighter.bh_plugin import BracketPlugin, BracketRegion, ImportModule
 from collections import namedtuple
 import traceback
 import sublime_api
 import json
 import shutil
+import BracketHighlighter.ure as ure
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -434,8 +434,8 @@ class ScopeDefinition(object):
         """
 
         self.style = bracket.get("style", "default")
-        self.open = re.compile("\\A" + bracket.get("open", "."), re.MULTILINE | re.IGNORECASE)
-        self.close = re.compile(bracket.get("close", ".") + "\\Z", re.MULTILINE | re.IGNORECASE)
+        self.open = ure.compile("\\A" + bracket.get("open", "."), ure.MULTILINE | ure.IGNORECASE)
+        self.close = ure.compile(bracket.get("close", ".") + "\\Z", ure.MULTILINE | ure.IGNORECASE)
         self.name = bracket["name"]
         sub_search = bracket.get("sub_bracket_search", "false")
         self.sub_search_only = sub_search == "only"
@@ -705,8 +705,8 @@ class BhCore(object):
                 "(?:%s)\n" % '|'.join(self.find_regex) +
                 "(?:%s)" % '|'.join(self.sub_find_regex)
             )
-            self.sub_pattern = re.compile("(?:%s)" % '|'.join(self.sub_find_regex), re.MULTILINE | re.IGNORECASE)
-            self.pattern = re.compile("(?:%s)" % '|'.join(self.find_regex), re.MULTILINE | re.IGNORECASE)
+            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(self.sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.pattern = ure.compile("(?:%s)" % '|'.join(self.find_regex), ure.MULTILINE | ure.IGNORECASE)
             self.enabled = True
 
     def init_match(self):
