@@ -215,15 +215,26 @@
             "find_in_sub_search": "only",
             "enabled": false
         },
-        // Angle
+        // PHP Angle
         {
-            "name": "angle",
-            "open": "(<)",
-            "close": "(>)",
+            "name": "php_angle",
+            "open": "(<\\?)(?:php)?",
+            "close": "(\\?>)",
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "language_list": ["HTML", "HTML 5", "PHP"],
+            "enabled": true
+        },
+        // Angle
+        {
+            "name": "angle",
+            "open": "(<)(?!\\?)",
+            "close": "(?<!\\?)(>)",
+            "style": "angle",
+            "scope_exclude": ["string", "comment", "keyword.operator"],
+            "language_filter": "whitelist",
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -367,7 +378,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
