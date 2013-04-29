@@ -253,7 +253,7 @@
         // Ruby embedded HTML
         {
             "name": "ruby_embedded_html",
-            "open": "(?:<%\\s*\\b|^\\s*\\b)((?:(?:if|case|until|unless|while|begin|class|module|\\bdo)\\b|def\\b[\\p{Ll}\\p{Lu}]*))",
+            "open": "((?:<%\\s*\\b|^\\s*\\b)(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["source", "comment", "string"],
@@ -266,13 +266,13 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "(^\\s*\\b(?:(?:if|case|until|unless|while|begin|class|module|\\bdo)\\b|def\\b[\\p{Ll}\\p{Lu}]*))",
+            "open": "(^\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Ruby on Rails", "HTML (Rails)"],
+            "language_list": ["Ruby", "Ruby on Rails"],
             "enabled": true
         },
         // C/C++ compile switches
