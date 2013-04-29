@@ -12,8 +12,14 @@ Licensed under MIT
 Copyright (c) 2013 Isaac Muse <isaacmuse@gmail.com>
 """
 import re
-import unicodedata
 import sys
+from os.path import dirname
+try:
+    import unicodedata
+except:
+    sys.path.append(dirname(sys.executable))
+    import unicodedata
+
 PY3 = sys.version_info[0] >= 3
 uchr = chr if PY3 else unichr
 
