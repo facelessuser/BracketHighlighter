@@ -9,4 +9,8 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
             m = re.match(r"^(\s*\b)[\w\W]*", open_bracket)
             if m:
                 first = first.move(first.begin + m.end(1), first.end)
+        if name == "ruby_embedded_html":
+            m = re.match(r"(<%\s*)[\w\W]*", open_bracket)
+            if m:
+                first = first.move(first.begin + m.end(1), first.end)
     return first, second, style
