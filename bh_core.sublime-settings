@@ -253,10 +253,10 @@
         // Ruby embedded HTML
         {
             "name": "ruby_embedded_html",
-            "open": "((?:<%\\s*\\b|^\\s*\\b)(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=<)%|^)\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
-            "scope_exclude": ["source", "comment", "string"],
+            "scope_exclude": ["text.html", "source", "comment", "string"],
             "scope_exclude_exceptions": ["source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
