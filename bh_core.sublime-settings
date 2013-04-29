@@ -325,8 +325,9 @@
         // use the color from the "default" style.
         "default": {
             "icon": "dot",
-            "color": "entity.name.class",
-            // "color": "brackethighlighter.default",
+            // BH1's original default color for reference
+            // "color": "entity.name.class",
+            "color": "brackethighlighter.default",
             "style": "underline"
         },
 
