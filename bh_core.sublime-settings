@@ -256,7 +256,7 @@
         // Ruby embedded HTML
         {
             "name": "ruby_embedded_html",
-            "open": "((?:(?<=<)%|^)\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=<%)|(?<=^))\\s*\\b(?:if|case|until|unless|while|begin|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],

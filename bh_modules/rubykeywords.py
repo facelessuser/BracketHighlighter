@@ -7,7 +7,7 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
         open_bracket = bfr[first.begin:first.end]
         print (open_bracket)
         if open_bracket != "do":
-            m = re.match(r"(%\s*|\s*\b)[\w\W]*", open_bracket)
+            m = re.match(r"(\s*\b)[\w\W]*", open_bracket)
             if m:
                 first = first.move(first.begin + m.end(1), first.end)
     return first, second, style
