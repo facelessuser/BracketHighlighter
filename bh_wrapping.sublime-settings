@@ -7,17 +7,17 @@
         },
         {
             "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
-                {"name": "{} Curly", "brackets": ["{", "}${BH_SEL}"]}
+                {"name": "{} Curly", "brackets": ["{", "}${BH_SEL}"], "insert_style": ["inline", "block", "indent_block"]}
             ]
         },
         {
             "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
-                {"name": "() Round", "brackets": ["(", ")${BH_SEL}"]}
+                {"name": "() Round", "brackets": ["(", ")${BH_SEL}"], "insert_style": ["inline", "block", "indent_block"]}
             ]
         },
         {
             "enabled": true, "language_list": ["Plain text"], "language_filter": "blacklist", "entries": [
-                {"name": "[] Square", "brackets": ["[", "]${BH_SEL}"]}
+                {"name": "[] Square", "brackets": ["[", "]${BH_SEL}"], "insert_style": ["inline", "block", "indent_block"]}
             ]
         },
         {

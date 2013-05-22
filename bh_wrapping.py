@@ -285,9 +285,13 @@ class WrapBrackets(object):
                 style.append(s[1])
 
         if len(style) > 1:
-            self.view.window().show_quick_panel(
-                style,
-                self.wrap_brackets
+            sublime.set_timeout(
+                lambda:
+                    self.view.window().show_quick_panel(
+                        style,
+                        self.wrap_brackets
+                    ),
+                0
             )
         else:
             self.wrap_brackets(0)
