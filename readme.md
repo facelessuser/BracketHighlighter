@@ -42,7 +42,7 @@ Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, `
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
 
 # General Use
-In general BracketHighligher (BH) will automatically highlight brackets (or defined bracket like start and end blocks) its between.  By default, BH will but opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
+In general, BracketHighligher (BH) will highlight brackets (or defined bracket like start and end blocks) surrounding the cursor.  By default, BH will put opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
 
 ## Built-in Supported brackets
 Currently BH supports the following brackets out of the box:
@@ -169,7 +169,7 @@ By default BH provides no shortcuts to avoid shortcut conflicts, but you can vie
 BH is extremely flexible and be customized and extended to fit a User's needs.  The first step is to copy the ```bh_core.sublime-settings``` to your ```User``` folder.
 
 ## Configuring Brackets
-BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define ```scope_brackets``` (search file for scope regions and then use regex to test for opening and closing brackets) and ```brackets``` (use regex to find opening and closing brackets).  ```bracket``` type should usually be the preferred type.  ```scope_brackets``` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
+BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: ```scope_brackets``` (search file for scope regions and then use regex to test for opening and closing brackets) and ```brackets``` (use regex to find opening and closing brackets).  ```bracket``` should usually be the preferred type.  ```scope_brackets``` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 ### Configuring Brackets
 Brackets are defined under ```brackets``` in ```bh_core.sublime-settings```.
@@ -336,7 +336,7 @@ Methods of BracketRegion:
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kids of plugins have two methods you can provide ```post_match``` and/or ```compare```.
 
 ### compare
-```compare``` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or regect a the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
+```compare``` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or reject the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
 
 The ```compare``` method receives the following paramters:
 
