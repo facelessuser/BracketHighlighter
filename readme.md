@@ -3,6 +3,7 @@
     - [Sublime Text 3 Support?](#sublime-text-3-support)
     - [Overview](#overview)
 - [Feature List](#feature-list)
+- [Installation](#installation)
 - [General Use](#general-use)
     - [Built-in Supported brackets](#built-in-supported-brackets)
     - [Additional Features](#additional-features)
@@ -40,6 +41,12 @@ Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, `
 - Configurable custom gutter icons
 - Toggle bracket escape mode for string brackets (regex|string)
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
+
+# Installation
+To install BracketHighlighter, [download](https://github.com/facelessuser/BracketHighlighter/archive/BH2ST3.zip) or clone this repo into the SublimeText Packages directory and ```git checkout BH2ST3```. A restart of SublimeText might be necessary to complete the install.
+
+    cd Packages/
+    git clone -b BH2ST3 git://github.com/facelessuser/BracketHighlighter.git "BracketHighlighter"
 
 # General Use
 In general BracketHighligher (BH) will automatically highlight brackets (or defined bracket like start and end blocks) its between.  By default, BH will but opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
