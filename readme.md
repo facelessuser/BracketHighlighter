@@ -40,7 +40,7 @@ Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, `
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
 
 # Installation
-To install BracketHighlighter, [download](https://github.com/facelessuser/BracketHighlighter/archive/BH2ST3.zip) or clone this repo into the SublimeText Packages directory and ```git checkout BH2ST3```. A restart of SublimeText might be necessary to complete the install.
+To install BracketHighlighter for ST3, do not use Package controll at this time. [Download](https://github.com/facelessuser/BracketHighlighter/archive/BH2ST3.zip) or clone this repo into the SublimeText Packages directory and ```git checkout BH2ST3```. Restart SublimeText to complete the install.
 
     cd Packages/
     git clone -b BH2ST3 git://github.com/facelessuser/BracketHighlighter.git "BracketHighlighter"
