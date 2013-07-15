@@ -1,3 +1,23 @@
+# Table of Contents
+- [About](#about)
+    - [Overview](#overview)
+- [Feature List](#feature-list)
+- [Installation](#installation)
+- [General Use](#general-use)
+    - [Built-in Supported brackets](#built-in-supported-brackets)
+    - [Additional Features](#additional-features)
+    - [Bracket Plugin](#bracket-plugin)
+    - [Shortcuts](#shortcuts)
+- [Customizing BracketHighligher](#customizing-brackethighligher)
+    - [Configuring Brackets](#configuring-brackets)
+    - [Configuring Highlight Style](#configuring-highlight-style)
+- [Bracket Plugin API](#bracket-plugin-api)
+    - ['Definition' Plugins](#definition-plugins)
+    - [Run Instance Plugins](#run-instance-plugins)
+- [Credits](#credits)
+- [Changelog](#changelog)
+
+
 # About
 This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available).  I forked this to fix some issues I had and to add some features I wanted.  I also wanted to improve the efficiency of the matching.  This cuts down on the parallel searching that is now streamlined in one search.  Since then, I have rewritten the entire code base to bring more flexibility, speed, and features.
 
@@ -18,6 +38,12 @@ Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, `
 - Configurable custom gutter icons
 - Toggle bracket escape mode for string brackets (regex|string)
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
+
+# Installation
+To install BracketHighlighter for ST3, do not use Package controll at this time. [Download](https://github.com/facelessuser/BracketHighlighter/archive/BH2ST3.zip) or clone this repo into the SublimeText Packages directory and ```git checkout BH2ST3```. Restart SublimeText to complete the install.
+
+    cd Packages/
+    git clone -b BH2ST3 git://github.com/facelessuser/BracketHighlighter.git "BracketHighlighter"
 
 # General Use
 In general BracketHighligher (BH) will automatically highlight brackets (or defined bracket like start and end blocks) its between.  By default, BH will but opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
@@ -309,7 +335,7 @@ Methods of BracketRegion:
 - **move(begin_pt, end_pt)**: returns a new BracketRegion object with the points moved as specified by the parameters
 - **toregion**: returns a sublime Region() object
 
-## 'Defintion' Plugins
+## 'Definition' Plugins
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kids of plugins have two methods you can provide ```post_match``` and/or ```compare```.
 
 ### compare
@@ -460,9 +486,11 @@ def plugin():
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
 
-# Version 2.0.0
+# Changelog
+
+#### Version 2.0.0
 - Re-write of BracketHighlighter
 - Configured for ST3
 
-# Version Older
+#### Version Older
 - See [Complete Changelog](https://github.com/facelessuser/BracketHighlighter/blob/BH2/CHANGELOG.md)
