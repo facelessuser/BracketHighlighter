@@ -89,7 +89,7 @@ These are the basic settings you can change:
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
 
-    // High visibilty style and color for high visibility mode
+    // High visibility style and color for high visibility mode
     // (solid|outline|underline)
     "high_visibility_style": "outline",
     // (scope|__default__|__bracket__)
