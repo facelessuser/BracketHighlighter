@@ -13,10 +13,10 @@ Copyright (c) 2013 Isaac Muse <isaacmuse@gmail.com>
 """
 import re
 import sys
-from os.path import dirname
 try:
     import unicodedata
 except:
+    from os.path import dirname
     sys.path.append(dirname(sys.executable))
     import unicodedata
 
@@ -41,6 +41,7 @@ purge = re.purge
 
 _unicode_properties = None
 _unicode_key_pattern = None
+_loaded = False
 
 
 def _build_unicode_property_table(unicode_range):
@@ -84,10 +85,12 @@ def _init_unicode():
     """
     Prepare unicode property tables and key pattern
     """
+    global _loaded
     global _unicode_properties
     global _unicode_key_pattern
     _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))
     _unicode_key_pattern = _build_unicode_key_pattern()
+    _loaded = True
 
 
 def find_char_groups(s):
@@ -125,6 +128,12 @@ def parse_unicode_properties(re_pattern):
     """
     Replaces regex property notation with unicode values
     """
+
+    # Init unicode table if it has not already been initialized
+    global _loaded
+    if not _loaded:
+        _init_unicode()
+
     char_groups = find_char_groups(re_pattern)
     ure_pattern = re_pattern
     for p in reversed(list(_unicode_key_pattern.finditer(re_pattern))):
@@ -198,7 +207,7 @@ def subn(pattern, repl, string, count=0, flags=0):
     re.subn(parse_unicode_properties(pattern), repl, string, flags | re.UNICODE)
 
 
-_init_unicode()
+# _init_unicode()
 
 
 if __name__ == "__main__":
