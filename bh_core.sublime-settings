@@ -9,6 +9,11 @@
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
 
+    // Enable high visibility by default when sublime starts up
+    // If sublime is already running and this gets changed,
+    // you will not see any changes (restart requrired to see change)
+    "high_visibility_enabled_by_default": false,
+
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
     "high_visibility_style": "outline",

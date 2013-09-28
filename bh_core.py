@@ -1406,6 +1406,9 @@ def bh_loop():
         BhThreadMgr.restart = False
         sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
 
+if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
+    HIGH_VISIBILITY = True
+
 if not 'running_bh_loop' in globals():
     running_bh_loop = True
     thread.start_new_thread(bh_loop, ())
