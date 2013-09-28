@@ -1451,6 +1451,10 @@ def init_bh_match():
 def plugin_loaded():
     init_bh_match()
 
+    global HIGH_VISIBILITY
+    if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
+        HIGH_VISIBILITY = True
+
     if not 'running_bh_loop' in globals():
         global running_bh_loop
         running_bh_loop = True
