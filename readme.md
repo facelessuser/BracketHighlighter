@@ -287,7 +287,7 @@ There are two special style definitions whose names are reserved: `default` and 
         },
 ```
 
-- **icon**: icon to show in gutter. Available options are: angle, round, curly,square, tag, star, dot, bookmark, question, quote, double_quote, single_quote, single_quote_offset, double_quote_offset, none
+- **icon**: icon to show in gutter. Available options are: angle, round, curly, square, tag, star, dot, bookmark, question, quote, double_quote, single_quote, single_quote_offset, double_quote_offset, none
 - **color**: scope to define color
 - **style**: higlight style.  Available options are: solid, outline, underline, thin_underline, squiggly, stippled, none
 
