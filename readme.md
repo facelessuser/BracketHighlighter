@@ -279,10 +279,9 @@ There are two special style definitions whose names are reserved: ```default``` 
         },
 ```
 
-- **icon**: icon to show in gutter. Available options are (angle|round|curly|square|tag|star|dot|bookmark|question|quote|double_quote|single_quote|single_quote_offset|
-double_quote_offset|none)
+- **icon**: icon to show in gutter. Available options are: angle, round, curly, square, tag, star, dot, bookmark, question, quote, double_quote, single_quote, single_quote_offset, double_quote_offset, none
 - **color**: scope to define color
-- **style**: higlight style.  Available options are (solid|outline|underline|none)
+- **style**: higlight style.  Available options are: solid, outline, underline, none
 
 As shown in the example above, if an option is omitted, it will use the setting in ```default```.  So ```curly```, in this example, defines ```icon```, but will use ```default``` for the ```color``` and ```style```.
 
