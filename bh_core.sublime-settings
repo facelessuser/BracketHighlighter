@@ -120,7 +120,7 @@
             "style": "regex",
             "scopes": ["string"],
             "language_filter": "whitelist",
-            "language_list": ["Ruby"],
+            "language_list": ["Ruby", "RSpec"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -277,7 +277,7 @@
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Ruby on Rails"],
+            "language_list": ["Ruby", "RSpec", "Ruby on Rails"],
             "enabled": true
         },
         // C/C++ compile switches
