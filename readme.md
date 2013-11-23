@@ -2,6 +2,7 @@
 - [About](#about)
     - [Sublime Text 3 Support?](#sublime-text-3-support)
     - [Overview](#overview)
+- [Installation](#installation)
 - [Feature List](#feature-list)
 - [General Use](#general-use)
     - [Built-in Supported brackets](#built-in-supported-brackets)
@@ -27,6 +28,9 @@ ST3 support is found here (at the present time):  https://github.com/facelessuse
 
 ## Overview
 Bracket Highlighter matches a variety of brackets such as: ```[]```, ```()```, ```{}```, ```""```, ```''```, ```<tag></tag>```, and even custom brackets.
+
+# Installation
+The recommended installation method is via Package Control.  Learn more here: https://sublime.wbond.net/.
 
 # Feature List
 - Customizable to highlight almost any bracket
