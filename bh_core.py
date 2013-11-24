@@ -543,7 +543,6 @@ class BhCore(object):
         self.no_multi_select_icons = bool(self.settings.get("no_multi_select_icons", False))
         self.count_lines = count_lines
         self.default_string_escape_mode = str(self.settings.get('bracket_string_escape_mode', "string"))
-        self.show_unmatched = bool(self.settings.get("show_unmatched", True))
 
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", [])
@@ -569,6 +568,20 @@ class BhCore(object):
             if 'type' in plugin:
                 for t in plugin["type"]:
                     self.transform.add(t)
+
+    def eval_show_unmatched(self, show_unmatched, exception, language):
+        """
+        Determine if show_unmatched should be enabled for the current view
+        """
+        answer = True
+        if show_unmatched is True or show_unmatched is False:
+            answer = show_unmatched
+        if isinstance(exception, list):
+            for option in exception:
+                if option.lower() == language:
+                    answer = not answer
+                    break
+        return answer
 
     def init_bracket_regions(self):
         """
@@ -681,10 +694,13 @@ class BhCore(object):
         self.lines = 0
         syntax = self.view.settings().get('syntax')
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
+        show_unmatched = self.settings.get("show_unmatched", True),
+        show_unmatched_exceptions = self.settings.get("show_unmatched_exceptions", [])
 
         if language != self.view_tracker[0] or self.view.id() != self.view_tracker[1]:
             self.init_bracket_regions()
             self.init_brackets(language)
+            self.show_unmatched = self.eval_show_unmatched(show_unmatched, show_unmatched_exceptions, language)
         else:
             for r in self.bracket_regions.values():
                 r.selections = []
