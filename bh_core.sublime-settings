@@ -6,6 +6,9 @@
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
 
+    // Do the opposite of "show_unmatched" for the languages listed below
+    "show_unmatched_exceptions": [],
+
     // Enable high visibility by default when sublime starts up
     // If sublime is already running and this gets changed,
     // you will not see any changes (restart requrired to see change)
