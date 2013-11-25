@@ -1467,6 +1467,7 @@ def init_bh_match():
 
 def plugin_loaded():
     init_bh_match()
+    ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
 
     global HIGH_VISIBILITY
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
