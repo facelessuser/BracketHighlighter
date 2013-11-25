@@ -13,13 +13,18 @@ Copyright (c) 2013 Isaac Muse <isaacmuse@gmail.com>
 """
 import re
 import sys
+from os.path import exists, join
 try:
     import unicodedata
 except:
     from os.path import dirname
     sys.path.append(dirname(sys.executable))
     import unicodedata
-
+try:
+    import cpickle as pickle
+except:
+    import pickle
+from os import unlink
 PY3 = sys.version_info[0] >= 3
 uchr = chr if PY3 else unichr
 
@@ -42,6 +47,20 @@ purge = re.purge
 _unicode_properties = None
 _unicode_key_pattern = None
 _loaded = False
+if "_use_cache" not in globals():
+    _use_cache = None
+    _cache_prefix = ""
+
+
+def set_cache_directory(pth, prefix=""):
+    """
+    Set cache path
+    """
+    global _use_cache
+    global _cache_prefix
+    if exists(pth):
+        _use_cache = pth
+        _cache_prefix = prefix
 
 
 def _build_unicode_property_table(unicode_range):
@@ -88,8 +107,33 @@ def _init_unicode():
     global _loaded
     global _unicode_properties
     global _unicode_key_pattern
-    _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))
-    _unicode_key_pattern = _build_unicode_key_pattern()
+    if _use_cache is not None:
+        props = join(_use_cache, "%s_unicode_properties.cache" % _cache_prefix)
+        if (not exists(join(_use_cache, "%s_unicode_properties.cache" % _cache_prefix))):
+            _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))
+            _unicode_key_pattern = _build_unicode_key_pattern()
+
+            try:
+                with open(props, 'wb') as f:
+                    pickle.dump(_unicode_key_pattern, f)
+                    pickle.dump(_unicode_properties, f)
+            except Exception as e:
+                if exists(props):
+                    unlink(props)
+        else:
+            try:
+                with open(props, 'rb') as f:
+                    _unicode_key_pattern = pickle.load(f)
+                    _unicode_properties = pickle.load(f)
+            except Exception as e:
+                if exists(props):
+                    unlink(props)
+                _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))
+                _unicode_key_pattern = _build_unicode_key_pattern()
+    else:
+        _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))
+        _unicode_key_pattern = _build_unicode_key_pattern()
+
     _loaded = True
 
 
@@ -209,8 +253,9 @@ def subn(pattern, repl, string, count=0, flags=0):
 
 # _init_unicode()
 
-
 if __name__ == "__main__":
+    from os.path import dirname, abspath
+    print(__file__)
+    set_cache_directory(dirname(abspath(__file__)), "test")
     print("Testing ure's unicode properties replacement")
-    print(parse_unicode_properties(r"[\p{Ll}\p{Lu}]"))
-    print(parse_unicode_properties(r"\p{Ll}\p{Lu}"))
+    print(parse_unicode_properties(r"\p{Ll}"))

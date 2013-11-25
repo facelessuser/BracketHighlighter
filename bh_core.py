@@ -8,6 +8,8 @@ from bh_plugin import BracketPlugin, BracketRegion, ImportModule
 from collections import namedtuple
 import traceback
 
+ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
+
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
