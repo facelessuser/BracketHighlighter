@@ -9,11 +9,11 @@
     - [Additional Features](#additional-features)
     - [Bracket Plugin](#bracket-plugin)
     - [Shortcuts](#shortcuts)
-- [Customizing BracketHighligher](#costumizing-brackethighlighter)
-    - [Configuring Brackets](#cnfiguring-brackets)
+- [Customizing BracketHighlighter](#customizing-brackethighlighter)
+    - [Configuring Brackets](#configuring-brackets)
     - [Configuring Highlight Style](#configuring-highlight-style)
 - [Bracket Plugin API](#bracket-plugin-api)
-    - ['Defintion' Plugins](#definition-plugins)
+    - ['Definition' Plugins](#definition-plugins)
     - [Run Instance Plugins](#run-instance-plugins)
 - [Credits](#credits)
 - [Changelog](#changelog)
@@ -43,10 +43,10 @@ The recommended installation method is via Package Control.  Learn more here: ht
 - Works with multi-select
 - Configurable custom gutter icons
 - Toggle bracket escape mode for string brackets (regex|string)
-- Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selectios with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold conent between brackets, toggle through tag attribute selecection, select both the opening and closing tag name to change both simultaneously.
+- Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selections with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold content between brackets, toggle through tag attribute selection, select both the opening and closing tag name to change both simultaneously.
 
 # General Use
-In general, BracketHighligher (BH) will highlight brackets (or defined bracket like start and end blocks) surrounding the cursor.  By default, BH will put opening and closing icons in the gutter of the corresponding line containing open or closising bracket. BH, by default, will underline the closing and opening bracket as well.
+In general, BracketHighlighter (BH) will highlight brackets (or defined bracket like start and end blocks) surrounding the cursor.  By default, BH will put opening and closing icons in the gutter of the corresponding line containing open or closing bracket. BH, by default, will underline the closing and opening bracket as well.
 
 ## Built-in Supported brackets
 Currently BH supports the following brackets out of the box:
@@ -57,7 +57,7 @@ Currently BH supports the following brackets out of the box:
 - angle
 - single and double quotes
 - python single and double quotes (unicode and raw)
-- python tripple single and double quotes (unicode and raw)
+- python triple single and double quotes (unicode and raw)
 - Javascript regex
 - Perl regex
 - Ruby regex
@@ -73,7 +73,7 @@ Currently BH supports the following brackets out of the box:
 BH also supports highlighting basic sub brackets ```(), [], {}``` within supported regex and strings.
 
 ## Additional Features
-BH has a couple of additonal features built-in.
+BH has a couple of additional features built-in.
 
 ### Toggle Global Enable (bh_toggle_enable)
 This command enables and disables BH globally
@@ -169,7 +169,7 @@ Swap the current surrounding bracket with supported bracket of your choice.  Swa
 ## Shortcuts
 By default BH provides no shortcuts to avoid shortcut conflicts, but you can view the included ```Example.sublime-keymaps``` file to get an idea how to set up your own.
 
-# Customizing BracketHighligher
+# Customizing BracketHighlighter
 BH is extremely flexible and be customized and extended to fit a User's needs.  The first step is to copy the ```bh_core.sublime-settings``` to your ```User``` folder.
 
 ## Configuring Brackets
@@ -178,7 +178,7 @@ BH has been written to allow users to define any brackets they would like to hav
 ### Configuring Brackets
 Brackets are defined under ```brackets``` in ```bh_core.sublime-settings```.
 
-Angle and Curly bracket will be used as an eample (not all options may be shown in these examples):
+Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
 
 ```javascript
         {
@@ -208,14 +208,14 @@ Angle and Curly bracket will be used as an eample (not all options may be shown 
 ```
 
 - **name**: the name of the bracket (should be unique)
-- **open**: defines the opening bracket (one and only one captureing group must be present)
-- **close**: defines the closing bracket (one and only one captureing group must be present)
+- **open**: defines the opening bracket (one and only one capturing group must be present)
+- **close**: defines the closing bracket (one and only one capturing group must be present)
 - **style**: Name of style definition to be used to highlight the brackets.  See ```Configuring Bracket Styles``` for more info.
 - **scope_exclude**: Scopes where the opening and closing brackets should be ignored.
 - **language_filter**: This works in conjunction with ```language_list```.  It specifies whether ```language_list``` is a ```blacklist``` or ```whitelist```.
 - **language_list**: an array of tmLanguage file names that should be avoided or included for highlighting.  Looks to ```language_filter``` to determine if avoidance or inclusion is used.
 - **enabled**: disable or enable rule
-- **scope_exclude_exceptions (optional)***: used to ignore exluding of sub scopes such as in the curly example above where ```string``` is excluded, but not ```string.other.math.block.environment.latex```.
+- **scope_exclude_exceptions (optional)***: used to ignore excluding of sub scopes such as in the curly example above where ```string``` is excluded, but not ```string.other.math.block.environment.latex```.
 - **plugin_library (optional)**: defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins)
 - **find_in_sub_search (optional)**: this rule should be included when doing sub bracket matching in ```scope_brackets``` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a ```scope_bracket```.
 - **ignore_string_escape (optional)**: Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set.
@@ -223,7 +223,7 @@ Angle and Curly bracket will be used as an eample (not all options may be shown 
 ### Configuring Scope Brackets
 Scope Brackets are defined under ```scope_brackets``` in ```bh_core.sublime-settings```.
 
-Python Single Quote bracket will be used as an eample (not all options are shown in this example):
+Python Single Quote bracket will be used as an example (not all options are shown in this example):
 
 ```javascript
         {
@@ -240,8 +240,8 @@ Python Single Quote bracket will be used as an eample (not all options are shown
 ```
 
 - **name**: the name of the bracket (should be unique)
-- **open**: defines the opening bracket (one and only one captureing group must be present)
-- **close**: defines the closing bracket (one and only one captureing group must be present)
+- **open**: defines the opening bracket (one and only one capturing group must be present)
+- **close**: defines the closing bracket (one and only one capturing group must be present)
 - **style**: Name of style definition to be used to highlight the brackets.  See ```Configuring Bracket Styles``` for more info.
 - **scopes**: scope that should be searched to find the opening and closing brackets.
 - **language_filter**: This works in conjunction with ```language_list```.  It specifies whether ```language_list``` is a ```blacklist``` or ```whitelist```.
@@ -253,7 +253,7 @@ Python Single Quote bracket will be used as an eample (not all options are shown
 ## Configuring Highlight Style
 Each bracket definition (described in [Configuring Scope Brackets](#configuring-scope-brackets) and [Configuring Brackets](#configuring-brackets)) has a ```style``` setting that you give a style definition to.  Style definitions are defined under ```bracket_styles``` in ```bh_core.sublime-settings```.
 
-There are two special style definitions whose names are reserved: ```default``` and ```unmatched```, but you can configure them.  All other custom style definitions follow the same pattern (see ```curly``` below and compare to the special style defintions; format is the same)  All custom styles follow this pattern.  See description below:
+There are two special style definitions whose names are reserved: ```default``` and ```unmatched```, but you can configure them.  All other custom style definitions follow the same pattern (see ```curly``` below and compare to the special style definitions; format is the same)  All custom styles follow this pattern.  See description below:
 
 ```javascript
         // "default" style defines attributes that
@@ -268,7 +268,7 @@ There are two special style definitions whose names are reserved: ```default``` 
         },
 
         // This particular style is used to highlight
-        // unmatched bracekt pairs.  It is a special
+        // unmatched bracket pairs.  It is a special
         // style.
         "unmatched": {
             "icon": "question",
@@ -316,7 +316,7 @@ And then use the scope:
 ```
 
 # Bracket Plugin API
-There are two kinds of plugins that can be written ```definition``` plugins (plugins attached to bracket definitions via the ```plugin_library``` option) or ```run instance``` plugins (plugins that are that are fed in the BracketHighligher via the command parameter ```plugin```).
+There are two kinds of plugins that can be written ```definition``` plugins (plugins attached to bracket definitions via the ```plugin_library``` option) or ```run instance``` plugins (plugins that are that are fed in the BracketHighlighter via the command parameter ```plugin```).
 
 Bracket plugins use ```BracketRegions```. ```BracketRegions``` are simple objects containing a begin pt and end pt of a bracket.
 
@@ -335,13 +335,13 @@ Methods of BracketRegion:
 - **move(begin_pt, end_pt)**: returns a new BracketRegion object with the points moved as specified by the parameters
 - **toregion**: returns a sublime Region() object
 
-## 'Defintion' Plugins
+## 'Definition' Plugins
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kids of plugins have two methods you can provide ```post_match``` and/or ```compare```.
 
 ### compare
 ```compare``` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or reject the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
 
-The ```compare``` method receives the following paramters:
+The ```compare``` method receives the following parameters:
 
 - **name**: the name of the bracket definition being evaluated
 - **first**:  a bracket region for the opening bracket
@@ -374,7 +374,7 @@ The ```post_match``` method receives the following parameters:
 Returns:
 
 - **BracketRegion**: opening bracket region
-- **BracketRegion**: closing bracekt region
+- **BracketRegion**: closing bracket region
 - **style**: the name of the style definition to use
 
 Example (from rubykeywords.py):
@@ -434,11 +434,11 @@ Example of run instance plugin getting called:
     },
 ```
 
-The ```plugin``` paramter is a dictionary that contains 3 parameters to define what plugin should get run, with what arguments, and on what bracket defintion.
+The ```plugin``` parameter is a dictionary that contains 3 parameters to define what plugin should get run, with what arguments, and on what bracket definition.
 
 - **type**: an array containing the bracket definition names that the plugin should be run on.  Use ```__all__``` for all bracket definitions.
-- **command**: the plugin to run.  For internal plugins, they are referenced by ```bh_modules.<plugin name>```.  For custom plugins, you should use the folder path releative to ```Packages```.  So if I had a plugin called ```myplugin.py``` in my ```User``` folder, I would use ```User.myplugin```.
-- **args**: a dictionary contianing the arguments to feed into the plugin.
+- **command**: the plugin to run.  For internal plugins, they are referenced by ```bh_modules.<plugin name>```.  For custom plugins, you should use the folder path relative to ```Packages```.  So if I had a plugin called ```myplugin.py``` in my ```User``` folder, I would use ```User.myplugin```.
+- **args**: a dictionary containing the arguments to feed into the plugin.
 
 You create ```run instance``` plugins by deriving a class from the ```BracketPluginCommand``` class.  Then you provide a method called ```plugin``` that returns the class.
 
@@ -453,7 +453,7 @@ Parameters of BracketPluginCommand:
 
 Attributes of BracketPluginCommand:
 
-- **view**: the sublime view containg the bracket (don't change this)
+- **view**: the sublime view containing the bracket (don't change this)
 - **left**:  a bracket region for the opening bracket (can be changed)
 - **right**: a bracket region for the closing bracket (can be changed)
 - **selection**: an array containing the selection that triggered the match (can be changed)
