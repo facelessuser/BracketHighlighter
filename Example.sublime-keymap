@@ -67,6 +67,21 @@
             }
         }
     },
+    // Select text including brackets
+    {
+        "keys": ["ctrl+alt+super+d"],
+        "command": "bh_key",
+        "args":
+        {
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"always_include_brackets": true}
+            }
+        }
+    },
     // Select tag name of HTML/XML tag (both opening name and closing)
     {
         "keys": ["ctrl+alt+super+t"],

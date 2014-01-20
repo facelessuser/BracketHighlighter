@@ -5,7 +5,7 @@ DEFAULT_TAGS = ["cfml", "html", "angle"]
 
 
 class SelectBracket(bh_plugin.BracketPluginCommand):
-    def run(self, edit, name, select='', tags=DEFAULT_TAGS):
+    def run(self, edit, name, select='', tags=DEFAULT_TAGS, always_include_brackets=False):
         current_left, current_right = self.selection[0].begin(), self.selection[0].end()
         left, right = self.left, self.right
         first, last = left.end, right.begin
@@ -36,7 +36,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
                     first, last = right.end, right.end
                     if first == current_left and last == current_right:
                         first, last = right.end, right.end
-        elif first == current_left and last == current_right:
+        elif first == current_left and last == current_right or always_include_brackets:
             first, last = left.begin, right.end
 
         self.selection = [sublime.Region(first, last)]
