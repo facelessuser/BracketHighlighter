@@ -336,7 +336,39 @@ Methods of BracketRegion:
 - **toregion**: returns a sublime Region() object
 
 ## 'Definition' Plugins
-These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kids of plugins have two methods you can provide ```post_match``` and/or ```compare```.
+These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kinds of plugins have three methods you can provide: `post_match`, `compare`, and/or `validate`.
+
+### validate
+`validate` before comparing it to its corresponding openning or closing side.  This is used to determine perfrom additional validation on a found bracket.  For example, lets say you have a bracket that is case senstive.  BH uses a case insenstive search.  With validate, you can ensure the orginally found bracket matches the desired case.
+
+The `validate` method receives the following parameters:
+
+- **name**: the name of the bracket definition being evaluated
+- **bracket**: the bracket region being validated
+- **bracket_side**: opening (0) or closing (1) bracket
+- **bfr**: the file buffer
+
+Returns:
+
+- **Boolean**: indicates whether the validation succeeded (True) or failed (False)
+
+Example: Should match closing tag `end` but not match `End`
+
+```erlang
+case Foo of
+    Guard1 -> ok;
+    Guard2 -> End
+end
+```
+
+Example (from erlangcase.py):
+
+```python
+def validate(name, bracket, bracket_side, bfr):
+    text = bfr[bracket.begin:bracket.end]
+    return text.lower() == text
+
+```
 
 ### compare
 ```compare``` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or reject the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.

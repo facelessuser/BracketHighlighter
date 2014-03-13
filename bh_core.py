@@ -69,6 +69,7 @@ def load_modules(obj, loaded):
         module = ImportModule.import_module(plib, loaded)
         obj["compare"] = getattr(module, "compare", None)
         obj["post_match"] = getattr(module, "post_match", None)
+        obj["validate"] = getattr(module, "validate", None)
         loaded.add(plib)
     except:
         bh_logging("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))
@@ -384,6 +385,7 @@ class BracketDefinition(object):
         self.find_in_sub_search_only = sub_search == "only"
         self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
         self.post_match = bracket.get("post_match")
+        self.validate = bracket.get("validate")
         self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
         self.scope_exclude = bracket.get("scope_exclude", [])
         self.ignore_string_escape = bracket.get("ignore_string_escape", False)
@@ -408,6 +410,7 @@ class ScopeDefinition(object):
         self.sub_search = self.sub_search_only == True or sub_search == "true"
         self.compare = bracket.get("compare")
         self.post_match = bracket.get("post_match")
+        self.validate = bracket.get("validate")
         self.scopes = bracket["scopes"]
 
 
@@ -636,6 +639,9 @@ class BhCore(object):
         self.enabled = False
         self.sels = []
         self.multi_select = False
+        self.check_compare = False
+        self.check_validate = False
+        self.check_post_match = False
         scopes = {}
         loaded_modules = self.loaded_modules.copy()
 
@@ -644,6 +650,12 @@ class BhCore(object):
                 try:
                     load_modules(params, loaded_modules)
                     entry = BracketDefinition(params)
+                    if not self.check_compare and entry.compare is not None:
+                        self.check_compare = True
+                    if not self.check_validate and entry.validate is not None:
+                        self.check_validate = True
+                    if not self.check_post_match and entry.post_match is not None:
+                        self.check_post_match = True
                     self.brackets.append(entry)
                     if not entry.find_in_sub_search_only:
                         self.find_regex.append(params["open"])
@@ -667,6 +679,12 @@ class BhCore(object):
                 try:
                     load_modules(params, loaded_modules)
                     entry = ScopeDefinition(params)
+                    if not self.check_compare and entry.compare is not None:
+                        self.check_compare = True
+                    if not self.check_validate and entry.validate is not None:
+                        self.check_validate = True
+                    if not self.check_post_match and entry.post_match is not None:
+                        self.check_post_match = True
                     for x in entry.scopes:
                         if x not in scopes:
                             scopes[x] = scope_count
@@ -1062,6 +1080,29 @@ class BhCore(object):
             illegal_scope = True
         return illegal_scope
 
+    def validate(self, b, bracket_type, bfr, scope_bracket=False):
+        """
+        Validate bracket.
+        """
+
+        match = True
+
+        if not self.check_validate:
+            return match
+
+        bracket = self.scopes[b.scope]["brackets"][b.type] if scope_bracket else self.brackets[b.type]
+        if bracket.validate is not None:
+            try:
+                match = bracket.validate(
+                    bracket.name,
+                    BracketRegion(b.begin, b.end),
+                    bracket_type,
+                    bfr
+                )
+            except:
+                bh_logging("Plugin Bracket Find Error:\n%s" % str(traceback.format_exc()))
+        return match
+
     def compare(self, first, second, bfr, scope_bracket=False):
         """
         Compare brackets.  This function allows bracket plugins to add aditional logic.
@@ -1071,6 +1112,10 @@ class BhCore(object):
             match = first is not None and second is not None
         else:
             match = first.type == second.type
+
+        if not self.check_compare:
+            return match
+
         if match:
             bracket = self.scopes[first.scope]["brackets"][first.type] if scope_bracket else self.brackets[first.type]
             try:
@@ -1109,6 +1154,9 @@ class BhCore(object):
             return left, right
 
         self.bracket_style = bracket.style
+
+        if not self.check_post_match:
+            return left, right
 
         if bracket.post_match is not None:
             try:
@@ -1209,9 +1257,13 @@ class BhCore(object):
                 m = b.open.search(scope_bfr)
                 if m and m.group(1):
                     left = ScopeEntry(extent.begin() + m.start(1), extent.begin() + m.end(1), scope_count, bracket_count)
+                    if left is not None and not self.validate(left, 0, bfr, True):
+                        left = None
                 m = b.close.search(scope_bfr)
                 if m and m.group(1):
                     right = ScopeEntry(extent.begin() + m.start(1), extent.begin() + m.end(1), scope_count, bracket_count)
+                    if right is not None and not self.validate(right, 1, bfr, True):
+                        right = None
                 if not self.compare(left, right, bfr, scope_bracket=True):
                     left, right = None, None
                 # Track partial matches.  If a full match isn't found,
@@ -1267,11 +1319,15 @@ class BhCore(object):
         pattern = self.pattern if not self.sub_search_mode else self.sub_pattern
         bsearch = BracketSearch(bfr, window, center, pattern, self.is_illegal_scope, scope)
         for o in bsearch.get_open(BracketSearchSide.left):
+            if not self.validate(o, 0, bfr):
+                continue
             if len(stack) and bsearch.is_done(BracektSearchType.closing):
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
             for c in bsearch.get_close(BracketSearchSide.left):
+                if not self.validate(c, 1, bfr):
+                    continue
                 if o.end <= c.begin:
                     stack.append(c)
                     continue
@@ -1293,11 +1349,15 @@ class BhCore(object):
         # Grab each closest closing right side bracket and attempt to match it.
         # If the closing bracket cannot be matched, select it.
         for c in bsearch.get_close(BracketSearchSide.right):
+            if not self.validate(c, 1, bfr):
+                continue
             if len(stack) and bsearch.is_done(BracektSearchType.opening):
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
             for o in bsearch.get_open(BracketSearchSide.right):
+                if not self.validate(o, 0, bfr):
+                    continue
                 if o.end <= c.begin:
                     stack.append(o)
                     continue

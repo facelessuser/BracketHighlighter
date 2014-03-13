@@ -317,6 +317,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
+            "plugin_library": "bh_modules.erlangcase",
             "language_list": ["Erlang", "HTML (Erlang)"],
             "enabled": true
         }
