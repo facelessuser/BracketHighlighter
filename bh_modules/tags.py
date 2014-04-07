@@ -4,14 +4,14 @@ import sublime
 from os.path import basename
 
 FLAGS = re.MULTILINE | re.IGNORECASE
-HTML_START = re.compile(r'''<([\w\:\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>''', FLAGS)
-CFML_START = re.compile(r'''<([\w\:\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>''', FLAGS)
+HTML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>''', FLAGS)
+CFML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>''', FLAGS)
 START_TAG = {
     "html": HTML_START,
     "xhtml": HTML_START,
     "cfml": CFML_START
 }
-END_TAG = re.compile(r'<\/([\w\:\-]+)[^>]*>', FLAGS)
+END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>', FLAGS)
 
 self_closing_tags = set("colgroup dd dt li options p td tfoot th thead tr".split())
 single_tags = set("area base basefont br col frame hr img input isindex link meta param embed".split())
