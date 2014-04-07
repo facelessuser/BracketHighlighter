@@ -5,7 +5,7 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
     def run(self, edit, name, direction='right'):
         if self.left.size() <= 1:
             return
-        tag_name = r'[\w\:\-]+'
+        tag_name = r'[\w\:\.\-]+'
         attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:(?:"((?:\.|[^"])*)")|(?:'((?:\.|[^'])*)')|([^>\s]+)))?'''
         tname = self.view.find(tag_name, self.left.begin)
         current_region = self.selection[0]
