@@ -178,7 +178,7 @@
             "close": "(\\))",
             "style": "round",
             "scope_exclude_exceptions": ["text.tex string.other.math"],
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
             "find_in_sub_search": "true",
@@ -316,6 +316,39 @@
             "language_filter": "whitelist",
             "plugin_library": "bh_modules.erlangcase",
             "language_list": ["Erlang", "HTML (Erlang)"],
+            "enabled": true
+        },
+        // Bash do block
+        {
+            "name": "bash_do",
+            "open": "(?:(?:;|^)\\s*)\\b(do)\\b",
+            "close": "(?:(?:;|^)\\s*)\\b(done)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Shell-Unix-Generic"],
+            "enabled": true
+        },
+        // Bash if
+        {
+            "name": "bash_if",
+            "open": "\\b(if)\\b",
+            "close": "(?:(?:;|^)\\s*)\\b(fi)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Shell-Unix-Generic"],
+            "enabled": true
+        },
+        // Bash case
+        {
+            "name": "bash_case",
+            "open": "\\b(case)\\b",
+            "close": "(?:(?:;|^)\\s*)\\b(esac)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Shell-Unix-Generic"],
             "enabled": true
         }
     ],
