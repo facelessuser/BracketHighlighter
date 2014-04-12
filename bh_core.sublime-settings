@@ -318,35 +318,14 @@
             "language_list": ["Erlang", "HTML (Erlang)"],
             "enabled": true
         },
-        // Bash do block
+        //Bash
         {
-            "name": "bash_do",
-            "open": "(?:(?:;|^)\\s*)\\b(do)\\b",
-            "close": "(?:(?:;|^)\\s*)\\b(done)\\b",
+            "name": "bash",
+            "open": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(if|case|while|select|until|for)\\s",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
-            "language_list": ["Shell-Unix-Generic"],
-            "enabled": true
-        },
-        // Bash if
-        {
-            "name": "bash_if",
-            "open": "\\b(if)\\b",
-            "close": "(?:(?:;|^)\\s*)\\b(fi)\\b",
-            "style": "default",
-            "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
-            "language_list": ["Shell-Unix-Generic"],
-            "enabled": true
-        },
-        // Bash case
-        {
-            "name": "bash_case",
-            "open": "\\b(case)\\b",
-            "close": "(?:(?:;|^)\\s*)\\b(esac)\\b",
-            "style": "default",
-            "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.bashkeywords",
             "language_filter": "whitelist",
             "language_list": ["Shell-Unix-Generic"],
             "enabled": true
