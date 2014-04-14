@@ -325,7 +325,7 @@
             "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
-            "plugin_library": "bh_modules.bashkeywords",
+            "plugin_library": "bh_modules.bashsupport",
             "language_filter": "whitelist",
             "language_list": ["Shell-Unix-Generic"],
             "enabled": true
