@@ -69,6 +69,7 @@ Currently BH supports the following brackets out of the box:
 - PHP conditional keywords
 - Erlang conditional statements
 - HTML/ColdFusion/XML tags
+- Bash conditional and looping constructs
 
 BH also supports highlighting basic sub brackets ```(), [], {}``` within supported regex and strings.
 
