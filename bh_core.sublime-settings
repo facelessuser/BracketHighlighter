@@ -178,7 +178,7 @@
             "close": "(\\))",
             "style": "round",
             "scope_exclude_exceptions": ["text.tex string.other.math"],
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
             "language_filter": "blacklist",
             "language_list": ["Plain text"],
             "find_in_sub_search": "true",
@@ -316,6 +316,18 @@
             "language_filter": "whitelist",
             "plugin_library": "bh_modules.erlangcase",
             "language_list": ["Erlang", "HTML (Erlang)"],
+            "enabled": true
+        },
+        //Bash
+        {
+            "name": "bash",
+            "open": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(if|case|while|select|until|for)\\s",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:\\s|$)",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.bashsupport",
+            "language_filter": "whitelist",
+            "language_list": ["Shell-Unix-Generic"],
             "enabled": true
         }
     ],
