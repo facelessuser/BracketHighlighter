@@ -329,6 +329,17 @@
             "language_filter": "whitelist",
             "language_list": ["Shell-Unix-Generic"],
             "enabled": true
+        },
+        //Fish shell
+        {
+            "name": "fish",
+            "open": "(?:(?<!\\\\\\n)(?:;|^|and|or|not)\\s*)\\b(begin|if|while|for|switch|function)(?:;|\\s)",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?:;|\\s|$)",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["fish"],
+            "enabled": true
         }
     ],
 
