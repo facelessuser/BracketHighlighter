@@ -321,7 +321,7 @@
         //Bash
         {
             "name": "bash",
-            "open": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(if|case|while|select|until|for)\\s",
+            "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\|)\\s*)\\b(if|case|while|select|until|for)\\s",
             "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
