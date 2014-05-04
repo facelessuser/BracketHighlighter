@@ -333,7 +333,7 @@
         //Fish shell
         {
             "name": "fish",
-            "open": "(?:(?<!\\\\\\n)(?:;|^|and|or|not)\\s*)\\b(begin|if|while|for|switch|function)(?:;|\\s)",
+            "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\||and|or|not)\\s*)\\b(begin|if|while|for|switch|function)(?:;|\\s)",
             "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?:;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
