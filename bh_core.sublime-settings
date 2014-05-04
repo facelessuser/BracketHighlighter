@@ -322,7 +322,7 @@
         {
             "name": "bash",
             "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\|)\\s*)\\b(if|case|while|select|until|for)\\s",
-            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?:;|\\s|$)",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(fi|esac|done)(?=;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.bashsupport",
@@ -334,7 +334,7 @@
         {
             "name": "fish",
             "open": "(?:(?<!\\\\\\n)(?:;|^|&|\\||and|or|not)\\s*)\\b(begin|if|while|for|switch|function)(?:;|\\s)",
-            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?:;|\\s|$)",
+            "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?=;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
