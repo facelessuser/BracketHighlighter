@@ -17,10 +17,10 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
             last = None
 
             # Keep track of last attr
-            if region != None and current_pt <= region.b and region.b < self.left.end:
+            if region is not None and current_pt <= region.b and region.b < self.left.end:
                 last = region
 
-            while region != None and region.b < self.left.end:
+            while region is not None and region.b < self.left.end:
                 # Select attribute until you have closest to the left of selection
                 if (
                     current_pt > region.b or
@@ -34,19 +34,19 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
                     selection = [region]
                     last = None
                 # Update last attr
-                elif last != None:
+                elif last is not None:
                     last = region
                 region = self.view.find(attr_name, region.b)
             # Wrap right
-            if last != None:
+            if last is not None:
                 selection = [last]
         else:
             first = None
             # Keep track of first attr
-            if region != None and region.b < self.left.end:
+            if region is not None and region.b < self.left.end:
                 first = region
 
-            while region != None and region.b < self.left.end:
+            while region is not None and region.b < self.left.end:
                 # Select closest attr to the right of the selection
                 if(
                     current_pt < region.b or
@@ -62,7 +62,7 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
                     break
                 region = self.view.find(attr_name, region.b)
             # Wrap left
-            if first != None:
+            if first is not None:
                 selection = [first]
         self.selection = selection
 

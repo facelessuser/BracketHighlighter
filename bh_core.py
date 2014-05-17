@@ -1,5 +1,4 @@
-from os.path import basename, exists, join, normpath
-from os import makedirs
+from os.path import basename, join
 import sublime
 import sublime_plugin
 from time import time, sleep
@@ -7,11 +6,9 @@ import _thread as thread
 from BracketHighlighter.bh_plugin import BracketPlugin, BracketRegion, ImportModule
 from collections import namedtuple
 import traceback
-import sublime_api
-import json
-import shutil
 import BracketHighlighter.ure as ure
 
+bh_match = None
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -173,14 +170,14 @@ def exclude_bracket(enabled, filter_type, language_list, language):
         # Black list languages
         if filter_type == 'blacklist':
             exclude = False
-            if language != None:
+            if language is not None:
                 for item in language_list:
                     if language == item.lower():
                         exclude = True
                         break
-        #White list languages
+        # White list languages
         elif filter_type == 'whitelist':
-            if language != None:
+            if language is not None:
                 for item in language_list:
                     if language == item.lower():
                         exclude = False
@@ -442,7 +439,7 @@ class ScopeDefinition(object):
         self.name = bracket["name"]
         sub_search = bracket.get("sub_bracket_search", "false")
         self.sub_search_only = sub_search == "only"
-        self.sub_search = self.sub_search_only == True or sub_search == "true"
+        self.sub_search = self.sub_search_only is True or sub_search == "true"
         self.compare = bracket.get("compare")
         self.post_match = bracket.get("post_match")
         self.validate = bracket.get("validate")
@@ -750,7 +747,7 @@ class BhCore(object):
         self.chars = 0
         self.lines = 0
         syntax = self.view.settings().get('syntax')
-        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
+        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
         show_unmatched = self.settings.get("show_unmatched", True),
         show_unmatched_exceptions = self.settings.get("show_unmatched_exceptions", [])
 
@@ -794,7 +791,7 @@ class BhCore(object):
         """
 
         if self.new_select and len(self.sels) > 0:
-            if self.multi_select == False:
+            if self.multi_select is False:
                 self.view.show(self.sels[0])
             self.view.sel().clear()
             self.view.sel().add_all(self.sels)
@@ -881,7 +878,7 @@ class BhCore(object):
         Preform matching brackets surround the selection(s)
         """
 
-        if view == None:
+        if view is None:
             return
 
         view.settings().set("BracketHighlighterBusy", True)
@@ -1107,7 +1104,7 @@ class BhCore(object):
             return True
         illegal_scope = False
         # Scope sent in, so we must be scanning whatever this scope is
-        if scope != None:
+        if scope is not None:
             if self.escaped(pt, bracket.ignore_string_escape, scope):
                 illegal_scope = True
             return illegal_scope
@@ -1231,7 +1228,7 @@ class BhCore(object):
 
         if (
             ("__all__" in self.transform or name in self.transform) and
-            self.plugin != None and
+            self.plugin is not None and
             self.plugin.is_enabled()
         ):
             lbracket, rbracket, regions, nobracket = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
@@ -1497,9 +1494,10 @@ def bh_run():
 
     BhEventMgr.modified = False
     window = sublime.active_window()
-    view = window.active_view() if window != None else None
+    view = window.active_view() if window is not None else None
     BhEventMgr.ignore_all = True
-    bh_match(view, True if BhEventMgr.type == BH_MATCH_TYPE_EDIT else False)
+    if bh_match is not None:
+        bh_match(view, BhEventMgr.type == BH_MATCH_TYPE_EDIT)
     BhEventMgr.ignore_all = False
     BhEventMgr.time = time()
 
@@ -1512,7 +1510,7 @@ def bh_loop():
     """
 
     while not BhThreadMgr.restart:
-        if BhEventMgr.modified == True and time() - BhEventMgr.time > BhEventMgr.wait_time:
+        if BhEventMgr.modified is True and time() - BhEventMgr.time > BhEventMgr.wait_time:
             sublime.set_timeout(bh_run, 0)
         sleep(0.5)
 
@@ -1535,7 +1533,7 @@ def plugin_loaded():
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
         HIGH_VISIBILITY = True
 
-    if not 'running_bh_loop' in globals():
+    if 'running_bh_loop' not in globals():
         global running_bh_loop
         running_bh_loop = True
         thread.start_new_thread(bh_loop, ())

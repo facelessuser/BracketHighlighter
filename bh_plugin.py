@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
-import os
-from os.path import normpath, join, exists
+from os.path import normpath, join
 import imp
 from collections import namedtuple
 import sys
@@ -58,7 +57,7 @@ def is_bracket_region(obj):
 
 def sublime_format_path(pth):
     m = re.match(r"^([A-Za-z]{1}):(?:/|\\)(.*)", pth)
-    if sublime.platform() == "windows" and m != None:
+    if sublime.platform() == "windows" and m is not None:
         pth = m.group(1) + "/" + m.group(2)
     return pth.replace("\\", "/")
 
@@ -93,7 +92,6 @@ class BracketPluginRunCommand(sublime_plugin.TextCommand):
             Payload.status = True
         except Exception:
             print("BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc()))
-
 
 
 class BracketPlugin(object):

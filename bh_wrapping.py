@@ -26,14 +26,14 @@ def exclude_entry(enabled, filter_type, language_list, language):
         # Black list languages
         if filter_type == 'blacklist':
             exclude = False
-            if language != None:
+            if language is not None:
                 for item in language_list:
                     if language == item.lower():
                         exclude = True
                         break
-        #White list languages
+        # White list languages
         elif filter_type == 'whitelist':
-            if language != None:
+            if language is not None:
                 for item in language_list:
                     if language == item.lower():
                         exclude = False
@@ -236,7 +236,7 @@ class WrapBrackets(object):
 
         settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
-        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
+        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
         wrapping = settings.get(attribute, [])
         for i in wrapping:
             if not exclude_entry(i["enabled"], i["language_filter"], i["language_list"], language):

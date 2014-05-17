@@ -1,6 +1,7 @@
 def validate(name, bracket, bracket_side, bfr):
     return bfr[bracket.begin:bracket.end].islower()
 
+
 def compare(name, first, second, bfr):
     o = bfr[first.begin:first.end]
     c = bfr[second.begin:second.end]
