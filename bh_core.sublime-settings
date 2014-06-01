@@ -78,7 +78,7 @@
             "style": "single_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -89,7 +89,7 @@
             "style": "double_quote",
             "scopes": ["string"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -167,7 +167,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -180,7 +180,7 @@
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -193,7 +193,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text"],
+            "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
