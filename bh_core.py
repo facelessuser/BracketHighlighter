@@ -550,8 +550,8 @@ class BhCore(object):
         self.default_string_escape_mode = str(self.settings.get('bracket_string_escape_mode', "string"))
 
         # Init bracket objects
-        self.bracket_types = self.settings.get("brackets", [])
-        self.scope_types = self.settings.get("scope_brackets", [])
+        self.bracket_types = self.settings.get("brackets", []) + self.settings.get("user_brackets", [])
+        self.scope_types = self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", [])
 
         # Init selection params
         self.use_selection_threshold = True
