@@ -628,7 +628,6 @@ class BhCore(object):
         self.bracket_regions = {}
         styles = self.settings.get("bracket_styles", DEFAULT_STYLES)
         icon_path = "Packages/BracketHighlighter/icons"
-        # icon_path = "Theme - BracketHighlighter/icons"
         # Make sure default and unmatched styles in styles
         for key, value in DEFAULT_STYLES.items():
             if key not in styles:
