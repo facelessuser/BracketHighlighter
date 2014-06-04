@@ -266,7 +266,7 @@ class BracketSearchSide(object):
     right = 1
 
 
-class BracektSearchType(object):
+class BracketSearchType(object):
     """
     Userful structure to specify bracket matching direction.
     """
@@ -338,7 +338,7 @@ class BracketSearch(object):
             # Check for adjacent opening or closing bracket on left side
             entry = BracketEntry(start, end, bracket_id)
             self.touch_right = True
-            if match_type == BracektSearchType.opening:
+            if match_type == BracketSearchType.opening:
                 self.left[match_type].append(entry)
             else:
                 self.right[match_type].append(entry)
@@ -348,7 +348,7 @@ class BracketSearch(object):
         elif (
             self.touch_right is False and
             self.touch_left is False and
-            match_type == BracektSearchType.opening and
+            match_type == BracketSearchType.opening and
             start == self.center
         ):
             # Check for adjacent opening bracket of right
@@ -385,7 +385,7 @@ class BracketSearch(object):
         determines which side of the cursor the next match is returned from.
         """
 
-        for b in self._get_bracket(bracket_code, BracektSearchType.opening):
+        for b in self._get_bracket(bracket_code, BracketSearchType.opening):
             yield b
 
     def get_close(self, bracket_code):
@@ -394,7 +394,7 @@ class BracketSearch(object):
         determines which side of the cursor the next match is returned from.
         """
 
-        for b in self._get_bracket(bracket_code, BracektSearchType.closing):
+        for b in self._get_bracket(bracket_code, BracketSearchType.closing):
             yield b
 
     def is_done(self, match_type):
@@ -1427,7 +1427,7 @@ class BhCore(object):
         for o in bsearch.get_open(BracketSearchSide.left):
             if not self.validate(o, 0, bfr):
                 continue
-            if len(stack) and bsearch.is_done(BracektSearchType.closing):
+            if len(stack) and bsearch.is_done(BracketSearchType.closing):
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
@@ -1438,7 +1438,7 @@ class BhCore(object):
                     stack.append(c)
                     continue
                 elif len(stack):
-                    bsearch.remember(BracektSearchType.closing)
+                    bsearch.remember(BracketSearchType.closing)
                     break
 
             if len(stack):
@@ -1457,7 +1457,7 @@ class BhCore(object):
         for c in bsearch.get_close(BracketSearchSide.right):
             if not self.validate(c, 1, bfr):
                 continue
-            if len(stack) and bsearch.is_done(BracektSearchType.opening):
+            if len(stack) and bsearch.is_done(BracketSearchType.opening):
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
@@ -1468,7 +1468,7 @@ class BhCore(object):
                     stack.append(o)
                     continue
                 else:
-                    bsearch.remember(BracektSearchType.opening)
+                    bsearch.remember(BracketSearchType.opening)
                     break
 
             if len(stack):
