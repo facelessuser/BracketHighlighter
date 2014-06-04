@@ -47,10 +47,11 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
     tag_settings = sublime.load_settings("bh_core.sublime-settings")
     tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
     tag_style = tag_settings.get("tag_style", "angle")
+    outside_adj = tag_settings.get("bracket_outside_adjacent", False)
     bracket_style = style
 
     if first is not None and tag_mode is not None:
-        matcher = TagMatch(view, bfr, threshold, first, second, center, tag_mode)
+        matcher = TagMatch(view, bfr, threshold, first, second, center, outside_adj, tag_mode)
         left, right = matcher.match()
         if not matcher.no_tag:
             bracket_style = tag_style
@@ -111,7 +112,7 @@ class TagSearch(object):
 
 
 class TagMatch(object):
-    def __init__(self, view, bfr, threshold, first, second, center, mode):
+    def __init__(self, view, bfr, threshold, first, second, center, outside_adj, mode):
         self.view = view
         self.bfr = bfr
         self.mode = mode
@@ -119,6 +120,11 @@ class TagMatch(object):
         self.left, self.right = None, None
         self.window = None
         self.no_tag = False
+        if outside_adj:
+            if first[0] == center:
+                center += 1
+            elif center == tag_end:
+                center -= 1
         if tag and first[0] < center < tag_end:
             if tag.single:
                 self.left = tag
