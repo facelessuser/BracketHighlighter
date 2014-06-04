@@ -562,7 +562,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
     This is how BhCore is called with different options.
     """
 
-    def run(self, threshold=True, lines=False, adjacent=False, ignore={}, plugin={}):
+    def run(self, threshold=True, lines=False, adjacent=False, no_outside_adj=False, ignore={}, plugin={}):
         # Override events
         BhEventMgr.ignore_all = True
         BhEventMgr.modified = False
@@ -570,6 +570,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             threshold,
             lines,
             adjacent,
+            no_outside_adj,
             ignore,
             plugin,
             True
@@ -590,7 +591,11 @@ class BhCore(object):
     """
     plugin_reload = False
 
-    def __init__(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}, keycommand=False):
+    def __init__(
+        self, override_thresh=False, count_lines=False,
+        adj_only=None, no_outside_adj=False,
+        ignore={}, plugin={}, keycommand=False
+    ):
         """
         Load settings and setup reload events if settings changes.
         """
@@ -600,9 +605,9 @@ class BhCore(object):
         if not keycommand:
             self.settings.clear_on_change('reload')
             self.settings.add_on_change('reload', self.setup)
-        self.setup(override_thresh, count_lines, adj_only, ignore, plugin)
+        self.setup(override_thresh, count_lines, adj_only, no_outside_adj, ignore, plugin)
 
-    def setup(self, override_thresh=False, count_lines=False, adj_only=None, ignore={}, plugin={}):
+    def setup(self, override_thresh=False, count_lines=False, adj_only=None, no_outside_adj=False, ignore={}, plugin={}):
         """
         Initialize class settings from settings file and inputs.
         """
@@ -621,7 +626,7 @@ class BhCore(object):
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", []) + self.settings.get("user_brackets", [])
         self.scope_types = self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", [])
-        self.bracket_out_adj = self.settings.get("bracket_outside_adjacent", False)
+        self.bracket_out_adj = False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False)
 
         # Init selection params
         self.use_selection_threshold = True

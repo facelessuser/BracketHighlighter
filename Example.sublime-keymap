@@ -19,6 +19,7 @@
         "command": "bh_key",
         "args":
         {
+            "no_outside_adj": true,
             "lines" : true,
             "plugin":
             {
@@ -34,6 +35,7 @@
         "command": "bh_key",
         "args":
         {
+            "no_outside_adj": true,
             "lines" : true,
             "plugin":
             {
@@ -55,6 +57,7 @@
     },
     // Select text between brackets
     {
+        "no_outside_adj": true,
         "keys": ["ctrl+alt+super+s"],
         "command": "bh_key",
         "args":
@@ -73,6 +76,7 @@
         "command": "bh_key",
         "args":
         {
+            "no_outside_adj": true,
             "lines" : true,
             "plugin":
             {
