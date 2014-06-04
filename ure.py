@@ -26,7 +26,7 @@ except:
     import pickle
 from os import unlink
 PY3 = sys.version_info[0] >= 3
-uchr = chr if PY3 else unichr
+uchr = chr if PY3 else unichr  # noqa
 
 DEBUG = re.DEBUG
 I = re.I
@@ -117,7 +117,7 @@ def _init_unicode():
                 with open(props, 'wb') as f:
                     pickle.dump(_unicode_key_pattern, f)
                     pickle.dump(_unicode_properties, f)
-            except Exception as e:
+            except:
                 if exists(props):
                     unlink(props)
         else:
@@ -125,7 +125,7 @@ def _init_unicode():
                 with open(props, 'rb') as f:
                     _unicode_key_pattern = pickle.load(f)
                     _unicode_properties = pickle.load(f)
-            except Exception as e:
+            except:
                 if exists(props):
                     unlink(props)
                 _unicode_properties = _build_unicode_property_table((0x0000, 0x10FFFF))

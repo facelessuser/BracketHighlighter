@@ -34,7 +34,7 @@ def compare_languge(language, lang_list):
 def get_tag_mode(view, tag_mode_config):
     default_mode = None
     syntax = view.settings().get('syntax')
-    language = basename(syntax).replace('.tmLanguage', '').lower() if syntax != None else "plain text"
+    language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
     for mode in ["html", "xhtml", "cfml"]:
         if compare_languge(language, tag_mode_config.get(mode, [])):
             return mode
