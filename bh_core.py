@@ -1296,15 +1296,18 @@ class BhCore(object):
         self.adjusted_center = center
 
         def is_scope(center, before_center, scope):
-            match = (
-                self.view.match_selector(center, scope) and
-                self.view.match_selector(before_center, scope)
-            )
+            match = False
+            if before_center > 0:
+                match = (
+                    self.view.match_selector(center, scope) and
+                    self.view.match_selector(before_center, scope)
+                )
             if not match and self.bracket_out_adj:
                 if adj_dir < 0:
-                    match = self.view.match_selector(before_center, scope)
-                    if match:
-                        self.adjusted_center = before_center
+                    if before_center > 0:
+                        match = self.view.match_selector(before_center, scope)
+                        if match:
+                            self.adjusted_center = before_center
                 else:
                     match = self.view.match_selector(center, scope)
                     if match:
