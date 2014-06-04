@@ -1268,7 +1268,7 @@ class BhCore(object):
         nobracket = False
 
         if (
-            ("__all_self.adjusted_center_" in self.transform or name in self.transform) and
+            ("__all__" in self.transform or name in self.transform) and
             self.plugin is not None and
             self.plugin.is_enabled()
         ):
