@@ -280,7 +280,7 @@ class BracketSearch(object):
     Object that performs regex search on the view's buffer and finds brackets.
     """
 
-    def __init__(self, bfr, window, center, pattern, scope_check, scope):
+    def __init__(self, bfr, window, center, pattern, outside_adj, scope_check, scope):
         """
         Prepare the search object
         """
@@ -296,6 +296,9 @@ class BracketSearch(object):
         self.start = [None, None]
         self.left = [[], []]
         self.right = [[], []]
+        self.bracket_sort = self.sort_brackets if not outside_adj else self.sort_brackets_adj
+        self.touch_left = False
+        self.touch_right = False
         self.findall(window)
 
     def reset_end_state(self):
@@ -319,6 +322,43 @@ class BracketSearch(object):
         self.return_prev[match_type] = True
         self.done[match_type] = False
 
+    def sort_brackets(self, start, end, match_type, bracket_id):
+        if (end <= self.center if match_type else start < self.center):
+            # Sort bracket to left
+            self.left[match_type].append(BracketEntry(start, end, bracket_id))
+        elif (end > self.center if match_type else start >= self.center):
+            # Sort bracket to right
+            self.right[match_type].append(BracketEntry(start, end, bracket_id))
+
+    def sort_brackets_adj(self, start, end, match_type, bracket_id):
+        if (
+            self.touch_right is False and
+            end == (self.center)
+        ):
+            # Check for adjacent opening or closing bracket on left side
+            entry = BracketEntry(start, end, bracket_id)
+            self.touch_right = True
+            if match_type == BracektSearchType.opening:
+                self.left[match_type].append(entry)
+            else:
+                self.right[match_type].append(entry)
+        elif (end <= self.center if match_type else start < self.center):
+            # Sort bracket to left
+            self.left[match_type].append(BracketEntry(start, end, bracket_id))
+        elif (
+            self.touch_right is False and
+            self.touch_left is False and
+            match_type == BracektSearchType.opening and
+            start == self.center
+        ):
+            # Check for adjacent opening bracket of right
+            entry = BracketEntry(start, end, bracket_id)
+            self.touch_left = entry
+            self.left[match_type].append(entry)
+        elif (end > self.center if match_type else start >= self.center):
+            # Sort bracket to right
+            self.right[match_type].append(BracketEntry(start, end, bracket_id))
+
     def findall(self, window):
         """
         Find all of the brackets and sort them
@@ -337,10 +377,7 @@ class BracketSearch(object):
             bracket_id = int((g / 2) - match_type)
 
             if not self.scope_check(start, bracket_id, self.scope):
-                if (end <= self.center if match_type else start < self.center):
-                    self.left[match_type].append(BracketEntry(start, end, bracket_id))
-                elif (end > self.center if match_type else start >= self.center):
-                    self.right[match_type].append(BracketEntry(start, end, bracket_id))
+                self.bracket_sort(start, end, match_type, bracket_id)
 
     def get_open(self, bracket_code):
         """
@@ -584,6 +621,7 @@ class BhCore(object):
         # Init bracket objects
         self.bracket_types = self.settings.get("brackets", []) + self.settings.get("user_brackets", [])
         self.scope_types = self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", [])
+        self.bracket_out_adj = self.settings.get("bracket_outside_adjacent", False)
 
         # Init selection params
         self.use_selection_threshold = True
@@ -919,6 +957,7 @@ class BhCore(object):
             multi_select_count = 0
             # Process selections.
             for sel in view.sel():
+                self.recursive_guard = False
                 bfr = self.get_search_bfr(sel)
                 if not self.ignore_threshold and multi_select_count >= self.auto_selection_threshold:
                     self.store_sel([sel])
@@ -996,8 +1035,9 @@ class BhCore(object):
         Search a scope bracket match for bracekts within.
         """
 
+        self.recursive_guard = True
         bracket = None
-        left, right = self.match_brackets(bfr, search_window, sel, scope)
+        left, right, scope_adj = self.match_brackets(bfr, search_window, sel, scope)
 
         regions = [sublime.Region(sel.a, sel.b)]
 
@@ -1013,13 +1053,13 @@ class BhCore(object):
             return True
         return False
 
-    def find_scopes(self, bfr, sel):
+    def find_scopes(self, bfr, sel, adj_dir=-1):
         """
         Find brackets by scope definition.
         """
 
         # Search buffer
-        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel)
+        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel, adj_dir)
         if sub_matched:
             return True
         regions = [sublime.Region(sel.a, sel.b)]
@@ -1044,7 +1084,9 @@ class BhCore(object):
         """
 
         bracket = None
-        left, right = self.match_brackets(bfr, self.search_window, sel)
+        left, right, adj_scope = self.match_brackets(bfr, self.search_window, sel)
+        if adj_scope:
+            return
 
         regions = [sublime.Region(sel.a, sel.b)]
 
@@ -1226,7 +1268,7 @@ class BhCore(object):
         nobracket = False
 
         if (
-            ("__all__" in self.transform or name in self.transform) and
+            ("__all_self.adjusted_center_" in self.transform or name in self.transform) and
             self.plugin is not None and
             self.plugin.is_enabled()
         ):
@@ -1235,7 +1277,7 @@ class BhCore(object):
             right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
         return left, right, regions, nobracket
 
-    def match_scope_brackets(self, bfr, sel):
+    def match_scope_brackets(self, bfr, sel, adj_dir):
         """
         See if scope should be searched, and then check
         endcaps to determine if valid scope bracket.
@@ -1251,19 +1293,37 @@ class BhCore(object):
         max_size = self.view.size() - 1
         selected_scope = None
         bracket = None
+        self.adjusted_center = center
+
+        def is_scope(center, before_center, scope):
+            match = (
+                self.view.match_selector(center, scope) and
+                self.view.match_selector(before_center, scope)
+            )
+            if not match and self.bracket_out_adj:
+                if adj_dir < 0:
+                    match = self.view.match_selector(before_center, scope)
+                    if match:
+                        self.adjusted_center = before_center
+                else:
+                    match = self.view.match_selector(center, scope)
+                    if match:
+                        self.adjusted_center += 1
+            return match
 
         # Cannot be inside a bracket pair if cursor is at zero
         if center == 0:
-            return left, right, selected_scope, False
+            if not self.bracket_out_adj:
+                return left, right, selected_scope, False
 
         # Identify if the cursor is in a scope with bracket definitions
         for s in self.scopes:
             scope = s["name"]
             extent = None
             exceed_limit = False
-            if self.view.match_selector(center, scope) and self.view.match_selector(before_center, scope):
-                extent = self.view.extract_scope(center)
-                while not exceed_limit and extent.begin() != 0:
+            if is_scope(center, before_center, scope):
+                extent = self.view.extract_scope(self.adjusted_center)
+                while extent is not None and not exceed_limit and extent.begin() != 0:
                     if self.view.match_selector(extent.begin() - 1, scope):
                         extent = extent.cover(self.view.extract_scope(extent.begin() - 1))
                         if extent.begin() < self.search_window[0] or extent.end() > self.search_window[1]:
@@ -1271,7 +1331,7 @@ class BhCore(object):
                             exceed_limit = True
                     else:
                         break
-                while not exceed_limit and extent.end() != max_size:
+                while extent is not None and not exceed_limit and extent.end() != max_size:
                     if self.view.match_selector(extent.end(), scope):
                         extent = extent.cover(self.view.extract_scope(extent.end()))
                         if extent.begin() < self.search_window[0] or extent.end() > self.search_window[1]:
@@ -1319,7 +1379,7 @@ class BhCore(object):
             left, right = partial_find[0], partial_find[1]
 
         # Make sure cursor in highlighted sub group
-        if (left and center <= left.begin) or (right and center >= right.end):
+        if (left and self.adjusted_center <= left.begin) or (right and self.adjusted_center >= right.end):
             left, right = None, None
 
         if left is not None:
@@ -1352,7 +1412,15 @@ class BhCore(object):
         right = None
         stack = []
         pattern = self.pattern if not self.sub_search_mode else self.sub_pattern
-        bsearch = BracketSearch(bfr, window, center, pattern, self.is_illegal_scope, scope)
+        bsearch = BracketSearch(
+            bfr, window, center,
+            pattern, self.bracket_out_adj,
+            self.is_illegal_scope, scope
+        )
+        if not bsearch.touch_left and self.bracket_out_adj and not self.recursive_guard:
+            if self.find_scopes(bfr, sel, 1):
+                return None, None, True
+            self.sub_search_mode = False
         for o in bsearch.get_open(BracketSearchSide.left):
             if not self.validate(o, 0, bfr):
                 continue
@@ -1412,7 +1480,8 @@ class BhCore(object):
         if self.adj_only:
             left, right = self.adjacent_check(left, right, center)
 
-        return self.post_match(left, right, center, bfr)
+        left, right = self.post_match(left, right, center, bfr)
+        return left, right, False
 
     def adjacent_check(self, left, right, center):
         if left and right:
