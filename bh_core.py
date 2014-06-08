@@ -931,11 +931,11 @@ class BhCore(object):
             # Process selections.
             for sel in view.sel():
                 self.recursive_guard = False
-                bfr = self.get_search_bfr(sel)
                 if not self.ignore_threshold and multi_select_count >= self.auto_selection_threshold:
                     self.store_sel([sel])
                     multi_select_count += 1
                     continue
+                bfr = self.get_search_bfr(sel)
                 if not self.find_scopes(bfr, sel):
                     self.sub_search_mode = False
                     self.find_matches(bfr, sel)
