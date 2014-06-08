@@ -184,20 +184,6 @@ class BhCore(object):
         # Region selection, highlight, managment
         self.regions = bh_regions.BhRegion(alter_select, count_lines)
 
-    def eval_show_unmatched(self, show_unmatched, exception, language):
-        """
-        Determine if show_unmatched should be enabled for the current view
-        """
-        answer = True
-        if show_unmatched is True or show_unmatched is False:
-            answer = show_unmatched
-        if isinstance(exception, list):
-            for option in exception:
-                if option.lower() == language:
-                    answer = not answer
-                    break
-        return answer
-
     def init_brackets(self, language):
         """
         Initialize bracket match definition objects from settings file.
@@ -285,14 +271,12 @@ class BhCore(object):
 
         syntax = self.view.settings().get('syntax')
         language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
-        show_unmatched = self.settings.get("show_unmatched", True),
-        show_unmatched_exceptions = self.settings.get("show_unmatched_exceptions", [])
+
+        self.regions.reset(self.view, num_sels)
 
         if language != self.view_tracker[0] or self.view.id() != self.view_tracker[1]:
             self.init_brackets(language)
-            self.show_unmatched = self.eval_show_unmatched(show_unmatched, show_unmatched_exceptions, language)
-
-        self.regions.reset(self.view, num_sels)
+            self.regions.set_show_unmatched(language)
 
     def unique(self):
         """
@@ -334,192 +318,24 @@ class BhCore(object):
         # Search Buffer
         return self.view.substr(sublime.Region(0, view_max))
 
-    def match(self, view, force_match=True):
+    def run_plugin(self, name, left, right, regions):
         """
-        Preform matching brackets surround the selection(s)
-        """
-
-        if view is None:
-            return
-
-        view.settings().set("BracketHighlighterBusy", True)
-
-        if not GLOBAL_ENABLE:
-            for region_key in view.settings().get("bh_regions", []):
-                view.erase_regions(region_key)
-            view.settings().set("BracketHighlighterBusy", False)
-            return
-
-        if self.keycommand:
-            BhCore.plugin_reload = True
-
-        if not self.keycommand and BhCore.plugin_reload:
-            self.setup()
-            BhCore.plugin_reload = False
-
-        # Setup views
-        self.view = view
-        self.last_view = view
-
-        if self.unique() or force_match:
-            # Initialize
-            num_sels = len(view.sel())
-            self.init_match(num_sels)
-
-            # Nothing to search for
-            if not self.enabled:
-                view.settings().set("BracketHighlighterBusy", False)
-                return
-
-            # Abort if selections are beyond the threshold
-            if self.use_selection_threshold and num_sels >= self.selection_threshold:
-                self.highlight(view)
-                view.settings().set("BracketHighlighterBusy", False)
-                return
-
-            multi_select_count = 0
-            # Process selections.
-            for sel in view.sel():
-                self.recursive_guard = False
-                if not self.ignore_threshold and multi_select_count >= self.auto_selection_threshold:
-                    self.regions.store_sel([sel])
-                    multi_select_count += 1
-                    continue
-                bfr = self.get_search_bfr(sel)
-                if not self.find_scopes(bfr, sel):
-                    self.sub_search_mode = False
-                    self.find_matches(bfr, sel)
-                multi_select_count += 1
-
-        # Highlight, focus, and display lines etc.
-        self.regions.highlight(HIGH_VISIBILITY)
-
-        view.settings().set("BracketHighlighterBusy", False)
-
-    def sub_search(self, sel, search_window, bfr, scope=None):
-        """
-        Search a scope bracket match for bracekts within.
+        Run a bracket plugin.
         """
 
-        self.recursive_guard = True
-        bracket = None
-        left, right, scope_adj = self.match_brackets(bfr, search_window, sel, scope)
+        lbracket = bh_plugin.BracketRegion(left.begin, left.end)
+        rbracket = bh_plugin.BracketRegion(right.begin, right.end)
+        nobracket = False
 
-        regions = [sublime.Region(sel.a, sel.b)]
-
-        if left is not None and right is not None:
-            bracket = self.brackets[left.type]
-            left, right, regions, nobracket = self.run_plugin(bracket.name, left, right, regions)
-            if nobracket:
-                return True
-
-        # Matched brackets
-        if left is not None and right is not None and bracket is not None:
-            self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
-            return True
-        return False
-
-    def find_scopes(self, bfr, sel, adj_dir=-1):
-        """
-        Find brackets by scope definition.
-        """
-
-        # Search buffer
-        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel, adj_dir)
-        if sub_matched:
-            return True
-        regions = [sublime.Region(sel.a, sel.b)]
-
-        if left is not None and right is not None:
-            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
-            if left is None and right is None:
-                self.regions.store_sel(regions)
-                return True
-
-        if left is not None and right is not None:
-            self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
-            return True
-        elif (left is not None or right is not None) and self.show_invalid:
-            self.regions.save_incomplete_regions(left, right, regions, HIGH_VISIBILITY)
-            return True
-        return False
-
-    def find_matches(self, bfr, sel):
-        """
-        Find bracket matches
-        """
-
-        bracket = None
-        left, right, adj_scope = self.match_brackets(bfr, self.search_window, sel)
-        if adj_scope:
-            return
-
-        regions = [sublime.Region(sel.a, sel.b)]
-
-        if left is not None and right is not None:
-            bracket = self.brackets[left.type]
-            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
-
-        # Matched brackets
-        if left is not None and right is not None and bracket is not None:
-            self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
-
-        # Unmatched brackets
-        elif (left is not None or right is not None) and self.show_unmatched:
-            self.regions.save_incomplete_regions(left, right, regions, HIGH_VISIBILITY)
-        else:
-            self.regions.store_sel(regions)
-
-    def escaped(self, pt, ignore_string_escape, scope):
-        """
-        Check if sub bracket in string scope is escaped.
-        """
-
-        if not ignore_string_escape:
-            return False
-        if scope and scope.startswith("string"):
-            return self.string_escaped(pt)
-        return False
-
-    def string_escaped(self, pt):
-        """
-        Check if bracket is follows escaping characters.
-        Account for if in string or regex string scope.
-        """
-
-        escaped = False
-        start = pt - 1
-        first = False
-        if self.view.settings().get("bracket_string_escape_mode", self.default_string_escape_mode) == "string":
-            first = True
-        while self.view.substr(start) == "\\":
-            if first:
-                first = False
-            else:
-                escaped = False if escaped else True
-            start -= 1
-        return escaped
-
-    def is_illegal_scope(self, pt, bracket_id, scope=None):
-        """
-        Check if scope at pt X should be ignored.
-        """
-
-        bracket = self.brackets[bracket_id]
-        if self.sub_search_mode and not bracket.find_in_sub_search:
-            return True
-        illegal_scope = False
-        # Scope sent in, so we must be scanning whatever this scope is
-        if scope is not None:
-            if self.escaped(pt, bracket.ignore_string_escape, scope):
-                illegal_scope = True
-            return illegal_scope
-        # for exception in bracket.scope_exclude_exceptions:
-        elif len(bracket.scope_exclude_exceptions) and self.view.match_selector(pt, ", ".join(bracket.scope_exclude_exceptions)):
-            pass
-        elif len(bracket.scope_exclude) and self.view.match_selector(pt, ", ".join(bracket.scope_exclude)):
-            illegal_scope = True
-        return illegal_scope
+        if (
+            ("__all__" in self.transform or name in self.transform) and
+            self.plugin is not None and
+            self.plugin.is_enabled()
+        ):
+            lbracket, rbracket, regions, nobracket = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
+            left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
+            right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
+        return left, right, regions, nobracket
 
     def validate(self, b, bracket_type, bfr, scope_bracket=False):
         """
@@ -623,24 +439,129 @@ class BhCore(object):
 
         return left, right
 
-    def run_plugin(self, name, left, right, regions):
+    def match(self, view, force_match=True):
         """
-        Run a bracket plugin.
+        Preform matching brackets surround the selection(s)
         """
 
-        lbracket = bh_plugin.BracketRegion(left.begin, left.end)
-        rbracket = bh_plugin.BracketRegion(right.begin, right.end)
-        nobracket = False
+        if view is None:
+            return
 
-        if (
-            ("__all__" in self.transform or name in self.transform) and
-            self.plugin is not None and
-            self.plugin.is_enabled()
-        ):
-            lbracket, rbracket, regions, nobracket = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
-            left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
-            right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
-        return left, right, regions, nobracket
+        view.settings().set("BracketHighlighterBusy", True)
+
+        if not GLOBAL_ENABLE:
+            for region_key in view.settings().get("bh_regions", []):
+                view.erase_regions(region_key)
+            view.settings().set("BracketHighlighterBusy", False)
+            return
+
+        if self.keycommand:
+            BhCore.plugin_reload = True
+
+        if not self.keycommand and BhCore.plugin_reload:
+            self.setup()
+            BhCore.plugin_reload = False
+
+        # Setup views
+        self.view = view
+        self.last_view = view
+
+        if self.unique() or force_match:
+            # Initialize
+            num_sels = len(view.sel())
+            self.init_match(num_sels)
+
+            # Nothing to search for
+            if not self.enabled:
+                view.settings().set("BracketHighlighterBusy", False)
+                return
+
+            # Abort if selections are beyond the threshold
+            if self.use_selection_threshold and num_sels >= self.selection_threshold:
+                self.highlight(view)
+                view.settings().set("BracketHighlighterBusy", False)
+                return
+
+            multi_select_count = 0
+            # Process selections.
+            for sel in view.sel():
+                if not self.ignore_threshold and multi_select_count >= self.auto_selection_threshold:
+                    self.regions.store_sel([sel])
+                    multi_select_count += 1
+                    continue
+                self.recursive_guard = False
+                self.bracket_style = None
+                bfr = self.get_search_bfr(sel)
+                if not self.find_scopes(bfr, sel):
+                    self.sub_search_mode = False
+                    self.find_matches(bfr, sel)
+                multi_select_count += 1
+
+        # Highlight, focus, and display lines etc.
+        self.regions.highlight(HIGH_VISIBILITY)
+
+        view.settings().set("BracketHighlighterBusy", False)
+
+    def sub_search(self, sel, search_window, bfr, scope=None):
+        """
+        Search a scope bracket match for bracekts within.
+        """
+
+        self.recursive_guard = True
+        bracket = None
+        left, right, scope_adj = self.match_brackets(bfr, search_window, sel, scope)
+
+        regions = [sublime.Region(sel.a, sel.b)]
+
+        if left is not None and right is not None:
+            bracket = self.brackets[left.type]
+            left, right, regions, nobracket = self.run_plugin(bracket.name, left, right, regions)
+            if nobracket:
+                return True
+
+        # Matched brackets
+        if left is not None and right is not None and bracket is not None:
+            self.regions.save_complete_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
+            return True
+        return False
+
+    def find_scopes(self, bfr, sel, adj_dir=-1):
+        """
+        Find brackets by scope definition.
+        """
+
+        # Search buffer
+        left, right, bracket, sub_matched = self.match_scope_brackets(bfr, sel, adj_dir)
+        if sub_matched:
+            return True
+        regions = [sublime.Region(sel.a, sel.b)]
+
+        if left is not None and right is not None:
+            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
+            if left is None and right is None:
+                self.regions.store_sel(regions)
+                return True
+
+        return self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
+
+    def find_matches(self, bfr, sel):
+        """
+        Find bracket matches
+        """
+
+        bracket = None
+        left, right, adj_scope = self.match_brackets(bfr, self.search_window, sel)
+        if adj_scope:
+            return
+
+        regions = [sublime.Region(sel.a, sel.b)]
+
+        if left is not None and right is not None:
+            bracket = self.brackets[left.type]
+            left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
+
+        if not self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY):
+            self.regions.store_sel(regions)
 
     def match_scope_brackets(self, bfr, sel, adj_dir):
         """
@@ -785,7 +706,8 @@ class BhCore(object):
             pattern, self.bracket_out_adj,
             self.is_illegal_scope, scope
         )
-        if not bsearch.touch_left and self.bracket_out_adj and not self.recursive_guard:
+        if self.bracket_out_adj and not bsearch.touch_left and not self.recursive_guard:
+            print(self.recursive_guard)
             if self.find_scopes(bfr, sel, 1):
                 return None, None, True
             self.sub_search_mode = False
@@ -850,6 +772,57 @@ class BhCore(object):
 
         left, right = self.post_match(left, right, center, bfr)
         return left, right, False
+
+    def escaped(self, pt, ignore_string_escape, scope):
+        """
+        Check if sub bracket in string scope is escaped.
+        """
+
+        if not ignore_string_escape:
+            return False
+        if scope and scope.startswith("string"):
+            return self.string_escaped(pt)
+        return False
+
+    def string_escaped(self, pt):
+        """
+        Check if bracket is follows escaping characters.
+        Account for if in string or regex string scope.
+        """
+
+        escaped = False
+        start = pt - 1
+        first = False
+        if self.view.settings().get("bracket_string_escape_mode", self.default_string_escape_mode) == "string":
+            first = True
+        while self.view.substr(start) == "\\":
+            if first:
+                first = False
+            else:
+                escaped = False if escaped else True
+            start -= 1
+        return escaped
+
+    def is_illegal_scope(self, pt, bracket_id, scope=None):
+        """
+        Check if scope at pt X should be ignored.
+        """
+
+        bracket = self.brackets[bracket_id]
+        if self.sub_search_mode and not bracket.find_in_sub_search:
+            return True
+        illegal_scope = False
+        # Scope sent in, so we must be scanning whatever this scope is
+        if scope is not None:
+            if self.escaped(pt, bracket.ignore_string_escape, scope):
+                illegal_scope = True
+            return illegal_scope
+        # for exception in bracket.scope_exclude_exceptions:
+        elif len(bracket.scope_exclude_exceptions) and self.view.match_selector(pt, ", ".join(bracket.scope_exclude_exceptions)):
+            pass
+        elif len(bracket.scope_exclude) and self.view.match_selector(pt, ", ".join(bracket.scope_exclude)):
+            illegal_scope = True
+        return illegal_scope
 
     def adjacent_check(self, left, right, center):
         if left and right:
