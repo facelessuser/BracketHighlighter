@@ -970,8 +970,6 @@ class BhEventMgr(object):
         cls.type = BH_MATCH_TYPE_SELECTION
         cls.ignore_all = False
 
-BhEventMgr.load()
-
 
 class BhThreadMgr(object):
     """
@@ -1095,6 +1093,7 @@ def plugin_loaded():
     and start event loop.  Restart event loop if already loaded.
     """
 
+    BhEventMgr.load()
     init_bh_match()
     ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
 
