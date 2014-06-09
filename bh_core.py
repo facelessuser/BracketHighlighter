@@ -66,6 +66,15 @@ def is_valid_definition(params, language):
 ####################
 #  Matching Logic
 ####################
+class BracketAdjacentDir(object):
+    """
+    Userful structure to specify bracket matching direction.
+    """
+
+    left = -1
+    right = 1
+
+
 class BracketDefinition(object):
     """
     Normal bracket definition.
@@ -543,7 +552,7 @@ class BhCore(object):
             return True
         return False
 
-    def find_scopes(self, bfr, sel, adj_dir=-1):
+    def find_scopes(self, bfr, sel, adj_dir=BracketAdjacentDir.left):
         """
         Find brackets by scope definition.
         """
@@ -599,25 +608,6 @@ class BhCore(object):
         bracket = None
         self.adjusted_center = center
 
-        def is_scope(center, before_center, scope):
-            match = False
-            if before_center > 0:
-                match = (
-                    self.view.match_selector(center, scope) and
-                    self.view.match_selector(before_center, scope)
-                )
-            if not match and self.bracket_out_adj:
-                if adj_dir < 0:
-                    if before_center > 0:
-                        match = self.view.match_selector(before_center, scope)
-                        if match:
-                            self.adjusted_center = before_center
-                else:
-                    match = self.view.match_selector(center, scope)
-                    if match:
-                        self.adjusted_center += 1
-            return match
-
         # Cannot be inside a bracket pair if cursor is at zero
         if center == 0:
             if not self.bracket_out_adj:
@@ -628,7 +618,7 @@ class BhCore(object):
             scope = s["name"]
             extent = None
             exceed_limit = False
-            if is_scope(center, before_center, scope):
+            if self.is_scope(center, before_center, scope, adj_dir):
                 extent = self.view.extract_scope(self.adjusted_center)
                 while extent is not None and not exceed_limit and extent.begin() != 0:
                     if self.view.match_selector(extent.begin() - 1, scope):
@@ -725,7 +715,7 @@ class BhCore(object):
             self.is_illegal_scope, scope
         )
         if self.bracket_out_adj and not bsearch.touch_right and not self.recursive_guard:
-            if self.find_scopes(bfr, sel, 1):
+            if self.find_scopes(bfr, sel, BracketAdjacentDir.right):
                 return None, None, True
             self.sub_search_mode = False
         for o in bsearch.get_open(bh_search.BracketSearchSide.left):
@@ -855,6 +845,29 @@ class BhCore(object):
         elif (left and left.end < center) or (right and center < right.begin):
             left, right = None, None
         return left, right
+
+    def is_scope(self, center, before_center, scope, adj_dir):
+        """
+        Check if cursor is in scope or touching scope
+        """
+
+        match = False
+        if before_center > 0:
+            match = (
+                self.view.match_selector(center, scope) and
+                self.view.match_selector(before_center, scope)
+            )
+        if not match and self.bracket_out_adj:
+            if adj_dir == BracketAdjacentDir.left:
+                if before_center > 0:
+                    match = self.view.match_selector(before_center, scope)
+                    if match:
+                        self.adjusted_center = before_center
+            else:
+                match = self.view.match_selector(center, scope)
+                if match:
+                    self.adjusted_center += 1
+        return match
 
 
 ####################
