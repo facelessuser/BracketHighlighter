@@ -1,6 +1,11 @@
 import sublime
 from collections import namedtuple
 
+BH_SEARCH_LEFT = 0
+BH_SEARCH_RIGHT = 1
+BH_SEARCH_OPEN = 0
+BH_SEARCH_CLOSE = 1
+
 
 class BhEntry(object):
     """
@@ -43,24 +48,6 @@ class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], ver
     """
 
     pass
-
-
-class BracketSearchSide(object):
-    """
-    Userful structure to specify bracket matching direction.
-    """
-
-    left = 0
-    right = 1
-
-
-class BracketSearchType(object):
-    """
-    Userful structure to specify bracket matching direction.
-    """
-
-    opening = 0
-    closing = 1
 
 
 class BracketSearch(object):
@@ -136,7 +123,7 @@ class BracketSearch(object):
             # Check for adjacent opening or closing bracket on left side
             entry = BracketEntry(start, end, bracket_id)
             self.touch_right = True
-            if match_type == BracketSearchType.opening:
+            if match_type == BH_SEARCH_OPEN:
                 self.left[match_type].append(entry)
             else:
                 self.right[match_type].append(entry)
@@ -146,7 +133,7 @@ class BracketSearch(object):
         elif (
             self.touch_right is False and
             self.touch_left is False and
-            match_type == BracketSearchType.opening and
+            match_type == BH_SEARCH_OPEN and
             start == self.center
         ):
             # Check for adjacent opening bracket of right
@@ -182,7 +169,7 @@ class BracketSearch(object):
         determines which side of the cursor the next match is returned from.
         """
 
-        for b in self._get_bracket(bracket_code, BracketSearchType.opening):
+        for b in self._get_bracket(bracket_code, BH_SEARCH_OPEN):
             yield b
 
     def get_close(self, bracket_code):
@@ -191,7 +178,7 @@ class BracketSearch(object):
         determines which side of the cursor the next match is returned from.
         """
 
-        for b in self._get_bracket(bracket_code, BracketSearchType.closing):
+        for b in self._get_bracket(bracket_code, BH_SEARCH_CLOSE):
             yield b
 
     def is_done(self, match_type):
@@ -214,7 +201,7 @@ class BracketSearch(object):
         if self.return_prev[match_type]:
             self.return_prev[match_type] = False
             yield self.prev_match[match_type]
-        if bracket_code == BracketSearchSide.left:
+        if bracket_code == BH_SEARCH_LEFT:
             if self.start[match_type] is None:
                 self.start[match_type] = len(self.left[match_type])
             for x in reversed(range(0, self.start[match_type])):

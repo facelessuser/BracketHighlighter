@@ -15,6 +15,8 @@ bh_match = None
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
 BH_MATCH_TYPE_EDIT = 2
+BH_ADJACENT_LEFT = 0
+BH_ADJACET_RIGHT = 1
 GLOBAL_ENABLE = True
 HIGH_VISIBILITY = False
 
@@ -66,15 +68,6 @@ def is_valid_definition(params, language):
 ####################
 #  Matching Logic
 ####################
-class BracketAdjacentDir(object):
-    """
-    Userful structure to specify bracket matching direction.
-    """
-
-    left = -1
-    right = 1
-
-
 class BracketDefinition(object):
     """
     Normal bracket definition.
@@ -552,7 +545,7 @@ class BhCore(object):
             return True
         return False
 
-    def find_scopes(self, bfr, sel, adj_dir=BracketAdjacentDir.left):
+    def find_scopes(self, bfr, sel, adj_dir=BH_ADJACENT_LEFT):
         """
         Find brackets by scope definition.
         """
@@ -715,24 +708,24 @@ class BhCore(object):
             self.is_illegal_scope, scope
         )
         if self.bracket_out_adj and not bsearch.touch_right and not self.recursive_guard:
-            if self.find_scopes(bfr, sel, BracketAdjacentDir.right):
+            if self.find_scopes(bfr, sel, BH_ADJACET_RIGHT):
                 return None, None, True
             self.sub_search_mode = False
-        for o in bsearch.get_open(bh_search.BracketSearchSide.left):
+        for o in bsearch.get_open(bh_search.BH_SEARCH_LEFT):
             if not self.validate(o, 0, bfr):
                 continue
-            if len(stack) and bsearch.is_done(bh_search.BracketSearchType.closing):
+            if len(stack) and bsearch.is_done(bh_search.BH_SEARCH_CLOSE):
                 if self.compare(o, stack[-1], bfr):
                     stack.pop()
                     continue
-            for c in bsearch.get_close(bh_search.BracketSearchSide.left):
+            for c in bsearch.get_close(bh_search.BH_SEARCH_LEFT):
                 if not self.validate(c, 1, bfr):
                     continue
                 if o.end <= c.begin:
                     stack.append(c)
                     continue
                 elif len(stack):
-                    bsearch.remember(bh_search.BracketSearchType.closing)
+                    bsearch.remember(bh_search.BH_SEARCH_CLOSE)
                     break
 
             if len(stack):
@@ -748,21 +741,21 @@ class BhCore(object):
 
         # Grab each closest closing right side bracket and attempt to match it.
         # If the closing bracket cannot be matched, select it.
-        for c in bsearch.get_close(bh_search.BracketSearchSide.right):
+        for c in bsearch.get_close(bh_search.BH_SEARCH_RIGHT):
             if not self.validate(c, 1, bfr):
                 continue
-            if len(stack) and bsearch.is_done(bh_search.BracketSearchType.opening):
+            if len(stack) and bsearch.is_done(bh_search.BH_SEARCH_OPEN):
                 if self.compare(stack[-1], c, bfr):
                     stack.pop()
                     continue
-            for o in bsearch.get_open(bh_search.BracketSearchSide.right):
+            for o in bsearch.get_open(bh_search.BH_SEARCH_RIGHT):
                 if not self.validate(o, 0, bfr):
                     continue
                 if o.end <= c.begin:
                     stack.append(o)
                     continue
                 else:
-                    bsearch.remember(bh_search.BracketSearchType.opening)
+                    bsearch.remember(bh_search.BH_SEARCH_OPEN)
                     break
 
             if len(stack):
@@ -858,7 +851,7 @@ class BhCore(object):
                 self.view.match_selector(before_center, scope)
             )
         if not match and self.bracket_out_adj:
-            if adj_dir == BracketAdjacentDir.left:
+            if adj_dir == BH_ADJACENT_LEFT:
                 if before_center > 0:
                     match = self.view.match_selector(before_center, scope)
                     if match:
