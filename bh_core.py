@@ -19,6 +19,52 @@ GLOBAL_ENABLE = True
 HIGH_VISIBILITY = False
 
 
+class BracketDefinition(object):
+    """
+    Normal bracket definition.
+    """
+
+    def __init__(self, bracket):
+        """
+        Setup the bracket object by reading the passed in dictionary.
+        """
+
+        self.name = bracket["name"]
+        self.style = bracket.get("style", "default")
+        self.compare = bracket.get("compare")
+        sub_search = bracket.get("find_in_sub_search", "false")
+        self.find_in_sub_search_only = sub_search == "only"
+        self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
+        self.post_match = bracket.get("post_match")
+        self.validate = bracket.get("validate")
+        self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
+        self.scope_exclude = bracket.get("scope_exclude", [])
+        self.ignore_string_escape = bracket.get("ignore_string_escape", False)
+
+
+class ScopeDefinition(object):
+    """
+    Scope bracket definition.
+    """
+
+    def __init__(self, bracket):
+        """
+        Setup the bracket object by reading the passed in dictionary.
+        """
+
+        self.style = bracket.get("style", "default")
+        self.open = ure.compile("\\A" + bracket.get("open", "."), ure.MULTILINE | ure.IGNORECASE)
+        self.close = ure.compile(bracket.get("close", ".") + "\\Z", ure.MULTILINE | ure.IGNORECASE)
+        self.name = bracket["name"]
+        sub_search = bracket.get("sub_bracket_search", "false")
+        self.sub_search_only = sub_search == "only"
+        self.sub_search = self.sub_search_only is True or sub_search == "true"
+        self.compare = bracket.get("compare")
+        self.post_match = bracket.get("post_match")
+        self.validate = bracket.get("validate")
+        self.scopes = bracket["scopes"]
+
+
 class BhEventMgr(object):
     """
     Object to manage when bracket events should be launched.
@@ -201,14 +247,31 @@ class BhCore(object):
         self.check_validate = False
         self.check_post_match = False
 
-        scopes = {}
         loaded_modules = self.loaded_modules.copy()
+
+        self.parse_bracket_definition(language, loaded_modules)
+        self.parse_scope_definition(language, loaded_modules)
+
+        if len(self.brackets):
+            bh_logging.bh_debug(
+                "Search patterns: (%s)\n" % ','.join([b.name for b in self.brackets]) +
+                "    search (opening|closing):     (?:%s)\n" % '|'.join(self.find_regex) +
+                "    sub-search (opening|closing): (?:%s)" % '|'.join(self.sub_find_regex)
+            )
+            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(self.sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.pattern = ure.compile("(?:%s)" % '|'.join(self.find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.enabled = True
+
+    def parse_bracket_definition(self, language, loaded_modules):
+        """
+        Parse the bracket defintion
+        """
 
         for params in self.bracket_types:
             if bh_search.is_valid_definition(params, language):
                 try:
                     bh_plugin.load_modules(params, loaded_modules)
-                    entry = bh_search.BracketDefinition(params)
+                    entry = BracketDefinition(params)
                     if not self.check_compare and entry.compare is not None:
                         self.check_compare = True
                     if not self.check_validate and entry.validate is not None:
@@ -232,6 +295,12 @@ class BhCore(object):
                 except Exception as e:
                     bh_logging.bh_log(e)
 
+    def parse_scope_definition(self, language, loaded_modules):
+        """
+        Parse the scope defintion
+        """
+
+        scopes = {}
         scope_count = 0
         for params in self.scope_types:
             if bh_search.is_valid_definition(params, language):
@@ -251,22 +320,13 @@ class BhCore(object):
                             self.scopes.append({"name": x, "brackets": [entry]})
                         else:
                             self.scopes[scopes[x]]["brackets"].append(entry)
+                    bh_logging.bh_debug("Scope Regex (%s)\n    Opening: %s\n    Closing: %s\n" % (entry.name, entry.open.pattern, entry.close.pattern))
                 except Exception as e:
                     bh_logging.bh_log(e)
 
-        if len(self.brackets):
-            bh_logging.bh_debug(
-                "Search patterns:\n" +
-                "(?:%s)\n" % '|'.join(self.find_regex) +
-                "(?:%s)" % '|'.join(self.sub_find_regex)
-            )
-            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(self.sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
-            self.pattern = ure.compile("(?:%s)" % '|'.join(self.find_regex), ure.MULTILINE | ure.IGNORECASE)
-            self.enabled = True
-
     def init_match(self, num_sels):
         """
-        Initialize matching for the current view's syntax.
+        Reset matching settings for the current view's syntax.
         """
 
         syntax = self.view.settings().get('syntax')
@@ -706,8 +766,7 @@ class BhCore(object):
             pattern, self.bracket_out_adj,
             self.is_illegal_scope, scope
         )
-        if self.bracket_out_adj and not bsearch.touch_left and not self.recursive_guard:
-            print(self.recursive_guard)
+        if self.bracket_out_adj and not bsearch.touch_right and not self.recursive_guard:
             if self.find_scopes(bfr, sel, 1):
                 return None, None, True
             self.sub_search_mode = False
@@ -825,6 +884,10 @@ class BhCore(object):
         return illegal_scope
 
     def adjacent_check(self, left, right, center):
+        """
+        Check if bracket pair are adjacent to cursor
+        """
+
         if left and right:
             if left.end < center < right.begin:
                 left, right = None, None
@@ -929,12 +992,21 @@ def bh_loop():
 
 
 def init_bh_match():
+    """
+    Initialize the match object
+    """
+
     global bh_match
     bh_match = BhCore().match
     bh_logging.bh_debug("Match object loaded.")
 
 
 def plugin_loaded():
+    """
+    Load up uniocode table, initialize settings and match object,
+    and start event loop.  Restart event loop if already loaded.
+    """
+
     init_bh_match()
     ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
 

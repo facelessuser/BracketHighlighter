@@ -1,6 +1,5 @@
 import sublime
 from collections import namedtuple
-import BracketHighlighter.ure as ure
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
@@ -103,52 +102,6 @@ class BracketSearchType(object):
 
     opening = 0
     closing = 1
-
-
-class BracketDefinition(object):
-    """
-    Normal bracket definition.
-    """
-
-    def __init__(self, bracket):
-        """
-        Setup the bracket object by reading the passed in dictionary.
-        """
-
-        self.name = bracket["name"]
-        self.style = bracket.get("style", "default")
-        self.compare = bracket.get("compare")
-        sub_search = bracket.get("find_in_sub_search", "false")
-        self.find_in_sub_search_only = sub_search == "only"
-        self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
-        self.post_match = bracket.get("post_match")
-        self.validate = bracket.get("validate")
-        self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
-        self.scope_exclude = bracket.get("scope_exclude", [])
-        self.ignore_string_escape = bracket.get("ignore_string_escape", False)
-
-
-class ScopeDefinition(object):
-    """
-    Scope bracket definition.
-    """
-
-    def __init__(self, bracket):
-        """
-        Setup the bracket object by reading the passed in dictionary.
-        """
-
-        self.style = bracket.get("style", "default")
-        self.open = ure.compile("\\A" + bracket.get("open", "."), ure.MULTILINE | ure.IGNORECASE)
-        self.close = ure.compile(bracket.get("close", ".") + "\\Z", ure.MULTILINE | ure.IGNORECASE)
-        self.name = bracket["name"]
-        sub_search = bracket.get("sub_bracket_search", "false")
-        self.sub_search_only = sub_search == "only"
-        self.sub_search = self.sub_search_only is True or sub_search == "true"
-        self.compare = bracket.get("compare")
-        self.post_match = bracket.get("post_match")
-        self.validate = bracket.get("validate")
-        self.scopes = bracket["scopes"]
 
 
 class BracketSearch(object):
