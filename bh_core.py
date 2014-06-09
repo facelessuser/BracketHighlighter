@@ -19,6 +19,53 @@ GLOBAL_ENABLE = True
 HIGH_VISIBILITY = False
 
 
+####################
+#  Helper Functions
+####################
+def exclude_bracket(enabled, filter_type, language_list, language):
+    """
+    Exclude or include brackets based on filter lists.
+    """
+
+    exclude = True
+    if enabled:
+        # Black list languages
+        if filter_type == 'blacklist':
+            exclude = False
+            if language is not None:
+                for item in language_list:
+                    if language == item.lower():
+                        exclude = True
+                        break
+        # White list languages
+        elif filter_type == 'whitelist':
+            if language is not None:
+                for item in language_list:
+                    if language == item.lower():
+                        exclude = False
+                        break
+    return exclude
+
+
+def is_valid_definition(params, language):
+    """
+    Ensure bracket definition should be and can be loaded.
+    """
+
+    return (
+        not exclude_bracket(
+            params.get("enabled", True),
+            params.get("language_filter", "blacklist"),
+            params.get("language_list", []),
+            language
+        ) and
+        params["open"] is not None and params["close"] is not None
+    )
+
+
+####################
+#  Matching Logic
+####################
 class BracketDefinition(object):
     """
     Normal bracket definition.
@@ -65,117 +112,15 @@ class ScopeDefinition(object):
         self.scopes = bracket["scopes"]
 
 
-class BhEventMgr(object):
-    """
-    Object to manage when bracket events should be launched.
-    """
-
-    @classmethod
-    def load(cls):
-        """
-        Initialize variables for determining
-        when to initiate a bracket matching event.
-        """
-
-        cls.wait_time = 0.12
-        cls.time = time()
-        cls.modified = False
-        cls.type = BH_MATCH_TYPE_SELECTION
-        cls.ignore_all = False
-
-BhEventMgr.load()
-
-
-class BhThreadMgr(object):
-    """
-    Object to help track when a new thread needs to be started.
-    """
-
-    restart = False
-
-
-class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
-    """
-    Toggle between regex escape and
-    string escape for brackets in strings.
-    """
-
-    def run(self, edit):
-        default_mode = sublime.load_settings("bh_core.sublime-settings").get('bracket_string_escape_mode', 'string')
-        if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
-            self.view.settings().set('bracket_string_escape_mode', "string")
-            sublime.status_message("Bracket String Escape Mode: string")
-        else:
-            self.view.settings().set('bracket_string_escape_mode', "regex")
-            sublime.status_message("Bracket String Escape Mode: regex")
-
-
-class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
-    """
-    Shoe current string escape mode for sub brackets in strings.
-    """
-
-    def run(self, edit):
-        default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('bracket_string_escape_mode', 'string')
-        sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
-
-
-class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
-    """
-    Toggle a high visibility mode that
-    highlights the entire bracket extent.
-    """
-
-    def run(self):
-        global HIGH_VISIBILITY
-        HIGH_VISIBILITY = not HIGH_VISIBILITY
-
-
-class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
-    """
-    Toggle global enable for BracketHighlighter.
-    """
-
-    def run(self):
-        global GLOBAL_ENABLE
-        GLOBAL_ENABLE = not GLOBAL_ENABLE
-
-
-class BhKeyCommand(sublime_plugin.WindowCommand):
-    """
-    Command to process shortcuts, menu calls, and command palette calls.
-    This is how BhCore is called with different options.
-    """
-
-    def run(self, threshold=True, lines=False, adjacent=False, no_outside_adj=False, ignore={}, plugin={}):
-        # Override events
-        BhEventMgr.ignore_all = True
-        BhEventMgr.modified = False
-        self.bh = BhCore(
-            threshold,
-            lines,
-            adjacent,
-            no_outside_adj,
-            ignore,
-            plugin,
-            True
-        )
-        self.view = self.window.active_view()
-        sublime.set_timeout(self.execute, 100)
-
-    def execute(self):
-        bh_logging.bh_debug("Key Event")
-        self.bh.match(self.view)
-        BhEventMgr.ignore_all = False
-        BhEventMgr.time = time()
-
-
 class BhCore(object):
     """
     Bracket matching class.
     """
     plugin_reload = False
 
+    ####################
+    # Match Setup
+    ####################
     def __init__(
         self, override_thresh=False, count_lines=False,
         adj_only=None, no_outside_adj=False,
@@ -252,23 +197,16 @@ class BhCore(object):
         self.parse_bracket_definition(language, loaded_modules)
         self.parse_scope_definition(language, loaded_modules)
 
-        if len(self.brackets):
-            bh_logging.bh_debug(
-                "Search patterns: (%s)\n" % ','.join([b.name for b in self.brackets]) +
-                "    search (opening|closing):     (?:%s)\n" % '|'.join(self.find_regex) +
-                "    sub-search (opening|closing): (?:%s)" % '|'.join(self.sub_find_regex)
-            )
-            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(self.sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
-            self.pattern = ure.compile("(?:%s)" % '|'.join(self.find_regex), ure.MULTILINE | ure.IGNORECASE)
-            self.enabled = True
-
     def parse_bracket_definition(self, language, loaded_modules):
         """
         Parse the bracket defintion
         """
 
+        names = []
+        subnames = []
+
         for params in self.bracket_types:
-            if bh_search.is_valid_definition(params, language):
+            if is_valid_definition(params, language):
                 try:
                     bh_plugin.load_modules(params, loaded_modules)
                     entry = BracketDefinition(params)
@@ -282,6 +220,7 @@ class BhCore(object):
                     if not entry.find_in_sub_search_only:
                         self.find_regex.append(params["open"])
                         self.find_regex.append(params["close"])
+                        names.append(params["name"])
                     else:
                         self.find_regex.append(r"([^\s\S])")
                         self.find_regex.append(r"([^\s\S])")
@@ -289,11 +228,25 @@ class BhCore(object):
                     if entry.find_in_sub_search:
                         self.sub_find_regex.append(params["open"])
                         self.sub_find_regex.append(params["close"])
+                        subnames.append(params["name"])
                     else:
                         self.sub_find_regex.append(r"([^\s\S])")
                         self.sub_find_regex.append(r"([^\s\S])")
                 except Exception as e:
                     bh_logging.bh_log(e)
+
+        if len(self.brackets):
+            bh_logging.bh_debug(
+                "Bracket Pattern: (%s)\n" % ','.join(names) +
+                "    (Opening|Closing):     (?:%s)\n" % '|'.join(self.find_regex)
+            )
+            bh_logging.bh_debug(
+                "SubBracket Pattern: (%s)\n" % ','.join(subnames) +
+                "    (Opening|Closing): (?:%s)\n" % '|'.join(self.sub_find_regex)
+            )
+            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(self.sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.pattern = ure.compile("(?:%s)" % '|'.join(self.find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.enabled = True
 
     def parse_scope_definition(self, language, loaded_modules):
         """
@@ -303,10 +256,10 @@ class BhCore(object):
         scopes = {}
         scope_count = 0
         for params in self.scope_types:
-            if bh_search.is_valid_definition(params, language):
+            if is_valid_definition(params, language):
                 try:
                     bh_plugin.load_modules(params, loaded_modules)
-                    entry = bh_search.ScopeDefinition(params)
+                    entry = ScopeDefinition(params)
                     if not self.check_compare and entry.compare is not None:
                         self.check_compare = True
                     if not self.check_validate and entry.validate is not None:
@@ -378,6 +331,9 @@ class BhCore(object):
         # Search Buffer
         return self.view.substr(sublime.Region(0, view_max))
 
+    ####################
+    # Plugin
+    ####################
     def run_plugin(self, name, left, right, regions):
         """
         Run a bracket plugin.
@@ -499,6 +455,9 @@ class BhCore(object):
 
         return left, right
 
+    ####################
+    # Matching
+    ####################
     def match(self, view, force_match=True):
         """
         Preform matching brackets surround the selection(s)
@@ -522,9 +481,8 @@ class BhCore(object):
             self.setup()
             BhCore.plugin_reload = False
 
-        # Setup views
+        # Setup view
         self.view = view
-        self.last_view = view
 
         if self.unique() or force_match:
             # Initialize
@@ -832,6 +790,9 @@ class BhCore(object):
         left, right = self.post_match(left, right, center, bfr)
         return left, right, False
 
+    ####################
+    # Match Qualifiers
+    ####################
     def escaped(self, pt, ignore_string_escape, scope):
         """
         Check if sub bracket in string scope is escaped.
@@ -845,7 +806,7 @@ class BhCore(object):
 
     def string_escaped(self, pt):
         """
-        Check if bracket is follows escaping characters.
+        Check if bracket follows escape characters.
         Account for if in string or regex string scope.
         """
 
@@ -894,6 +855,117 @@ class BhCore(object):
         elif (left and left.end < center) or (right and center < right.begin):
             left, right = None, None
         return left, right
+
+
+####################
+# Commands
+####################
+class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
+    """
+    Toggle between regex escape and
+    string escape for brackets in strings.
+    """
+
+    def run(self, edit):
+        default_mode = sublime.load_settings("bh_core.sublime-settings").get('bracket_string_escape_mode', 'string')
+        if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
+            self.view.settings().set('bracket_string_escape_mode', "string")
+            sublime.status_message("Bracket String Escape Mode: string")
+        else:
+            self.view.settings().set('bracket_string_escape_mode', "regex")
+            sublime.status_message("Bracket String Escape Mode: regex")
+
+
+class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
+    """
+    Shoe current string escape mode for sub brackets in strings.
+    """
+
+    def run(self, edit):
+        default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('bracket_string_escape_mode', 'string')
+        sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
+
+
+class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
+    """
+    Toggle a high visibility mode that
+    highlights the entire bracket extent.
+    """
+
+    def run(self):
+        global HIGH_VISIBILITY
+        HIGH_VISIBILITY = not HIGH_VISIBILITY
+
+
+class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
+    """
+    Toggle global enable for BracketHighlighter.
+    """
+
+    def run(self):
+        global GLOBAL_ENABLE
+        GLOBAL_ENABLE = not GLOBAL_ENABLE
+
+
+class BhKeyCommand(sublime_plugin.WindowCommand):
+    """
+    Command to process shortcuts, menu calls, and command palette calls.
+    This is how BhCore is called with different options.
+    """
+
+    def run(self, threshold=True, lines=False, adjacent=False, no_outside_adj=False, ignore={}, plugin={}):
+        # Override events
+        BhEventMgr.ignore_all = True
+        BhEventMgr.modified = False
+        self.bh = BhCore(
+            threshold,
+            lines,
+            adjacent,
+            no_outside_adj,
+            ignore,
+            plugin,
+            True
+        )
+        self.view = self.window.active_view()
+        sublime.set_timeout(self.execute, 100)
+
+    def execute(self):
+        bh_logging.bh_debug("Key Event")
+        self.bh.match(self.view)
+        BhEventMgr.ignore_all = False
+        BhEventMgr.time = time()
+
+
+####################
+# Events
+####################
+class BhEventMgr(object):
+    """
+    Object to manage when bracket events should be launched.
+    """
+
+    @classmethod
+    def load(cls):
+        """
+        Initialize variables for determining
+        when to initiate a bracket matching event.
+        """
+
+        cls.wait_time = 0.12
+        cls.time = time()
+        cls.modified = False
+        cls.type = BH_MATCH_TYPE_SELECTION
+        cls.ignore_all = False
+
+BhEventMgr.load()
+
+
+class BhThreadMgr(object):
+    """
+    Object to help track when a new thread needs to be started.
+    """
+
+    restart = False
 
 
 class BhListenerCommand(sublime_plugin.EventListener):
@@ -991,6 +1063,9 @@ def bh_loop():
         sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
 
 
+####################
+# Loading
+####################
 def init_bh_match():
     """
     Initialize the match object

@@ -115,39 +115,6 @@ def select_bracket_icons(option, icon_path):
     return icon, small_icon, open_icon, small_open_icon, close_icon, small_close_icon
 
 
-class StyleDefinition(object):
-    """
-    Styling definition.
-    """
-
-    def __init__(self, name, style, default_highlight, icon_path):
-        """
-        Setup the style object by reading the
-        passed in dictionary. And other parameters.
-        """
-
-        self.name = name
-        self.color = style.get("color", default_highlight["color"])
-        self.style = select_bracket_style(style.get("style", default_highlight["style"]))
-        self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
-        (
-            self.icon, self.small_icon, self.open_icon,
-            self.small_open_icon, self.close_icon, self.small_close_icon
-        ) = select_bracket_icons(style.get("icon", default_highlight["icon"]), icon_path)
-        self.no_icon = ""
-        self.clear()
-
-    def clear(self):
-        """
-        Clear tracked selections
-        """
-
-        self.selections = []
-        self.open_selections = []
-        self.close_selections = []
-        self.center_selections = []
-
-
 def get_bracket_regions(settings):
     """
     Get styled regions for brackets to use.
@@ -167,6 +134,40 @@ def get_bracket_regions(settings):
     default_settings = styles["default"]
     for k, v in styles.items():
         yield k, StyleDefinition(k, v, default_settings, icon_path)
+
+
+class StyleDefinition(object):
+    """
+    Styling definition.
+    """
+
+    def __init__(self, name, style, default_highlight, icon_path):
+        """
+        Setup the style object by reading the
+        passed in dictionary. And other parameters.
+        """
+
+        self.name = name
+        self.color = style.get("color", default_highlight["color"])
+        self.style = select_bracket_style(style.get("style", default_highlight["style"]))
+        self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
+        self.endpoints = style.get("endpoints", False)
+        (
+            self.icon, self.small_icon, self.open_icon,
+            self.small_open_icon, self.close_icon, self.small_close_icon
+        ) = select_bracket_icons(style.get("icon", default_highlight["icon"]), icon_path)
+        self.no_icon = ""
+        self.clear()
+
+    def clear(self):
+        """
+        Clear tracked selections
+        """
+
+        self.selections = []
+        self.open_selections = []
+        self.close_selections = []
+        self.center_selections = []
 
 
 class BhRegion(object):
@@ -269,7 +270,7 @@ class BhRegion(object):
             self.save_complete_regions(left, right, regions, style, high_visibility)
             handled = True
         elif (left is not None or right is not None) and self.show_unmatched:
-            self.save_incomplete_regions(left, right, regions, high_visibility)
+            self.save_incomplete_regions(left, right, regions)
             handled = True
         return handled
 
@@ -284,35 +285,81 @@ class BhRegion(object):
             self.chars += abs(right.begin - left.end)
             self.lines += lines
         if high_visibility:
-            if lines <= 1:
-                if self.hv_underline:
-                    bracket.selections += underline((sublime.Region(left.begin, right.end),))
-                else:
-                    bracket.selections += [sublime.Region(left.begin, right.end)]
-            else:
-                bracket.open_selections += [sublime.Region(left.begin)]
-                if self.hv_underline:
-                    bracket.center_selections += underline((sublime.Region(left.begin + 1, right.end - 1),))
-                else:
-                    bracket.center_selections += [sublime.Region(left.begin, right.end)]
-                bracket.close_selections += [sublime.Region(right.begin)]
+            self.save_high_visibility_regions(left, right, bracket, lines)
+        elif bracket.endpoints:
+            self.save_endpoint_regions(left, right, bracket, lines)
         elif bracket.underline:
-            if lines <= 1:
-                bracket.selections += underline((left.toregion(), right.toregion()))
-            else:
-                bracket.open_selections += [sublime.Region(left.begin)]
-                bracket.close_selections += [sublime.Region(right.begin)]
-                if left.size():
-                    bracket.center_selections += underline((sublime.Region(left.begin + 1, left.end),))
-                if right.size():
-                    bracket.center_selections += underline((sublime.Region(right.begin + 1, right.end),))
+            self.save_underline_regions(left, right, bracket, lines)
         else:
-            if lines <= 1:
-                bracket.selections += [left.toregion(), right.toregion()]
-            else:
-                bracket.open_selections += [left.toregion()]
-                bracket.close_selections += [right.toregion()]
+            self.save_normal_regions(left, right, bracket, lines)
         self.store_sel(regions)
+
+    def save_high_visibility_regions(self, left, right, bracket, lines):
+        """
+        Save high visibility regions.
+        """
+
+        if lines <= 1:
+            if self.hv_underline:
+                bracket.selections += underline((sublime.Region(left.begin, right.end),))
+            else:
+                bracket.selections += [sublime.Region(left.begin, right.end)]
+        else:
+            bracket.open_selections += [sublime.Region(left.begin)]
+            if self.hv_underline:
+                bracket.center_selections += underline((sublime.Region(left.begin + 1, right.end - 1),))
+            else:
+                bracket.center_selections += [sublime.Region(left.begin, right.end)]
+            bracket.close_selections += [sublime.Region(right.begin)]
+
+    def save_endpoint_regions(self, left, right, bracket, lines):
+        """
+        Save endpoint regions. Underlined and normal.
+        """
+
+        offset = 0 if bracket.underline else 1
+        if lines <= 1:
+            bracket.selections += [
+                sublime.Region(left.begin, left.begin + offset),
+                sublime.Region(right.begin, right.begin + offset)
+            ]
+            if left.size() > 1:
+                bracket.selections += [sublime.Region(left.end - offset, left.end)]
+            if right.size() > 1:
+                bracket.selections += [sublime.Region(right.end - offset, right.end)]
+        else:
+            bracket.open_selections += [sublime.Region(left.begin, left.begin + offset)]
+            bracket.close_selections += [sublime.Region(right.begin, right.begin + offset)]
+            if left.size() > 1:
+                bracket.center_selections += [sublime.Region(left.end - offset, left.end)]
+            if right.size() > 1:
+                bracket.center_selections += [sublime.Region(right.end - offset, right.end)]
+
+    def save_underline_regions(self, left, right, bracket, lines):
+        """
+        Save underlined regions
+        """
+
+        if lines <= 1:
+            bracket.selections += underline((left.toregion(), right.toregion()))
+        else:
+            bracket.open_selections += [sublime.Region(left.begin)]
+            bracket.close_selections += [sublime.Region(right.begin)]
+            if left.size():
+                bracket.center_selections += underline((sublime.Region(left.begin + 1, left.end),))
+            if right.size():
+                bracket.center_selections += underline((sublime.Region(right.begin + 1, right.end),))
+
+    def save_normal_regions(self, left, right, bracket, lines):
+        """
+        Save normal regions
+        """
+
+        if lines <= 1:
+            bracket.selections += [left.toregion(), right.toregion()]
+        else:
+            bracket.open_selections += [left.toregion()]
+            bracket.close_selections += [right.toregion()]
 
     def highlight_regions(self, name, icon_type, selections, bracket, regions, high_visibility):
         """

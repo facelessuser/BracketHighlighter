@@ -2,47 +2,6 @@ import sublime
 from collections import namedtuple
 
 
-def exclude_bracket(enabled, filter_type, language_list, language):
-    """
-    Exclude or include brackets based on filter lists.
-    """
-
-    exclude = True
-    if enabled:
-        # Black list languages
-        if filter_type == 'blacklist':
-            exclude = False
-            if language is not None:
-                for item in language_list:
-                    if language == item.lower():
-                        exclude = True
-                        break
-        # White list languages
-        elif filter_type == 'whitelist':
-            if language is not None:
-                for item in language_list:
-                    if language == item.lower():
-                        exclude = False
-                        break
-    return exclude
-
-
-def is_valid_definition(params, language):
-    """
-    Ensure bracket definition should be and can be loaded.
-    """
-
-    return (
-        not exclude_bracket(
-            params.get("enabled", True),
-            params.get("language_filter", "blacklist"),
-            params.get("language_list", []),
-            language
-        ) and
-        params["open"] is not None and params["close"] is not None
-    )
-
-
 class BhEntry(object):
     """
     Generic object for bracket regions.
@@ -152,6 +111,11 @@ class BracketSearch(object):
         self.done[match_type] = False
 
     def sort_brackets(self, start, end, match_type, bracket_id):
+        """
+        Sort brackets by type (opening or closing) and whether they
+        are left of cursor or right.
+        """
+
         if (end <= self.center if match_type else start < self.center):
             # Sort bracket to left
             self.left[match_type].append(BracketEntry(start, end, bracket_id))
@@ -160,6 +124,11 @@ class BracketSearch(object):
             self.right[match_type].append(BracketEntry(start, end, bracket_id))
 
     def sort_brackets_adj(self, start, end, match_type, bracket_id):
+        """
+        Sort brackets but with slightly altered logic for telling when
+        there are brackets adjacent to the cursor.
+        """
+
         if (
             self.touch_right is False and
             end == (self.center)
@@ -190,8 +159,7 @@ class BracketSearch(object):
 
     def findall(self, window):
         """
-        Find all of the brackets and sort them
-        to "left of the cursor" and "right of the cursor"
+        Find all of the brackets.
         """
 
         for m in self.pattern.finditer(self.bfr, int(window[0]), int(window[1])):
