@@ -116,13 +116,13 @@ class BhCore(object):
             self.refresh_rules(language)
             self.regions.set_show_unmatched(language)
 
-    def unique(self):
+    def unique(self, sels):
         """
         Check if the current selection(s) is different from the last.
         """
 
         id_view = self.view.id()
-        id_sel = "".join([str(sel.a) for sel in self.view.sel()])
+        id_sel = "".join([str(sel.a) for sel in sels])
         is_unique = False
         if id_view != self.last_id_view or id_sel != self.last_id_sel:
             self.last_id_view = id_view
@@ -265,14 +265,17 @@ class BhCore(object):
         if view is None:
             return
 
+        # Ensure nothing else calls BH until done
         view.settings().set("BracketHighlighterBusy", True)
 
+        # Abort if disabled
         if not GLOBAL_ENABLE:
             for region_key in view.settings().get("bh_regions", []):
                 view.erase_regions(region_key)
             view.settings().set("BracketHighlighterBusy", False)
             return
 
+        # Handle key command quirks
         if self.keycommand:
             BhCore.plugin_reload = True
 
@@ -282,19 +285,20 @@ class BhCore(object):
 
         # Setup view
         self.view = view
+        sels = view.sel()
+        num_sels = len(sels)
 
-        if self.unique() or force_match:
-            # Initialize
-            num_sels = len(view.sel())
+        # Abort if selections are beyond the threshold and "kill" is enabled
+        if not self.ignore_threshold and self.kill_highlight_on_threshold:
+            if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
+                self.regions.reset(view, num_sels)
+                self.regions.highlight(HIGH_VISIBILITY)
+                view.settings().set("BracketHighlighterBusy", False)
+                return
 
-            # Abort if selections are beyond the threshold
-            if not self.ignore_threshold and self.kill_highlight_on_threshold:
-                if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
-                    self.regions.reset(self.view, num_sels)
-                    self.regions.highlight(HIGH_VISIBILITY)
-                    view.settings().set("BracketHighlighterBusy", False)
-                    return
-
+        # Initialize
+        if self.unique(sels) or force_match:
+            # Prepare for match
             self.init_match(num_sels)
 
             # Nothing to search for
@@ -302,20 +306,28 @@ class BhCore(object):
                 view.settings().set("BracketHighlighterBusy", False)
                 return
 
-            multi_select_count = 0
             # Process selections.
-            for sel in view.sel():
+            multi_select_count = 0
+            for sel in sels:
                 if not self.ignore_threshold and multi_select_count >= self.auto_selection_threshold:
+                    # Exceeded threshold, only what must be done
+                    # and break
                     if not self.regions.alter_select:
                         break
                     self.regions.store_sel([sel])
                     continue
+
+                # Subsearch guard for recursive matching of scopes
                 self.recursive_guard = False
+
+                # Prepare for search
                 self.bracket_style = None
                 self.search = bh_search.Search(
                     view, self.rules,
                     sel, self.selection_threshold if not self.ignore_threshold else None
                 )
+
+                # Find and match
                 if not self.find_scopes(sel):
                     self.sub_search_mode = False
                     self.find_matches(sel)
@@ -324,9 +336,9 @@ class BhCore(object):
         # Highlight, focus, and display lines etc.
         self.regions.highlight(HIGH_VISIBILITY)
 
+        # Free up BH
         self.search = None
         self.view = None
-
         view.settings().set("BracketHighlighterBusy", False)
 
     def sub_search(self, sel, scope=None):
@@ -334,7 +346,10 @@ class BhCore(object):
         Search a scope bracket match for bracekts within.
         """
 
+        # Protect against recursive search of scopes
         self.recursive_guard = True
+
+        # Find brackets inside scope
         bracket = None
         left, right, scope_adj = self.match_brackets(sel, scope)
 
