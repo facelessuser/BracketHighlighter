@@ -14,8 +14,9 @@
     // you will not see any changes (restart requrired to see change)
     "high_visibility_enabled_by_default": false,
 
-    // High visibilty style and color for high visibility mode
-    // (solid|outline|underline|thin_underline|squiggly|stippled)
+    // High visibility style and color for high visibility mode
+    // (solid|outline|underline)
+    // ST3 has additional options of (thin_underline|squiggly|stippled)
     "high_visibility_style": "outline",
 
     // (scope|__default__|__bracket__)
@@ -407,6 +408,7 @@
         },
         "tag": {
             "icon": "tag",
+            // "endpoints": true,
             // "color": "brackethighlighter.tag",
             "style": "outline"
         },
