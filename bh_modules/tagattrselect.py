@@ -3,6 +3,11 @@ import BracketHighlighter.bh_plugin as bh_plugin
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
     def run(self, edit, name, direction='right'):
+        """
+        Select next attribute in the given direction.
+        Wrap when the end is hit.
+        """
+
         if self.left.size() <= 1:
             return
         tag_name = r'[\w\:\.\-]+'

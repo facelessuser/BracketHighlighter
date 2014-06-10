@@ -2,6 +2,10 @@ import re
 
 
 def post_match(view, name, style, first, second, center, bfr, threshold):
+    """
+    Strip whitespace from being targeted with highlight
+    """
+
     if first is not None:
         # Strip whitespace from the beginning of first bracket
         open_bracket = bfr[first.begin:first.end]

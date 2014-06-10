@@ -3,6 +3,9 @@ from collections import namedtuple
 import sublime
 from os.path import basename
 
+TAG_OPEN = 0
+TAG_CLOSE = 1
+
 FLAGS = re.MULTILINE | re.IGNORECASE
 HTML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>''', FLAGS)
 CFML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>''', FLAGS)
@@ -23,6 +26,10 @@ class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', '
 
 
 def compare_languge(language, lang_list):
+    """
+    Check if language is found
+    """
+
     found = False
     for l in lang_list:
         if language == l.lower():
@@ -32,6 +39,10 @@ def compare_languge(language, lang_list):
 
 
 def get_tag_mode(view, tag_mode_config):
+    """
+    Get the tag mode
+    """
+
     default_mode = None
     syntax = view.settings().get('syntax')
     language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
@@ -42,6 +53,12 @@ def get_tag_mode(view, tag_mode_config):
 
 
 def post_match(view, name, style, first, second, center, bfr, threshold):
+    """
+    Given two brackets, determine if they contain a tag.
+    Decide whether it is an opening or closing, and then
+    find its respective closing or opening.
+    """
+
     left, right = first, second
     threshold = [0, len(bfr)] if threshold is None else threshold
     tag_settings = sublime.load_settings("bh_core.sublime-settings")
@@ -61,6 +78,10 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
 class TagSearch(object):
     def __init__(self, view, bfr, window, center, pattern, match_type):
+        """
+        Prepare tag search object
+        """
+
         self.start = int(window[0])
         self.end = int(window[1])
         self.center = center
@@ -74,21 +95,37 @@ class TagSearch(object):
         self.scope_exclude = sublime.load_settings("bh_core.sublime-settings").get("tag_scope_exclude")
 
     def scope_check(self, pt):
+        """
+        Is scope okay?
+        """
+
         illegal_scope = False
         for exclude in self.scope_exclude:
             illegal_scope |= bool(self.view.score_selector(pt, exclude))
         return illegal_scope
 
     def reset_end_state(self):
+        """
+        Reset and end the current state
+        """
+
         self.done = False
         self.prev_match = None
         self.return_prev = False
 
     def remember(self):
+        """
+        Instruct object to return the last tag
+        """
+
         self.return_prev = True
         self.done = False
 
-    def get_tags(self, bracket_code):
+    def get_tags(self):
+        """
+        Find all the tags
+        """
+
         if self.done:
             return
         if self.return_prev:
@@ -113,6 +150,10 @@ class TagSearch(object):
 
 class TagMatch(object):
     def __init__(self, view, bfr, threshold, first, second, center, outside_adj, mode):
+        """
+        Prepare tag match object
+        """
+
         self.view = view
         self.bfr = bfr
         self.mode = mode
@@ -142,6 +183,11 @@ class TagMatch(object):
             self.no_tag = True
 
     def get_first_tag(self, offset):
+        """
+        Check if tag region is an opening tag or closing tag.
+        Return the results
+        """
+
         tag = None
         tag_type = None
         self_closing = False
@@ -172,9 +218,17 @@ class TagMatch(object):
         return tag, tag_type, end
 
     def compare_tags(self, left, right):
+        """
+        Check if tags share the same name
+        """
+
         return left.name == right.name
 
     def resolve_self_closing(self, stack, c):
+        """
+        Handle self closing tags
+        """
+
         found_tag = None
         b = stack[-1]
         if self.compare_tags(b, c):
@@ -194,6 +248,11 @@ class TagMatch(object):
         return found_tag
 
     def match(self):
+        """
+        Find the corresponding open or close if respective close or open
+        is already found.
+        """
+
         stack = []
 
         # No tags to search for
@@ -205,14 +264,14 @@ class TagMatch(object):
         csearch = TagSearch(self.view, self.bfr, self.window, self.center, END_TAG, 1)
 
         # Searching for opening or closing tag to match
-        match_type = 0 if self.right else 1
+        match_type = TAG_OPEN if self.right else TAG_CLOSE
 
         # Match the tags
-        for c in csearch.get_tags(match_type):
+        for c in csearch.get_tags():
             if len(stack) and osearch.done:
                 if self.resolve_self_closing(stack, c):
                     continue
-            for o in osearch.get_tags(match_type):
+            for o in osearch.get_tags():
                 if o.end <= c.begin:
                     if not o.single:
                         stack.append(o)
@@ -224,20 +283,20 @@ class TagMatch(object):
             if len(stack):
                 if self.resolve_self_closing(stack, c):
                     continue
-            elif match_type == 0 and not osearch.done:
+            elif match_type == TAG_OPEN and not osearch.done:
                 continue
-            if match_type == 1:
+            if match_type == TAG_CLOSE:
                 if self.left is None or self.compare_tags(self.left, c):
                     self.right = c
                 elif self.left.self_closing:
                     self.right = self.left
             break
 
-        if match_type == 0:
+        if match_type == TAG_OPEN:
             # Find the rest of the the unmatched left side open brackets
             # approaching the cursor if all closing brackets were matched
             # Select the most recent open bracket on the stack.
-            for o in osearch.get_tags(0):
+            for o in osearch.get_tags():
                 if not o.single:
                     stack.append(o)
             if len(stack):

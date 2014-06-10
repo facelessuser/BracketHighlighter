@@ -5,6 +5,10 @@ BracketRemove = ImpMod.import_from("bh_modules.bracketremove", "BracketRemove")
 
 class SwapBrackets(BracketRemove):
     def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):
+        """
+        Remove then replace the bracket and adjust indentation if desired
+        """
+
         offset = self.left.toregion().size()
         selection = [sublime.Region(self.left.begin, self.right.begin - offset)]
         left = self.left.move(self.left.end, self.left.end)
