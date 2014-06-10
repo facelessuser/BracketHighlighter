@@ -38,7 +38,7 @@
 
     // Enable this to completely kill highlighting if "auto_selection_threshold"
     // is exceeded.  Default is to highlight up to the "auto_selection_threshold".
-    "kill_highlight_on_threshold": false,
+    "kill_highlight_on_threshold": true,
 
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,

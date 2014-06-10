@@ -286,19 +286,21 @@ class BhCore(object):
         if self.unique() or force_match:
             # Initialize
             num_sels = len(view.sel())
+
+            # Abort if selections are beyond the threshold
+            if not self.ignore_threshold and self.kill_highlight_on_threshold:
+                if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
+                    self.regions.reset(self.view, num_sels)
+                    self.regions.highlight(HIGH_VISIBILITY)
+                    view.settings().set("BracketHighlighterBusy", False)
+                    return
+
             self.init_match(num_sels)
 
             # Nothing to search for
             if not self.rules.enabled:
                 view.settings().set("BracketHighlighterBusy", False)
                 return
-
-            # Abort if selections are beyond the threshold
-            if not self.ignore_threshold and self.kill_highlight_on_threshold:
-                if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
-                    self.regions.highlight(HIGH_VISIBILITY)
-                    view.settings().set("BracketHighlighterBusy", False)
-                    return
 
             multi_select_count = 0
             # Process selections.
