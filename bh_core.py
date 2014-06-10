@@ -240,7 +240,7 @@ class BhCore(object):
                     bh_plugin.BracketRegion(right.begin, right.end) if right is not None else None,
                     center,
                     self.search.get_buffer(),
-                    self.search_window
+                    self.search.search_window
                 )
 
                 if scope_bracket:
@@ -407,7 +407,7 @@ class BhCore(object):
 
         # Cannot be inside a bracket pair if cursor is at zero
         if center == 0:
-            if not self.search.outside_adj:
+            if not self.rules.outside_adj:
                 return left, right, selected_scope, False
 
         for s in self.rules.scopes:
