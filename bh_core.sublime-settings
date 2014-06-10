@@ -293,7 +293,7 @@
             "name": "c_compile_switch",
             "open": "(\\#(?:if|ifdef|ifndef))\\b",
             "close": "(\\#endif)\\b",
-            "style": "default",
+            "style": "c_define",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
             "language_list": ["C++", "C", "Objective-C", "CCpp"],
@@ -411,6 +411,11 @@
             // "endpoints": true,
             // "color": "brackethighlighter.tag",
             "style": "outline"
+        },
+        "c_define": {
+            "icon": "hash"
+            // "color": "brackethighlighter.c_define",
+            // "style": "underline"
         },
         "single_quote": {
             "icon": "single_quote"
