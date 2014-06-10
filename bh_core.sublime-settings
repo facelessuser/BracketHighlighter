@@ -2,9 +2,6 @@
     //Debug logging
     "debug_enable": false,
 
-    // Path to find icons at
-    "icon_path": "BracketHighlighter/icons",
-
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
     "show_unmatched" : true,
@@ -19,6 +16,7 @@
 
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
+    // ST3 has additional options of (thin_underline|squiggly|stippled)
     "high_visibility_style": "outline",
 
     // (scope|__default__|__bracket__)
@@ -38,6 +36,10 @@
 
     // Set max number of multi-select brackets that will be searched automatically
     "auto_selection_threshold" : 10,
+
+    // Enable this to completely kill highlighting if "auto_selection_threshold"
+    // is exceeded.  Default is to highlight up to the "auto_selection_threshold".
+    "kill_highlight_on_threshold": true,
 
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,
@@ -294,7 +296,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C", "Objective-C"],
+            "language_list": ["C++", "C", "Objective-C", "CCpp"],
             "enabled": true
         },
         // PHP conditional keywords
@@ -406,6 +408,7 @@
         },
         "tag": {
             "icon": "tag",
+            // "endpoints": true,
             // "color": "brackethighlighter.tag",
             "style": "outline"
         },

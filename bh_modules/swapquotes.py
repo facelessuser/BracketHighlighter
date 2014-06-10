@@ -4,6 +4,10 @@ import sublime
 
 class SwapQuotes(bh_plugin.BracketPluginCommand):
     def escaped(self, idx):
+        """
+        Check if character is an escape char
+        """
+
         view = self.view
         escaped = False
         while idx >= 0 and view.substr(idx) == '\\':
@@ -12,6 +16,12 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
         return escaped
 
     def run(self, edit, name):
+        """
+        Swap double or single quotes with each other.
+        Handle escaping or unescaping like quotes or
+        unlike quotes respectively.
+        """
+
         view = self.view
         quote = view.substr(self.left.begin)
         if quote != "'" and quote != '"':

@@ -5,6 +5,7 @@ from collections import namedtuple
 import sys
 import traceback
 import warnings
+from bh_logging import log
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
@@ -40,6 +41,26 @@ def is_bracket_region(obj):
     """
 
     return isinstance(obj, BracketRegion)
+
+
+def load_modules(obj, loaded):
+    """
+    Load bracket plugin modules
+    """
+
+    plib = obj.get("plugin_library")
+    if plib is None:
+        return
+
+    try:
+        module = ImportModule.import_module(plib, loaded)
+        obj["compare"] = getattr(module, "compare", None)
+        obj["post_match"] = getattr(module, "post_match", None)
+        obj["validate"] = getattr(module, "validate", None)
+        loaded.add(plib)
+    except:
+        log("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))
+        raise
 
 
 class ImportModule(object):
@@ -96,7 +117,7 @@ class BracketPlugin(object):
                 loaded.add(plib)
                 self.enabled = True
             except Exception:
-                print 'BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc())
+                log('BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc()))
 
     def is_enabled(self):
         """
@@ -124,7 +145,7 @@ class BracketPlugin(object):
             plugin.run(**self.args)
             left, right, selection, nobracket = plugin.left, plugin.right, plugin.selection, plugin.nobracket
         except Exception:
-            print "BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc())
+            log("BracketHighlighter: Plugin Run Error:\n%s" % str(traceback.format_exc()))
         view.end_edit(edit)
         return left, right, selection, nobracket
 
