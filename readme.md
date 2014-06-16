@@ -1,8 +1,11 @@
 # Table of Contents
 - [About](#about)
     - [Sublime Text 3 Support?](#sublime-text-3-support)
+    - [Sublime Text 2 Support?](#sublime-text-2-support)
     - [Overview](#overview)
 - [Installation](#installation)
+- [Issues](#issues)
+- [Pull Requests](#pull-requests)
 - [Feature List](#feature-list)
 - [General Use](#general-use)
     - [Built-in Supported brackets](#built-in-supported-brackets)
@@ -24,13 +27,22 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
 ## Sublime Text 3 Support?
-ST3 support is found here (at the present time):  https://github.com/facelessuser/BracketHighlighter/tree/BH2ST3
+ST3 support is found here: https://github.com/facelessuser/BracketHighlighter/tree/ST3.  All current development is being done on ST3.
+
+## Sublime Text 2 Support?
+ST2 support is found here: https://github.com/facelessuser/BracketHighlighter/tree/ST2, but development has been halted on ST2
 
 ## Overview
 Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `<tag></tag>`, and even custom brackets.
 
 # Installation
 The recommended installation method is via Package Control.  Learn more here: https://sublime.wbond.net/.
+
+# Issues
+When filing issues, please state the OS and sublime version along with a detailed description of the problem including how to reproduce the issue.  Only ST3 issues will be addressed.
+
+# Pull Requests
+Pull requests must be done against the main branch.  When I am ready, the main branch will be merged into the relevant supported branch.  For ST2 only rule defintions will be accepted for pull requests. But ST2 pull requests must be done against the ST2 branch and the relevant matching changes must be made to the main as well to keep the rules up to date on both branches.  ST2 pull requests will only be accepted if the main branch and the ST2 branch are pulled in order to save me work.  I will not back port rules ST2, but I will allow the community to do so.
 
 # Feature List
 - Customizable to highlight almost any bracket
@@ -543,4 +555,3 @@ def plugin():
 # Credits
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
-
