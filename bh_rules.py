@@ -28,6 +28,40 @@ def exclude_bracket(enabled, filter_type, language_list, language):
     return exclude
 
 
+def process_overrides(rules):
+    """
+    Walk the list and merge override rules
+    """
+
+    final = []
+    names = {}
+    replace = {}
+    pos = 0
+    for rule in rules:
+        name = rule.get("name")
+        if name is None:
+            continue
+        if name in names:
+            if name in replace:
+                # Merge current override with previous overrides
+                replace[name] = dict(list(replace[name].items()) + list(rule.items()))
+            else:
+                # Add override
+                replace[name] = rule
+        else:
+            # Add name and track position
+            names[name] = pos
+            final.append(rule)
+        pos += 1
+    if len(replace):
+        # Walk the final replace dict,
+        # and override the rule in the final array
+        for k, v in replace.items():
+            pos = names[k]
+            final[pos] = dict(list(final[pos].items()) + list(v.items()))
+    return final
+
+
 def is_valid_definition(params, language):
     """
     Ensure bracket definition should be and can be loaded.
@@ -92,8 +126,8 @@ class ScopeDefinition(object):
 
 class SearchRules(object):
     def __init__(self, brackets, scopes, string_escape_mode, outside_adj):
-        self.bracket_rules = brackets
-        self.scope_rules = scopes
+        self.bracket_rules = process_overrides(brackets)
+        self.scope_rules = process_overrides(scopes)
         self.enabled = False
         self.string_escape_mode = string_escape_mode
         self.outside_adj = outside_adj

@@ -248,7 +248,7 @@
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars", "AngularJS"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -266,7 +266,7 @@
         // Ruby embedded HTML
         {
             "name": "ruby_embedded_html",
-            "open": "((?:(?<=<%)|(?<=^)|(?<==))\\s*\\b(?:if|begin)\\b|(?:(?<=<%)|(?<=^))\\s*\\b(?:case|for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=<%)|(?<=^)|(?<==))\\s*\\b(?:if|begin|case)\\b|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
@@ -279,7 +279,7 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "((?:(?<=^)|(?<==))\\s*\\b(?:if|begin)\\b|^\\s*\\b(?:case|for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
+            "open": "((?:(?<=^)|(?<==))\\s*\\b(?:if|begin|case)\\b|^\\s*\\b(?:for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
@@ -445,7 +445,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars", "AngularJS"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
