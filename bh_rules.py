@@ -277,12 +277,36 @@ class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
         self.view.insert(edit, self.view.size(), text)
 
 
-class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
-    def run(self, key=None):
+class BhDebugRuleCommand(sublime_plugin.WindowCommand):
+    filter_keys = [
+        "name",
+        "open",
+        "close",
+        "style",
+        "enabled",
+        "position",
+        "language_filter",
+        "language_list",
+        "plugin_library",
+        "find_in_sub_search",
+        "scope_exclude",
+        "scope_exclude_exceptions",
+        "ignore_string_escape",
+        "scopes",
+        "sub_bracket_search"
+    ]
+
+    def run(self, filter_key=False):
+        if not filter_key:
+            self.show()
+        else:
+            self.window.show_quick_panel(self.filter_keys, self.show)
+
+    def show(self, key=-1):
         self.text = []
-        if key is not None:
-            self.key = key
-            label = "Rule \"%s\"" % key
+        if key > -1:
+            self.key = self.filter_keys[key]
+            label = "Rule \"%s\"" % self.key
             self.fn = self.show_key
         else:
             self.key = None
@@ -291,18 +315,16 @@ class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
         settings = sublime.load_settings("bh_core.sublime-settings")
         brackets = settings.get("brackets", []) + settings.get("user_brackets", [])
         scopes = settings.get("scope_brackets", []) + settings.get("user_scope_brackets", [])
-        window = sublime.active_window()
-        if window is not None:
-            view = window.new_file()
-            view.run_command(
-                "bh_debug_rule_edit",
-                {
-                    "text": self.show_rules(brackets, scopes)
-                }
-            )
-            view.set_name("[bh_debug] %s" % label)
-            view.set_read_only(True)
-            view.set_scratch(True)
+        view = self.window.new_file()
+        view.run_command(
+            "bh_debug_rule_edit",
+            {
+                "text": self.show_rules(brackets, scopes)
+            }
+        )
+        view.set_name("[bh_debug] %s" % label)
+        view.set_read_only(True)
+        view.set_scratch(True)
 
     def show_merged(self, rule):
         import json

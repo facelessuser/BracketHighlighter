@@ -191,9 +191,9 @@
                                 "command": "bh_debug"
                             },
                             {
-                                "caption": "Show Rule Positions",
+                                "caption": "Filter Rules by Key",
                                 "command": "bh_debug_rule",
-                                "args": {"key": "position"}
+                                "args": {"filter_key": true}
                             },
                             {
                                 "caption": "Show Merged Rules",

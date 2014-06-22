@@ -11,9 +11,9 @@
         "args": {"set_value": false}
     },
     {
-        "caption": "BracketHighlighter: (Debug) Show Rule Positions",
+        "caption": "BracketHighlighter: (Debug) Filter Rules by Key",
         "command": "bh_debug_rule",
-        "args": {"key": "position"}
+        "args": {"filter_key": true}
     },
     {
         "caption": "BracketHighlighter: (Debug) Show Merged Rules",
