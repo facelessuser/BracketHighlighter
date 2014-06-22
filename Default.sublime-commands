@@ -1,4 +1,25 @@
 [
+    // Debug
+    {
+        "caption": "BracketHighlighter: Enable Debug Mode",
+        "command": "bh_debug",
+        "args": {"set_value": true}
+    },
+    {
+        "caption": "BracketHighlighter: Disable Debug Mode",
+        "command": "bh_debug",
+        "args": {"set_value": false}
+    },
+    {
+        "caption": "BracketHighlighter: (Debug) Show Rule Positions",
+        "command": "bh_debug_rule",
+        "args": {"mode": "positions"}
+    },
+    {
+        "caption": "BracketHighlighter: (Debug) Show Merged Rules",
+        "command": "bh_debug_rule",
+        "args": {"mode": "merged"}
+    },
     // Toggle Global Enable
     {
         "caption": "BracketHighlighter: Toggle Global Enable",

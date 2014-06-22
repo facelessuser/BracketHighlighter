@@ -1,6 +1,9 @@
 import BracketHighlighter.ure as ure
 import BracketHighlighter.bh_plugin as bh_plugin
 from BracketHighlighter.bh_logging import debug, log
+from operator import itemgetter
+import sublime
+import sublime_plugin
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
@@ -37,6 +40,7 @@ def process_overrides(rules):
     names = {}
     replace = {}
     pos = 0
+    indexes = set()
     for rule in rules:
         name = rule.get("name")
         if name is None:
@@ -59,7 +63,31 @@ def process_overrides(rules):
         for k, v in replace.items():
             pos = names[k]
             final[pos] = dict(list(final[pos].items()) + list(v.items()))
-    return final
+
+    # Track which positions are specified
+    # If an postition index has aleady been
+    # specified or is invalid, discard the index.
+    for rule in final:
+        index = rule.get("position")
+        if index is not None:
+            if isinstance(index, int) and index > 0 and index not in indexes:
+                indexes.add(rule["position"])
+            else:
+                del rule["position"]
+
+    # Ensure all rules have a position index
+    pos = 0
+    for rule in final:
+        index = rule.get("position", None)
+        if index is None:
+            while pos in indexes:
+                pos += 1
+            rule["position"] = pos
+            indexes.add(pos)
+            pos += 1
+
+    # Sort by position and return
+    return sorted(final, key=itemgetter('position'))
 
 
 def is_valid_definition(params, language):
@@ -225,3 +253,74 @@ class SearchRules(object):
                     debug("Scope Regex (%s)\n    Opening: %s\n    Closing: %s\n" % (entry.name, entry.open.pattern, entry.close.pattern))
                 except Exception as e:
                     log(e)
+
+
+####################
+# Debug
+####################
+class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
+    def run(self, edit, text):
+        self.view.insert(edit, self.view.size(), text)
+
+
+class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
+    def run(self, mode=None):
+        if mode is None:
+            return
+        self.text = []
+        if mode == "positions":
+            label = "Rule Positions"
+            self.fn = self.show_positions
+        elif mode == "merged":
+            label = "Merged Rules"
+            self.fn = self.show_merged
+        else:
+            return
+        settings = sublime.load_settings("bh_core.sublime-settings")
+        brackets = settings.get("brackets", []) + settings.get("user_brackets", [])
+        scopes = settings.get("scope_brackets", []) + settings.get("user_scope_brackets", [])
+        window = sublime.active_window()
+        if window is not None:
+            view = window.new_file()
+            view.run_command(
+                "bh_debug_rule_edit",
+                {
+                    "text": self.show_rules(brackets, scopes)
+                }
+            )
+            view.set_name("[bh_debug] %s" % label)
+            view.set_read_only(True)
+            view.set_scratch(True)
+
+    def show_merged(self, rule):
+        import json
+        self.text.append("        {\n")
+        rule_count = 0
+        rule_length = len(rule) - 1
+        for k, v in rule.items():
+            self.text.append('            "%s": %s' % (k, json.dumps(v)))
+            self.text.append("\n" if rule_count == rule_length else ",\n")
+            rule_count += 1
+        self.text.append("        }")
+
+    def show_positions(self, rule):
+        self.text.append('        {"name": "%s", "position": %d}' % (rule["name"], rule["position"]))
+
+    def show_rules(self, brackets, scopes):
+        self.text = ["[\n"]
+        rules_count = 0
+        for rules in [process_overrides(brackets), process_overrides(scopes)]:
+            self.text.append("    [\n")
+            length = len(rules) - 1
+            rule_count = 0
+            for rule in rules:
+                self.fn(rule)
+                self.text.append("\n" if rule_count == length else ",\n")
+                rule_count += 1
+            self.text.append("    ]\n" if rules_count == 1 else "    ],\n")
+            rules_count += 1
+        self.text.append("]\n")
+        return ''.join(self.text)
+
+    def is_enabled(self):
+        return sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)

@@ -184,6 +184,21 @@
                             {
                                 "caption": "Wrap Selections with Brackets",
                                 "command": "wrap_brackets"
+                            },
+                            {"caption": "-"},
+                            {
+                                "caption": "Debug Mode",
+                                "command": "bh_debug"
+                            },
+                            {
+                                "caption": "Show Rule Positions",
+                                "command": "bh_debug_rule",
+                                "args": {"mode": "positions"}
+                            },
+                            {
+                                "caption": "Show Merged Rules",
+                                "command": "bh_debug_rule",
+                                "args": {"mode": "merged"}
                             }
                         ]
                     }

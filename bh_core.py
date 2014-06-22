@@ -664,6 +664,31 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
 
 ####################
+# Debug
+####################
+class BhDebugCommand(sublime_plugin.ApplicationCommand):
+    def run(self, set_value=None):
+        settings = sublime.load_settings("bh_core.sublime-settings")
+        if set_value is None:
+            value = bool(settings.get("debug_enable", False))
+            settings.set("debug_enable", not value)
+        else:
+            settings.set("debug_enable", set_value)
+
+    def is_checked(self, set_value=None):
+        return sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)
+
+    def is_enabled(self, set_value=None):
+        if set_value is None:
+            enabled = True
+        elif set_value:
+            enabled = not sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)
+        else:
+            enabled = sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)
+        return enabled
+
+
+####################
 # Events
 ####################
 class BhEventMgr(object):
