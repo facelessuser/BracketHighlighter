@@ -302,16 +302,18 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
         else:
             self.window.show_quick_panel(self.filter_keys, self.show)
 
-    def show(self, key=-1):
+    def show(self, key=None):
         self.text = []
-        if key > -1:
+        if key is not None and key > -1:
             self.key = self.filter_keys[key]
             label = "Rule \"%s\"" % self.key
             self.fn = self.show_key
-        else:
+        elif key is None:
             self.key = None
             label = "Merged Rules"
             self.fn = self.show_merged
+        else:
+            return
         settings = sublime.load_settings("bh_core.sublime-settings")
         brackets = settings.get("brackets", []) + settings.get("user_brackets", [])
         scopes = settings.get("scope_brackets", []) + settings.get("user_scope_brackets", [])
