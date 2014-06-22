@@ -5,6 +5,19 @@ from operator import itemgetter
 import sublime
 import sublime_plugin
 
+BH_STYLE = "default"
+BH_ENABLED = True
+BH_LANG_LIST = []
+BH_LANG_FILTER = "blacklist"
+BH_FIND_SUB = "false"
+BH_SUB_BRACKET = "false"
+BH_COMPARE_MATCH = None
+BH_POST_MATCH = None
+BH_VALIDATE_MATCH = None
+BH_SCOPE_EXCLUDE = []
+BH_SCOPE_EXCLUDE_EXCEPTIONS = []
+BH_IGNORE_STRING_ESCAPE = False
+
 
 def exclude_bracket(enabled, filter_type, language_list, language):
     """
@@ -97,9 +110,9 @@ def is_valid_definition(params, language):
 
     return (
         not exclude_bracket(
-            params.get("enabled", True),
-            params.get("language_filter", "blacklist"),
-            params.get("language_list", []),
+            params.get("enabled", BH_ENABLED),
+            params.get("language_filter", BH_LANG_FILTER),
+            params.get("language_list", BH_LANG_LIST),
             language
         ) and
         params["open"] is not None and params["close"] is not None
@@ -117,16 +130,16 @@ class BracketDefinition(object):
         """
 
         self.name = bracket["name"]
-        self.style = bracket.get("style", "default")
-        self.compare = bracket.get("compare")
-        sub_search = bracket.get("find_in_sub_search", "false")
+        self.style = bracket.get("style", BH_STYLE)
+        self.compare = bracket.get("compare", BH_COMPARE_MATCH)
+        sub_search = bracket.get("find_in_sub_search", BH_FIND_SUB)
         self.find_in_sub_search_only = sub_search == "only"
         self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
-        self.post_match = bracket.get("post_match")
-        self.validate = bracket.get("validate")
-        self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", [])
-        self.scope_exclude = bracket.get("scope_exclude", [])
-        self.ignore_string_escape = bracket.get("ignore_string_escape", False)
+        self.post_match = bracket.get("post_match", BH_POST_MATCH)
+        self.validate = bracket.get("validate", BH_VALIDATE_MATCH)
+        self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)
+        self.scope_exclude = bracket.get("scope_exclude", BH_SCOPE_EXCLUDE)
+        self.ignore_string_escape = bracket.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE)
 
 
 class ScopeDefinition(object):
@@ -139,16 +152,16 @@ class ScopeDefinition(object):
         Setup the bracket object by reading the passed in dictionary.
         """
 
-        self.style = bracket.get("style", "default")
+        self.style = bracket.get("style", BH_STYLE)
         self.open = ure.compile("\\A" + bracket.get("open", "."), ure.MULTILINE | ure.IGNORECASE)
         self.close = ure.compile(bracket.get("close", ".") + "\\Z", ure.MULTILINE | ure.IGNORECASE)
         self.name = bracket["name"]
-        sub_search = bracket.get("sub_bracket_search", "false")
+        sub_search = bracket.get("sub_bracket_search", BH_SUB_BRACKET)
         self.sub_search_only = sub_search == "only"
         self.sub_search = self.sub_search_only is True or sub_search == "true"
-        self.compare = bracket.get("compare")
-        self.post_match = bracket.get("post_match")
-        self.validate = bracket.get("validate")
+        self.compare = bracket.get("compare", BH_COMPARE_MATCH)
+        self.post_match = bracket.get("post_match", BH_POST_MATCH)
+        self.validate = bracket.get("validate", BH_VALIDATE_MATCH)
         self.scopes = bracket["scopes"]
 
 
@@ -292,18 +305,50 @@ class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
             view.set_read_only(True)
             view.set_scratch(True)
 
-    def show_merged(self, rule):
+    def show_merged(self, rule, index):
         import json
         self.text.append("        {\n")
         rule_count = 0
-        rule_length = len(rule) - 1
-        for k, v in rule.items():
-            self.text.append('            "%s": %s' % (k, json.dumps(v)))
+        if index == 0:
+            values = (
+                ("name", rule.get("name")),
+                ("open", rule.get("open")),
+                ("close", rule.get("close")),
+                ("style", rule.get("style", BH_STYLE)),
+                ("enabled", rule.get("enabled", BH_ENABLED)),
+                ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
+                ("language_list", rule.get("language_list", BH_LANG_LIST)),
+                ("compare", rule.get("compare", BH_COMPARE_MATCH)),
+                ("post_match", rule.get("post_match", BH_POST_MATCH)),
+                ("validate", rule.get("validate", BH_VALIDATE_MATCH)),
+                ("find_in_sub_search", rule.get("find_in_sub_search", BH_FIND_SUB)),
+                ("scope_exclude", rule.get("scope_exclude", BH_SCOPE_EXCLUDE)),
+                ("scope_exclude_exceptions", rule.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)),
+                ("ignore_string_escape", rule.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE))
+            )
+        else:
+            values = (
+                ("name", rule.get("name")),
+                ("open", rule.get("open")),
+                ("close", rule.get("close")),
+                ("style", rule.get("style", BH_STYLE)),
+                ("scopes", rule.get("scopes")),
+                ("enabled", rule.get("enabled", BH_ENABLED)),
+                ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
+                ("language_list", rule.get("language_list", BH_LANG_LIST)),
+                ("compare", rule.get("compare", BH_COMPARE_MATCH)),
+                ("post_match", rule.get("post_match", BH_POST_MATCH)),
+                ("validate", rule.get("validate", BH_VALIDATE_MATCH)),
+                ("sub_bracket_search", rule.get("sub_bracket_search", BH_SUB_BRACKET))
+            )
+        rule_length = len(values) - 1
+        for v in values:
+            self.text.append('            "%s": %s' % (v[0], json.dumps(v[1])))
             self.text.append("\n" if rule_count == rule_length else ",\n")
             rule_count += 1
         self.text.append("        }")
 
-    def show_positions(self, rule):
+    def show_positions(self, rule, index):
         self.text.append('        {"name": "%s", "position": %d}' % (rule["name"], rule["position"]))
 
     def show_rules(self, brackets, scopes):
@@ -314,7 +359,7 @@ class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
             length = len(rules) - 1
             rule_count = 0
             for rule in rules:
-                self.fn(rule)
+                self.fn(rule, rules_count)
                 self.text.append("\n" if rule_count == length else ",\n")
                 rule_count += 1
             self.text.append("    ]\n" if rules_count == 1 else "    ],\n")
