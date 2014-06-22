@@ -17,6 +17,7 @@ BH_VALIDATE_MATCH = None
 BH_SCOPE_EXCLUDE = []
 BH_SCOPE_EXCLUDE_EXCEPTIONS = []
 BH_IGNORE_STRING_ESCAPE = False
+BH_PLUGIN_LIB = None
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
@@ -277,18 +278,16 @@ class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
 
 
 class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
-    def run(self, mode=None):
-        if mode is None:
-            return
+    def run(self, key=None):
         self.text = []
-        if mode == "positions":
-            label = "Rule Positions"
-            self.fn = self.show_positions
-        elif mode == "merged":
+        if key is not None:
+            self.key = key
+            label = "Rule \"%s\"" % key
+            self.fn = self.show_key
+        else:
+            self.key = None
             label = "Merged Rules"
             self.fn = self.show_merged
-        else:
-            return
         settings = sublime.load_settings("bh_core.sublime-settings")
         brackets = settings.get("brackets", []) + settings.get("user_brackets", [])
         scopes = settings.get("scope_brackets", []) + settings.get("user_scope_brackets", [])
@@ -305,53 +304,28 @@ class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
             view.set_read_only(True)
             view.set_scratch(True)
 
-    def show_merged(self, rule, index):
+    def show_merged(self, rule):
         import json
         self.text.append("        {\n")
         rule_count = 0
-        if index == 0:
-            values = (
-                ("name", rule.get("name")),
-                ("open", rule.get("open")),
-                ("close", rule.get("close")),
-                ("style", rule.get("style", BH_STYLE)),
-                ("enabled", rule.get("enabled", BH_ENABLED)),
-                ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
-                ("language_list", rule.get("language_list", BH_LANG_LIST)),
-                ("compare", rule.get("compare", BH_COMPARE_MATCH)),
-                ("post_match", rule.get("post_match", BH_POST_MATCH)),
-                ("validate", rule.get("validate", BH_VALIDATE_MATCH)),
-                ("find_in_sub_search", rule.get("find_in_sub_search", BH_FIND_SUB)),
-                ("scope_exclude", rule.get("scope_exclude", BH_SCOPE_EXCLUDE)),
-                ("scope_exclude_exceptions", rule.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)),
-                ("ignore_string_escape", rule.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE))
-            )
-        else:
-            values = (
-                ("name", rule.get("name")),
-                ("open", rule.get("open")),
-                ("close", rule.get("close")),
-                ("style", rule.get("style", BH_STYLE)),
-                ("scopes", rule.get("scopes")),
-                ("enabled", rule.get("enabled", BH_ENABLED)),
-                ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
-                ("language_list", rule.get("language_list", BH_LANG_LIST)),
-                ("compare", rule.get("compare", BH_COMPARE_MATCH)),
-                ("post_match", rule.get("post_match", BH_POST_MATCH)),
-                ("validate", rule.get("validate", BH_VALIDATE_MATCH)),
-                ("sub_bracket_search", rule.get("sub_bracket_search", BH_SUB_BRACKET))
-            )
-        rule_length = len(values) - 1
-        for v in values:
-            self.text.append('            "%s": %s' % (v[0], json.dumps(v[1])))
+        rule_length = len(rule) - 1
+        for k, v in rule.items():
+            self.text.append('            "%s": %s' % (k, json.dumps(v)))
             self.text.append("\n" if rule_count == rule_length else ",\n")
             rule_count += 1
         self.text.append("        }")
 
-    def show_positions(self, rule, index):
-        self.text.append('        {"name": "%s", "position": %d}' % (rule["name"], rule["position"]))
+    def show_key(self, rule):
+        import json
+        if self.key in rule:
+            self.text.append(
+                '        {"name": "%s", "%s": %s}' % (
+                    rule["name"], self.key, json.dumps(rule.get(self.key))
+                )
+            )
 
     def show_rules(self, brackets, scopes):
+        from collections import OrderedDict
         self.text = ["[\n"]
         rules_count = 0
         for rules in [process_overrides(brackets), process_overrides(scopes)]:
@@ -359,7 +333,41 @@ class BhDebugRuleCommand(sublime_plugin.ApplicationCommand):
             length = len(rules) - 1
             rule_count = 0
             for rule in rules:
-                self.fn(rule, rules_count)
+                if rules_count == 0:
+                    item = OrderedDict(
+                        (
+                            ("name", rule.get("name")),
+                            ("open", rule.get("open")),
+                            ("close", rule.get("close")),
+                            ("style", rule.get("style", BH_STYLE)),
+                            ("enabled", rule.get("enabled", BH_ENABLED)),
+                            ("position", rule.get("position")),
+                            ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
+                            ("language_list", rule.get("language_list", BH_LANG_LIST)),
+                            ("plugin_library", rule.get("plugin_library", BH_PLUGIN_LIB)),
+                            ("find_in_sub_search", rule.get("find_in_sub_search", BH_FIND_SUB)),
+                            ("scope_exclude", rule.get("scope_exclude", BH_SCOPE_EXCLUDE)),
+                            ("scope_exclude_exceptions", rule.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)),
+                            ("ignore_string_escape", rule.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE))
+                        )
+                    )
+                else:
+                    item = OrderedDict(
+                        (
+                            ("name", rule.get("name")),
+                            ("open", rule.get("open")),
+                            ("close", rule.get("close")),
+                            ("style", rule.get("style", BH_STYLE)),
+                            ("scopes", rule.get("scopes")),
+                            ("enabled", rule.get("enabled", BH_ENABLED)),
+                            ("position", rule.get("position")),
+                            ("language_filter", rule.get("language_filter", BH_LANG_FILTER)),
+                            ("language_list", rule.get("language_list", BH_LANG_LIST)),
+                            ("plugin_library", rule.get("plugin_library", BH_PLUGIN_LIB)),
+                            ("sub_bracket_search", rule.get("sub_bracket_search", BH_SUB_BRACKET))
+                        )
+                    )
+                self.fn(item)
                 self.text.append("\n" if rule_count == length else ",\n")
                 rule_count += 1
             self.text.append("    ]\n" if rules_count == 1 else "    ],\n")

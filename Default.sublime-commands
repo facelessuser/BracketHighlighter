@@ -13,12 +13,11 @@
     {
         "caption": "BracketHighlighter: (Debug) Show Rule Positions",
         "command": "bh_debug_rule",
-        "args": {"mode": "positions"}
+        "args": {"key": "position"}
     },
     {
         "caption": "BracketHighlighter: (Debug) Show Merged Rules",
-        "command": "bh_debug_rule",
-        "args": {"mode": "merged"}
+        "command": "bh_debug_rule"
     },
     // Toggle Global Enable
     {

@@ -193,12 +193,11 @@
                             {
                                 "caption": "Show Rule Positions",
                                 "command": "bh_debug_rule",
-                                "args": {"mode": "positions"}
+                                "args": {"key": "position"}
                             },
                             {
                                 "caption": "Show Merged Rules",
-                                "command": "bh_debug_rule",
-                                "args": {"mode": "merged"}
+                                "command": "bh_debug_rule"
                             }
                         ]
                     }
