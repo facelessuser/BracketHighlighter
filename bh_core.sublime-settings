@@ -172,7 +172,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text", "Hex"],
+            "language_list": ["Plain text", "Hex", "HTML (Twig)"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -215,6 +215,17 @@
             "plugin_library": "bh_modules.tags",
             "find_in_sub_search": "only",
             "enabled": false
+        },
+        // HTML Twig
+        {
+            "name": "twig",
+            "open": "(\\{\\{\\s|\\{%\\s)",
+            "close": "(\\s\\}\\}|\\s%\\})",
+            "style": "angle",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["HTML (Twig)"],
+            "enabled": true
         },
         // CFML
         {
