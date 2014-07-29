@@ -168,6 +168,7 @@ class StyleDefinition(object):
         self.open_selections = []
         self.close_selections = []
         self.center_selections = []
+        self.content_selections = []
 
 
 class BhRegion(object):
@@ -292,6 +293,13 @@ class BhRegion(object):
             self.save_underline_regions(left, right, bracket, lines)
         else:
             self.save_normal_regions(left, right, bracket, lines)
+
+        if sublime.load_settings("bh_core.sublime-settings").get("content_highlight_bar", False):
+            content_lines = self.view.rowcol(left.begin)[0] + 1
+            for x in range(content_lines, self.view.rowcol(left.begin)[0] + 1 + (lines - 2)):
+                pt = self.view.text_point(x, 0)
+                bracket.content_selections.append(sublime.Region(pt))
+
         self.store_sel(regions)
 
     def save_high_visibility_regions(self, left, right, bracket, lines):
@@ -367,13 +375,22 @@ class BhRegion(object):
         """
 
         if len(selections):
-            self.view.add_regions(
-                name,
-                getattr(bracket, selections),
-                self.get_color(bracket.color, high_visibility),
-                getattr(bracket, icon_type),
-                self.hv_style if high_visibility else bracket.style
-            )
+            if selections == "content_selections":
+                self.view.add_regions(
+                    name,
+                    getattr(bracket, selections) if not high_visibility else [],
+                    self.get_color(bracket.color, False),
+                    getattr(bracket, icon_type),
+                    sublime.DRAW_EMPTY
+                )
+            else:
+                self.view.add_regions(
+                    name,
+                    getattr(bracket, selections),
+                    self.get_color(bracket.color, high_visibility),
+                    getattr(bracket, icon_type),
+                    self.hv_style if high_visibility else bracket.style
+                )
             regions.append(name)
 
     def highlight(self, high_visibility):
@@ -399,6 +416,7 @@ class BhRegion(object):
             self.highlight_regions("bh_" + name + "_center", "no_icon", "center_selections", r, regions, high_visibility)
             self.highlight_regions("bh_" + name + "_open", open_icon_type, "open_selections", r, regions, high_visibility)
             self.highlight_regions("bh_" + name + "_close", close_icon_type, "close_selections", r, regions, high_visibility)
+            self.highlight_regions("bh_" + name + "_content", "no_icon", "content_selections", r, regions, high_visibility)
         # Track which regions were set in the view so that they can be cleaned up later.
         self.view.settings().set("bh_regions", regions)
 
