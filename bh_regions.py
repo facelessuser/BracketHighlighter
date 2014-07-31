@@ -294,13 +294,120 @@ class BhRegion(object):
         else:
             self.save_normal_regions(left, right, bracket, lines)
 
-        if sublime.load_settings("bh_core.sublime-settings").get("content_highlight_bar", False):
-            content_lines = self.view.rowcol(left.begin)[0] + 1
-            for x in range(content_lines, self.view.rowcol(left.begin)[0] + 1 + (lines - 2)):
-                pt = self.view.text_point(x, 0)
-                bracket.content_selections.append(sublime.Region(pt))
+        if sublime.load_settings("bh_core.sublime-settings").get("content_highlight_bar", False) and lines > 1:
+            self.save_content_regions(left, right, bracket, lines)
 
         self.store_sel(regions)
+
+    def save_content_regions(self, left, right, bracket, lines):
+        """
+        Calculate content bar location and save region(s)
+        """
+
+        first_line = self.view.rowcol(left.begin)[0]
+        last_line = first_line + lines - 1
+        whitespace = (' ', '\t')
+        bracket_locations = (left.begin, right.begin)
+
+        if sublime.load_settings("bh_core.sublime-settings").get("align_content_highlight_bar", False):
+            start_pt = self.view.text_point(first_line, 0)
+            end_pt = left.end
+            tab_size = self.view.settings().get("tab_size", 4)
+            index = 0
+            tabs = 0
+            count = 0
+            # Calculate column index of where text starts for line
+            # containing opening bracket
+            for x in range(start_pt, start_pt + end_pt):
+                char = self.view.substr(x)
+                if char == "\t":
+                    # Track all tabs
+                    tabs += 1
+                elif char != " ":
+                    # Calculate column on first non-whitespace character
+                    remainder = count & tab_size
+                    tab_aligned = int(count / tab_size)
+                    if remainder and tabs:
+                        # Index of first non-whitespace character.
+                        # Account for smaller tabs that are not aligned on
+                        # tab_size boudary.
+                        index = tab_aligned + (tabs * (tab_size - 1)) + tab_size
+                    else:
+                        # Index of first non-whitespace character.
+                        # Spaces and full tabs aligned on tab_size boundaries
+                        index = count + (tabs * (tab_size - 1))
+                    break
+                count += 1
+
+            for x in range(first_line + 1, first_line + lines):
+                start_pt = self.view.text_point(x, 0)
+                end_pt = start_pt + index
+                actual_pt = start_pt - 1
+                offset = 0
+                tab_unit = 0
+                include = True
+
+                # Loop through all lines after the first.
+                # Calculate the true column postion where the bar should
+                # be drawn.  Calculation should account for tabs.
+                for y in range(start_pt, start_pt + end_pt):
+                    char = self.view.substr(y)
+                    if char == '\x00':
+                        # Exended past the file's end
+                        actual_pt += 1
+                        break
+                    elif char == "\t":
+                        # Tab will expand to the rest of the tab_size.
+                        # Track columns that are consumed by tabs.
+                        offset += tab_size - 1 - tab_unit
+                        tab_unit = tab_size
+                        actual_pt += 1
+                    elif char == " ":
+                        # Normal space.
+                        # Track columns consumed by spaces in relation to tab_size.
+                        actual_pt += 1
+                        tab_unit += 1
+                    elif (actual_pt + 1 + offset) < end_pt:
+                        # Do not draw bar if text comes before bar
+                        include = False
+                        break
+                    if tab_unit == tab_size:
+                        # Roll over tab_unit
+                        tab_unit = 0
+                    if (actual_pt + offset) >= end_pt:
+                        # Reached the target point.
+                        break
+                if include and (actual_pt - start_pt) + 1 > count and actual_pt < right.begin:
+                    if self.view.rowcol(actual_pt)[0] == x and actual_pt not in bracket_locations:
+                        if x == last_line:
+                            # Draw bar on last line if text comes before bracket
+                            include = False
+                            for y in range(actual_pt, right.begin):
+                                if self.view.substr(y) not in whitespace:
+                                    include = True
+                                    break
+                            if include:
+                                bracket.content_selections.append(sublime.Region(actual_pt))
+                        else:
+                            # Content line; draw bar
+                            bracket.content_selections.append(sublime.Region(actual_pt))
+        else:
+            # Loop through all lines after the first, draw a bar
+            for x in range(first_line + 1, first_line + lines):
+                pt = self.view.text_point(x, 0)
+                if pt not in bracket_locations:
+                    if x == last_line:
+                        # Draw bar on last line if text comes before bracket
+                        include = False
+                        for y in range(pt, right.begin):
+                            if self.view.substr(y) not in whitespace:
+                                include = True
+                                break
+                        if include:
+                            bracket.content_selections.append(sublime.Region(pt))
+                    else:
+                        # Content line; draw bar
+                        bracket.content_selections.append(sublime.Region(pt))
 
     def save_high_visibility_regions(self, left, right, bracket, lines):
         """
