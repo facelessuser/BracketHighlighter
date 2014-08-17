@@ -114,6 +114,13 @@ These are the basic settings you can change:
     // you will not see any changes (restart requrired to see change)
     "high_visibility_enabled_by_default": false,
 
+    // Experimental: Creates a visible bar at the beginning of all lines between
+    // multiline bracket spans.
+    "content_highlight_bar": false,
+
+    // Experimental: Align the content highlight bar at the bracket indent level
+    "align_content_highlight_bar": false,
+
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
     // ST3 has additional options of (thin_underline|squiggly|stippled)

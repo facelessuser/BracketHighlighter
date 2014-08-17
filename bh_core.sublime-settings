@@ -18,7 +18,7 @@
     // multiline bracket spans.
     "content_highlight_bar": false,
 
-    // Experimental: Align the content highlight bar at the bracket ident level
+    // Experimental: Align the content highlight bar at the bracket indent level
     "align_content_highlight_bar": false,
 
     // High visibility style and color for high visibility mode
