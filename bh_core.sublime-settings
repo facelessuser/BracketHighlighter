@@ -4,7 +4,7 @@
 
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
-    "show_unmatched" : true,
+    "show_unmatched": true,
 
     // Do the opposite of "show_unmatched" for the languages listed below
     "show_unmatched_exceptions": [],
