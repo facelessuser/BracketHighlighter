@@ -16,8 +16,15 @@ START_TAG = {
 }
 END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>', FLAGS)
 
-self_closing_tags = set("colgroup dd dt li options p td tfoot th thead tr".split())
-single_tags = set("area base basefont br col frame hr img input isindex link meta param embed".split())
+self_closing_tags = {
+    "colgroup", "dd", "dt", "li", "options", "p", "td",
+    "tfoot", "th", "thead", "tr"
+}
+single_tags = {
+    "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
+    "img", "input", "isindex", "keygen", "link", "meta", "param",
+    "source", "track", "wbr"
+}
 
 
 class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
