@@ -537,7 +537,7 @@ Attributes of BracketPluginCommand:
 
 Methods of BracketPluginCommand:
 
-- **run(edit, name, <args>)**: (edit is a sublime edit object and name is the bracket definition being evaluated)
+- **run(edit, name, &lt;args&gt;)**: (edit is a sublime edit object and name is the bracket definition being evaluated)
 
 Example (from foldbracket.py):
 ```python
