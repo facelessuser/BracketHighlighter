@@ -274,7 +274,7 @@
         {
             "name": "ruby_embedded_html",
             "open": "((?:(?<=<%)|(?<=^)|(?<==))\\s*\\b(?:if|begin|case)\\b|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
-            "close": "\\b(end)\\b",
+            "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
             "scope_exclude_exceptions": ["source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
@@ -287,7 +287,7 @@
         {
             "name": "ruby",
             "open": "((?:(?<=^)|(?<==))\\s*\\b(?:if|begin|case)\\b|^\\s*\\b(?:for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)|\\bdo)\\b",
-            "close": "\\b(end)\\b",
+            "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
