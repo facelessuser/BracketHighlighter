@@ -250,8 +250,8 @@
         // Angle
         {
             "name": "angle",
-            "open": "(<)(?!\\?)",
-            "close": "(?<!\\?)(>)",
+            "open": "(<)(?=[^?%]|$)",
+            "close": "(?:(?<=[^?%])|(?<=^))(>)",
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
             "language_filter": "whitelist",
