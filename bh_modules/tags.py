@@ -84,7 +84,7 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
 
 class TagSearch(object):
-    def __init__(self, view, bfr, window, center, pattern, match_type):
+    def __init__(self, view, bfr, window, center, pattern, match_type, mode):
         """
         Prepare tag search object
         """
@@ -94,6 +94,7 @@ class TagSearch(object):
         self.center = center
         self.pattern = pattern
         self.match_type = match_type
+        self.mode = mode
         self.bfr = bfr
         self.prev_match = None
         self.return_prev = False
@@ -141,9 +142,16 @@ class TagSearch(object):
         for m in self.pattern.finditer(self.bfr, self.start, self.end):
             name = m.group(1).lower()
             if not self.match_type:
-                single = bool(m.group(3) != "" or name in single_tags)
-                self_closing = name in self_closing_tags or name.startswith("cf")
+                single = bool(m.group(3) != "")
+                if not single and self.mode != 'xhtml':
+                    single = name in single_tags
+                if self.mode != 'xhtml':
+                    self_closing = name in self_closing_tags or name.startswith("cf")
+                else:
+                    self_closing = False
             else:
+                if self.mode != 'xhtml' and name in single_tags:
+                    continue
                 single = False
                 self_closing = False
             start = m.start(0)
@@ -203,7 +211,9 @@ class TagMatch(object):
         end = None
         if m:
             name = m.group(1).lower()
-            single = bool(m.group(3) != "" or name in single_tags)
+            single = bool(m.group(3) != "")
+            if not single and self.mode != 'xhtml':
+                single = name in single_tags
             if self.mode == "html":
                 self_closing = name in self_closing_tags
             elif self.mode == "cfml":
@@ -267,8 +277,8 @@ class TagMatch(object):
             return self.left, self.right
 
         # Init tag matching objects
-        osearch = TagSearch(self.view, self.bfr, self.window, self.center, START_TAG[self.mode], 0)
-        csearch = TagSearch(self.view, self.bfr, self.window, self.center, END_TAG, 1)
+        osearch = TagSearch(self.view, self.bfr, self.window, self.center, START_TAG[self.mode], 0, self.mode)
+        csearch = TagSearch(self.view, self.bfr, self.window, self.center, END_TAG, 1, self.mode)
 
         # Searching for opening or closing tag to match
         match_type = TAG_OPEN if self.right else TAG_CLOSE
