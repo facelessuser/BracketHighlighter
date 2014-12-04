@@ -27,7 +27,7 @@
     // Search to end of file for bracket
     {
         "caption": "BracketHighlighter: Match Brackets (ignore threshold)",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args": {"lines" : true}
     },
     // Remove brackets
@@ -38,7 +38,7 @@
     // Go to left bracket
     {
         "caption": "BracketHighlighter: Jump to Left Bracket",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "no_outside_adj": true,
@@ -54,7 +54,7 @@
     // Go to right bracket
     {
         "caption": "BracketHighlighter: Jump to Right Bracket",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "no_outside_adj": true,
@@ -70,7 +70,7 @@
     // Select text between brackets
     {
         "caption": "BracketHighlighter: Select Bracket Content",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "no_outside_adj": true,
@@ -85,7 +85,7 @@
     // Select text including brackets
     {
         "caption": "BracketHighlighter: Select Bracket Content with Brackets",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "no_outside_adj": true,
@@ -101,7 +101,7 @@
     // Fold contents between brackets
     {
         "caption": "BracketHighlighter: Fold Bracket Content",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "plugin": {
@@ -125,7 +125,7 @@
     // Select tag name of HTML/XML tag (both opening name and closing)
     {
         "caption": "BracketHighlighter: Select Tag Name (closing and opening)",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "plugin":
@@ -138,7 +138,7 @@
     // Select the attribute to the right of the cursor (will wrap inside the tag)
     {
         "caption": "BracketHighlighter: Select Next Attribute (right)",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "plugin":
@@ -152,7 +152,7 @@
     // Select the attribute to the left of the cursor (will wrap inside the tag)
     {
         "caption": "BracketHighlighter: Select Next Attribute (left)",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "plugin":
@@ -167,7 +167,7 @@
     // Will handle escaping or unescaping quotes within the string
     {
         "caption": "BracketHighlighter: Swap Quotes",
-        "command": "bh_key",
+        "command": "bh_async_key",
         "args":
         {
             "lines" : true,
@@ -181,7 +181,8 @@
     // Swap Brackets
     {
         "caption": "BracketHighlighter: Swap Brackets",
-        "command": "swap_brackets"
+        "command": "swap_brackets",
+        "args": {"async": true}
     },
     // Surround selection with brackets from quick panel
     {

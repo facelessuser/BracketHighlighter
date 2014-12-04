@@ -29,7 +29,7 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
         self.brackets = self.wrap._brackets[value]
 
         self.window.run_command(
-            "bh_key",
+            "bh_async_key" if self.async else "bh_key",
             {
                 "plugin": {
                     "type": ["__all__"],
@@ -42,7 +42,8 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
 
         sublime.set_timeout(lambda: self.finalize(lambda: self.wrap.wrap(value)), 100)
 
-    def run(self):
+    def run(self, async=False):
+        self.async = async
         view = self.window.active_view()
         if view is None:
             return

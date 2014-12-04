@@ -640,7 +640,10 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
     This is how BhCore is called with different options.
     """
 
-    def run(self, threshold=True, lines=False, adjacent=False, no_outside_adj=False, ignore={}, plugin={}):
+    def run(
+        self, threshold=True, lines=False, adjacent=False,
+        no_outside_adj=False, ignore={}, plugin={}
+    ):
         # Override events
         BhEventMgr.ignore_all = True
         BhEventMgr.modified = False
@@ -654,10 +657,21 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             True
         )
         self.view = self.window.active_view()
-        sublime.set_timeout(self.execute, 100)
+        self.execute()
 
     def execute(self):
         debug("Key Event")
+        self.bh.match(self.view)
+        BhEventMgr.ignore_all = False
+        BhEventMgr.time = time()
+
+
+class BhAsyncKeyCommand(BhKeyCommand):
+    def execute(self):
+        sublime.set_timeout(self.async_execute, 100)
+
+    def async_execute(self):
+        debug("Async Key Event")
         self.bh.match(self.view)
         BhEventMgr.ignore_all = False
         BhEventMgr.time = time()
