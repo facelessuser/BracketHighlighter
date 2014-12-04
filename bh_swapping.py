@@ -40,7 +40,10 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
 
         self.view = self.window.active_view()
 
-        sublime.set_timeout(lambda: self.finalize(lambda: self.wrap.wrap(value)), 100)
+        if self.async:
+            sublime.set_timeout(lambda: self.finalize(lambda: self.wrap.wrap(value)), 100)
+        else:
+            self.finalize(self.wrap.wrap(value))
 
     def run(self, async=False):
         self.async = async
