@@ -111,7 +111,7 @@ These are the basic settings you can change:
 
     // Enable high visibility by default when sublime starts up
     // If sublime is already running and this gets changed,
-    // you will not see any changes (restart requrired to see change)
+    // you will not see any changes (restart required to see change)
     "high_visibility_enabled_by_default": false,
 
     // Experimental: Creates a visible bar at the beginning of all lines between
