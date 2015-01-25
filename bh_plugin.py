@@ -77,6 +77,7 @@ def load_modules(obj, loaded):
         obj["compare"] = getattr(module, "compare", None)
         obj["post_match"] = getattr(module, "post_match", None)
         obj["validate"] = getattr(module, "validate", None)
+        obj["highlighting"] = getattr(module, "highlighting", None)
         loaded.add(plib)
     except:
         log("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))

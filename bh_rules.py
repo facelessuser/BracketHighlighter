@@ -14,6 +14,7 @@ BH_SUB_BRACKET = "false"
 BH_COMPARE_MATCH = None
 BH_POST_MATCH = None
 BH_VALIDATE_MATCH = None
+BH_HIGHLIGHTING = None
 BH_SCOPE_EXCLUDE = []
 BH_SCOPE_EXCLUDE_EXCEPTIONS = []
 BH_IGNORE_STRING_ESCAPE = False
@@ -138,6 +139,7 @@ class BracketDefinition(object):
         self.find_in_sub_search = sub_search == "true" or self.find_in_sub_search_only
         self.post_match = bracket.get("post_match", BH_POST_MATCH)
         self.validate = bracket.get("validate", BH_VALIDATE_MATCH)
+        self.highlighting = bracket.get("highlighting", BH_HIGHLIGHTING)
         self.scope_exclude_exceptions = bracket.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)
         self.scope_exclude = bracket.get("scope_exclude", BH_SCOPE_EXCLUDE)
         self.ignore_string_escape = bracket.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE)
@@ -164,6 +166,7 @@ class ScopeDefinition(object):
         self.post_match = bracket.get("post_match", BH_POST_MATCH)
         self.validate = bracket.get("validate", BH_VALIDATE_MATCH)
         self.scopes = bracket["scopes"]
+        self.highlighting = bracket.get("highlighting", BH_HIGHLIGHTING)
 
 
 class SearchRules(object):
@@ -181,6 +184,7 @@ class SearchRules(object):
         self.check_compare = False
         self.check_validate = False
         self.check_post_match = False
+        self.highlighting = False
         self.parse_bracket_definition(language, modules)
         self.parse_scope_definition(language, modules)
         if len(self.scopes) or len(self.brackets):
@@ -207,6 +211,8 @@ class SearchRules(object):
                         self.check_validate = True
                     if not self.check_post_match and entry.post_match is not None:
                         self.check_post_match = True
+                    if not self.highlighting and entry.highlighting is not None:
+                        self.highlighting = True
                     self.brackets.append(entry)
                     if not entry.find_in_sub_search_only:
                         find_regex.append(params["open"])
@@ -257,6 +263,8 @@ class SearchRules(object):
                         self.check_validate = True
                     if not self.check_post_match and entry.post_match is not None:
                         self.check_post_match = True
+                    if not self.highlighting and entry.highlighting is not None:
+                        self.highlighting = True
                     for x in entry.scopes:
                         if x not in scopes:
                             scopes[x] = scope_count

@@ -152,6 +152,48 @@ class BhCore(object):
             right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
         return left, right, regions, nobracket
 
+    def highlighting(self, left, right, scope_bracket=False):
+        """
+        Adjust region to highlight.  This is done after all methods that need
+        to know actual bracket region.  At this point, we no longer care about
+        the actual bracket's region, and we change the highlight region to something
+        completely different.
+        """
+        if left is not None:
+            if scope_bracket:
+                bracket = self.rules.scopes[left.scope]["brackets"][left.type]
+                bracket_scope = left.scope
+            else:
+                bracket = self.rules.brackets[left.type]
+            bracket_type = left.type
+        elif right is not None:
+            if scope_bracket:
+                bracket = self.rules.scopes[right.scope]["brackets"][right.type]
+                bracket_scope = right.scope
+            else:
+                bracket = self.rules.brackets[right.type]
+            bracket_type = right.type
+        else:
+            return left, right
+
+        if not self.rules.highlighting:
+            return left, right
+
+        if bracket.highlighting is not None:
+            lbracket, rbracket = bracket.highlighting(
+                self.view,
+                bh_plugin.BracketRegion(left.begin, left.end) if left is not None else None,
+                bh_plugin.BracketRegion(right.begin, right.end) if right is not None else None
+            )
+
+            if scope_bracket:
+                left = bh_search.ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
+                right = bh_search.ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+            else:
+                left = bh_search.BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
+                right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
+        return left, right
+
     def validate(self, b, bracket_type, scope_bracket=False):
         """
         Validate bracket.
@@ -362,7 +404,8 @@ class BhCore(object):
                 return True
 
         # Matched brackets
-        if left is not None and right is not None and bracket is not None:
+        if left is not None and right is not None and bracket is not None and not HIGH_VISIBILITY:
+            left, right = self.highlighting(left, right)
             self.regions.save_complete_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
             return True
         return False
@@ -384,6 +427,9 @@ class BhCore(object):
                 self.regions.store_sel(regions)
                 return True
 
+        if not HIGH_VISIBILITY:
+            left, right = self.highlighting(left, right, scope_bracket=True)
+
         return self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
 
     def find_matches(self, sel):
@@ -401,6 +447,9 @@ class BhCore(object):
         if left is not None and right is not None:
             bracket = self.rules.brackets[left.type]
             left, right, regions, _ = self.run_plugin(bracket.name, left, right, regions)
+
+        if not HIGH_VISIBILITY:
+            left, right = self.highlighting(left, right)
 
         if not self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY):
             self.regions.store_sel(regions)

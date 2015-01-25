@@ -489,6 +489,37 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
     return left, right, bracket_style
 ```
 
+### highlighting
+`highlighting` is the last hook to get run.  This is at a point when BH no longer cares about what the *actual* bracket region is, so it is safe to modify it for highlighting purposes.  The view really shouldn't be modified here.
+
+The `highlighting` method receives the following parameters:
+
+- **view**: the current view containing brackets
+- **left**:  a bracket region for the opening bracket (could be `None`)
+- **right**: a bracket region for the closing bracket (could be `None`)
+
+Returns:
+
+- **BracketRegion**: opening bracket region
+- **BracketRegion**: closing bracket region
+
+Example (snippet from tags.py)
+
+```python
+def highlighting(view, left, right):
+    """
+    Highlight only the tag name.
+    """
+    tag_name = '[\w\:\.\-]+'
+    if left is not None:
+        region = view.find(tag_name, left.begin)
+        left = left.move(region.begin(), region.end())
+    if right is not None:
+        region = view.find(tag_name, right.begin)
+        right = right.move(region.begin(), region.end())
+    return left, right
+```
+
 ## Run Instance Plugins
 `Run instance` plugins are fed into the command executing a BracketHighlighter match via the `plugin` parameter.
 

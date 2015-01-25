@@ -415,9 +415,8 @@
         },
         "tag": {
             "icon": "tag",
-            // "endpoints": true,
             // "color": "brackethighlighter.tag",
-            "style": "outline"
+            // "style": "underline"
         },
         "c_define": {
             "icon": "hash"
