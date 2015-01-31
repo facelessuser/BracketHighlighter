@@ -182,6 +182,7 @@ class BhCore(object):
         if bracket.highlighting is not None:
             lbracket, rbracket = bracket.highlighting(
                 self.view,
+                bracket.name,
                 self.bracket_style,
                 bh_plugin.BracketRegion(left.begin, left.end) if left is not None else None,
                 bh_plugin.BracketRegion(right.begin, right.end) if right is not None else None

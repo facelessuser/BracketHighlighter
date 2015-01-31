@@ -59,7 +59,7 @@ def get_tag_mode(view, tag_mode_config):
     return default_mode
 
 
-def highlighting(view, style, left, right):
+def highlighting(view, name, style, left, right):
     """
     Highlight only the tag name.
     """

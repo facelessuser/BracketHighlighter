@@ -625,6 +625,7 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 The `highlighting` method receives the following parameters:
 
 - **view**: the current view containing brackets
+- **name**: the name of the bracket definition being evaluated
 - **style**: the style definition name that is to be used to highlight the region
 - **left**:  a bracket region for the opening bracket (could be `None`)
 - **right**: a bracket region for the closing bracket (could be `None`)
@@ -637,7 +638,7 @@ Returns:
 Example (snippet from tags.py)
 
 ```python
-def highlighting(view, style, left, right):
+def highlighting(view, name, style, left, right):
     """
     Highlight only the tag name.
     """
