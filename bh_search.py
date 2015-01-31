@@ -126,7 +126,10 @@ class ScopeSearch(object):
         extent = None
 
         if self.is_scope(center, before_center, scope, adj_dir):
-            max_size = self.view.size() - 1
+            if int(sublime.version()) >= 3067:
+                max_size = self.view.size()
+            else:
+                max_size = self.view.size() - 1
             extent = self.view.extract_scope(self.adjusted_center)
             while extent is not None and extent.begin() != 0:
                 if search.view.match_selector(extent.begin() - 1, scope):
@@ -153,12 +156,16 @@ class ScopeSearch(object):
         """
 
         match = False
-        if before_center > 0:
+        if int(sublime.version()) >= 3067:
+            match_test = before_center >= 0 and center != self.view.size()
+        else:
+            match_test = before_center >= 0
+        if match_test:
             match = (
                 self.view.match_selector(center, scope) and
                 self.view.match_selector(before_center, scope)
             )
-        if not match and True and self.search.rules.outside_adj:
+        if not match and self.search.rules.outside_adj:
             if adj_dir == BH_ADJACENT_LEFT:
                 if before_center > 0:
                     match = self.view.match_selector(before_center, scope)
