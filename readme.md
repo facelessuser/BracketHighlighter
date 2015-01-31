@@ -14,6 +14,9 @@
     - [Shortcuts](#shortcuts)
 - [Customizing BracketHighlighter](#customizing-brackethighlighter)
     - [Configuring Brackets](#configuring-brackets)
+        - [Configuring Brackets Rules](#configuring-brackets-rules)
+        - [Configuring Scope Brackets Rules](#configuring-scope-brackets-rules)
+        - [Bracket Rule Management](#bracket-rule-management)
     - [Configuring Highlight Style](#configuring-highlight-style)
 - [Bracket Plugin API](#bracket-plugin-api)
     - ['Definition' Plugins](#definition-plugins)
@@ -213,8 +216,12 @@ BH is extremely flexible and be customized and extended to fit a User's needs.  
 ## Configuring Brackets
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
-### Configuring Brackets
+Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
+
+### Configuring Brackets Rules
 Brackets are defined under `brackets` in `bh_core.sublime-settings`.
+
+Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
 
@@ -258,8 +265,10 @@ Angle and Curly bracket will be used as an example (not all options may be shown
 - **find_in_sub_search (optional)**: this rule should be included when doing sub bracket matching in `scope_brackets` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a `scope_bracket`.
 - **ignore_string_escape (optional)**: Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set.
 
-### Configuring Scope Brackets
+### Configuring Scope Brackets Rules
 Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
+
+Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 Python Single Quote bracket will be used as an example (not all options are shown in this example):
 
@@ -287,6 +296,127 @@ Python Single Quote bracket will be used as an example (not all options are show
 - **sub_bracket_search**: should this scope bracket also search for sub brackets (like curly brackets in strings etc.).
 - **enabled**: disable or enable rule
 - **plugin_library (optional)**: defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins)
+
+### Bracket Rule Management
+In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
+
+BracketHighlighter now let's you add or modify existing rules without overriding the entire ruleset or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
+
+```js
+    "user_scope_brackets": [],
+    "user_brackets": [
+        {
+            "name": "mylang",
+            "open": "^\\s*\\b(if|subr|bytemap|enum|command|for|while|macro|do)\\b",
+            "close": "\\b(e(?:if|subr|bytemap|enum|command|for|while|macro)|until)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "User.bh_modules.mylangkeywords",
+            "language_filter": "whitelist",
+            "language_list": ["mylang"],
+            "enabled": true
+        }
+    ],
+```
+
+Let's say you want to modify an existing rule, maybe just tweak the language list, all you have to do is use the same name and the item you want to change. Only that attribute will be overridden:
+
+```js
+    "user_brackets": [
+        // Angle
+        {
+            "name": "angle",
+            "language_list": [
+                "HTML", "HTML 5", "XML", "PHP", "HTML (Rails)",
+                "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML",
+                "ColdFusion", "ColdFusionCFC", "laravel-blade",
+                "Handlebars", "AngularJS",
+                "SomeNewLanguage" // <--- New language
+            ]
+        }
+    ],
+```
+
+Let's say you want to insert a new rule between two rules. You can turn on debug mode and call the `BracketHighlighter: (Debug) Filter Rules by Key` then select position to see the current rule order and their postion index.  To turn on Debug mode, just add `"debug_enable": true` to your user settings file.
+
+Example of `BracketHighlighter: (Debug) Filter Rules by Key` output:
+
+```js
+[
+    [
+        {"name": "curly", "position": 0},
+        {"name": "round", "position": 1},
+        {"name": "square", "position": 2},
+        {"name": "html", "position": 3},
+        {"name": "cfml", "position": 4},
+        {"name": "php_angle", "position": 5},
+        {"name": "angle", "position": 6},
+        {"name": "cssedit_groups", "position": 7},
+        {"name": "ruby_embedded_html", "position": 8},
+        {"name": "ruby", "position": 9},
+        {"name": "c_compile_switch", "position": 10},
+        {"name": "php_keywords", "position": 11},
+        {"name": "erlang", "position": 12},
+        {"name": "bash", "position": 13},
+        {"name": "fish", "position": 14},
+        {"name": "mylang", "position": 15}
+    ],
+    [
+        {"name": "py_single_quote", "position": 0},
+        {"name": "py_double_quote", "position": 1},
+        {"name": "single_quote", "position": 2},
+        {"name": "double_quote", "position": 3},
+        {"name": "jsregex", "position": 4},
+        {"name": "perlregex", "position": 5},
+        {"name": "rubyregex", "position": 6},
+        {"name": "mditalic", "position": 7},
+        {"name": "mdbold", "position": 8}
+    ]
+]
+```
+
+Then you can specify the position you want to insert at using the `position` key:
+
+```js
+    "user_scope_brackets": [],
+    "user_brackets": [
+        {
+            "name": "mylang",
+            "position": 4, // <-- New position
+            "open": "^\\s*\\b(if|subr|bytemap|enum|command|for|while|macro|do)\\b",
+            "close": "\\b(e(?:if|subr|bytemap|enum|command|for|while|macro)|until)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "User.bh_modules.mylangkeywords",
+            "language_filter": "whitelist",
+            "language_list": ["mylang"],
+            "enabled": true
+        }
+    ],
+```
+
+And if you run the debug command again, you will see that the position has changed:
+
+```js
+        {"name": "curly", "position": 0},
+        {"name": "round", "position": 1},
+        {"name": "square", "position": 2},
+        {"name": "html", "position": 3},
+        {"name": "trex", "position": 4}, // <-- New position
+        {"name": "cfml", "position": 5},
+        {"name": "php_angle", "position": 6},
+```
+
+This can be used to adjust the position of default rules from your user settings as well as shown by overrides above.
+
+So, unless you are forking BH to pull request a change to the default rules, you can now modify the rules all in these two settings without copying or touching the default rules:
+
+```js
+    "user_scope_brackets": [],
+    "user_brackets": [],
+```
+
+This will allow you to make changes, but still receive new updated rules.
 
 ## Configuring Highlight Style
 Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you give a style definition to.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
