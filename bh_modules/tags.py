@@ -59,17 +59,18 @@ def get_tag_mode(view, tag_mode_config):
     return default_mode
 
 
-def highlighting(view, left, right):
+def highlighting(view, style, left, right):
     """
     Highlight only the tag name.
     """
-    tag_name = '[\w\:\.\-]+'
-    if left is not None:
-        region = view.find(tag_name, left.begin)
-        left = left.move(region.begin(), region.end())
-    if right is not None:
-        region = view.find(tag_name, right.begin)
-        right = right.move(region.begin(), region.end())
+    if style == "tag":
+        tag_name = '[\w\:\.\-]+'
+        if left is not None:
+            region = view.find(tag_name, left.begin)
+            left = left.move(region.begin(), region.end())
+        if right is not None:
+            region = view.find(tag_name, right.begin)
+            right = right.move(region.begin(), region.end())
     return left, right
 
 
