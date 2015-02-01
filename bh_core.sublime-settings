@@ -385,7 +385,7 @@
         },
 
         // This particular style is used to highlight
-        // unmatched bracekt pairs.  It is a special
+        // unmatched bracket pairs.  It is a special
         // style.
         "unmatched": {
             "icon": "question",
