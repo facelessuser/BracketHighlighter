@@ -175,6 +175,11 @@ class ScopeSearch(object):
                 match = self.view.match_selector(center, scope)
                 if match:
                     self.adjusted_center += 1
+        elif match and self.search.rules.outside_adj:
+            if adj_dir == BH_ADJACENT_RIGHT:
+                self.adjusted_center += 1
+            else:
+                self.adjusted_center -= 1
         return match
 
     def get_brackets(self, open_pattern, close_pattern, scope_id, bracket_id):

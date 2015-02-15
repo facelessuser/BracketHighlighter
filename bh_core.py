@@ -520,8 +520,15 @@ class BhCore(object):
             left, right = partial_find[0], partial_find[1]
 
         # Make sure cursor in highlighted sub group
-        if (left and adjusted_center <= left.begin) or (right and adjusted_center >= right.end):
-            left, right = None, None
+        if self.rules.outside_adj:
+            if (
+                (left and center <= left.begin and adjusted_center <= left.begin) or
+                (right and center >= right.end and adjusted_center >= right.end)
+            ):
+                left, right = None, None
+        else:
+            if (left and adjusted_center <= left.begin) or (right and adjusted_center >= right.end):
+                left, right = None, None
 
         if left is not None:
             selected_scope = self.rules.scopes[left.scope]["name"]
