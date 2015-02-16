@@ -1,0 +1,1 @@
+Temporary file so that Jon of Sublime Text can avoid loading older BH on ST versions >= 3067.  There was a nasty hang and crash when Jon updated ST3 to version 3067.
