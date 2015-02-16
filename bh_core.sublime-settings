@@ -451,7 +451,7 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars", "AngularJS"],
+        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars", "AngularJS"],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
