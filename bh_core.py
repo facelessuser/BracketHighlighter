@@ -788,6 +788,7 @@ class BhThreadMgr(object):
     """
 
     restart = False
+    kill = False
 
 
 class BhListenerCommand(sublime_plugin.EventListener):
@@ -875,7 +876,7 @@ def bh_loop():
     be ignored and then accounted for with one match by this thread
     """
 
-    while not BhThreadMgr.restart:
+    while not BhThreadMgr.restart and not BhThreadMgr.kill:
         if BhEventMgr.modified is True and time() - BhEventMgr.time > BhEventMgr.wait_time:
             sublime.set_timeout(bh_run, 0)
         sleep(0.5)
@@ -883,6 +884,11 @@ def bh_loop():
     if BhThreadMgr.restart:
         BhThreadMgr.restart = False
         sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
+
+    if BhThreadMgr.kill:
+        global running_bh_loop
+        del running_bh_loop
+        BhThreadMgr.kill = False
 
 
 ####################
@@ -920,3 +926,6 @@ def plugin_loaded():
     else:
         debug("Restarting Thread")
         BhThreadMgr.restart = True
+
+def plugin_unloaded():
+    BhThreadMgr.kill = True
