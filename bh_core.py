@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 from os.path import basename, join
 from time import time, sleep
-import _thread as thread
+import threading
 import traceback
 import BracketHighlighter.ure as ure
 import BracketHighlighter.bh_plugin as bh_plugin
@@ -12,6 +12,7 @@ import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 
 bh_match = None
+bh_thread = None
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -703,8 +704,8 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
         no_outside_adj=False, ignore={}, plugin={}
     ):
         # Override events
-        BhEventMgr.ignore_all = True
-        BhEventMgr.modified = False
+        bh_thread.ignore_all = True
+        bh_thread.modified = False
         self.bh = BhCore(
             threshold,
             lines,
@@ -720,8 +721,8 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
     def execute(self):
         debug("Key Event")
         self.bh.match(self.view)
-        BhEventMgr.ignore_all = False
-        BhEventMgr.time = time()
+        bh_thread.ignore_all = False
+        bh_thread.time = time()
 
 
 class BhAsyncKeyCommand(BhKeyCommand):
@@ -731,8 +732,8 @@ class BhAsyncKeyCommand(BhKeyCommand):
     def async_execute(self):
         debug("Async Key Event")
         self.bh.match(self.view)
-        BhEventMgr.ignore_all = False
-        BhEventMgr.time = time()
+        bh_thread.ignore_all = False
+        bh_thread.time = time()
 
 
 ####################
@@ -763,25 +764,6 @@ class BhDebugCommand(sublime_plugin.ApplicationCommand):
 ####################
 # Events
 ####################
-class BhEventMgr(object):
-    """
-    Object to manage when bracket events should be launched.
-    """
-
-    @classmethod
-    def load(cls):
-        """
-        Initialize variables for determining
-        when to initiate a bracket matching event.
-        """
-
-        cls.wait_time = 0.12
-        cls.time = time()
-        cls.modified = False
-        cls.type = BH_MATCH_TYPE_SELECTION
-        cls.ignore_all = False
-
-
 class BhThreadMgr(object):
     """
     Object to help track when a new thread needs to be started.
@@ -805,8 +787,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        BhEventMgr.type = BH_MATCH_TYPE_SELECTION
-        sublime.set_timeout(bh_run, 0)
+        bh_thread.type = BH_MATCH_TYPE_SELECTION
+        sublime.set_timeout(bh_thread.payload, 0)
 
     def on_modified(self, view):
         """
@@ -815,9 +797,9 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        BhEventMgr.type = BH_MATCH_TYPE_EDIT
-        BhEventMgr.modified = True
-        BhEventMgr.time = time()
+        bh_thread.type = BH_MATCH_TYPE_EDIT
+        bh_thread.modified = True
+        bh_thread.time = time()
 
     def on_activated(self, view):
         """
@@ -826,8 +808,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        BhEventMgr.type = BH_MATCH_TYPE_SELECTION
-        sublime.set_timeout(bh_run, 0)
+        bh_thread.type = BH_MATCH_TYPE_SELECTION
+        sublime.set_timeout(bh_thread.payload, 0)
 
     def on_selection_modified(self, view):
         """
@@ -836,14 +818,14 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if self.ignore_event(view):
             return
-        if BhEventMgr.type != BH_MATCH_TYPE_EDIT:
-            BhEventMgr.type = BH_MATCH_TYPE_SELECTION
+        if bh_thread.type != BH_MATCH_TYPE_EDIT:
+            bh_thread.type = BH_MATCH_TYPE_SELECTION
         now = time()
-        if now - BhEventMgr.time > BhEventMgr.wait_time:
-            sublime.set_timeout(bh_run, 0)
+        if now - bh_thread.time > bh_thread.wait_time:
+            sublime.set_timeout(bh_thread.payload, 0)
         else:
-            BhEventMgr.modified = True
-            BhEventMgr.time = now
+            bh_thread.modified = True
+            bh_thread.time = now
 
     def ignore_event(self, view):
         """
@@ -851,44 +833,50 @@ class BhListenerCommand(sublime_plugin.EventListener):
         or if it is too soon to accept an event.
         """
 
-        return (view.settings().get('is_widget') or BhEventMgr.ignore_all)
+        return (view.settings().get('is_widget') or bh_thread.ignore_all)
 
 
-def bh_run():
-    """
-    Kick off matching of brackets
-    """
+class BhThread(threading.Thread):
+    """ Load up defaults """
 
-    BhEventMgr.modified = False
-    window = sublime.active_window()
-    view = window.active_view() if window is not None else None
-    BhEventMgr.ignore_all = True
-    if bh_match is not None:
-        bh_match(view, BhEventMgr.type == BH_MATCH_TYPE_EDIT)
-    BhEventMgr.ignore_all = False
-    BhEventMgr.time = time()
+    def __init__(self):
+        """ Setup the thread """
+        self.reset()
+        threading.Thread.__init__(self)
 
+    def reset(self):
+        """ Reset the thread variables """
+        self.wait_time = 0.12
+        self.time = time()
+        self.modified = False
+        self.type = BH_MATCH_TYPE_SELECTION
+        self.ignore_all = False
+        self.abort = False
 
-def bh_loop():
-    """
-    Start thread that will ensure highlighting happens after a barage of events
-    Initial highlight is instant, but subsequent events in close succession will
-    be ignored and then accounted for with one match by this thread
-    """
+    def payload(self):
+        """ Code to run """
+        self.modified = False
+        window = sublime.active_window()
+        view = window.active_view() if window is not None else None
+        self.ignore_all = True
+        if bh_match is not None:
+            bh_match(view, self.type == BH_MATCH_TYPE_EDIT)
+        self.ignore_all = False
+        self.time = time()
 
-    while not BhThreadMgr.restart and not BhThreadMgr.kill:
-        if BhEventMgr.modified is True and time() - BhEventMgr.time > BhEventMgr.wait_time:
-            sublime.set_timeout(bh_run, 0)
-        sleep(0.5)
+    def kill(self):
+        """ Kill thread """
+        self.abort = True
+        while self.is_alive():
+            pass
+        self.reset()
 
-    if BhThreadMgr.restart:
-        BhThreadMgr.restart = False
-        sublime.set_timeout(lambda: thread.start_new_thread(bh_loop, ()), 0)
-
-    if BhThreadMgr.kill:
-        global running_bh_loop
-        del running_bh_loop
-        BhThreadMgr.kill = False
+    def run(self):
+        """ Thread loop """
+        while not self.abort:
+            if self.modified is True and time() - self.time > self.wait_time:
+                sublime.set_timeout(self.payload, 0)
+            sleep(0.5)
 
 
 ####################
@@ -910,7 +898,9 @@ def plugin_loaded():
     and start event loop.  Restart event loop if already loaded.
     """
 
-    BhEventMgr.load()
+    global HIGH_VISIBILITY
+    global bh_thread
+
     init_bh_match()
     ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
 
@@ -918,14 +908,11 @@ def plugin_loaded():
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
         HIGH_VISIBILITY = True
 
-    if 'running_bh_loop' not in globals():
-        global running_bh_loop
-        running_bh_loop = True
-        thread.start_new_thread(bh_loop, ())
-        debug("Starting Thread")
-    else:
-        debug("Restarting Thread")
-        BhThreadMgr.restart = True
+    if bh_thread is not None:
+        bh_thread.kill()
+    bh_thread = BhThread()
+    bh_thread.start()
+
 
 def plugin_unloaded():
-    BhThreadMgr.kill = True
+    bh_thread.kill()
