@@ -12,7 +12,6 @@ import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 
 bh_match = None
-bh_thread = None
 
 BH_MATCH_TYPE_NONE = 0
 BH_MATCH_TYPE_SELECTION = 1
@@ -908,7 +907,7 @@ def plugin_loaded():
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
         HIGH_VISIBILITY = True
 
-    if bh_thread is not None:
+    if 'bh_thread' in globals() and bh_thread is not None:
         bh_thread.kill()
     bh_thread = BhThread()
     bh_thread.start()
