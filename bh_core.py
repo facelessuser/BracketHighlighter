@@ -11,6 +11,9 @@ import BracketHighlighter.bh_regions as bh_regions
 import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 
+if 'bh_thread' not in globals():
+    bh_thread = None
+
 bh_match = None
 
 BH_MATCH_TYPE_NONE = 0
@@ -763,15 +766,6 @@ class BhDebugCommand(sublime_plugin.ApplicationCommand):
 ####################
 # Events
 ####################
-class BhThreadMgr(object):
-    """
-    Object to help track when a new thread needs to be started.
-    """
-
-    restart = False
-    kill = False
-
-
 class BhListenerCommand(sublime_plugin.EventListener):
     """
     Manage when to kick off bracket matching.
@@ -907,7 +901,7 @@ def plugin_loaded():
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
         HIGH_VISIBILITY = True
 
-    if 'bh_thread' in globals() and bh_thread is not None:
+    if bh_thread is not None:
         bh_thread.kill()
     bh_thread = BhThread()
     bh_thread.start()
