@@ -693,6 +693,8 @@ class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
     def run(self):
         global GLOBAL_ENABLE
         GLOBAL_ENABLE = not GLOBAL_ENABLE
+        if not GLOBAL_ENABLE:
+            bh_regions.clear_all_regions()
 
 
 class BhKeyCommand(sublime_plugin.WindowCommand):
@@ -909,3 +911,4 @@ def plugin_loaded():
 
 def plugin_unloaded():
     bh_thread.kill()
+    bh_regions.clear_all_regions()
