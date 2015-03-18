@@ -68,7 +68,7 @@
             "style": "single_quote",
             "scopes": ["string"],
             "language_filter": "whitelist",
-            "language_list": ["Python"],
+            "language_list": ["Python", "PythonImproved"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -79,7 +79,7 @@
             "style": "double_quote",
             "scopes": ["string"],
             "language_filter": "whitelist",
-            "language_list": ["Python"],
+            "language_list": ["Python", "PythonImproved"],
             "sub_bracket_search": "true",
             "enabled": true
         },
