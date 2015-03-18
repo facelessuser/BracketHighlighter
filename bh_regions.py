@@ -31,6 +31,14 @@ def underline(regions):
     return r
 
 
+def clear_all_regions():
+    """ Clear all regions """
+    for window in sublime.windows():
+        for view in window.views():
+            for region_key in view.settings().get("bh_regions", []):
+                view.erase_regions(region_key)
+
+
 def select_bracket_style(option):
     """
     Configure style of region based on option
