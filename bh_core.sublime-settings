@@ -190,7 +190,11 @@
             "close": "(\\))",
             "style": "round",
             "scope_exclude_exceptions": ["text.tex string.other.math"],
-            "scope_exclude": ["string", "comment", "punctuation.definition.case-pattern.shell"],
+            "scope_exclude": [
+                "string",
+                "comment",
+                "punctuation.definition.case-pattern.shell"
+            ],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
@@ -210,32 +214,6 @@
             "ignore_string_escape": true,
             "enabled": true
         },
-        // HTML
-        {
-            "name": "html",
-            "open": "(<)(?=[\\w\\:\\-]+(?:(?:\\s+[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*)\\s*\\/?>|\\/[\\w\\:\\-]+[^>]*>)",
-            "close": "(?<=<)(?:[\\w\\:\\-]+(?:(?:\\s+[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*)\\s*\\/?|\\/[\\w\\:\\-]+[^>]*)(>)",
-            "style": "tag",
-            "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "Handlebars"],
-            "plugin_library": "bh_modules.tags",
-            "find_in_sub_search": "only",
-            "enabled": false
-        },
-        // CFML
-        {
-            "name": "cfml",
-            "open": "(<)(?=[\\w\\:\\-]+(?:(?:\\s+[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*\\/?>|\\/[\\w\\:\\-]+[^>]*>)",
-            "close": "(?<=<)(?:[\\w\\:\\-]+(?:(?:\\s+[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^>\\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*\\/?|\\/[\\w\\:\\-]+[^>]*)(>)",
-            "style": "tag",
-            "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
-            "language_list": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"],
-            "plugin_library": "bh_modules.tags",
-            "find_in_sub_search": "only",
-            "enabled": false
-        },
         // PHP Angle
         {
             "name": "php_angle",
@@ -253,9 +231,29 @@
             "open": "(<)(?=[^?%]|$)",
             "close": "(?:(?<=[^?%])|(?<=^))(>)",
             "style": "angle",
-            "scope_exclude": ["string", "comment", "keyword.operator", "source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
+            "scope_exclude": [
+                "string",
+                "comment",
+                "keyword.operator",
+                "source.ruby.rails.embedded.html",
+                "source.ruby.embedded.html"
+            ],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML (Rails)", "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML", "ColdFusion", "ColdFusionCFC", "laravel-blade", "Handlebars", "AngularJS"],
+            "language_list": [
+                "HTML",
+                "HTML 5",
+                "XML",
+                "PHP",
+                "HTML (Rails)",
+                "HTML (Jinja Templates)",
+                "HTML (Twig)",
+                "HTML+CFML",
+                "ColdFusion",
+                "ColdFusionCFC",
+                "laravel-blade",
+                "Handlebars",
+                "AngularJS"
+            ],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -277,7 +275,10 @@
             "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
-            "scope_exclude_exceptions": ["source.ruby.rails.embedded.html", "source.ruby.embedded.html"],
+            "scope_exclude_exceptions": [
+                "source.ruby.rails.embedded.html",
+                "source.ruby.embedded.html"
+            ],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
             "language_list": ["HTML", "HTML 5", "PHP", "HTML (Rails)"],
@@ -315,7 +316,15 @@
             "language_filter": "whitelist",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.phpkeywords",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "language_list": [
+                "HTML",
+                "HTML 5",
+                "XML",
+                "PHP",
+                "HTML+CFML",
+                "ColdFusion",
+                "ColdFusionCFC"
+            ],
             "enabled": true
         },
         // Erlang conditional statements
@@ -451,7 +460,17 @@
     // Determine which style of tag-matching to use in which syntax
     "tag_mode": {
         "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP", "HTML (Jinja Templates)", "HTML (Rails)", "HTML (Twig)", "laravel-blade", "Handlebars", "AngularJS"],
+        "html": [
+            "HTML",
+            "HTML 5",
+            "PHP",
+            "HTML (Jinja Templates)",
+            "HTML (Rails)",
+            "HTML (Twig)",
+            "laravel-blade",
+            "Handlebars",
+            "AngularJS"
+        ],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
