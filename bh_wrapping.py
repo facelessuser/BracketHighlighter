@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-from os.path import basename
+from os.path import basename, splitext
 import re
 
 
@@ -236,7 +236,7 @@ class WrapBrackets(object):
 
         settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
-        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
+        language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
         wrapping = settings.get(attribute, [])
         for i in wrapping:
             if not exclude_entry(i["enabled"], i["language_filter"], i["language_list"], language):

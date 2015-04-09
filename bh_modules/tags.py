@@ -1,7 +1,7 @@
 import re
 from collections import namedtuple
 import sublime
-from os.path import basename
+from os.path import basename, splitext
 
 TAG_OPEN = 0
 TAG_CLOSE = 1
@@ -52,7 +52,7 @@ def get_tag_mode(view, tag_mode_config):
 
     default_mode = None
     syntax = view.settings().get('syntax')
-    language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
+    language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
     for mode in ["html", "xhtml", "cfml"]:
         if compare_languge(language, tag_mode_config.get(mode, [])):
             return mode

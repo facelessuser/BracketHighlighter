@@ -1,6 +1,6 @@
 import sublime
 import sublime_plugin
-from os.path import basename, join
+from os.path import basename, join, splitext
 from time import time, sleep
 import threading
 import traceback
@@ -110,7 +110,7 @@ class BhCore(object):
         """
 
         syntax = self.view.settings().get('syntax')
-        language = basename(syntax).replace('.tmLanguage', '').lower() if syntax is not None else "plain text"
+        language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
 
         self.regions.reset(self.view, num_sels)
 
