@@ -88,7 +88,7 @@
             "open": "(')",
             "close": "(')",
             "style": "single_quote",
-            "scopes": ["string"],
+            "scopes": ["string", "string.quoted"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
@@ -99,7 +99,7 @@
             "open": "(\")",
             "close": "(\")",
             "style": "double_quote",
-            "scopes": ["string"],
+            "scopes": ["string", "string.quoted"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
@@ -189,7 +189,11 @@
             "open": "(\\()",
             "close": "(\\))",
             "style": "round",
-            "scope_exclude_exceptions": ["text.tex string.other.math"],
+            "scope_exclude_exceptions": [
+                "text.tex string.other.math",
+                "punctuation.definition.string.begin.shell",
+                "punctuation.definition.string.end.shell"
+            ],
             "scope_exclude": [
                 "string",
                 "comment",
