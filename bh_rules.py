@@ -20,6 +20,15 @@ BH_SCOPE_EXCLUDE_EXCEPTIONS = []
 BH_IGNORE_STRING_ESCAPE = False
 BH_PLUGIN_LIB = None
 
+SCOPE_ERROR = '''ERROR: Scope rule '%s' has an invalid number of regex capturing groups!
+REGEX:
+    OPEN: %s
+    CLOSE: %s
+'''
+BRACKET_ERROR = '''ERROR: Expected %d capturing groups in %s regex, but has %d.
+REGEX: %s
+'''
+
 
 def exclude_bracket(enabled, filter_type, language_list, language):
     """
@@ -157,8 +166,12 @@ class ScopeDefinition(object):
         """
 
         self.style = bracket.get("style", BH_STYLE)
-        self.open = ure.compile("\\A" + bracket.get("open", "."), ure.MULTILINE | ure.IGNORECASE)
-        self.close = ure.compile(bracket.get("close", ".") + "\\Z", ure.MULTILINE | ure.IGNORECASE)
+        self.open = ure.compile(
+            "\\A" + bracket.get("open", ""), ure.MULTILINE | ure.IGNORECASE
+        )
+        self.close = ure.compile(
+            bracket.get("close", "") + "\\Z", ure.MULTILINE | ure.IGNORECASE
+        )
         self.name = bracket["name"]
         sub_search = bracket.get("sub_bracket_search", BH_SUB_BRACKET)
         self.sub_search_only = sub_search == "only"
@@ -168,6 +181,9 @@ class ScopeDefinition(object):
         self.validate = bracket.get("validate", BH_VALIDATE_MATCH)
         self.scopes = bracket["scopes"]
         self.highlighting = bracket.get("highlighting", BH_HIGHLIGHTING)
+        self.enabled = True
+        if self.open.groups != 1 or self.close.groups != 1:
+            self.enabled = False
 
 
 class SearchRules(object):
@@ -245,6 +261,31 @@ class SearchRules(object):
             )
             self.sub_pattern = ure.compile("(?:%s)" % '|'.join(sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
             self.pattern = ure.compile("(?:%s)" % '|'.join(find_regex), ure.MULTILINE | ure.IGNORECASE)
+            if (
+                self.sub_pattern.groups != len(sub_find_regex) or
+                self.pattern.groups != len(find_regex)
+            ):
+                if self.sub_pattern.groups != len(sub_find_regex):
+                    log(
+                        BRACKET_ERROR % (
+                            len(sub_find_regex),
+                            'sub-pattern',
+                            self.sub_pattern.groups,
+                            "(?:%s)" % '|'.join(sub_find_regex)
+                        )
+                    )
+                if self.pattern.groups != len(find_regex):
+                    log(
+                        BRACKET_ERROR % (
+                            len(find_regex),
+                            'pattern',
+                            self.pattern.groups,
+                            "(?:%s)" % '|'.join(find_regex)
+                        )
+                    )
+                self.brackets = []
+                self.sub_pattern = ure.compile("")
+                self.pattern = ure.compile("")
 
     def parse_scope_definition(self, language, loaded_modules):
         """
@@ -258,6 +299,15 @@ class SearchRules(object):
                 try:
                     bh_plugin.load_modules(params, loaded_modules)
                     entry = ScopeDefinition(params)
+                    if not entry.enabled:
+                        log(
+                            SCOPE_ERROR % (
+                                str(params.get('name', '?')),
+                                "\\A" + params.get("open", ""),
+                                params.get("close", "") + "\\Z"
+                            )
+                        )
+                        continue
                     if not self.check_compare and entry.compare is not None:
                         self.check_compare = True
                     if not self.check_validate and entry.validate is not None:
@@ -273,7 +323,11 @@ class SearchRules(object):
                             self.scopes.append({"name": x, "brackets": [entry]})
                         else:
                             self.scopes[scopes[x]]["brackets"].append(entry)
-                    debug("Scope Regex (%s)\n    Opening: %s\n    Closing: %s\n" % (entry.name, entry.open.pattern, entry.close.pattern))
+                    debug(
+                        "Scope Regex (%s)\n    Opening: %s\n    Closing: %s\n" % (
+                            entry.name, entry.open.pattern, entry.close.pattern
+                        )
+                    )
                 except Exception as e:
                     log(e)
 
