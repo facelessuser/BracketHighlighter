@@ -117,7 +117,8 @@ def is_valid_definition(params, language):
             params.get("language_list", BH_LANG_LIST),
             language
         ) and
-        params["open"] is not None and params["close"] is not None
+        params.get("open", None) is not None and
+        params.get("close", None) is not None
     )
 
 
