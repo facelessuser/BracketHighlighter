@@ -229,7 +229,8 @@ class BracketSearch(object):
         self.right = [[], []]
         self.touch_left = False
         self.touch_right = False
-        self.findall()
+        if self.pattern:
+            self.findall()
 
     def escaped(self, pt, ignore_string_escape, scope):
         """

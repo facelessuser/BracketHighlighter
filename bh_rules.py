@@ -193,6 +193,8 @@ class SearchRules(object):
         self.enabled = False
         self.string_escape_mode = string_escape_mode
         self.outside_adj = outside_adj
+        self.sub_pattern = None
+        self.pattern = None
 
     def load_rules(self, language, modules):
         self.enabled = False
@@ -216,6 +218,8 @@ class SearchRules(object):
         subnames = []
         find_regex = []
         sub_find_regex = []
+        self.sub_pattern = None
+        self.pattern = None
 
         for params in self.bracket_rules:
             if is_valid_definition(params, language):
@@ -284,8 +288,8 @@ class SearchRules(object):
                         )
                     )
                 self.brackets = []
-                self.sub_pattern = ure.compile("")
-                self.pattern = ure.compile("")
+                self.sub_pattern = None
+                self.pattern = None
 
     def parse_scope_definition(self, language, loaded_modules):
         """
