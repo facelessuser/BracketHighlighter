@@ -31,7 +31,7 @@
     //     - outline
     //     - squiggly
     //     - stippled
-    "show_in_minimap": true,
+    "show_in_minimap": false,
 
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
