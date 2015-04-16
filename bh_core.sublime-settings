@@ -21,6 +21,18 @@
     // Experimental: Align the content highlight bar at the bracket indent level
     "align_content_highlight_bar": false,
 
+    // Show brackets in the minimap.
+    // Depending on your highlight style, regions may not be visible in minimap.
+    // "underline" won't show up due to it being a style consisting of
+    // multiple zero width selections to create a fat underline.
+    // But the following styles should show up fine as they are normal regions styles:
+    //     - thin_underline
+    //     - solid
+    //     - outline
+    //     - squiggly
+    //     - stippled
+    "show_in_minimap": true,
+
     // High visibility style and color for high visibility mode
     // (solid|outline|underline)
     // ST3 has additional options of (thin_underline|squiggly|stippled)

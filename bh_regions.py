@@ -39,12 +39,14 @@ def clear_all_regions():
                 view.erase_regions(region_key)
 
 
-def select_bracket_style(option):
+def select_bracket_style(option, minimap):
     """
     Configure style of region based on option
     """
 
-    style = sublime.HIDE_ON_MINIMAP
+    style = 0
+    if not minimap:
+        style |= sublime.HIDE_ON_MINIMAP
     if option == "outline":
         style |= sublime.DRAW_NO_FILL
     elif option == "none":
@@ -123,7 +125,7 @@ def select_bracket_icons(option, icon_path):
     return icon, small_icon, open_icon, small_open_icon, close_icon, small_close_icon
 
 
-def get_bracket_regions(settings):
+def get_bracket_regions(settings, minimap):
     """
     Get styled regions for brackets to use.
     """
@@ -141,7 +143,7 @@ def get_bracket_regions(settings):
     # Initialize styles
     default_settings = styles["default"]
     for k, v in styles.items():
-        yield k, StyleDefinition(k, v, default_settings, icon_path)
+        yield k, StyleDefinition(k, v, default_settings, icon_path, minimap)
 
 
 class StyleDefinition(object):
@@ -149,7 +151,7 @@ class StyleDefinition(object):
     Styling definition.
     """
 
-    def __init__(self, name, style, default_highlight, icon_path):
+    def __init__(self, name, style, default_highlight, icon_path, minimap):
         """
         Setup the style object by reading the
         passed in dictionary. And other parameters.
@@ -157,7 +159,7 @@ class StyleDefinition(object):
 
         self.name = name
         self.color = style.get("color", default_highlight["color"])
-        self.style = select_bracket_style(style.get("style", default_highlight["style"]))
+        self.style = select_bracket_style(style.get("style", default_highlight["style"]), minimap)
         self.underline = self.style & sublime.DRAW_EMPTY_AS_OVERWRITE
         self.endpoints = style.get("endpoints", False)
         (
@@ -182,14 +184,15 @@ class StyleDefinition(object):
 class BhRegion(object):
     def __init__(self, alter_select, count_lines):
         settings = sublime.load_settings("bh_core.sublime-settings")
+        minimap = settings.get('show_in_minimap', False)
         self.count_lines = count_lines
-        self.hv_style = select_bracket_style(settings.get("high_visibility_style", "outline"))
+        self.hv_style = select_bracket_style(settings.get("high_visibility_style", "outline"), minimap)
         self.hv_underline = self.hv_style & sublime.DRAW_EMPTY_AS_OVERWRITE
         self.hv_color = settings.get("high_visibility_color", HV_RSVD_VALUES[1])
         self.no_multi_select_icons = bool(settings.get("no_multi_select_icons", False))
         self.bracket_regions = {}
         self.alter_select = alter_select
-        for style, bracket_region in get_bracket_regions(settings):
+        for style, bracket_region in get_bracket_regions(settings, minimap):
             self.bracket_regions[style] = bracket_region
         self.set_show_unmatched()
 
