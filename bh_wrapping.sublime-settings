@@ -27,7 +27,7 @@
             ]
         },
         {
-            "enabled": true, "language_list": ["Python"], "language_filter": "whitelist", "entries": [
+            "enabled": true, "language_list": ["Python", "PythonImproved"], "language_filter": "whitelist", "entries": [
                 {"name": "'''''' Triple Single Quotes", "brackets": ["'''", "'''${BH_SEL}"], "insert_style": ["inline", "block"]},
                 {"name": "\"\"\"\"\"\" Triple Double Quotes", "brackets": ["\"\"\"", "\"\"\"${BH_SEL}"], "insert_style": ["inline", "block"]}
             ]
