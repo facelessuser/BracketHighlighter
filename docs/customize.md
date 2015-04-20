@@ -39,6 +39,7 @@ Angle and Curly bracket will be used as an example (not all options may be shown
             "enabled": true
         },
 ```
+
 | Parameter | Description |
 |-----------|-------------|
 | name | The name of the bracket (should be unique) |
@@ -74,6 +75,7 @@ Python Single Quote bracket will be used as an example (not all options are show
             "enabled": true
         },
 ```
+
 | Parameters | Description |
 |------------|-------------|
 | name | The name of the bracket (should be unique). |
@@ -246,6 +248,7 @@ There are two special style definitions whose names are reserved: `default` and 
             "style": "outline"
         },
 ```
+
 |Parameter | Description |
 |----------|-------------|
 | icon | Icon to show in gutter. Available options are: `angle`, `round`, `curly`, `square`, `tag`, `star`, `dot`, `bookmark`, `question`, `quote`, `double_quote`, `single_quote`, `single_quote_offset`, `double_quote_offset`, `none`. |

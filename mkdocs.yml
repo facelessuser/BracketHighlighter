@@ -7,13 +7,14 @@ pages:
 - ['customize.md', 'Customization']
 theme: readthedocs
 extra_javascript:
-- js/inlinehilite.js
+- js/theme_custom.js
 extra_css:
-- css/inlinehilite.css
+- css/theme_custom.css
 markdown_extensions:
 - markdown.extensions.extra
 - markdown.extensions.admonition
 - markdown.extensions.smarty
+- markdown.extensions.nl2br
 - pymdownx.inlinehilite(use_pygments=False)
 - pymdownx.magiclink
 - pymdownx.betterem
@@ -23,3 +24,4 @@ markdown_extensions:
 - pymdownx.githubemoji
 - pymdownx.tasklist
 - pymdownx.superfences
+- pymdownx.progressbar
