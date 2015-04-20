@@ -1,0 +1,7 @@
+.inlinehilite.hljs {
+    display: inline;
+    background-color: transparent;
+    background: #fff;
+    border: solid 1px #e1e4e5;
+    padding: 0 5px;
+}
