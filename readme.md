@@ -6,4 +6,4 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
 # Documentation
-Documentation is found here: http://facelessuser.github.io/BracketHighlighter/.
+http://facelessuser.github.io/BracketHighlighter/
