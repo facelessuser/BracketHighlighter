@@ -5,7 +5,7 @@ code, .rst-content tt {
 
 pre>code {
   font-size: 12px;
-  padding: 10px;
+  padding: 12px !important;
 }
 
 .inlinehilite.hljs {
