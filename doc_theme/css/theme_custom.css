@@ -1,16 +1,34 @@
 code, .rst-content tt {
-  color: #333;
-  background: #fff;
+  /*color: #333;
+  background: #fff;*/
+  white-space: pre-wrap;
 }
 
-pre>code {
+div.codehilite {
+  margin-bottom: 24px;
+  overflow: auto;
   font-size: 12px;
-  padding: 12px !important;
+  padding: 12px;
 }
 
-.inlinehilite.hljs {
-  display: inline;
+.codehilite pre {
+  margin: 0;
+}
+
+.codehilite {
+  background: #fff;
+  color: #333;
   border: solid 1px #e1e4e5;
+}
+
+table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+}
+
+tr>td:last-child {
+  width: 100%;
 }
 
 ul ul,

@@ -6,16 +6,14 @@ pages:
 - ['usage.md', 'User Guide']
 - ['customize.md', 'Customization']
 theme: readthedocs
-extra_javascript:
-- js/theme_custom.js
-extra_css:
-- css/theme_custom.css
+theme_dir: doc_theme
 markdown_extensions:
 - markdown.extensions.extra
 - markdown.extensions.admonition
 - markdown.extensions.smarty
 - markdown.extensions.nl2br
-- pymdownx.inlinehilite(use_pygments=False)
+- markdown.extensions.codehilite
+- pymdownx.inlinehilite(style_plain_text=True)
 - pymdownx.magiclink
 - pymdownx.betterem
 - pymdownx.tilde

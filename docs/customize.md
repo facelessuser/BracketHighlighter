@@ -456,188 +456,226 @@ Note: If a scope is not defined, it won't change the color. For instance, below 
 # Bracket Plugin API
 There are two kinds of plugins that can be written `definition` plugins (plugins attached to bracket definitions via the `plugin_library` option) or `run instance` plugins (plugins that are that are fed in the BracketHighligher via the command parameter `plugin`).
 
-Bracket plugins use `BracketRegions`. `BracketRegions` are simple objects containing a begin pt and end pt of a bracket.
+Bracket plugins use `BracketRegions`.
 
-BracketRegion input parameters `BracketRegion(begin_pt, end_pt)`:
+class BracketRegion(begin_pt, end_pt)
+: 
+    `BracketRegions` are simple objects containing a begin pt and end pt of a bracket.
 
-| Parameter | Description |
-|-----------|-------------|
-| begin_pt | Starting point. |
-| end_pt | Ending point. |
+    **Parameters**:
 
-BracketRegion attributes:
+    | Parameter | Description |
+    |-----------|-------------|
+    | begin_pt | Starting point. |
+    | end_pt | Ending point. |
 
-| Attribute | Description |
-|-----------|-------------|
-| begin | The start pt of the BracketRegion. |
-| end | The end pt of the BracketRegion. |
+    **Attributes**:
 
-BracketRegion methods:
+    | Attribute | Description |
+    |-----------|-------------|
+    | begin | The start pt of the BracketRegion. |
+    | end | The end pt of the BracketRegion. |
 
-| Method | Descriptions |
-|--------|--------------|
-| **size**() | Returns size of region. |
-| **move**(begin_pt,&nbsp;end_pt) | Returns a new BracketRegion object with the points moved as specified by the parameters. |
-| **toregion**() | Returns a sublime Region() object. |
+    **Methods**:
+
+    def size(self)
+    : 
+        Returns size of region
+
+    def move(self, begin_pt, end_pt)
+    : 
+        Returns a new BracketRegion object with the points moved to the specified postion.
+
+        **Parmenters**:
+
+        | Parameter | Description |
+        |-----------|-------------|
+        | begin_pt  | Starting point. |
+        | end_pt | End Point. |
+
+        **Returns**:
+
+        | Return | Description |
+        |--------|-------------|
+        | BracketRegion | BracketRegion with new starting and ending points |
+
+    def to_region(self)
+    : 
+        Converts BracketRegion to a SublimeRegion
+
+        **Returns**:
+
+        | Return | Description |
+        |--------|-------------|
+        | SublimeRegion | A Sublime Region. |
 
 ## 'Definition' Plugins
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kinds of plugins have three methods you can provide: `post_match`, `compare`, and/or `validate`.
 
 ### validate
-`validate` before comparing it to its corresponding openning or closing side.  This is used to determine perfrom additional validation on a found bracket.  For example, lets say you have a bracket that is case senstive.  BH uses a case insenstive search.  With validate, you can ensure the orginally found bracket matches the desired case.
+def validate(name, bracket, bracket_size, bfr)
+: 
+    `validate` before comparing it to its corresponding openning or closing side.  This is used to determine perfrom additional validation on a found bracket.  For example, lets say you have a bracket that is case senstive.  BH uses a case insenstive search.  With validate, you can ensure the orginally found bracket matches the desired case.
 
-The `validate` method receives the following parameters:
+    **Parameters**:
 
-| Parameter | Description |
-|-----------|-------------|
-| name | The name of the bracket definition being evaluated. |
-| bracket | The bracket region being validated. |
-| bracket_side | Opening (0) or closing (1) bracket. |
-| bfr | The file buffer. |
+    | Parameter | Description |
+    |-----------|-------------|
+    | name | The name of the bracket definition being evaluated. |
+    | bracket | The bracket region being validated. |
+    | bracket_side | Opening (0) or closing (1) bracket. |
+    | bfr | The file buffer. |
 
-Returns:
+    **Returns**:
 
-| Return | Description |
-|--------|-------------|
-| Boolean | indicates whether the validation succeeded (True) or failed (False). |
+    | Return | Description |
+    |--------|-------------|
+    | Boolean | indicates whether the validation succeeded (True) or failed (False). |
 
-Example: Should match closing tag `end` but not match `End`
+    Example: Should match closing tag `end` but not match `End`
 
-```erlang
-case Foo of
-    Guard1 -> ok;
-    Guard2 -> End
-end
-```
+    ```erlang
+    case Foo of
+        Guard1 -> ok;
+        Guard2 -> End
+    end
+    ```
 
-Example (from erlangcase.py):
+    Example (from erlangcase.py):
 
-```python
-def validate(name, bracket, bracket_side, bfr):
-    text = bfr[bracket.begin:bracket.end]
-    return text.lower() == text
+    ```python
+    def validate(name, bracket, bracket_side, bfr):
+        text = bfr[bracket.begin:bracket.end]
+        return text.lower() == text
 
-```
+    ```
 
 ### compare
-`compare` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or reject the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
+def compare(name, first, second, bfr)
+: 
 
-The `compare` method receives the following paramters:
+    `compare` is run when comparing the opening bracket with closing brackets.  This allows you to provide logic to accept or reject the pairing of an opening bracket with a closing bracket.  You should not change the text in the view during this operation.
 
-| Parameter | Description |
-|-----------|-------------|
-| name | The name of the bracket definition being evaluated. |
-| first | A bracket region for the opening bracket. |
-| second | A bracket region for the closing bracket. |
-| bfr | The file buffer. |
+    **Paramters**:
 
-Returns:
+    | Parameter | Description |
+    |-----------|-------------|
+    | name | The name of the bracket definition being evaluated. |
+    | first | A bracket region for the opening bracket. |
+    | second | A bracket region for the closing bracket. |
+    | bfr | The file buffer. |
 
-| Return | Description |
-|--------|-------------|
-| Boolean | Indicating whether the the comparison yields a suitable match. |
+    **Returns**:
 
-Example (from phphekywords.py):
-```python
-def compare(name, first, second, bfr):
-    return "end" + bfr[first.begin:first.end].lower() == bfr[second.begin:second.end].lower()
-```
+    | Return | Description |
+    |--------|-------------|
+    | Boolean | Indicating whether the the comparison yields a suitable match. |
+
+    Example (from phphekywords.py):
+    ```python
+    def compare(name, first, second, bfr):
+        return "end" + bfr[first.begin:first.end].lower() == bfr[second.begin:second.end].lower()
+    ```
 
 ### post_match
-`post_match` is run after the brackets have been matched.  You can do things like alter the highlighting region and change the bracket_style if needed. You should not change the text in the view during this operation.
+def post_match(name, style, first, second, center, bfr, threshold)
+: 
+    `post_match` is run after the brackets have been matched.  You can do things like alter the highlighting region and change the bracket_style if needed. You should not change the text in the view during this operation.
 
-The `post_match` method receives the following parameters:
+    **Parameters**:
 
-| Parameter | Description |
-|-----------|-------------|
-| name | The name of the bracket definition being evaluated. |
-| style | The style definition name that is to be used to highlight the region. |
-| first |  A bracket region for the opening bracket. |
-| second | A bracket region for the closing bracket. |
-| center | Position (pt) of cursor (in retrospect, probably not the most intuitive name; not sure why I named it this). |
-| bfr | The file buffer. |
-| threshold | The calculated search window of the buffer that is being searched. |
+    | Parameter | Description |
+    |-----------|-------------|
+    | name | The name of the bracket definition being evaluated. |
+    | style | The style definition name that is to be used to highlight the region. |
+    | first |  A bracket region for the opening bracket. |
+    | second | A bracket region for the closing bracket. |
+    | center | Position (pt) of cursor (in retrospect, probably not the most intuitive name; not sure why I named it this). |
+    | bfr | The file buffer. |
+    | threshold | The calculated search window of the buffer that is being searched. |
 
-Returns:
+    **Returns**:
 
-| Return | Description |
-|--------|-------------|
-| BracketRegion | Opening bracket region. |
-| BracketRegion | Closing bracket region. |
-| style | The name of the style definition to use. |
+    | Return | Description |
+    |--------|-------------|
+    | BracketRegion | Opening bracket region. |
+    | BracketRegion | Closing bracket region. |
+    | style | The name of the style definition to use. |
 
-Example (from rubykeywords.py):
-```python
-import re
+    Example (from rubykeywords.py):
+    ```python
+    import re
 
 
-def post_match(view, name, style, first, second, center, bfr, threshold):
-    if first is not None:
-        # Strip whitespace from the beginning of first bracket
-        open_bracket = bfr[first.begin:first.end]
-        if open_bracket != "do":
-            m = re.match(r"^(\s*\b)[\w\W]*", open_bracket)
-            if m:
-                first = first.move(first.begin + m.end(1), first.end)
-    return first, second, style
-```
+    def post_match(view, name, style, first, second, center, bfr, threshold):
+        if first is not None:
+            # Strip whitespace from the beginning of first bracket
+            open_bracket = bfr[first.begin:first.end]
+            if open_bracket != "do":
+                m = re.match(r"^(\s*\b)[\w\W]*", open_bracket)
+                if m:
+                    first = first.move(first.begin + m.end(1), first.end)
+        return first, second, style
+    ```
 
-Example (snippet from tags.py)
-```python
-def post_match(view, name, style, first, second, center, bfr, threshold):
-    left, right = first, second
-    threshold = [0, len(bfr)] if threshold is None else threshold
-    tag_settings = sublime.load_settings("bh_core.sublime-settings")
-    tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
-    tag_style = tag_settings.get("tag_style", "angle")
-    bracket_style = style
+    Example (snippet from tags.py)
+    ```python
+    def post_match(view, name, style, first, second, center, bfr, threshold):
+        left, right = first, second
+        threshold = [0, len(bfr)] if threshold is None else threshold
+        tag_settings = sublime.load_settings("bh_core.sublime-settings")
+        tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
+        tag_style = tag_settings.get("tag_style", "angle")
+        bracket_style = style
 
-    if first is not None and tag_mode is not None:
-        matcher = TagMatch(view, bfr, threshold, first, second, center, tag_mode)
-        left, right = matcher.match()
-        if not matcher.no_tag:
-            bracket_style = tag_style
+        if first is not None and tag_mode is not None:
+            matcher = TagMatch(view, bfr, threshold, first, second, center, tag_mode)
+            left, right = matcher.match()
+            if not matcher.no_tag:
+                bracket_style = tag_style
 
-    return left, right, bracket_style
-```
+        return left, right, bracket_style
+    ```
 
 ### highlighting
-`highlighting` is the last hook that gets run.  This is at a point when BH no longer cares about what the *actual* bracket region is, so it is safe to modify it for highlighting purposes.  The view really shouldn't be modified here.
+def highlighting(view, name, style, right)
+: 
+    `highlighting` is the last hook that gets run.  This is at a point when BH no longer cares about what the *actual* bracket region is, so it is safe to modify it for highlighting purposes.  The view really shouldn't be modified here.
 
-The `highlighting` method receives the following parameters:
+    **Parameters**:
 
-| Parameter | Description |
-|-----------|-------------|
-| view | The current view containing brackets. |
-| name | The name of the bracket definition being evaluated. |
-| style | The style definition name that is to be used to highlight the region. |
-| left | A bracket region for the opening bracket (could be `None`). |
-| right | A bracket region for the closing bracket (could be `None`). |
+    | Parameter | Description |
+    |-----------|-------------|
+    | view | The current view containing brackets. |
+    | name | The name of the bracket definition being evaluated. |
+    | style | The style definition name that is to be used to highlight the region. |
+    | left | A bracket region for the opening bracket (could be `None`). |
+    | right | A bracket region for the closing bracket (could be `None`). |
 
-Returns:
+    **Returns**:
 
-| Return | Description |
-|--------|-------------|
-| BracketRegion | Opening bracket region. |
-| BracketRegion | Closing bracket region. |
+    | Return | Description |
+    |--------|-------------|
+    | BracketRegion | Opening bracket region. |
+    | BracketRegion | Closing bracket region. |
 
-Example (snippet from tags.py)
+    Example (snippet from tags.py)
 
-```python
-def highlighting(view, name, style, left, right):
-    """
-    Highlight only the tag name.
-    """
-    if style == "tag":
-        tag_name = '[\w\:\.\-]+'
-        if left is not None:
-            region = view.find(tag_name, left.begin)
-            left = left.move(region.begin(), region.end())
-        if right is not None:
-            region = view.find(tag_name, right.begin)
-            right = right.move(region.begin(), region.end())
-    return left, right
-```
+    ```python
+    def highlighting(view, name, style, left, right):
+        """
+        Highlight only the tag name.
+        """
+        if style == "tag":
+            tag_name = '[\w\:\.\-]+'
+            if left is not None:
+                region = view.find(tag_name, left.begin)
+                left = left.move(region.begin(), region.end())
+            if right is not None:
+                region = view.find(tag_name, right.begin)
+                right = right.move(region.begin(), region.end())
+        return left, right
+    ```
 
 ## 'Run Instance' Plugins
 `Run instance` plugins are fed into the command executing a BracketHighlighter match via the `plugin` parameter.
@@ -669,39 +707,49 @@ The `plugin` paramter is a dictionary that contains 3 parameters to define what 
 | command | The plugin to run.  For internal plugins, they are referenced by `bh_modules.<plugin name>`.  For custom plugins, you should use the folder path relative to `Packages`.  So if I had a plugin called `myplugin.py` in my `User` folder, I would use `User.myplugin`. |
 | args | A dictionary containing the arguments to feed into the plugin. |
 
+
 You create `run instance` plugins by deriving a class from the `BracketPluginCommand` class.  Then you provide a method called `plugin` that returns the class.
 
-BracketPluginCommand attributes:
+class BracketPluginCommand()
+: 
 
-| Attribute | Description |
-|-----------|-------------|
-| view | The sublime view containing the bracket (don't change this). |
-| left | A bracket region for the opening bracket (can be changed). |
-| right | A bracket region for the closing bracket (can be changed). |
-| selection | An array containing the selection that triggered the match (can be changed). |
+    **Attributes**:
 
-BracketPluginCommand methods:
+    | Attribute | Description |
+    |-----------|-------------|
+    | view | The sublime view containing the bracket (don't change this). |
+    | left | A bracket region for the opening bracket (can be changed). |
+    | right | A bracket region for the closing bracket (can be changed). |
+    | selection | An array containing the selection that triggered the match (can be changed). |
 
-| Method | Description |
-|--------|-------------|
-| **run**(edit,&nbsp;name,&nbsp;&lt;args&gt;) | Runs the plugin. `edit` is a sublime edit object. `name` is the bracket definition being evaluated. |
+    **Methods**:
 
-Example (from foldbracket.py):
-```python
-import BracketHighlighter.bh_plugin as bh_plugin
-import sublime
+    def run(edit, name, &lt;args&gt;)
+    : 
 
+        **Parameters**:
 
-class FoldBrackets(bh_plugin.BracketPluginCommand):
-    def run(self, edit, name):
-        content = sublime.Region(self.left.end, self.right.begin)
-        new_content = [content]
-        if content.size() > 0:
-            if self.view.fold(content) == False:
-                new_content = self.view.unfold(content)
-        self.selection = new_content
+        | Parameter | Description |
+        |--------|-------------|
+        | edit | The sublime edit object. |
+        | name | The bracket definition being evaluated. |
+
+    Example (from foldbracket.py):
+    ```python
+    import BracketHighlighter.bh_plugin as bh_plugin
+    import sublime
 
 
-def plugin():
-    return FoldBrackets
-```
+    class FoldBrackets(bh_plugin.BracketPluginCommand):
+        def run(self, edit, name):
+            content = sublime.Region(self.left.end, self.right.begin)
+            new_content = [content]
+            if content.size() > 0:
+                if self.view.fold(content) == False:
+                    new_content = self.view.unfold(content)
+            self.selection = new_content
+
+
+    def plugin():
+        return FoldBrackets
+    ```
