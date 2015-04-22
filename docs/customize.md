@@ -4,12 +4,11 @@ BH is extremely flexible and can be customized and extended to fit a user's need
 ## Configuring Brackets
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
-Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
+!!! tip "Tip"
+    Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 ### Configuring Brackets Rules
 Brackets are defined under `brackets` in `bh_core.sublime-settings`.
-
-Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
 
@@ -57,8 +56,6 @@ Angle and Curly bracket will be used as an example (not all options may be shown
 
 ### Configuring Scope Brackets Rules
 Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
-
-Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 Python Single Quote bracket will be used as an example (not all options are shown in this example):
 
@@ -286,9 +283,10 @@ And then use the scope:
 
 ### My personal configurations
 
-If you are curious about my personal configuration, here it is. The color scheme I use is from my [Aprosopo theme](https://github.com/facelessuser/Aprosopo). 
+If you are curious about my personal configuration, here it is. The color scheme I use is from my [Aprosopo theme](https://github.com/facelessuser/Aprosopo).
 
-Note: If a scope is not defined, it won't change the color. For instance, below I assign the hash rule for C/C++ preprocessors conditionals to `brackethighlighter.c_define`, but I don't have `brackethighlighter.c_define` in my theme `<dict>`. So it will look like the default color, white.
+!!! note "Note"
+    If a scope is not defined, it won't change the color. For instance, below I assign the hash rule for C/C++ preprocessors conditionals to `brackethighlighter.c_define`, but I don't have `brackethighlighter.c_define` in my theme `<dict>`. So it will look like the default color, white.
 
 
 **My personal conf: bh_core.sublime-settings**

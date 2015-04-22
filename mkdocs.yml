@@ -13,7 +13,7 @@ markdown_extensions:
 - markdown.extensions.smarty
 - markdown.extensions.nl2br
 - markdown.extensions.codehilite
-- pymdownx.inlinehilite(style_plain_text=True)
+- pymdownx.inlinehilite
 - pymdownx.magiclink
 - pymdownx.betterem
 - pymdownx.tilde
@@ -23,3 +23,4 @@ markdown_extensions:
 - pymdownx.tasklist
 - pymdownx.superfences
 - pymdownx.progressbar
+- pymdownx.headeranchor

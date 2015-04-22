@@ -1,6 +1,7 @@
+/* Code Blocks */
 code, .rst-content tt {
-  /*color: #333;
-  background: #fff;*/
+  color: #333;
+  background: #fff;
   white-space: pre-wrap;
 }
 
@@ -21,6 +22,7 @@ div.codehilite {
   border: solid 1px #e1e4e5;
 }
 
+/* Tables */
 table {
   display: block;
   width: 100%;
@@ -31,6 +33,7 @@ tr>td:last-child {
   width: 100%;
 }
 
+/* Lists */
 ul ul,
 ul ol,
 ol ol,
@@ -47,6 +50,7 @@ ol ul {
   vertical-align: middle;
 }
 
+/* Progress Bars */
 .progress {
   display: block;
   width: 300px;
@@ -201,4 +205,79 @@ ol ul {
     height: 22px;
     border-right: 1px solid #ddd;
   }
+}
+
+/* Header Anchors */
+.headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.headeranchor-link:focus {
+  outline: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  position: relative;
+}
+
+h1 .headeranchor,
+h2 .headeranchor,
+h3 .headeranchor,
+h4 .headeranchor,
+h5 .headeranchor,
+h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+h1:hover .headeranchor-link,
+h2:hover .headeranchor-link,
+h3:hover .headeranchor-link,
+h4:hover .headeranchor-link,
+h5:hover .headeranchor-link,
+h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+h1:hover .headeranchor-link .headeranchor,
+h2:hover .headeranchor-link .headeranchor,
+h3:hover .headeranchor-link .headeranchor,
+h4:hover .headeranchor-link .headeranchor,
+h5:hover .headeranchor-link .headeranchor,
+h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.headeranchor {
+  font: normal normal 16px FontAwesome;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f0c1';
 }
