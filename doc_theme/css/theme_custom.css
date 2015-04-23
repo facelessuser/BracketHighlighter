@@ -1,29 +1,34 @@
 /* Code Blocks */
-code, .rst-content tt {
+.rst-content code, .rst-content tt {
   color: #333;
   background: #fff;
   white-space: pre-wrap;
 }
 
-div.codehilite {
+.rst-content div.codehilite {
   margin-bottom: 24px;
   overflow: auto;
   font-size: 12px;
   padding: 12px;
 }
 
-.codehilite pre {
+.rst-content .codehilite pre {
   margin: 0;
 }
 
-.codehilite {
+.rst-content .codehilite {
   background: #fff;
   color: #333;
   border: solid 1px #e1e4e5;
 }
 
+/* Links */
+.rst-content .section a {
+  word-wrap: break-word;
+}
+
 /* kbd */
-kbd {
+.rst-content kbd {
   font-size: 75%;
   padding: 3px;
   border: 1px solid #ccc;
@@ -40,35 +45,35 @@ kbd {
 }
 
 /* Tables */
-table {
+.rst-content table {
   display: block;
   width: 100%;
   overflow: auto;
 }
 
-tr>td:last-child {
+.rst-content tr>td:last-child {
   width: 100%;
 }
 
 /* Lists */
-ul ul,
-ul ol,
-ol ol,
-ol ul {
+.rst-content ul ul,
+.rst-content ul ol,
+.rst-content ol ol,
+.rst-content ol ul {
   margin-bottom: 0 !important;
 }
 
-.task-list-item {
+.rst-content .task-list-item {
   list-style-type: none !important;
 }
 
-.task-list-item input {
+.rst-content .task-list-item input {
   margin: 0 4px 0.25em -20px;
   vertical-align: middle;
 }
 
 /* Progress Bars */
-.progress {
+.rst-content .progress {
   display: block;
   width: 300px;
   margin: 10px 0;
@@ -81,7 +86,7 @@ ol ul {
   box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
 }
 
-.progress-label {
+.rst-content .progress-label {
   position: absolute;
   text-align: center;
   font-weight: bold;
@@ -94,7 +99,7 @@ ol ul {
   overflow: hidden;
 }
 
-.progress-bar {
+.rst-content .progress-bar {
   height: 24px;
   float: left;
   -webkit-border-radius: 3px;
@@ -140,31 +145,31 @@ ol ul {
   );
 }
 
-.progress-100plus .progress-bar {
+.rst-content .progress-100plus .progress-bar {
   background-color: #a6d796;
 }
 
-.progress-80plus .progress-bar {
+.rst-content .progress-80plus .progress-bar {
   background-color: #c6d796;
 }
 
-.progress-60plus .progress-bar {
+.rst-content .progress-60plus .progress-bar {
   background-color: #d7c896;
 }
 
-.progress-40plus .progress-bar {
+.rst-content .progress-40plus .progress-bar {
   background-color: #d7a796;
 }
 
-.progress-20plus .progress-bar {
+.rst-content .progress-20plus .progress-bar {
   background-color: #d796a6;
 }
 
-.progress-0plus .progress-bar {
+.rst-content .progress-0plus .progress-bar {
   background-color: #c25f77;
 }
 
-.candystripe-animate .progress-bar{
+.rst-content .candystripe-animate .progress-bar{
   -webkit-animation: animate-stripes 3s linear infinite;
   -moz-animation: animate-stripes 3s linear infinite;
   animation: animate-stripes 3s linear infinite;
@@ -200,32 +205,32 @@ ol ul {
   }
 }
 
-.gloss .progress-bar {
+.rst-content .gloss .progress-bar {
   box-shadow:
     inset 0 4px 12px rgba(255, 255, 255, .7),
     inset 0 -12px 0 rgba(0, 0, 0, .05);
 }
 
 @media print {
-  .progress,
-  .progress-bar {
+  .rst-content .progress,
+  .rst-content .progress-bar {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
   }
 
-  .progress {
+  .rst-content .progress {
     border: 1px solid #ddd;
   }
 
-  .progress-bar {
+  .rst-content .progress-bar {
     height: 22px;
     border-right: 1px solid #ddd;
   }
 }
 
 /* Header Anchors */
-.headeranchor-link {
+.rst-content .headeranchor-link {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -236,36 +241,36 @@ ol ul {
   margin-left: -30px;
 }
 
-.headeranchor-link:focus {
+.rst-content .headeranchor-link:focus {
   outline: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.rst-content h1,
+.rst-content h2,
+.rst-content h3,
+.rst-content h4,
+.rst-content h5,
+.rst-content h6 {
   position: relative;
 }
 
-h1 .headeranchor,
-h2 .headeranchor,
-h3 .headeranchor,
-h4 .headeranchor,
-h5 .headeranchor,
-h6 .headeranchor {
+.rst-content h1 .headeranchor,
+.rst-content h2 .headeranchor,
+.rst-content h3 .headeranchor,
+.rst-content h4 .headeranchor,
+.rst-content h5 .headeranchor,
+.rst-content h6 .headeranchor {
   display: none;
   color: #000;
   vertical-align: middle;
 }
 
-h1:hover .headeranchor-link,
-h2:hover .headeranchor-link,
-h3:hover .headeranchor-link,
-h4:hover .headeranchor-link,
-h5:hover .headeranchor-link,
-h6:hover .headeranchor-link {
+.rst-content h1:hover .headeranchor-link,
+.rst-content h2:hover .headeranchor-link,
+.rst-content h3:hover .headeranchor-link,
+.rst-content h4:hover .headeranchor-link,
+.rst-content h5:hover .headeranchor-link,
+.rst-content h6:hover .headeranchor-link {
   height: 1em;
   padding-left: 8px;
   margin-left: -30px;
@@ -273,16 +278,16 @@ h6:hover .headeranchor-link {
   text-decoration: none;
 }
 
-h1:hover .headeranchor-link .headeranchor,
-h2:hover .headeranchor-link .headeranchor,
-h3:hover .headeranchor-link .headeranchor,
-h4:hover .headeranchor-link .headeranchor,
-h5:hover .headeranchor-link .headeranchor,
-h6:hover .headeranchor-link .headeranchor {
+.rst-content h1:hover .headeranchor-link .headeranchor,
+.rst-content h2:hover .headeranchor-link .headeranchor,
+.rst-content h3:hover .headeranchor-link .headeranchor,
+.rst-content h4:hover .headeranchor-link .headeranchor,
+.rst-content h5:hover .headeranchor-link .headeranchor,
+.rst-content h6:hover .headeranchor-link .headeranchor {
   display: inline-block;
 }
 
-.headeranchor {
+.rst-content .headeranchor {
   font: normal normal 16px FontAwesome;
   line-height: 1;
   display: inline-block;
@@ -295,6 +300,6 @@ h6:hover .headeranchor-link .headeranchor {
   user-select: none;
 }
 
-.headeranchor:before {
+.rst-content .headeranchor:before {
   content: '\f0c1';
 }
