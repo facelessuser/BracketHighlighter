@@ -1,13 +1,77 @@
-# Customizing BracketHighlighter
-BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.
+# Customization {: .doctitle}
+Tweaking BracketHighlighter.
+{: .doctitle-info}
 
-## Configuring Brackets
+---
+
+# Overview
+BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and sytle rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
+
+# General Settings
+Style and color will be discussed in greater depth in the `Configuring Highlight Style` section.  But there are a number of general setting you can adjust to change how things look or work.  The settings are commented to explain their functionality.
+
+These are the basic settings you can change:
+```javascript
+    //Debug logging
+    "debug_enable": false,
+
+    // When only either the left or right bracket can be found
+    // this defines if the unmatched bracket should be shown.
+    "show_unmatched" : true,
+
+    // Do the opposite of "show_unmatched" for the languages listed below
+    "show_unmatched_exceptions": [],
+
+    // Enable high visibility by default when sublime starts up
+    // If sublime is already running and this gets changed,
+    // you will not see any changes (restart required to see change)
+    "high_visibility_enabled_by_default": false,
+
+    // Experimental: Creates a visible bar at the beginning of all lines between
+    // multiline bracket spans.
+    "content_highlight_bar": false,
+
+    // Experimental: Align the content highlight bar at the bracket indent level
+    "align_content_highlight_bar": false,
+
+    // High visibility style and color for high visibility mode
+    // (solid|outline|underline)
+    // ST3 has additional options of (thin_underline|squiggly|stippled)
+    "high_visibility_style": "outline",
+
+    // (scope|__default__|__bracket__)
+    "high_visibility_color": "__bracket__",
+
+    // Match brackets only when the cursor is touching the inside of the bracket
+    "match_only_adjacent": false,
+
+    // Character threshold to search
+    "search_threshold": 5000,
+
+    // Ignore threshold
+    "ignore_threshold": false,
+
+    // Set mode for string escapes to ignore (regex|string)
+    "bracket_string_escape_mode": "string",
+
+    // Set max number of multi-select brackets that will be searched automatically
+    "auto_selection_threshold" : 10,
+
+    // Enable this to completely kill highlighting if "auto_selection_threshold"
+    // is exceeded.  Default is to highlight up to the "auto_selection_threshold".
+    "kill_highlight_on_threshold": true,
+
+    // Disable gutter icons when doing multi-select
+    "no_multi_select_icons": false,
+```
+
+# Configuring Brackets
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 !!! tip "Tip"
     Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
-### Configuring Brackets Rules
+## Configuring Brackets Rules
 Brackets are defined under `brackets` in `bh_core.sublime-settings`.
 
 Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
@@ -54,7 +118,7 @@ Angle and Curly bracket will be used as an example (not all options may be shown
 | find_in_sub_search&nbsp;(optional) | This rule should be included when doing sub bracket matching in `scope_brackets` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a `scope_bracket`. |
 | ignore_string_escape&nbsp;(optional) | Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set. |
 
-### Configuring Scope Brackets Rules
+## Configuring Scope Brackets Rules
 Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
 
 Python Single Quote bracket will be used as an example (not all options are shown in this example):
@@ -86,7 +150,7 @@ Python Single Quote bracket will be used as an example (not all options are show
 | enabled | Disable or enable rule. |
 | plugin_library&nbsp;(optional) | Defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins). |
 
-### Bracket Rule Management
+## Bracket Rule Management
 In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
 
 BracketHighlighter now let's you add or modify existing rules without overriding the entire ruleset or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
@@ -207,7 +271,7 @@ So, unless you are forking BH to pull request a change to the default rules, you
 
 This will allow you to make changes, but still receive new updated rules.
 
-## Configuring Highlight Style
+# Configuring Highlight Style
 Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you give a style definition to.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
 
 There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern (see `curly` below and compare to the special style defintions; format is the same)  All custom styles follow this pattern.  See description below:
@@ -281,7 +345,7 @@ And then use the scope:
         },
 ```
 
-### My personal configurations
+## My personal configurations
 
 If you are curious about my personal configuration, here it is. The color scheme I use is from my [Aprosopo theme](https://github.com/facelessuser/Aprosopo).
 
