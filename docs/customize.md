@@ -5,7 +5,7 @@ Tweaking BracketHighlighter.
 ---
 
 # Overview
-BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and sytle rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
+BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and style rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
 
 # General Settings
 Style and color will be discussed in greater depth in the `Configuring Highlight Style` section.  But there are a number of general setting you can adjust to change how things look or work.  The settings are commented to explain their functionality.
@@ -153,7 +153,7 @@ Python Single Quote bracket will be used as an example (not all options are show
 ## Bracket Rule Management
 In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
 
-BracketHighlighter now let's you add or modify existing rules without overriding the entire ruleset or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
+BracketHighlighter now let's you add or modify existing rules without overriding the entire rule set or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
 
 ```js
     "user_scope_brackets": [],
@@ -190,7 +190,7 @@ Let's say you want to modify an existing rule, maybe just tweak the language lis
     ],
 ```
 
-Let's say you want to insert a new rule between two rules. You can turn on debug mode and call the `BracketHighlighter: (Debug) Filter Rules by Key` then select position to see the current rule order and their postion index.  To turn on Debug mode, just add `"debug_enable": true` to your user settings file.
+Let's say you want to insert a new rule between two rules. You can turn on debug mode and call the `BracketHighlighter: (Debug) Filter Rules by Key` then select position to see the current rule order and their position index.  To turn on Debug mode, just add `"debug_enable": true` to your user settings file.
 
 Example of `BracketHighlighter: (Debug) Filter Rules by Key` output:
 
@@ -274,7 +274,7 @@ This will allow you to make changes, but still receive new updated rules.
 # Configuring Highlight Style
 Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you give a style definition to.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
 
-There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern (see `curly` below and compare to the special style defintions; format is the same)  All custom styles follow this pattern.  See description below:
+There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern (see `curly` below and compare to the special style definitions; format is the same)  All custom styles follow this pattern.  See description below:
 
 ```javascript
         // "default" style defines attributes that
@@ -314,7 +314,7 @@ There are two special style definitions whose names are reserved: `default` and 
 |----------|-------------|
 | icon | Icon to show in gutter. Available options are: `angle`, `round`, `curly`, `square`, `tag`, `star`, `dot`, `bookmark`, `question`, `quote`, `double_quote`, `single_quote`, `single_quote_offset`, `double_quote_offset`, `none`. |
 | color | Scope to define color. |
-| style | Higlight style.  Available options are: `solid`, `outline`, `underline`, `none`.  ST3 has additional styles: `thin_underline`, `squiggly`, `stippled`. |
+| style | Highlight style.  Available options are: `solid`, `outline`, `underline`, `none`.  ST3 has additional styles: `thin_underline`, `squiggly`, `stippled`. |
 | endpoint | Boolean to highlight just the beginning and end of bracket. This is useful for things like tags where it may be distracting highlighting the entire tag. |
 
 As shown in the example above, if an option is omitted, it will use the setting in `default`.  So `curly`, in this example, defines `icon`, but will use `default` for the `color` and `style`.
@@ -377,7 +377,7 @@ If you are curious about my personal configuration, here it is. The color scheme
     },
 
     // This particular style is used to highlight
-    // unmatched bracekt pairs.  It is a special
+    // unmatched bracket pairs.  It is a special
     // style.
     "unmatched": {
         "icon": "question",
@@ -546,7 +546,7 @@ class BracketRegion(begin_pt, end_pt)
 
     def move(self, begin_pt, end_pt)
     : 
-        Returns a new BracketRegion object with the points moved to the specified postion.
+        Returns a new BracketRegion object with the points moved to the specified position.
 
         **Parmenters**:
 
@@ -577,7 +577,7 @@ These are plugins that are attached to the bracket definition and aid in process
 ### validate
 def validate(name, bracket, bracket_size, bfr)
 : 
-    `validate` before comparing it to its corresponding openning or closing side.  This is used to determine perfrom additional validation on a found bracket.  For example, lets say you have a bracket that is case senstive.  BH uses a case insenstive search.  With validate, you can ensure the orginally found bracket matches the desired case.
+    `validate` before comparing it to its corresponding opening or closing side.  This is used to determine perform additional validation on a found bracket.  For example, lets say you have a bracket that is case sensitive.  BH uses a case insensitive search.  With validate, you can ensure the originally found bracket matches the desired case.
 
     **Parameters**:
 
