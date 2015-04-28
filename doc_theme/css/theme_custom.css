@@ -43,13 +43,6 @@
   height: 20px;
 }
 
-/* Mark */
-.rst-content mark {
-  background: #fef56f;
-  padding: 2px;
-  margin: 0;
-}
-
 /* Links */
 .rst-content .section a {
   word-wrap: break-word;
@@ -421,18 +414,14 @@
 
 .rst-content span.critic {
   background: #ddddff;
-  font-size: 0;
   border: 0;
-}
-
-.rst-content span.critic:hover {
-  font-size: initial;
   border-top: 1px solid #0000bb;
   border-bottom: 1px solid #0000bb;
 }
 
 .rst-content span.critic:before,
 .rst-content span.critic:after {
+  font-size: inherit;
   background: #ddddff;
   border: 1px solid #0000bb;
 }
@@ -462,6 +451,11 @@
 .rst-content .block {
   display: block;
   padding: .02em;
+}
+
+.rst-content .block:before,
+.rst-content .block:after {
+  content: '';
 }
 
 /* Special Doc Stuff */
