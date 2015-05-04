@@ -59,6 +59,7 @@
                 {"name": "Ruby: if", "brackets": ["if ${BH_SEL:CONDITION}", "end"], "insert_style": ["indent_block"]},
                 {"name": "Ruby: until", "brackets": ["until ${BH_SEL:CONDITION}", "end"], "insert_style": ["indent_block"]},
                 {"name": "Ruby: while", "brackets": ["while ${BH_SEL:CONDITION}", "end"], "insert_style": ["indent_block"]},
+                {"name": "Ruby: do", "brackets": ["do ${BH_SEL:CONDITION}", "end"], "insert_style": ["indent_block"]},
                 {"name": "Ruby: def", "brackets": ["def ${BH_SEL:NAME}", "end"], "insert_style": ["indent_block"]}
             ]
         },
