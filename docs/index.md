@@ -1,6 +1,5 @@
 # BracketHighlighter {: .doctitle}
 A bracket matcher and highlighlighter for Sublime.
-{: .doctitle-info}
 
 ---
 
@@ -42,3 +41,7 @@ Pull requests must be done against the main branch.  When I am ready, the main b
 # Credits
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration behind the current implementation.
 - BoundInCode: for his Tag icon
+
+*[BH]: BracketHighlighter
+*[ST2]: Sublime Text 2
+*[ST3]: Sublime Text 3

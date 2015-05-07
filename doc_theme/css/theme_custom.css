@@ -32,6 +32,34 @@
   margin-bottom: 24px;
 }
 
+.rst-content .uml-sequence-diagram,
+.rst-content .uml-flowchart {
+  width: 100%;
+  overflow: auto;
+}
+
+/* Block Quotes */
+.rst-content cite.quote {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* Insert */
+.rst-content ins {
+  color: inherit;
+  background: inherit;
+  text-decoration: underline;
+}
+
+/* Mark */
+.rst-content mark {
+  font-style: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background: #ff9;
+}
+
 /* Abbreviations */
 .rst-content abbr {
   cursor: help;
@@ -111,6 +139,10 @@
 .rst-content .task-list-item input {
   margin: 0 4px 0.25em -20px;
   vertical-align: middle;
+}
+
+.rst-content li>p {
+  margin: 12px;
 }
 
 /* Progress Bars */
@@ -489,6 +521,10 @@
   margin-bottom: .2em;
 }
 
-.rst-content .doctitle-info {
+.rst-content .doctitle+p {
   text-align: center;
+}
+
+li.toctree-l3:first-child {
+    display: none;
 }
