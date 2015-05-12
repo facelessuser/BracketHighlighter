@@ -1,3 +1,4 @@
+[![Unix Build Status][travis-image]][travis-link]
 # About
 Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `<tag></tag>`, and even custom brackets.
 
@@ -7,3 +8,6 @@ This is a fork of pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both a
 
 # Documentation
 http://facelessuser.github.io/BracketHighlighter/
+
+[travis-image]: https://img.shields.io/travis/facelessuser/BracketHighlighter.svg
+[travis-link]: https://travis-ci.org/facelessuser/BracketHighlighter
