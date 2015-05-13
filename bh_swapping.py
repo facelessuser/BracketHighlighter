@@ -1,10 +1,25 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import sublime
 import sublime_plugin
 import BracketHighlighter.bh_wrapping as bh_wrapping
 
 
 class SwapBrackets(bh_wrapping.WrapBrackets):
+
+    """
+    Swap Base Class.
+
+    Swap base is derived from the wrap base.
+    """
+
     def wrap(self, wrap_entry):
+        """ Setup for wrapping. """
+
         if wrap_entry < 0:
             return
 
@@ -15,7 +30,12 @@ class SwapBrackets(bh_wrapping.WrapBrackets):
 
 
 class SwapBracketsCommand(sublime_plugin.WindowCommand):
+
+    """ Swap bracket command. """
+
     def finalize(self, callback):
+        """ Execute post wrap callback. """
+
         if self.view is not None:
             if not self.view.settings().get("BracketHighlighterBusy", False):
                 callback()
@@ -23,6 +43,8 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
                 sublime.set_timeout(lambda: self.finalize(callback), 100)
 
     def swap_brackets(self, value):
+        """ Swap the brackets. """
+
         if value < 0:
             return
 
@@ -46,6 +68,8 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
             self.finalize(self.wrap.wrap(value))
 
     def run(self, async=False):
+        """ Initiate the swap. """
+
         self.async = async
         view = self.window.active_view()
         if view is None:

@@ -1,9 +1,15 @@
+""" Test JSON. """
 import unittest
 from . import validate_json_format
 
 
 class TestSettings(unittest.TestCase):
+
+    """ Test JSON settings. """
+
     def test_json_settings(self):
+        """ Test each JSON file. """
+
         files = [
             "bh_swapping.sublime-settings",
             "bh_wrapping.sublime-settings",

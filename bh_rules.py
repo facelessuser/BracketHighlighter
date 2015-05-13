@@ -1,3 +1,9 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import BracketHighlighter.ure as ure
 import BracketHighlighter.bh_plugin as bh_plugin
 from BracketHighlighter.bh_logging import debug, log

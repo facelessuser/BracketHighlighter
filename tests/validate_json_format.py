@@ -1,5 +1,6 @@
 """
-Validate JSON format
+Validate JSON format.
+
 Licensed under MIT
 Copyright (c) 2012-2015 Isaac Muse <isaacmuse@gmail.com>
 """
@@ -70,12 +71,28 @@ VIOLATION_MSG = {
 
 
 class CheckJsonFormat(object):
+
+    """
+    Test JSON for format irregularities.
+
+        - Trailing spaces.
+        - Inconsistent indentation.
+        - New lines at end of file.
+        - Unnecessary newlines at start of file.
+        - Trailing commas.
+        - Malformed JSON.
+    """
+
     def __init__(self, use_tabs=False, allow_comments=False):
+        """ Setup the settings. """
+
         self.use_tabs = use_tabs
         self.allow_comments = allow_comments
         self.fail = False
 
     def index_lines(self, text):
+        """ Index the char range of each line. """
+
         self.line_range = []
         count = 1
         last = 0
@@ -85,6 +102,8 @@ class CheckJsonFormat(object):
             count += 1
 
     def get_line(self, pt):
+        """ Get the line from char index. """
+
         line = None
         for r in self.line_range:
             if pt >= r[0] and pt <= r[1]:
@@ -93,6 +112,12 @@ class CheckJsonFormat(object):
         return line
 
     def check_comments(self, text):
+        """
+        Check for JavaScript comments.
+
+        Log them and strip them out so we can continue.
+        """
+
         def remove_comments(group):
             return ''.join([x[0] for x in RE_LINE_PRESERVE.findall(group)])
 
@@ -111,6 +136,12 @@ class CheckJsonFormat(object):
         return content
 
     def check_dangling_commas(self, text):
+        """
+        Check for dangling commas.
+
+        Log them and strip them out so we can continue.
+        """
+
         def check_comma(g, m, line):
             # ,] -> ] or ,} -> }
             self.log_failure(E_COMMA, line)
@@ -126,6 +157,12 @@ class CheckJsonFormat(object):
         return ''.join(map(lambda m: evaluate(m), RE_TRAILING_COMMA.finditer(text)))
 
     def log_failure(self, code, line=None):
+        """
+        Log failure.
+
+        Log failure code, line number (if available) and message.
+        """
+
         if line:
             print("%s: Line %d - %s" % (code, line, VIOLATION_MSG[code]))
         else:
@@ -133,6 +170,8 @@ class CheckJsonFormat(object):
         self.fail = True
 
     def check_format(self, file_name):
+        """ Initiate teh check. """
+
         self.fail = False
         with codecs.open(file_name, encoding='utf-8') as f:
             count = 1

@@ -1,3 +1,9 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import sublime
 import sublime_plugin
 from os.path import normpath, join
@@ -10,53 +16,50 @@ from BracketHighlighter.bh_logging import log
 
 
 class Payload(object):
+
+    """ Plugin payload. """
+
     status = False
     plugin = None
     args = None
 
     @classmethod
     def clear(cls):
+        """ Clear payload. """
+
         cls.status = False
         cls.plugin = None
         cls.args = None
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
-    """
-    Bracket Regions for plugins
-    """
+
+    """ Bracket Regions for plugins. """
 
     def move(self, begin, end):
-        """
-        Move bracket region to different points
-        """
+        """ Move bracket region to different points. """
 
         return self._replace(begin=begin, end=end)
 
     def size(self):
-        """
-        Get the size of the region
-        """
+        """ Get the size of the region. """
 
         return abs(self.begin - self.end)
 
     def toregion(self):
-        """
-        Convert to sublime region
-        """
+        """ Convert to sublime region. """
 
         return sublime.Region(self.begin, self.end)
 
 
 def is_bracket_region(obj):
-    """
-    Check if object is a BracketRegion
-    """
+    """ Check if object is a BracketRegion. """
 
     return isinstance(obj, BracketRegion)
 
 
 def sublime_format_path(pth):
+    """ Format path for Sublime internally. """
     m = re.match(r"^([A-Za-z]{1}):(?:/|\\)(.*)", pth)
     if sublime.platform() == "windows" and m is not None:
         pth = m.group(1) + "/" + m.group(2)
@@ -64,9 +67,7 @@ def sublime_format_path(pth):
 
 
 def load_modules(obj, loaded):
-    """
-    Load bracket plugin modules
-    """
+    """ Load bracket plugin modules. """
 
     plib = obj.get("plugin_library")
     if plib is None:
@@ -85,8 +86,18 @@ def load_modules(obj, loaded):
 
 
 class ImportModule(object):
+
+    """ Dynamically import modules. """
+
     @classmethod
     def import_module(cls, module_name, loaded=None):
+        """
+        Import the module.
+
+        Import the module and track which modules have been loaded
+        so we don't load already loaded modules.
+        """
+
         # Pull in built-in and custom plugin directory
         if module_name.startswith("bh_modules."):
             path_name = join("Packages", "BracketHighlighter", normpath(module_name.replace('.', '/')))
@@ -103,11 +114,18 @@ class ImportModule(object):
 
     @classmethod
     def import_from(cls, module_name, attribute):
+        """ Import from the given module. """
+
         return getattr(cls.import_module(module_name), attribute)
 
 
 class BracketPluginRunCommand(sublime_plugin.TextCommand):
+
+    """ Sublime run command to run BH plugins. """
+
     def run(self, edit):
+        """ Run the plugin. """
+
         try:
             Payload.args["edit"] = edit
             Payload.plugin.run(**Payload.args)
@@ -117,14 +135,11 @@ class BracketPluginRunCommand(sublime_plugin.TextCommand):
 
 
 class BracketPlugin(object):
-    """
-    Class for preparing and running plugins
-    """
+
+    """ Class for preparing and running plugins. """
 
     def __init__(self, plugin, loaded):
-        """
-        Load plugin module
-        """
+        """ Load plugin module. """
 
         self.enabled = False
         self.args = plugin['args'] if ("args" in plugin) else {}
@@ -140,16 +155,12 @@ class BracketPlugin(object):
                 print('BracketHighlighter: Load Plugin Error: %s\n%s' % (plugin['command'], traceback.format_exc()))
 
     def is_enabled(self):
-        """
-        Check if plugin is enabled
-        """
+        """ Check if plugin is enabled. """
 
         return self.enabled
 
     def run_command(self, view, name, left, right, selection):
-        """
-        Load arguments into plugin and run
-        """
+        """ Load arguments into plugin and run. """
 
         Payload.status = False
         Payload.plugin = self.plugin()
@@ -173,13 +184,10 @@ class BracketPlugin(object):
 
 
 class BracketPluginCommand(object):
-    """
-    Bracket Plugin base class
-    """
+
+    """ Bracket Plugin base class. """
 
     def run(self, bracket, content, selection):
-        """
-        Runs the plugin class
-        """
+        """ Run the plugin class. """
 
         pass

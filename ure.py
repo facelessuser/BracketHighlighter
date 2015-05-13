@@ -1,15 +1,12 @@
 """
-ure - unicode re
+ure - unicode re.
 
 A simple script that wraps the re interface with methods to handle unicode properties.
 Patterns will all have re.UNICODE enabled and unicode property formats will be replaced
 with the unicode characters in that category.
 
-Example:
-r"\p{Ll}\p{Lu}"
-
 Licensed under MIT
-Copyright (c) 2013 Isaac Muse <isaacmuse@gmail.com>
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
 """
 import re
 import sys
@@ -53,9 +50,7 @@ if "_use_cache" not in globals():
 
 
 def set_cache_directory(pth, prefix=""):
-    """
-    Set cache path
-    """
+    """ Set cache path. """
     global _use_cache
     global _cache_prefix
     if exists(pth):
@@ -64,9 +59,7 @@ def set_cache_directory(pth, prefix=""):
 
 
 def _build_unicode_property_table(unicode_range):
-    """
-    Build property table for unicode range.
-    """
+    """ Build property table for unicode range. """
     table = {}
     p = None
     for i in range(*unicode_range):
@@ -90,9 +83,7 @@ def _build_unicode_property_table(unicode_range):
 
 
 def _build_unicode_key_pattern():
-    """
-    Build regex key pattern
-    """
+    """ Build regex key pattern. """
     unicode_prop = r"\p\{(%s)\}"
     unicode_keys = []
     for k1, v1 in _unicode_properties.items():
@@ -101,9 +92,8 @@ def _build_unicode_key_pattern():
 
 
 def _init_unicode():
-    """
-    Prepare unicode property tables and key pattern
-    """
+    """ Prepare unicode property tables and key pattern. """
+
     global _loaded
     global _unicode_properties
     global _unicode_key_pattern
@@ -138,9 +128,8 @@ def _init_unicode():
 
 
 def find_char_groups(s):
-    """
-    Find character groups
-    """
+    """ Find character groups. """
+
     pos = 0
     groups = []
     escaped = False
@@ -161,17 +150,14 @@ def find_char_groups(s):
 
 
 def get_unicode_category(prop):
-    """
-    Retrieve the unicode category from the table
-    """
+    """ Retrieve the unicode category from the table. """
+
     p1, p2 = (prop[0], prop[1]) if len(prop) > 1 else (prop[0], None)
     return ''.join([x for x in _unicode_properties[p1].values()]) if p2 is None else _unicode_properties[p1][p2]
 
 
 def parse_unicode_properties(re_pattern):
-    """
-    Replaces regex property notation with unicode values
-    """
+    """ Replace regex property notation with unicode values. """
 
     # Init unicode table if it has not already been initialized
     global _loaded
@@ -196,58 +182,50 @@ def parse_unicode_properties(re_pattern):
 
 
 def compile(pattern, flags=0):
-    """
-    compile after parsing unicode properties and set flag to unicode
-    """
+    """ compile after parsing unicode properties and set flag to unicode. """
+
     return re.compile(parse_unicode_properties(pattern), flags | re.UNICODE)
 
 
 def search(pattern, string, flags=0):
-    """
-    search after parsing unicode properties and set flag to unicode
-    """
+    """ search after parsing unicode properties and set flag to unicode. """
+
     re.search(parse_unicode_properties(pattern), string, flags | re.UNICODE)
 
 
 def match(pattern, string, flags=0):
-    """
-    match after parsing unicode properties and set flag to unicode
-    """
+    """ match after parsing unicode properties and set flag to unicode. """
+
     re.match(parse_unicode_properties(pattern), string, flags | re.UNICODE)
 
 
 def split(pattern, string, maxsplit=0, flags=0):
-    """
-    split after parsing unicode properties and set flag to unicode
-    """
+    """ split after parsing unicode properties and set flag to unicode. """
+
     re.split(parse_unicode_properties(pattern), string, maxsplit, flags | re.UNICODE)
 
 
 def findall(pattern, string, flags=0):
-    """
-    findall after parsing unicode properties and set flag to unicode
-    """
+    """ findall after parsing unicode properties and set flag to unicode. """
+
     re.findall(parse_unicode_properties(pattern), string, flags | re.UNICODE)
 
 
 def finditer(pattern, string, flags=0):
-    """
-    finditer after parsing unicode properties and set flag to unicode
-    """
+    """ finditer after parsing unicode properties and set flag to unicode. """
+
     re.finditer(parse_unicode_properties(pattern), string, flags | re.UNICODE)
 
 
 def sub(pattern, repl, string, count=0, flags=0):
-    """
-    sub after parsing unicode properties and set flag to unicode
-    """
+    """ sub after parsing unicode properties and set flag to unicode. """
+
     re.sub(parse_unicode_properties(pattern), repl, string, count, flags | re.UNICODE)
 
 
 def subn(pattern, repl, string, count=0, flags=0):
-    """
-    subn after parsing unicode properties and set flag to unicode
-    """
+    """ subn after parsing unicode properties and set flag to unicode. """
+
     re.subn(parse_unicode_properties(pattern), repl, string, flags | re.UNICODE)
 
 
