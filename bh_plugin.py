@@ -109,7 +109,14 @@ class ImportModule(object):
         else:
             module = imp.new_module(module_name)
             sys.modules[module_name] = module
-            exec(compile(sublime.load_resource(sublime_format_path(path_name)), module_name, 'exec'), sys.modules[module_name].__dict__)
+            exec(
+                compile(
+                    sublime.load_resource(sublime_format_path(path_name)),
+                    module_name,
+                    'exec'
+                ),
+                sys.modules[module_name].__dict__
+            )
         return module
 
     @classmethod
@@ -177,7 +184,10 @@ class BracketPlugin(object):
         view.run_command("bracket_plugin_run")
 
         if Payload.status:
-            left, right, selection, nobracket = Payload.plugin.left, Payload.plugin.right, Payload.plugin.selection, Payload.plugin.nobracket
+            left = Payload.plugin.left
+            right = Payload.plugin.right
+            selection = Payload.plugin.selection
+            nobracket = Payload.plugin.nobracket
         Payload.clear()
 
         return left, right, selection, nobracket

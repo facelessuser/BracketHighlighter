@@ -55,7 +55,10 @@ class BhCore(object):
             self.settings.add_on_change('reload', self.setup)
         self.setup(override_thresh, count_lines, adj_only, no_outside_adj, ignore, plugin)
 
-    def setup(self, override_thresh=False, count_lines=False, adj_only=None, no_outside_adj=False, ignore={}, plugin={}):
+    def setup(
+        self, override_thresh=False, count_lines=False, adj_only=None,
+        no_outside_adj=False, ignore={}, plugin={}
+    ):
         """ Initialize class settings from settings file and inputs. """
 
         # Init view params
@@ -144,7 +147,9 @@ class BhCore(object):
             self.plugin is not None and
             self.plugin.is_enabled()
         ):
-            lbracket, rbracket, regions, nobracket = self.plugin.run_command(self.view, name, lbracket, rbracket, regions)
+            lbracket, rbracket, regions, nobracket = self.plugin.run_command(
+                self.view, name, lbracket, rbracket, regions
+            )
             left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
             right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
         return left, right, regions, nobracket
@@ -189,11 +194,23 @@ class BhCore(object):
             )
 
             if scope_bracket:
-                left = bh_search.ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
-                right = bh_search.ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+                if lbracket is not None:
+                    left = bh_search.ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type)
+                else:
+                    left = None
+                if rbracket is not None:
+                    right = bh_search.ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type)
+                else:
+                    right = None
             else:
-                left = bh_search.BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
-                right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
+                if lbracket is not None:
+                    left = bh_search.BracketEntry(lbracket.begin, lbracket.end, bracket_type)
+                else:
+                    left = None
+                if rbracket is not None:
+                    right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type)
+                else:
+                    right = None
         return left, right
 
     def validate(self, b, bracket_type, scope_bracket=False):
@@ -229,7 +246,10 @@ class BhCore(object):
             return match
 
         if match:
-            bracket = self.rules.scopes[first.scope]["brackets"][first.type] if scope_bracket else self.rules.brackets[first.type]
+            if scope_bracket:
+                bracket = self.rules.scopes[first.scope]["brackets"][first.type]
+            else:
+                bracket = self.rules.brackets[first.type]
             try:
                 if bracket.compare is not None and match:
                     match = bracket.compare(
@@ -285,11 +305,23 @@ class BhCore(object):
                 )
 
                 if scope_bracket:
-                    left = bh_search.ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type) if lbracket is not None else None
-                    right = bh_search.ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type) if rbracket is not None else None
+                    if lbracket is not None:
+                        left = bh_search.ScopeEntry(lbracket.begin, lbracket.end, bracket_scope, bracket_type)
+                    else:
+                        left = None
+                    if rbracket is not None:
+                        right = bh_search.ScopeEntry(rbracket.begin, rbracket.end, bracket_scope, bracket_type)
+                    else:
+                        right = None
                 else:
-                    left = bh_search.BracketEntry(lbracket.begin, lbracket.end, bracket_type) if lbracket is not None else None
-                    right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type) if rbracket is not None else None
+                    if lbracket is not None:
+                        left = bh_search.BracketEntry(lbracket.begin, lbracket.end, bracket_type)
+                    else:
+                        left = None
+                    if rbracket is not None:
+                        right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type)
+                    else:
+                        right = None
             except:
                 log("Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
 
@@ -655,8 +687,12 @@ class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         """ Show bracket string escape mode. """
 
-        default_mode = sublime.load_settings("BracketHighlighter.sublime-settings").get('bracket_string_escape_mode', 'string')
-        sublime.status_message("Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode))
+        default_mode = sublime.load_settings(
+            "BracketHighlighter.sublime-settings"
+        ).get('bracket_string_escape_mode', 'string')
+        sublime.status_message(
+            "Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode)
+        )
 
 
 class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):

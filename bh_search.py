@@ -266,7 +266,10 @@ class BracketSearch(object):
                 illegal_scope = True
             return illegal_scope
         # for exception in bracket.scope_exclude_exceptions:
-        elif len(bracket.scope_exclude_exceptions) and self.search.view.match_selector(pt, ", ".join(bracket.scope_exclude_exceptions)):
+        elif (
+            len(bracket.scope_exclude_exceptions) and
+            self.search.view.match_selector(pt, ", ".join(bracket.scope_exclude_exceptions))
+        ):
             pass
         elif len(bracket.scope_exclude) and self.search.view.match_selector(pt, ", ".join(bracket.scope_exclude)):
             illegal_scope = True
@@ -349,7 +352,10 @@ class BracketSearch(object):
     def findall(self):
         """ Find all of the brackets. """
 
-        for m in self.pattern.finditer(self.search.get_buffer(), int(self.search.search_window[0]), int(self.search.search_window[1])):
+        window_start = int(self.search.search_window[0])
+        window_end = int(self.search.search_window[1])
+
+        for m in self.pattern.finditer(self.search.get_buffer(), window_start, window_end):
             g = m.lastindex
             try:
                 start = m.start(g)

@@ -457,7 +457,10 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
                             ("plugin_library", rule.get("plugin_library", BH_PLUGIN_LIB)),
                             ("find_in_sub_search", rule.get("find_in_sub_search", BH_FIND_SUB)),
                             ("scope_exclude", rule.get("scope_exclude", BH_SCOPE_EXCLUDE)),
-                            ("scope_exclude_exceptions", rule.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)),
+                            (
+                                "scope_exclude_exceptions",
+                                rule.get("scope_exclude_exceptions", BH_SCOPE_EXCLUDE_EXCEPTIONS)
+                            ),
                             ("ignore_string_escape", rule.get("ignore_string_escape", BH_IGNORE_STRING_ESCAPE))
                         )
                     )

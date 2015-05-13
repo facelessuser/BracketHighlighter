@@ -186,7 +186,10 @@ class WrapBrackets(object):
         tab_size = self.view.settings().get("tab_size", 4)
         tab_count = self.view.substr(sublime.Region(sel.begin() - self.col_position, sel.begin())).count('\t')
         spaces = self.col_position - tab_count
-        self.indent_to_col = "\t" * tab_count + "\t" * int(spaces / tab_size) + " " * int(spaces % tab_size if spaces >= tab_size else spaces)
+        self.indent_to_col = (
+            "\t" * tab_count + "\t" * int(spaces / tab_size) +
+            " " * int(spaces % tab_size if spaces >= tab_size else spaces)
+        )
 
     def select(self, edit):
         """ Select defined regions after wrapping. """
@@ -207,7 +210,12 @@ class WrapBrackets(object):
                         replace = m.group(3)
                         self.view.erase(edit, r)
                         added = self.view.insert(edit, r.begin(), replace)
-                        final_sel.append(sublime.Region(s.begin() + multi_offset + m.start(1), s.begin() + multi_offset + m.start(1) + added))
+                        final_sel.append(
+                            sublime.Region(
+                                s.begin() + multi_offset + m.start(1),
+                                s.begin() + multi_offset + m.start(1) + added
+                            )
+                        )
                         multi_offset += added - r.size()
                     else:
                         self.view.erase(edit, r)

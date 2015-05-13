@@ -3,6 +3,7 @@
     "linters": {
         "flake8": {
             "@disable": false,
+            "ignore": []
             "max-line-length": 120
         },
         "pep257": {

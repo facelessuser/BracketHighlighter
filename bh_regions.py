@@ -507,11 +507,21 @@ class BhRegion(object):
             open_icon_type = "small_open_icon" if self.view.line_height() < 16 else "open_icon"
             close_icon_type = "small_close_icon" if self.view.line_height() < 16 else "close_icon"
         for name, r in self.bracket_regions.items():
-            self.highlight_regions("bh_" + name, icon_type, "selections", r, regions, high_visibility)
-            self.highlight_regions("bh_" + name + "_center", "no_icon", "center_selections", r, regions, high_visibility)
-            self.highlight_regions("bh_" + name + "_open", open_icon_type, "open_selections", r, regions, high_visibility)
-            self.highlight_regions("bh_" + name + "_close", close_icon_type, "close_selections", r, regions, high_visibility)
-            self.highlight_regions("bh_" + name + "_content", "no_icon", "content_selections", r, regions, high_visibility)
+            self.highlight_regions(
+                "bh_" + name, icon_type, "selections", r, regions, high_visibility
+            )
+            self.highlight_regions(
+                "bh_" + name + "_center", "no_icon", "center_selections", r, regions, high_visibility
+            )
+            self.highlight_regions(
+                "bh_" + name + "_open", open_icon_type, "open_selections", r, regions, high_visibility
+            )
+            self.highlight_regions(
+                "bh_" + name + "_close", close_icon_type, "close_selections", r, regions, high_visibility
+            )
+            self.highlight_regions(
+                "bh_" + name + "_content", "no_icon", "content_selections", r, regions, high_visibility
+            )
         # Track which regions were set in the view so that they can be cleaned up later.
         self.view.settings().set("bh_regions", regions)
 

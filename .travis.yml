@@ -4,6 +4,8 @@ python:
 install:
   - pip install flake8
   - pip install nose
+  - pip install pep257
 script:
   - nosetests .
-  - flake8 . --ignore=E501
+  - flake8 --max-line-length=120 .
+  - pep257 --ignore=D202 .

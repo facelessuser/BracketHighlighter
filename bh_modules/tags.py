@@ -13,8 +13,18 @@ TAG_OPEN = 0
 TAG_CLOSE = 1
 
 FLAGS = re.MULTILINE | re.IGNORECASE
-HTML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>''', FLAGS)
-CFML_START = re.compile(r'''<([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>''', FLAGS)
+HTML_START = re.compile(
+    r'''(?x)
+    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*(\/?)>
+    ''',
+    FLAGS
+)
+CFML_START = re.compile(
+    r'''(?x)
+    <([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>
+    ''',
+    FLAGS
+)
 START_TAG = {
     "html": HTML_START,
     "xhtml": HTML_START,
