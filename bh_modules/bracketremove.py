@@ -1,13 +1,20 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import BracketHighlighter.bh_plugin as bh_plugin
 import re
 import sublime
 
 
 class BracketRemove(bh_plugin.BracketPluginCommand):
+
+    """ Bracket remove plugin. """
+
     def decrease_indent_level(self, edit, row_first, row_last):
-        """
-        Decrease indent level on removal
-        """
+        """ Decrease indent level on removal.  """
 
         tab_size = self.view.settings().get("tab_size", 4)
         indents = re.compile(r"^(?:\t| {%d}| *)((?:\t| {%d}| )*)([\s\S]*)" % (tab_size, tab_size))
@@ -20,9 +27,7 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
                     self.view.replace(edit, line, m.group(1) + m.group(2))
 
     def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):
-        """
-        Remove the given bracket and adjust its indentation if desired
-        """
+        """ Remove the given bracket and adjust its indentation if desired.  """
 
         if remove_content:
             self.view.replace(edit, sublime.Region(self.left.begin, self.right.end), "")
@@ -47,4 +52,6 @@ class BracketRemove(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
+    """ Make plugin available. """
+
     return BracketRemove

@@ -37,9 +37,7 @@ REGEX: %s
 
 
 def exclude_bracket(enabled, filter_type, language_list, language):
-    """
-    Exclude or include brackets based on filter lists.
-    """
+    """ Exclude or include brackets based on filter lists. """
 
     exclude = True
     if enabled:
@@ -62,9 +60,7 @@ def exclude_bracket(enabled, filter_type, language_list, language):
 
 
 def process_overrides(rules):
-    """
-    Walk the list and merge override rules
-    """
+    """ Walk the list and merge override rules. """
 
     final = []
     names = {}
@@ -121,9 +117,7 @@ def process_overrides(rules):
 
 
 def is_valid_definition(params, language):
-    """
-    Ensure bracket definition should be and can be loaded.
-    """
+    """ Ensure bracket definition should be and can be loaded. """
 
     return (
         not exclude_bracket(
@@ -138,14 +132,11 @@ def is_valid_definition(params, language):
 
 
 class BracketDefinition(object):
-    """
-    Normal bracket definition.
-    """
+
+    """ Normal bracket definition. """
 
     def __init__(self, bracket):
-        """
-        Setup the bracket object by reading the passed in dictionary.
-        """
+        """ Setup the bracket object by reading the passed in dictionary. """
 
         self.name = bracket["name"]
         self.style = bracket.get("style", BH_STYLE)
@@ -162,14 +153,11 @@ class BracketDefinition(object):
 
 
 class ScopeDefinition(object):
-    """
-    Scope bracket definition.
-    """
+
+    """ Scope bracket definition. """
 
     def __init__(self, bracket):
-        """
-        Setup the bracket object by reading the passed in dictionary.
-        """
+        """ Setup the bracket object by reading the passed in dictionary. """
 
         self.style = bracket.get("style", BH_STYLE)
         self.open = ure.compile(
@@ -193,7 +181,12 @@ class ScopeDefinition(object):
 
 
 class SearchRules(object):
+
+    """ Search rule object. """
+
     def __init__(self, brackets, scopes, string_escape_mode, outside_adj):
+        """ Setup search rulel object. """
+
         self.bracket_rules = process_overrides(brackets)
         self.scope_rules = process_overrides(scopes)
         self.enabled = False
@@ -203,6 +196,8 @@ class SearchRules(object):
         self.pattern = None
 
     def load_rules(self, language, modules):
+        """ Load teh search rules. """
+
         self.enabled = False
         self.brackets = []
         self.scopes = []
@@ -216,9 +211,7 @@ class SearchRules(object):
             self.enabled = True
 
     def parse_bracket_definition(self, language, loaded_modules):
-        """
-        Parse the bracket defintion
-        """
+        """ Parse the bracket defintion. """
 
         names = []
         subnames = []
@@ -298,9 +291,7 @@ class SearchRules(object):
                 self.pattern = None
 
     def parse_scope_definition(self, language, loaded_modules):
-        """
-        Parse the scope defintion
-        """
+        """ Parse the scope defintion. """
 
         scopes = {}
         scope_count = 0
@@ -346,11 +337,19 @@ class SearchRules(object):
 # Debug
 ####################
 class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
+
+    """ Debug rule edit command. """
+
     def run(self, edit, text):
+        """ Run the command. """
+
         self.view.insert(edit, self.view.size(), text)
 
 
 class BhDebugRuleCommand(sublime_plugin.WindowCommand):
+
+    """ Debug rule command. """
+
     filter_keys = [
         "name",
         "open",
@@ -370,12 +369,20 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
     ]
 
     def run(self, filter_key=False):
+        """ Run the command. """
+
         if not filter_key:
             self.show()
         else:
             self.window.show_quick_panel(self.filter_keys, self.show)
 
     def show(self, key=None):
+        """
+        Show the rules.
+
+        Filter the rules if a key is specified.
+        """
+
         self.text = []
         if key is not None and key > -1:
             self.key = self.filter_keys[key]
@@ -402,6 +409,8 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
         view.set_scratch(True)
 
     def show_merged(self, rule):
+        """ Show merged rule. """
+
         import json
         self.text.append("        {\n")
         rule_count = 0
@@ -413,6 +422,8 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
         self.text.append("        }")
 
     def show_key(self, rule):
+        """ Show the key. """
+
         import json
         if self.key in rule:
             self.text.append(
@@ -422,6 +433,8 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
             )
 
     def show_rules(self, brackets, scopes):
+        """ Show the rules. """
+
         from collections import OrderedDict
         self.text = ["[\n"]
         rules_count = 0
@@ -473,4 +486,6 @@ class BhDebugRuleCommand(sublime_plugin.WindowCommand):
         return ''.join(self.text)
 
     def is_enabled(self):
+        """ See if command is enabled. """
+
         return sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)

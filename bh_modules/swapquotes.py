@@ -1,12 +1,19 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import BracketHighlighter.bh_plugin as bh_plugin
 import sublime
 
 
 class SwapQuotes(bh_plugin.BracketPluginCommand):
+
+    """ Swap quotes plugin. """
+
     def escaped(self, idx):
-        """
-        Check if character is an escape char
-        """
+        """ Check if character is an escape char. """
 
         view = self.view
         escaped = False
@@ -18,6 +25,7 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
     def run(self, edit, name):
         """
         Swap double or single quotes with each other.
+
         Handle escaping or unescaping like quotes or
         unlike quotes respectively.
         """
@@ -53,4 +61,6 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
+    """ Make plugin available. """
+
     return SwapQuotes

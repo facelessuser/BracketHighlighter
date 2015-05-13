@@ -1,10 +1,14 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import re
 
 
 def post_match(view, name, style, first, second, center, bfr, threshold):
-    """
-    Strip whitespace from being targeted with highlight
-    """
+    """ Strip whitespace from being targeted with highlight. """
 
     if first is not None:
         # Strip whitespace from the beginning of first bracket

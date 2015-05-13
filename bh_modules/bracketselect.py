@@ -1,3 +1,9 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import BracketHighlighter.bh_plugin as bh_plugin
 import sublime
 
@@ -5,9 +11,14 @@ DEFAULT_TAGS = ["cfml", "html", "angle"]
 
 
 class SelectBracket(bh_plugin.BracketPluginCommand):
+
+    """ Select Bracket plugin. """
+
     def run(self, edit, name, select='', tags=DEFAULT_TAGS, always_include_brackets=False, alternate=False):
         """
-        Select the content between brackets.  If "always_include_brackets" is enabled,
+        Select the content between brackets.
+
+        If "always_include_brackets" is enabled,
         include the brackts as well.  If the content is already selected, expand to the
         parent.
         """
@@ -65,4 +76,6 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
+    """ Make plugin available. """
+
     return SelectBracket

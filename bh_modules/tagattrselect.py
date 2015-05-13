@@ -1,10 +1,20 @@
+"""
+BracketHighlighter.
+
+Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
+License: MIT
+"""
 import BracketHighlighter.bh_plugin as bh_plugin
 
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
+
+    """ Select attribute plugin. """
+
     def run(self, edit, name, direction='right'):
         """
         Select next attribute in the given direction.
+
         Wrap when the end is hit.
         """
 
@@ -73,4 +83,6 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
+    """ Make plugin available. """
+
     return SelectAttr
