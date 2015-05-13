@@ -23,7 +23,7 @@ HV_RSVD_VALUES = ["__default__", "__bracket__"]
 
 
 def underline(regions):
-    """ Convert sublime regions into underline regions. """
+    """Convert sublime regions into underline regions."""
 
     r = []
     for region in regions:
@@ -36,7 +36,7 @@ def underline(regions):
 
 
 def clear_all_regions():
-    """ Clear all regions. """
+    """Clear all regions."""
 
     for window in sublime.windows():
         for view in window.views():
@@ -45,7 +45,7 @@ def clear_all_regions():
 
 
 def select_bracket_style(option, minimap):
-    """ Configure style of region based on option. """
+    """Configure style of region based on option."""
 
     style = 0
     if not minimap:
@@ -72,7 +72,7 @@ def select_bracket_style(option, minimap):
 
 
 def select_bracket_icons(option, icon_path):
-    """ Configure custom gutter icons if they can be located. """
+    """Configure custom gutter icons if they can be located."""
 
     icon = ""
     small_icon = ""
@@ -127,7 +127,7 @@ def select_bracket_icons(option, icon_path):
 
 
 def get_bracket_regions(settings, minimap):
-    """ Get styled regions for brackets to use. """
+    """Get styled regions for brackets to use."""
 
     styles = settings.get("bracket_styles", DEFAULT_STYLES)
     icon_path = "Packages/BracketHighlighter/icons"
@@ -147,7 +147,7 @@ def get_bracket_regions(settings, minimap):
 
 class StyleDefinition(object):
 
-    """ Styling definition. """
+    """Styling definition."""
 
     def __init__(self, name, style, default_highlight, icon_path, minimap):
         """
@@ -169,7 +169,7 @@ class StyleDefinition(object):
         self.clear()
 
     def clear(self):
-        """ Clear tracked selections. """
+        """Clear tracked selections."""
 
         self.selections = []
         self.open_selections = []
@@ -180,10 +180,10 @@ class StyleDefinition(object):
 
 class BhRegion(object):
 
-    """ Class for handling highlight regions. """
+    """Class for handling highlight regions."""
 
     def __init__(self, alter_select, count_lines):
-        """ Init. """
+        """Init."""
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         minimap = settings.get('show_in_minimap', False)
@@ -199,7 +199,7 @@ class BhRegion(object):
         self.set_show_unmatched()
 
     def get_color(self, bracket_color, high_visibility):
-        """ Get color. """
+        """Get color."""
 
         if high_visibility:
             color = self.hv_color
@@ -212,7 +212,7 @@ class BhRegion(object):
         return color
 
     def set_show_unmatched(self, language=None):
-        """ Determine if show_unmatched should be enabled for the current view. """
+        """Determine if show_unmatched should be enabled for the current view."""
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         show_unmatched = bool(settings.get("show_unmatched", True))
@@ -225,7 +225,7 @@ class BhRegion(object):
         self.show_unmatched = show_unmatched
 
     def reset(self, view, num_sels):
-        """ Reset. """
+        """Reset."""
 
         self.chars = 0
         self.lines = 0
@@ -237,14 +237,14 @@ class BhRegion(object):
             r.clear()
 
     def store_sel(self, regions):
-        """ Store the current selection to be set at the end. """
+        """Store the current selection to be set at the end."""
 
         if self.alter_select:
             for region in regions:
                 self.sels.append(region)
 
     def change_sel(self):
-        """ Change the view's selections. """
+        """Change the view's selections."""
 
         if self.alter_select and len(self.sels) > 0:
             if self.multi_select is False:
@@ -253,7 +253,7 @@ class BhRegion(object):
             self.view.sel().add_all(self.sels)
 
     def save_incomplete_regions(self, left, right, regions):
-        """ Store single incomplete brackets for highlighting. """
+        """Store single incomplete brackets for highlighting."""
 
         found = left if left is not None else right
         bracket = self.bracket_regions["unmatched"]
@@ -280,7 +280,7 @@ class BhRegion(object):
         return handled
 
     def save_complete_regions(self, left, right, regions, style, high_visibility):
-        """ Saved matched regions. """
+        """Saved matched regions."""
 
         bracket = self.bracket_regions.get(style, self.bracket_regions["default"])
         lines = abs(self.view.rowcol(right.begin)[0] - self.view.rowcol(left.end)[0] + 1)
@@ -302,7 +302,7 @@ class BhRegion(object):
         self.store_sel(regions)
 
     def save_content_regions(self, left, right, bracket, lines):
-        """ Calculate content bar location and save region(s). """
+        """Calculate content bar location and save region(s)."""
 
         first_line = self.view.rowcol(left.begin)[0]
         last_line = first_line + lines - 1
@@ -410,7 +410,7 @@ class BhRegion(object):
                         bracket.content_selections.append(sublime.Region(pt))
 
     def save_high_visibility_regions(self, left, right, bracket, lines):
-        """ Save high visibility regions. """
+        """Save high visibility regions."""
 
         if lines <= 1:
             if self.hv_underline:
@@ -426,7 +426,7 @@ class BhRegion(object):
             bracket.close_selections += [sublime.Region(right.begin)]
 
     def save_endpoint_regions(self, left, right, bracket, lines):
-        """ Save endpoint regions. Underlined and normal. """
+        """Save endpoint regions. Underlined and normal."""
 
         offset = 0 if bracket.underline else 1
         if lines <= 1:
@@ -447,7 +447,7 @@ class BhRegion(object):
                 bracket.center_selections += [sublime.Region(right.end - offset, right.end)]
 
     def save_underline_regions(self, left, right, bracket, lines):
-        """ Save underlined regions. """
+        """Save underlined regions."""
 
         if lines <= 1:
             bracket.selections += underline((left.toregion(), right.toregion()))
@@ -460,7 +460,7 @@ class BhRegion(object):
                 bracket.center_selections += underline((sublime.Region(right.begin + 1, right.end),))
 
     def save_normal_regions(self, left, right, bracket, lines):
-        """ Save normal regions. """
+        """Save normal regions."""
 
         if lines <= 1:
             bracket.selections += [left.toregion(), right.toregion()]
@@ -469,7 +469,7 @@ class BhRegion(object):
             bracket.close_selections += [right.toregion()]
 
     def highlight_regions(self, name, icon_type, selections, bracket, regions, high_visibility):
-        """ Apply the highlightes for the highlight region. """
+        """Apply the highlightes for the highlight region."""
 
         if len(selections):
             if selections == "content_selections":
@@ -491,7 +491,7 @@ class BhRegion(object):
             regions.append(name)
 
     def highlight(self, high_visibility):
-        """ Highlight all bracket regions. """
+        """Highlight all bracket regions."""
 
         self.change_sel()
 

@@ -34,7 +34,7 @@ HIGH_VISIBILITY = False
 ####################
 class BhCore(object):
 
-    """ Bracket matching class. """
+    """Bracket matching class."""
 
     plugin_reload = False
 
@@ -46,7 +46,7 @@ class BhCore(object):
         adj_only=None, no_outside_adj=False,
         ignore={}, plugin={}, keycommand=False
     ):
-        """ Load settings and setup reload events if settings changes. """
+        """Load settings and setup reload events if settings changes."""
 
         self.settings = sublime.load_settings("bh_core.sublime-settings")
         self.keycommand = keycommand
@@ -59,7 +59,7 @@ class BhCore(object):
         self, override_thresh=False, count_lines=False, adj_only=None,
         no_outside_adj=False, ignore={}, plugin={}
     ):
-        """ Initialize class settings from settings file and inputs. """
+        """Initialize class settings from settings file and inputs."""
 
         # Init view params
         self.last_id_view = None
@@ -98,7 +98,7 @@ class BhCore(object):
         self.regions = bh_regions.BhRegion(alter_select, count_lines)
 
     def refresh_rules(self, language):
-        """ Reload rules. """
+        """Reload rules."""
 
         loaded_modules = self.loaded_modules.copy()
 
@@ -108,7 +108,7 @@ class BhCore(object):
         )
 
     def init_match(self, num_sels):
-        """ Reset matching settings for the current view's syntax. """
+        """Reset matching settings for the current view's syntax."""
 
         syntax = self.view.settings().get('syntax')
         language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
@@ -121,7 +121,7 @@ class BhCore(object):
             self.regions.set_show_unmatched(language)
 
     def unique(self, sels):
-        """ Check if the current selection(s) is different from the last. """
+        """Check if the current selection(s) is different from the last."""
 
         id_view = self.view.id()
         id_sel = "".join([str(sel.a) for sel in sels])
@@ -136,7 +136,7 @@ class BhCore(object):
     # Plugin
     ####################
     def run_plugin(self, name, left, right, regions):
-        """ Run a bracket plugin. """
+        """Run a bracket plugin."""
 
         lbracket = bh_plugin.BracketRegion(left.begin, left.end)
         rbracket = bh_plugin.BracketRegion(right.begin, right.end)
@@ -214,7 +214,7 @@ class BhCore(object):
         return left, right
 
     def validate(self, b, bracket_type, scope_bracket=False):
-        """ Validate bracket. """
+        """Validate bracket."""
 
         match = True
 
@@ -235,7 +235,7 @@ class BhCore(object):
         return match
 
     def compare(self, first, second, scope_bracket=False):
-        """ Compare brackets.  This function allows bracket plugins to add aditional logic. """
+        """Compare brackets.  This function allows bracket plugins to add aditional logic."""
 
         if scope_bracket:
             match = first is not None and second is not None
@@ -331,7 +331,7 @@ class BhCore(object):
     # Matching
     ####################
     def match(self, view, force_match=True):
-        """ Preform matching brackets surround the selection(s). """
+        """Preform matching brackets surround the selection(s)."""
 
         if view is None:
             return
@@ -413,7 +413,7 @@ class BhCore(object):
         view.settings().set("BracketHighlighterBusy", False)
 
     def sub_search(self, sel, scope=None):
-        """ Search a scope bracket match for bracekts within. """
+        """Search a scope bracket match for bracekts within."""
 
         # Protect against recursive search of scopes
         self.recursive_guard = True
@@ -438,7 +438,7 @@ class BhCore(object):
         return False
 
     def find_scopes(self, sel, adj_dir=bh_search.BH_ADJACENT_LEFT):
-        """ Find brackets by scope definition. """
+        """Find brackets by scope definition."""
 
         # Search buffer
         left, right, bracket, sub_matched = self.match_scope_brackets(sel, adj_dir)
@@ -458,7 +458,7 @@ class BhCore(object):
         return self.regions.save_regions(left, right, regions, self.bracket_style, HIGH_VISIBILITY)
 
     def find_matches(self, sel):
-        """ Find bracket matches. """
+        """Find bracket matches."""
 
         bracket = None
         left, right, adj_scope = self.match_brackets(sel)
@@ -575,7 +575,7 @@ class BhCore(object):
         return left, right, bracket, False
 
     def match_brackets(self, sel, scope=None):
-        """ Regex bracket matching. """
+        """Regex bracket matching."""
 
         center = sel.a
         left = None
@@ -651,7 +651,7 @@ class BhCore(object):
         return left, right, False
 
     def adjacent_check(self, left, right, center):
-        """ Check if bracket pair are adjacent to cursor. """
+        """Check if bracket pair are adjacent to cursor."""
 
         if left and right:
             if left.end < center < right.begin:
@@ -666,10 +666,10 @@ class BhCore(object):
 ####################
 class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
 
-    """ Toggle between regex escape and string escape for brackets in strings. """
+    """Toggle between regex escape and string escape for brackets in strings."""
 
     def run(self, edit):
-        """ Perform string escape toggling. """
+        """Perform string escape toggling."""
 
         default_mode = sublime.load_settings("bh_core.sublime-settings").get('bracket_string_escape_mode', 'string')
         if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
@@ -682,10 +682,10 @@ class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
 
 class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
 
-    """ Shoe current string escape mode for sub brackets in strings. """
+    """Shoe current string escape mode for sub brackets in strings."""
 
     def run(self, edit):
-        """ Show bracket string escape mode. """
+        """Show bracket string escape mode."""
 
         default_mode = sublime.load_settings(
             "BracketHighlighter.sublime-settings"
@@ -705,7 +705,7 @@ class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
     """
 
     def run(self):
-        """ Toggle high visibility. """
+        """Toggle high visibility."""
 
         global HIGH_VISIBILITY
         HIGH_VISIBILITY = not HIGH_VISIBILITY
@@ -713,10 +713,10 @@ class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
 
 class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
 
-    """ Toggle global enable for BracketHighlighter. """
+    """Toggle global enable for BracketHighlighter."""
 
     def run(self):
-        """ Toggle BH enable state. """
+        """Toggle BH enable state."""
 
         global GLOBAL_ENABLE
         GLOBAL_ENABLE = not GLOBAL_ENABLE
@@ -736,7 +736,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
         self, threshold=True, lines=False, adjacent=False,
         no_outside_adj=False, ignore={}, plugin={}
     ):
-        """ Run BH key command. """
+        """Run BH key command."""
 
         # Override events
         bh_thread.ignore_all = True
@@ -754,7 +754,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
         self.execute()
 
     def execute(self):
-        """ Trigger actual BH command. """
+        """Trigger actual BH command."""
 
         debug("Key Event")
         self.bh.match(self.view)
@@ -764,15 +764,15 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
 class BhAsyncKeyCommand(BhKeyCommand):
 
-    """ Call BH key command asynchronously. """
+    """Call BH key command asynchronously."""
 
     def execute(self):
-        """ Call execute command asynchronously. """
+        """Call execute command asynchronously."""
 
         sublime.set_timeout(self.async_execute, 100)
 
     def async_execute(self):
-        """ Trigger actual BH command. """
+        """Trigger actual BH command."""
 
         debug("Async Key Event")
         self.bh.match(self.view)
@@ -785,10 +785,10 @@ class BhAsyncKeyCommand(BhKeyCommand):
 ####################
 class BhDebugCommand(sublime_plugin.ApplicationCommand):
 
-    """ Toggle debug commands. """
+    """Toggle debug commands."""
 
     def run(self, set_value=None):
-        """ Perform debug toggle. """
+        """Perform debug toggle."""
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         if set_value is None:
@@ -798,12 +798,12 @@ class BhDebugCommand(sublime_plugin.ApplicationCommand):
             settings.set("debug_enable", set_value)
 
     def is_checked(self, set_value=None):
-        """ Check if command should be checked in menu. """
+        """Check if command should be checked in menu."""
 
         return sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)
 
     def is_enabled(self, set_value=None):
-        """ Check if command should be enabled. """
+        """Check if command should be enabled."""
 
         if set_value is None:
             enabled = True
@@ -827,7 +827,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
     """
 
     def on_load(self, view):
-        """ Search brackets on view load. """
+        """Search brackets on view load."""
 
         if self.ignore_event(view):
             return
@@ -835,7 +835,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         sublime.set_timeout(bh_thread.payload, 0)
 
     def on_modified(self, view):
-        """ Update highlighted brackets when the text changes. """
+        """Update highlighted brackets when the text changes."""
 
         if self.ignore_event(view):
             return
@@ -844,7 +844,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         bh_thread.time = time()
 
     def on_activated(self, view):
-        """ Highlight brackets when the view gains focus again. """
+        """Highlight brackets when the view gains focus again."""
 
         if self.ignore_event(view):
             return
@@ -852,7 +852,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         sublime.set_timeout(bh_thread.payload, 0)
 
     def on_selection_modified(self, view):
-        """ Highlight brackets when the selections change. """
+        """Highlight brackets when the selections change."""
 
         if self.ignore_event(view):
             return
@@ -878,16 +878,16 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
 class BhThread(threading.Thread):
 
-    """ BH threading. """
+    """BH threading."""
 
     def __init__(self):
-        """ Setup the thread. """
+        """Setup the thread."""
 
         self.reset()
         threading.Thread.__init__(self)
 
     def reset(self):
-        """ Reset the thread variables. """
+        """Reset the thread variables."""
 
         self.wait_time = 0.12
         self.time = time()
@@ -897,7 +897,7 @@ class BhThread(threading.Thread):
         self.abort = False
 
     def payload(self):
-        """ Code to run. """
+        """Code to run."""
 
         self.modified = False
         window = sublime.active_window()
@@ -909,7 +909,7 @@ class BhThread(threading.Thread):
         self.time = time()
 
     def kill(self):
-        """ Kill thread. """
+        """Kill thread."""
 
         self.abort = True
         while self.is_alive():
@@ -917,7 +917,7 @@ class BhThread(threading.Thread):
         self.reset()
 
     def run(self):
-        """ Thread loop. """
+        """Thread loop."""
 
         while not self.abort:
             if self.modified is True and time() - self.time > self.wait_time:
@@ -929,7 +929,7 @@ class BhThread(threading.Thread):
 # Loading
 ####################
 def init_bh_match():
-    """ Initialize the match object. """
+    """Initialize the match object."""
 
     global bh_match
     bh_match = BhCore().match
@@ -961,7 +961,7 @@ def plugin_loaded():
 
 
 def plugin_unloaded():
-    """ Tear down plugin. """
+    """Tear down plugin."""
 
     bh_thread.kill()
     bh_regions.clear_all_regions()

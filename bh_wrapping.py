@@ -23,7 +23,7 @@ VALID_INSERT_STYLES = (
 
 
 def exclude_entry(enabled, filter_type, language_list, language):
-    """ Exclude bracket wrapping entry by filter. """
+    """Exclude bracket wrapping entry by filter."""
 
     exclude = True
     if enabled:
@@ -47,14 +47,14 @@ def exclude_entry(enabled, filter_type, language_list, language):
 
 class WrapInstance(object):
 
-    """ Track wrap instance globally. """
+    """Track wrap instance globally."""
 
     obj = None
     value = None
 
     @classmethod
     def clear(cls):
-        """ Clear attributes. """
+        """Clear attributes."""
 
         cls.obj = None
         cls.value = None
@@ -62,26 +62,26 @@ class WrapInstance(object):
 
 class TextInsertion(object):
 
-    """ Wrapper class for inserting text. """
+    """Wrapper class for inserting text."""
 
     def __init__(self, view, edit):
-        """ Store view and edit objects. """
+        """Store view and edit objects."""
 
         self.view = view
         self.edit = edit
 
     def insert(self, pt, text):
-        """ Peform insertion. """
+        """Peform insertion."""
 
         return self.view.insert(self.edit, pt, text)
 
 
 class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
 
-    """ Execute the wrap instance. """
+    """Execute the wrap instance."""
 
     def run(self, edit):
-        """ Call wrap instance. """
+        """Call wrap instance."""
         obj = WrapInstance.obj
         value = WrapInstance.value
         # Wrap selections with brackets
@@ -102,10 +102,10 @@ class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
 
 class WrapBrackets(object):
 
-    """ Wrap the current selection(s) with the defined wrapping options. """
+    """Wrap the current selection(s) with the defined wrapping options."""
 
     def __init__(self, view, setting_file, attribute):
-        """ Init. """
+        """Init."""
 
         self.view = view
         self._menu = []
@@ -115,7 +115,7 @@ class WrapBrackets(object):
         self.read_wrap_entries(setting_file, attribute)
 
     def inline(self, edit, sel):
-        """ Inline wrap. """
+        """Inline wrap."""
 
         ti = TextInsertion(self.view, edit)
 
@@ -125,7 +125,7 @@ class WrapBrackets(object):
         self.insert_regions.append(sublime.Region(sel.end() + offset1, sel.end() + offset1 + offset2))
 
     def block(self, edit, sel, indent=False):
-        """ Wrap brackets around selection and block off the content. """
+        """Wrap brackets around selection and block off the content."""
 
         # Calculate number of lines between brackets
         self.calculate_lines(sel)
@@ -160,7 +160,7 @@ class WrapBrackets(object):
         self.insert_regions.append(sublime.Region(first_end + second_start, first_end + second_start + second_end))
 
     def indent_content(self, ti, line_offset):
-        """ Indent the block content. """
+        """Indent the block content."""
 
         first = True
         offset = 0
@@ -174,14 +174,14 @@ class WrapBrackets(object):
         return offset
 
     def calculate_lines(self, sel):
-        """ Calculate lines between brackets. """
+        """Calculate lines between brackets."""
 
         self.first_line, self.col_position = self.view.rowcol(sel.begin())
         last_line = self.view.rowcol(sel.end())[0]
         self.total_lines = last_line - self.first_line + 1
 
     def calculate_indentation(self, sel):
-        """ Calculate how much lines should be indented. """
+        """Calculate how much lines should be indented."""
 
         tab_size = self.view.settings().get("tab_size", 4)
         tab_count = self.view.substr(sublime.Region(sel.begin() - self.col_position, sel.begin())).count('\t')
@@ -192,7 +192,7 @@ class WrapBrackets(object):
         )
 
     def select(self, edit):
-        """ Select defined regions after wrapping. """
+        """Select defined regions after wrapping."""
 
         self.view.sel().clear()
         self.view.sel().add_all(self.insert_regions)
@@ -235,7 +235,7 @@ class WrapBrackets(object):
             self.view.sel().add(final_sel[0])
 
     def read_wrap_entries(self, setting_file, attribute):
-        """ Read wrap entries from the settings file. """
+        """Read wrap entries from the settings file."""
 
         settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
@@ -255,7 +255,7 @@ class WrapBrackets(object):
                         pass
 
     def wrap_brackets(self, value):
-        """ Wrap selection(s) with defined brackets. """
+        """Wrap selection(s) with defined brackets."""
 
         if value < 0:
             return
@@ -270,7 +270,7 @@ class WrapBrackets(object):
         WrapInstance.clear()
 
     def wrap_style(self, value):
-        """ Choose insert style for wrapping. """
+        """Choose insert style for wrapping."""
 
         if value < 0:
             return
@@ -298,10 +298,10 @@ class WrapBrackets(object):
 
 class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
 
-    """ Bracket wrapping command. """
+    """Bracket wrapping command."""
 
     def run(self, edit):
-        """ Display the wrapping menu. """
+        """Display the wrapping menu."""
 
         self._menu = []
         self._brackets = []
@@ -318,10 +318,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
 
 class BhNextWrapSelCommand(sublime_plugin.TextCommand):
 
-    """ Navigate wrapping tab stop regions. """
+    """Navigate wrapping tab stop regions."""
 
     def run(self, edit):
-        """ Look for the next wrapping tab stop region. """
+        """Look for the next wrapping tab stop region."""
 
         regions = self.view.get_regions(SEL_REGION) + self.view.get_regions(OUT_REGION)
         if len(regions):
@@ -335,10 +335,10 @@ class BhNextWrapSelCommand(sublime_plugin.TextCommand):
 
 class BhWrapListener(sublime_plugin.EventListener):
 
-    """ Listen for wrapping tab stop tabbing. """
+    """Listen for wrapping tab stop tabbing."""
 
     def on_query_context(self, view, key, operator, operand, match_all):
-        """ Mark the next regions to navigate to. """
+        """Mark the next regions to navigate to."""
 
         accept_query = False
         if key == "bh_wrapping":

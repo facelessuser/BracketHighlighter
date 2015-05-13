@@ -7,13 +7,13 @@ License: MIT
 
 
 def validate(name, bracket, bracket_side, bfr):
-    """ Check if bracket is lowercase. """
+    """Check if bracket is lowercase."""
 
     return bfr[bracket.begin:bracket.end].islower()
 
 
 def compare(name, first, second, bfr):
-    """ Ensure correct open is paired with correct close. """
+    """Ensure correct open is paired with correct close."""
 
     o = bfr[first.begin:first.end]
     c = bfr[second.begin:second.end]

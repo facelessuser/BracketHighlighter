@@ -9,10 +9,10 @@ import BracketHighlighter.bh_plugin as bh_plugin
 
 class TagNameSelect(bh_plugin.BracketPluginCommand):
 
-    """ Tag name select plugin. """
+    """Tag name select plugin."""
 
     def run(self, edit, name):
-        """ Select tag name. """
+        """Select tag name."""
 
         if self.left.size() > 1:
             tag_name = '[\w\:\.\-]+'
@@ -22,6 +22,6 @@ class TagNameSelect(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
-    """ Make plugin available. """
+    """Make plugin available."""
 
     return TagNameSelect

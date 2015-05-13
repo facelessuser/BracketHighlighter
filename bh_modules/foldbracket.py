@@ -10,10 +10,10 @@ import sublime
 
 class FoldBrackets(bh_plugin.BracketPluginCommand):
 
-    """ Fold bracket plugin. """
+    """Fold bracket plugin."""
 
     def run(self, edit, name):
-        """ Fold the content between the bracket. """
+        """Fold the content between the bracket."""
 
         content = sublime.Region(self.left.end, self.right.begin)
         new_content = [content]
@@ -24,6 +24,6 @@ class FoldBrackets(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
-    """ Make plugin available. """
+    """Make plugin available."""
 
     return FoldBrackets

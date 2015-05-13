@@ -45,16 +45,16 @@ single_tags = {
 
 class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
 
-    """ Tag entry tuple. """
+    """Tag entry tuple."""
 
     def move(self, begin, end):
-        """ Create a new tuple from this tuple. """
+        """Create a new tuple from this tuple."""
 
         return self._replace(begin=begin, end=end)
 
 
 def compare_languge(language, lang_list):
-    """ Check if language is found. """
+    """Check if language is found."""
 
     found = False
     for l in lang_list:
@@ -65,7 +65,7 @@ def compare_languge(language, lang_list):
 
 
 def get_tag_mode(view, tag_mode_config):
-    """ Get the tag mode. """
+    """Get the tag mode."""
 
     default_mode = None
     syntax = view.settings().get('syntax')
@@ -77,7 +77,7 @@ def get_tag_mode(view, tag_mode_config):
 
 
 def highlighting(view, name, style, left, right):
-    """ Highlight only the tag name. """
+    """Highlight only the tag name."""
     if style == "tag":
         tag_name = '[\w\:\.\-]+'
         if left is not None:
@@ -116,10 +116,10 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
 class TagSearch(object):
 
-    """ Searches for tags. """
+    """Searches for tags."""
 
     def __init__(self, view, bfr, window, center, pattern, match_type, mode):
-        """ Prepare tag search object. """
+        """Prepare tag search object."""
 
         self.start = int(window[0])
         self.end = int(window[1])
@@ -135,7 +135,7 @@ class TagSearch(object):
         self.scope_exclude = sublime.load_settings("bh_core.sublime-settings").get("tag_scope_exclude")
 
     def scope_check(self, pt):
-        """ Check if scope is good. """
+        """Check if scope is good."""
 
         illegal_scope = False
         for exclude in self.scope_exclude:
@@ -143,20 +143,20 @@ class TagSearch(object):
         return illegal_scope
 
     def reset_end_state(self):
-        """ Reset and end the current state. """
+        """Reset and end the current state."""
 
         self.done = False
         self.prev_match = None
         self.return_prev = False
 
     def remember(self):
-        """ Instruct object to return the last tag. """
+        """Instruct object to return the last tag."""
 
         self.return_prev = True
         self.done = False
 
     def get_tags(self):
-        """ Find all the tags. """
+        """Find all the tags."""
 
         if self.done:
             return
@@ -189,10 +189,10 @@ class TagSearch(object):
 
 class TagMatch(object):
 
-    """ Find a tag match. """
+    """Find a tag match."""
 
     def __init__(self, view, bfr, threshold, first, second, center, outside_adj, mode):
-        """ Prepare tag match object. """
+        """Prepare tag match object."""
 
         self.view = view
         self.bfr = bfr
@@ -261,12 +261,12 @@ class TagMatch(object):
         return tag, tag_type, end
 
     def compare_tags(self, left, right):
-        """ Check if tags share the same name. """
+        """Check if tags share the same name."""
 
         return left.name == right.name
 
     def resolve_self_closing(self, stack, c):
-        """ Handle self closing tags. """
+        """Handle self closing tags."""
 
         found_tag = None
         b = stack[-1]

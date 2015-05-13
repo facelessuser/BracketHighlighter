@@ -84,14 +84,14 @@ class CheckJsonFormat(object):
     """
 
     def __init__(self, use_tabs=False, allow_comments=False):
-        """ Setup the settings. """
+        """Setup the settings."""
 
         self.use_tabs = use_tabs
         self.allow_comments = allow_comments
         self.fail = False
 
     def index_lines(self, text):
-        """ Index the char range of each line. """
+        """Index the char range of each line."""
 
         self.line_range = []
         count = 1
@@ -102,7 +102,7 @@ class CheckJsonFormat(object):
             count += 1
 
     def get_line(self, pt):
-        """ Get the line from char index. """
+        """Get the line from char index."""
 
         line = None
         for r in self.line_range:
@@ -170,7 +170,7 @@ class CheckJsonFormat(object):
         self.fail = True
 
     def check_format(self, file_name):
-        """ Initiate teh check. """
+        """Initiate teh check."""
 
         self.fail = False
         with codecs.open(file_name, encoding='utf-8') as f:

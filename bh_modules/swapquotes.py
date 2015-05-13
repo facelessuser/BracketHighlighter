@@ -10,10 +10,10 @@ import sublime
 
 class SwapQuotes(bh_plugin.BracketPluginCommand):
 
-    """ Swap quotes plugin. """
+    """Swap quotes plugin."""
 
     def escaped(self, idx):
-        """ Check if character is an escape char. """
+        """Check if character is an escape char."""
 
         view = self.view
         escaped = False
@@ -61,6 +61,6 @@ class SwapQuotes(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
-    """ Make plugin available. """
+    """Make plugin available."""
 
     return SwapQuotes

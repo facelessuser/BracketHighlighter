@@ -11,10 +11,10 @@ BracketRemove = ImpMod.import_from("bh_modules.bracketremove", "BracketRemove")
 
 class SwapBrackets(BracketRemove):
 
-    """Swap bracket plugin. """
+    """Swap bracket plugin."""
 
     def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):
-        """ Remove then replace the bracket and adjust indentation if desired. """
+        """Remove then replace the bracket and adjust indentation if desired."""
 
         offset = self.left.toregion().size()
         selection = [sublime.Region(self.left.begin, self.right.begin - offset)]
@@ -28,6 +28,6 @@ class SwapBrackets(BracketRemove):
 
 
 def plugin():
-    """ Make plugin available. """
+    """Make plugin available."""
 
     return SwapBrackets

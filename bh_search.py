@@ -17,44 +17,44 @@ BH_ADJACENT_RIGHT = 1
 
 class BhEntry(object):
 
-    """ Generic object for bracket regions. """
+    """Generic object for bracket regions."""
 
     def move(self, begin, end):
-        """ Create a new object with the points moved to the specified locations. """
+        """Create a new object with the points moved to the specified locations."""
 
         return self._replace(begin=begin, end=end)
 
     def size(self):
-        """ Size of bracket selection. """
+        """Size of bracket selection."""
 
         return abs(self.begin - self.end)
 
     def toregion(self):
-        """ Convert to sublime Region. """
+        """Convert to sublime Region."""
 
         return sublime.Region(self.begin, self.end)
 
 
 class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False), BhEntry):
 
-    """ Bracket object. """
+    """Bracket object."""
 
     pass
 
 
 class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False), BhEntry):
 
-    """ Scope bracket object. """
+    """Scope bracket object."""
 
     pass
 
 
 class Search(object):
 
-    """ Search buffer object. """
+    """Search buffer object."""
 
     def __init__(self, view, rules, sel, selection_threshold=None):
-        """ Read in the view's buffer for scanning for brackets etc. """
+        """Read in the view's buffer for scanning for brackets etc."""
 
         self.rules = rules
 
@@ -82,34 +82,34 @@ class Search(object):
         self.set_search_window(search_window)
 
     def get_buffer(self):
-        """ Get view buffer. """
+        """Get view buffer."""
 
         return self.bfr
 
     def set_search_window(self, search_window):
-        """ Set the window of search in the buffer. """
+        """Set the window of search in the buffer."""
 
         self.search_window = search_window
 
     def new_scope_search(self, center, before_center, scope, adj_dir):
-        """ Retrieve a new search object. """
+        """Retrieve a new search object."""
 
         return ScopeSearch(
             self, center, before_center, scope, adj_dir
         )
 
     def new_bracket_search(self, center, subsearch, scope):
-        """ Retrieve a new search object. """
+        """Retrieve a new search object."""
 
         return BracketSearch(self, center, subsearch, scope)
 
 
 class ScopeSearch(object):
 
-    """ Object that extracts brackets from scope. """
+    """Object that extracts brackets from scope."""
 
     def __init__(self, search, center, before_center, scope, adj_dir):
-        """ Set scope buffer by getting the extent of the scope. """
+        """Set scope buffer by getting the extent of the scope."""
 
         self.adjusted_center = center
         self.view = search.view
@@ -142,7 +142,7 @@ class ScopeSearch(object):
         self.scope_bfr = search.get_buffer()[extent.begin():extent.end()]
 
     def is_scope(self, center, before_center, scope, adj_dir=None):
-        """ Check if cursor is in scope or touching scope. """
+        """Check if cursor is in scope or touching scope."""
 
         match = False
         if int(sublime.version()) >= 3067:
@@ -192,10 +192,10 @@ class ScopeSearch(object):
 
 class BracketSearch(object):
 
-    """ Object that performs regex search on the view's buffer and finds brackets. """
+    """Object that performs regex search on the view's buffer and finds brackets."""
 
     def __init__(self, search, center, sub_search, scope):
-        """ Prepare for search. """
+        """Prepare for search."""
 
         self.search = search
         self.center = center
@@ -221,7 +221,7 @@ class BracketSearch(object):
             self.findall()
 
     def escaped(self, pt, ignore_string_escape, scope):
-        """ Check if sub bracket in string scope is escaped. """
+        """Check if sub bracket in string scope is escaped."""
 
         if not ignore_string_escape:
             return False
@@ -254,7 +254,7 @@ class BracketSearch(object):
         return escaped
 
     def is_illegal_scope(self, pt, bracket_id, scope=None):
-        """ Check if scope at pt X should be ignored. """
+        """Check if scope at pt X should be ignored."""
 
         bracket = self.search.rules.brackets[bracket_id]
         if self.sub_search and not bracket.find_in_sub_search:
@@ -350,7 +350,7 @@ class BracketSearch(object):
             self.right[match_type].append(BracketEntry(start, end, bracket_id))
 
     def findall(self):
-        """ Find all of the brackets. """
+        """Find all of the brackets."""
 
         window_start = int(self.search.search_window[0])
         window_end = int(self.search.search_window[1])
@@ -392,7 +392,7 @@ class BracketSearch(object):
             yield b
 
     def is_done(self, match_type):
-        """ Retrieve done flag. """
+        """Retrieve done flag."""
 
         return self.done[match_type]
 

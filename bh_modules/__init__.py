@@ -1,1 +1,1 @@
-""" BH Modules. """
+"""BH Modules."""

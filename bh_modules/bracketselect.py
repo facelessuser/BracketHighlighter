@@ -12,7 +12,7 @@ DEFAULT_TAGS = ["cfml", "html", "angle"]
 
 class SelectBracket(bh_plugin.BracketPluginCommand):
 
-    """ Select Bracket plugin. """
+    """Select Bracket plugin."""
 
     def run(self, edit, name, select='', tags=DEFAULT_TAGS, always_include_brackets=False, alternate=False):
         """
@@ -76,6 +76,6 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
 
 
 def plugin():
-    """ Make plugin available. """
+    """Make plugin available."""
 
     return SelectBracket
