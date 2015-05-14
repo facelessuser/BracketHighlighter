@@ -3,12 +3,12 @@
     "linters": {
         "flake8": {
             "@disable": false,
-            "ignore": []
+            "ignore": "",
             "max-line-length": 120
         },
         "pep257": {
             "@disable": false,
-            "ignore": ["D202"]
+            "ignore": "D202"
         }
     }
 }
