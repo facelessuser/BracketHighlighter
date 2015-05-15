@@ -3,9 +3,8 @@ python:
   - "3.3"
 install:
   - pip install flake8
+  - pip install flake8_docstrings
   - pip install nose
-  - pip install pep257
 script:
   - nosetests .
-  - flake8 --max-line-length=120 .
-  - pep257 --ignore=D202 .
+  - flake8 --ignore=D202 --max-line-length=120 .
