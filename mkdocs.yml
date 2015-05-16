@@ -5,7 +5,6 @@ pages:
 - Home: index.md
 - User Guide:
     - Usage: usage.md
-- User Guide:
     - Customizing: customize.md
 - Contributing & Support: contributing.md
 - License: license.md
