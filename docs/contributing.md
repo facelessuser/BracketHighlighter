@@ -10,7 +10,7 @@ Steps for contributing and getting support.
 | ST2 <= version < ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
 | ST3 | Fully supported and actively maintained. |
 
-BracketHighligher welcomes contribution from the community and is encouraged.  Contribution can be done in a variety of ways:
+Contribution from the community is encouraged and can be done in a variety of ways:
 
 - Bug reports.
 - Reviewing code.
@@ -18,7 +18,7 @@ BracketHighligher welcomes contribution from the community and is encouraged.  C
 - Documentation improvements via pull requests.
 
 !!! warning "Bracket Rules are Supported by the Community"
-    The most common requested enhancement for BH is for new rules to add support for \{insert your favorite language here}.  I, like you, am proficient in very specific languages.  I probably don't use your favorite language or there would already be a support for it.  I don't have time to learn the nuances of your language.  For these reasons, support for new language brackets **requires** pull requests from the community.
+    The most common requested enhancement for BracketHighlighter is for new rules to add support for \{insert your favorite language here}.  I, like you, am proficient in very specific languages.  I probably don't use your favorite language or there would already be a support for it.  I don't have time to learn the nuances of your language.  For these reasons, support for new language brackets **requires** pull requests from the community.
 
     Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions and guidance to help those who may struggle to create rules for their specific language of interest.
 
@@ -26,7 +26,7 @@ BracketHighligher welcomes contribution from the community and is encouraged.  C
 
 1. Please **read the documentation** and **search the issue tracker** to try to find the answer to your question **before** posting an issue.
 
-2. When creating an issue on the BH repository, please provide as much info as possible:
+2. When creating an issue on the repository, please provide as much info as possible:
 
     - Sublime Text build.
     - Operating system.
@@ -42,9 +42,9 @@ BracketHighligher welcomes contribution from the community and is encouraged.  C
 Take part in reviewing pull requests and/or reviewing direct commits.  Make suggestions to improve the code and discuss solutions to overcome weakness in the algorithm.
 
 # Pull Requests
-BH will gladly accept pull requests.  If you plan on contributing directly to the code, there are a couple of things to be mindful of.
+Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be mindful of.
 
-BH runs continuous integration tests on pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
+Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
 
 Feel free to use a virtual environment if you are concerned about installing any of the Python packages.  In the future, I may use tox, but as I currently only test on Python 3.3, I wanted to keep things simple.
 
@@ -59,7 +59,7 @@ There are a couple of dependencies that must present before running the tests.
     pip install nose
     ```
 
-    The tests should be run from the root folder of BH by using the following command:
+    The tests should be run from the root folder of the plugin by using the following command:
 
     ```
     nosetests .
@@ -83,6 +83,5 @@ Help with documentation is always appreciated and can be done via pull requests.
 
 I currently use a combination of using [mkdocs][mkdocs.org] with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve`.
 
-*[BH]: BracketHighlighter
 *[ST2]: Sublime Text 2
 *[ST3]: Sublime Text 3

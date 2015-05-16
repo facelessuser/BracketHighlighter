@@ -25,6 +25,7 @@
   <script src="{{ base_url }}/js/jquery-2.1.1.min.js"></script>
   <script src="{{ base_url }}/js/modernizr-2.8.3.min.js"></script>
   <script src="{{ base_url }}/js/theme.js"></script>
+
   {%- block extrahead %} {% endblock %}
 
   {%- for path in extra_javascript %}
@@ -56,7 +57,11 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-      {% include "toc.html" %}
+        <ul class="current">
+          {% for nav_item in nav %}
+            <li>{% include "toc.html" %}<li>
+          {% endfor %}
+        </ul>
       </div>
       &nbsp;
     </nav>
@@ -106,9 +111,11 @@
     </span>
 </div>
 
-<!--
-MkDocs version      : {{ mkdocs_version }}
-Docs Build Date UTC : {{ build_date_utc }}
--->
 </body>
 </html>
+{% if current_page and current_page.is_homepage %}
+<!--
+MkDocs version : {{ mkdocs_version }}
+Build Date UTC : {{ build_date_utc }}
+-->
+{% endif %}
