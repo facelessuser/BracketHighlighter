@@ -1,9 +1,15 @@
-# Contributing {: .doctitle}
-Tips for contributing to BracketHighlighter.
+# Contributing &amp; Support {: .doctitle}
+Steps for contributing and getting support.
 
 ---
 
 # Overview
+
+| Sublime Versions | Description |
+|------------------|-------------|
+| ST2 <= version < ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
+| ST3 | Fully supported and actively maintained. |
+
 BracketHighligher welcomes contribution from the community and is encouraged.  Contribution can be done in a variety of ways:
 
 - Bug reports.
@@ -40,6 +46,8 @@ BH will gladly accept pull requests.  If you plan on contributing directly to th
 
 BH runs continuous integration tests on pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
 
+Feel free to use a virtual environment if you are concerned about installing any of the Python packages.  In the future, I may use tox, but as I currently only test on Python 3.3, I wanted to keep things simple.
+
 ## Running Validation Tests
 There are a couple of dependencies that must present before running the tests.
 
@@ -67,11 +75,13 @@ There are a couple of dependencies that must present before running the tests.
     Linting is performed with the following command:
 
     ```
-    flake8 --ignore=D202 --max-line-length=120 .
+    flake8 .
     ```
 
 # Documentation Improvements
 Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
+
+I currently use a combination of using [mkdocs][mkdocs.org] with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve`.
 
 *[BH]: BracketHighlighter
 *[ST2]: Sublime Text 2

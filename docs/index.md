@@ -28,18 +28,6 @@ Moving forward, I have thrown away all the all code and have completely rewritte
 # Installation
 The recommended installation method is via Package Control.  Learn more here: https://sublime.wbond.net/.
 
-## Sublime Text 3 Support?
-ST3 support is found here: https://github.com/facelessuser/BracketHighlighter/tree/ST3.  All current development is being done on ST3.
-
-## Sublime Text 2 Support?
-ST2 support is found here: https://github.com/facelessuser/BracketHighlighter/tree/ST2, but development has been halted on ST2
-
-# Issues
-When filing issues, please state the OS and sublime version along with a detailed description of the problem including how to reproduce the issue.  Only ST3 issues will be addressed.
-
-# Pull Requests
-Pull requests must be done against the main branch.  When I am ready, the main branch will be merged into the relevant supported branch.  For ST2 only rule definitions will be accepted for pull requests. But ST2 pull requests must be done against the ST2 branch and the relevant matching changes must be made to the main as well to keep the rules up to date on both branches.  ST2 pull requests will only be accepted if the main branch and the ST2 branch are pulled in order to save me work.  I will not back port rules ST2, but I will allow the community to do so.
-
 # Credits
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration for this project.
 - BoundInCode: for his Tag icon

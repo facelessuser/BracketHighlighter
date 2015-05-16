@@ -5,7 +5,7 @@ pages:
 - ['index.md', 'Home']
 - ['usage.md', 'User Guide']
 - ['customize.md', 'Customization']
-- ['contributing.md', 'Contributing']
+- ['contributing.md', 'Contributing & Support']
 - ['license.md', 'License']
 theme: readthedocs
 theme_dir: doc_theme

@@ -7,4 +7,4 @@ install:
   - pip install nose
 script:
   - nosetests .
-  - flake8 --ignore=D202 --max-line-length=120 .
+  - flake8 .
