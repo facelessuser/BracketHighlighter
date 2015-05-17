@@ -10,7 +10,7 @@ import json
 
 RE_LINE_PRESERVE = re.compile(r"\r?\n", re.MULTILINE)
 RE_COMMENT = re.compile(
-    r"""
+    r'''(?x)
         (?P<comments>
             /\*[^*]*\*+(?:[^/*][^*]*\*+)*/  # multi-line comments
           | [ \t]*//(?:[^\r\n])*            # single line comments
@@ -20,11 +20,11 @@ RE_COMMENT = re.compile(
           | '(?:\\.|[^'\\])*'               # single quotes
           | .[^/"']*                        # everything else
         )
-    """,
-    re.VERBOSE | re.MULTILINE | re.DOTALL
+    ''',
+    re.DOTALL
 )
 RE_TRAILING_COMMA = re.compile(
-    r"""
+    r'''(?x)
         (
             (?P<square_comma>
                 ,                        # trailing comma
@@ -42,8 +42,8 @@ RE_TRAILING_COMMA = re.compile(
           | '(?:\\.|[^'\\])*'            # single quoted string
           | .[^,"']*                     # everything else
         )
-    """,
-    re.MULTILINE | re.DOTALL | re.VERBOSE
+    ''',
+    re.DOTALL
 )
 RE_LINE_INDENT_TAB = re.compile(r'^((\t+)?[^ \t\r\n][^\r\n]*)?\r?\n$')
 RE_LINE_INDENT_SPACE = re.compile(r'^(((?: {4})+)?[^ \t\r\n][^\r\n]*)?\r?\n$')

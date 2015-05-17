@@ -7,7 +7,7 @@ Steps for contributing and getting support.
 
 | Sublime Versions | Description |
 |------------------|-------------|
-| ST2 <= version < ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
+| ST2&nbsp;<=&nbsp;version&nbsp;<&nbsp;ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
 | ST3 | Fully supported and actively maintained. |
 
 Contribution from the community is encouraged and can be done in a variety of ways:
@@ -49,7 +49,16 @@ Continuous integration tests on are run on all pull requests and commits via Tra
 Feel free to use a virtual environment if you are concerned about installing any of the Python packages.  In the future, I may use tox, but as I currently only test on Python 3.3, I wanted to keep things simple.
 
 ## Running Validation Tests
-There are a couple of dependencies that must present before running the tests.
+
+!!! tip "Tip"
+    If you are running Sublime on a OSX or Linux/Unix system, you run all tests by by running the shell script (assuming you have installed your environment fulfills all requirements below):
+
+    ```
+    chmod +x run_tests.sh
+    ./run_tests.sh
+    ```
+
+There are a couple of dependencies that must be present before running the tests.
 
 1. As ST3 is the only current actively supported version, Python 3.3 must be used to validate the tests.
 
@@ -79,7 +88,7 @@ There are a couple of dependencies that must present before running the tests.
     ```
 
 # Documentation Improvements
-Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
+A ton of time has been not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
 
 I currently use a combination of using [mkdocs][mkdocs.org] with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve`.
 
