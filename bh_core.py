@@ -744,9 +744,14 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
     def run(
         self, threshold=True, lines=False, adjacent=False,
-        no_outside_adj=False, ignore={}, plugin={}
+        no_outside_adj=False, ignore=None, plugin=None
     ):
         """Run BH key command."""
+
+        if ignore is None:
+            ignore = {}
+        if plugin is None:
+            plugin = {}
 
         # Override events
         bh_thread.ignore_all = True
