@@ -6,63 +6,289 @@ Tweaking BracketHighlighter.
 # Overview
 BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and style rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
 
-# General Settings
-Style and color will be discussed in greater depth in the `Configuring Highlight Style` section.  But there are a number of general setting you can adjust to change how things look or work.  The settings are commented to explain their functionality.
+# Core Settings
+Style and color will be discussed in greater depth in the [`Configuring Highlight Style`](#configuring-highlight-style) section.  But there are a number of general setting you can adjust to change how things look or work.  These settings are found in `bh_core.sublime-settings`.
 
-These are the basic settings you can change:
-```javascript
-    //Debug logging
-    "debug_enable": false,
+## Visual Settings
+These are the settings related to the visual appearance of BH.
 
+### show_in_minimap
+This will show highlighted brackets in the minimap.  This will work with all highlight styles accept `underline`; `thin_underline` has no issues.
+
+```js
+    // Show brackets in the minimap.
+    "show_in_minimap": false,
+```
+
+### show_unmatched
+This setting is a boolean, and when possible, this will display a special highlight for brackets that cannot be matched.
+
+```js
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
-    "show_unmatched" : true,
+    "show_unmatched": true,
+```
 
+### show_unmatched_exceptions
+This is a list of languages in which the `show_unmatched` option will be reversed.
+
+```js
     // Do the opposite of "show_unmatched" for the languages listed below
     "show_unmatched_exceptions": [],
+```
 
-    // Enable high visibility by default when sublime starts up
-    // If sublime is already running and this gets changed,
-    // you will not see any changes (restart required to see change)
-    "high_visibility_enabled_by_default": false,
+### content_highlight_bar
+This is an experimental setting which can enable displaying a vertical bar from the line containing the opening bracket to the line with the closing bracket.  When [`align_content_highlight_bar`](#align_content_highlight_bar) set to `false`, the bar will be shown on the first column regardless of indent level of the brackets.  When `align_content_highlight_bar` is set to `true`, the bar will be aligned and the bracket indent level.
 
+```js
     // Experimental: Creates a visible bar at the beginning of all lines between
     // multiline bracket spans.
     "content_highlight_bar": false,
+```
 
+### align_content_highlight_bar
+This setting is a boolean which will modify the behavior of `content_highlight_bar` and draw the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations though:
+
+    - Content bar cannot extend through a line an empty line unless the bar is on the first column.  This is a limitation of the Sublime API.
+
+    - Content bar will not be shown on a line where non-whitespace characters cross the bar.
+
+```js
     // Experimental: Align the content highlight bar at the bracket indent level
     "align_content_highlight_bar": false,
+```
 
+### high_visibility_enabled_by_default
+This enables high visibility mode by default.  High visibility mode highlights not only the bracket but the content between as well, but it is disabled by default and must be toggled on.  This reverses the behavior and has it on by default and must be toggled off.
+
+```js
+    // Enable high visibility by default when sublime starts up
+    "high_visibility_enabled_by_default": false,
+```
+
+### high_visibility_style
+This setting modifies the styling of high visibility mode.  The available options are `solid`, `outline`, `underline`, `thin_underline`, `squiggly`, and `stippled`.
+
+```js
     // High visibility style and color for high visibility mode
-    // (solid|outline|underline)
-    // ST3 has additional options of (thin_underline|squiggly|stippled)
     "high_visibility_style": "outline",
+```
 
-    // (scope|__default__|__bracket__)
+
+### high_visibility_color
+This modifies the color of the high visibility color.  There are three types of settings you can use:
+
+    - `__default__` is a special reserved value which will use the color set in `bracket_styles` (see [Configuring Highlight Style](#configuring-highlight-style) for more info).
+
+    - `__bracket__` is a special reserved value which will inherit the defined color of the highlighted bracket.
+
+    - Any valid scope found in your color scheme.
+
+```js
+    // Color for high visibility mode
     "high_visibility_color": "__bracket__",
+```
 
+## Behavioral Settings
+These settings affect the matching behavior.
+
+### match_only_adjacent
+This will will only match and highlight brackets when the cursor is adjacent to a bracket.  This is set with either `true` or `false`.
+
+```js
     // Match brackets only when the cursor is touching the inside of the bracket
     "match_only_adjacent": false,
+```
 
-    // Character threshold to search
-    "search_threshold": 5000,
+### bracket_outside_adjacent
+This is a boolean which augments the matching behavior and will trigger matching when the cursor is adjacent to a cursor on the outside (not between the brackets).
 
-    // Ignore threshold
-    "ignore_threshold": false,
+```js
+    // Outside adjacent bracket matching
+    "bracket_outside_adjacent": true,
+```
 
+### bracket_string_escape_mode
+Is a setting that takes a string value.  When matching sub-brackets inside strings, this changes the matching behavior in regards to escaped brackets.  This takes two values `string` and `regex`.
+
+```js
     // Set mode for string escapes to ignore (regex|string)
     "bracket_string_escape_mode": "string",
+```
 
+### search_threshold
+This setting is numerical value which sets the search threshold.  The search threshold determines how many characters BH will search through to find matching brackets before giving up.  This setting only affects auto-matching and not on-demand calls from the command palette and menu. By default, this value is very conservative and can be increased.  Keep in mind that very large values may impact performance.
+
+```js
+    // Character threshold to search
+    "search_threshold": 5000,
+```
+
+### ignore_threshold
+This boolean will cause [`search_threshold`](#search_threshold)'s limit to be ignored.  It is not advised to use this as very large files may cause a noticeable performance hit, but has been made available due to a number of requests.
+
+```js
+    // Ignore threshold
+    "ignore_threshold": false,
+```
+
+### auto_selection_threshold
+This setting is aimed at helping performance.  It is a numerical value which controls the maximum number of simultaneous auto-matched brackets that are allowed.  This setting will not be considered when running on-demand calls via the command palette or menu.
+
+```js
     // Set max number of multi-select brackets that will be searched automatically
     "auto_selection_threshold" : 10,
+```
 
+### kill_highlight_on_threshold
+This is a boolean which can be enabled to completely kill highlighting when [`auto_selection_threshold`](#auto-selection-threshold).  When disabled, BH will just highlight up to the threshold limit.
+
+```js
     // Enable this to completely kill highlighting if "auto_selection_threshold"
     // is exceeded.  Default is to highlight up to the "auto_selection_threshold".
     "kill_highlight_on_threshold": true,
+```
 
+### no_multi_select_icons
+This a boolean which disables gutter icons when doing multiple selections.
+
+```js
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,
 ```
+
+# Tag Plugin Settings
+Tag settings found in `bh_core.sublime-settings`.
+
+### tag_style
+This setting is the allows you to set the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles` (see [Configuring Highlight Style](#configuring-highlight-style) for more info).
+
+```js
+    // Style to use for matched tags
+    "tag_style": "tag",
+```
+
+### tag_scope_exclude
+This excludes certain scopes from being evaluated when searching for tags.
+
+```js
+    // Scopes to exclude from tag searches
+    "tag_scope_exclude": ["string", "comment"],
+```
+
+### tag_mode
+This setting contains a dictionary of three modes: `xhtml`, `html`, `cfml`.  Each mode tweaks the tag matching for the respective type.  Each entry in the dictionary consists of a list of languages that should be evaluated as that type.
+
+```js
+    // Determine which style of tag-matching to use in which syntax
+    "tag_mode": {
+        "xhtml": ["XML"],
+        "html": ["HTML", "HTML 5", "PHP"],
+        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+    }
+```
+
+### self_closing_tags
+These are tag names that will be evaluated as self closing.
+
+```js
+    // Self closing HTML tags
+    "self_closing_tags": [
+        "colgroup", "dd", "dt", "li", "options", "p", "td",
+        "tfoot", "th", "thead", "tr"
+    ],
+```
+
+### single_tags
+These are tag names that never have a closing tag.
+
+```js
+    // Tags that never have a closing
+    "single_tags": [
+        "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
+        "img", "input", "isindex", "keygen", "link", "meta", "param",
+        "source", "track", "wbr"
+    ]
+```
+
+# Swap Brackets Plugin Settings
+Swappable brackets for a given language can be defined in `bh_swapping.sublime-settings`.  Swap rules are found under the key `swapping` where `swapping` is an array of language swap rules.
+
+```js
+    "swapping": [
+        {
+            "enabled": true,
+            "language_list": ["C++", "C"],
+            "language_filter": "whitelist",
+            "entries": [
+                {"name": "C/C++: #if", "brackets": ["#if ${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #if, #else", "brackets": ["#if${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #if, #elif", "brackets": ["#if${BH_SEL}", "#elif ${BH_TAB:/* CONDITION */}\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #ifdef", "brackets": ["#ifdef${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #ifdef, #else", "brackets": ["#ifdef${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},
+                {"name": "C/C++: #ifndef", "brackets": ["#ifndef${BH_SEL}", "#endif"]},
+                {"name": "C/C++: #ifndef, #else", "brackets": ["#ifndef${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]}
+            ]
+        }
+    ]
+```
+
+Each language rule contains the following attributes:
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| enabled | bool | Specifies if the rule is enabled. |
+| language_list | [string] | An array of languages. |
+| language_filter | string | A string that specifies if the `language_list` is either a `whitelist` or `blacklist`. |
+| entries | [dict] | An array of dictionaries, where each dictionary describes a type of bracket that can be swapped to. |
+
+Within the language rules under `entries`, swap entries are defined.  Each entry represents a bracket you can swap to.
+
+| Entry | Type | Description |
+|-------|------|-------------|
+| name | string | The name of the entry as it will be seen in the command palette. |
+| brackets | [string] | An array consisting of a string that represents the opening bracket and a string that represents the closing bracket. |
+
+Within the `brackets`, you can specify the where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`.
+
+Within the `brackets`, you can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax `${BH_TAB:optional text}`.
+
+## Wrap Brackets Plugin Settings
+Wrapping brackets for a given language can be defined in `bh_wrapping.sublime-settings`.  Wrap rules are found under the key `wrapping` where `wrapping` is an array of language swap rules.
+
+```js
+    "wrapping": [
+        {
+            "enabled": true,
+            "language_list": ["Plain text"],
+            "language_filter": "blacklist",
+            "entries": [
+                {"name": "{} Curly", "brackets": ["{", "}${BH_SEL}"], "insert_style": ["inline", "block", "indent_block"]}
+            ]
+        }
+    ]
+```
+
+Each language rule contains the following attributes:
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| enabled | bool | Specifies if the rule is enabled. |
+| language_list | [string] | An array of languages. |
+| language_filter | string | A string that specifies if the `language_list` is either a `whitelist` or `blacklist`. |
+| entries | [dict] | An array of dictionaries, where each dictionary describes a type of bracket that can be used to wrap the selection. |
+
+Within the language rules under `entries`, wrap entries are defined.  Each entry represents a bracket you can wrap the selection with.
+
+| Entry | Type | Description |
+|-------|------|-------------|
+| name | string | The name of the entry as it will be seen in the command palette. |
+| brackets | [string] | An array consisting of a string that represents the opening bracket and a string that represents the closing bracket. |
+| insert_style | [string] | An array consisting of allowed insertion styles.  Allowed insertion styles are: `inline`, `block`, and `indent_block`.  Default is `#!js ['inline']`. |
+
+Within the `brackets`, you can specify the where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`.
+
+Within the `brackets`, you can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax `${BH_TAB:optional text}`.
 
 # Configuring Brackets
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.

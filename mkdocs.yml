@@ -17,7 +17,8 @@ markdown_extensions:
 - markdown.extensions.admonition
 - markdown.extensions.smarty
 - markdown.extensions.nl2br
-- markdown.extensions.codehilite
+- markdown.extensions.codehilite:
+    guess_lang: false
 - pymdownx.inlinehilite
 - pymdownx.magiclink
 - pymdownx.betterem
