@@ -1,0 +1,37 @@
+{
+    // Style to use for matched tags
+    "tag_style": "tag",
+
+    // Scopes to exclude from tag searches
+    "tag_scope_exclude": ["string", "comment"],
+
+    // Determine which style of tag-matching to use in which syntax
+    "tag_mode": {
+        "xhtml": ["XML"],
+        "html": [
+            "HTML",
+            "HTML 5",
+            "PHP",
+            "HTML (Jinja Templates)",
+            "HTML (Rails)",
+            "HTML (Twig)",
+            "laravel-blade",
+            "Handlebars",
+            "AngularJS"
+        ],
+        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+    },
+
+    // Self closing HTML tags
+    "self_closing_tags": [
+        "colgroup", "dd", "dt", "li", "options", "p", "td",
+        "tfoot", "th", "thead", "tr"
+    ],
+
+    // Tags that never have a closing
+    "single_tags": [
+        "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
+        "img", "input", "isindex", "keygen", "link", "meta", "param",
+        "source", "track", "wbr"
+    ]
+}

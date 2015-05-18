@@ -32,16 +32,6 @@ START_TAG = {
 }
 END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>', FLAGS)
 
-self_closing_tags = {
-    "colgroup", "dd", "dt", "li", "options", "p", "td",
-    "tfoot", "th", "thead", "tr"
-}
-single_tags = {
-    "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
-    "img", "input", "isindex", "keygen", "link", "meta", "param",
-    "source", "track", "wbr"
-}
-
 
 class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
 
@@ -99,10 +89,11 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
     left, right = first, second
     threshold = [0, len(bfr)] if threshold is None else threshold
-    tag_settings = sublime.load_settings("bh_core.sublime-settings")
+    bh_settings = sublime.load_settings("bh_core.sublime-settings")
+    tag_settings = sublime.load_settings("bh_tag.sublime-settings")
     tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
     tag_style = tag_settings.get("tag_style", "angle")
-    outside_adj = tag_settings.get("bracket_outside_adjacent", False)
+    outside_adj = bh_settings.get("bracket_outside_adjacent", False)
     bracket_style = style
 
     if first is not None and tag_mode is not None:
@@ -118,11 +109,16 @@ class TagSearch(object):
 
     """Searches for tags."""
 
-    def __init__(self, view, bfr, window, center, pattern, match_type, mode):
+    def __init__(
+        self, view, bfr, window, center, pattern,
+        match_type, mode, self_closing_tags, single_tags
+    ):
         """Prepare tag search object."""
 
         self.start = int(window[0])
         self.end = int(window[1])
+        self.self_closing_tags = self_closing_tags
+        self.single_tags = single_tags
         self.center = center
         self.pattern = pattern
         self.match_type = match_type
@@ -132,7 +128,7 @@ class TagSearch(object):
         self.return_prev = False
         self.done = False
         self.view = view
-        self.scope_exclude = sublime.load_settings("bh_core.sublime-settings").get("tag_scope_exclude")
+        self.scope_exclude = sublime.load_settings("bh_tag.sublime-settings").get("tag_scope_exclude")
 
     def scope_check(self, pt):
         """Check if scope is good."""
@@ -168,13 +164,13 @@ class TagSearch(object):
             if not self.match_type:
                 single = bool(m.group(3) != "")
                 if not single and self.mode != 'xhtml':
-                    single = name in single_tags
+                    single = name in self.single_tags
                 if self.mode != 'xhtml':
-                    self_closing = name in self_closing_tags or name.startswith("cf")
+                    self_closing = name in self.self_closing_tags or name.startswith("cf")
                 else:
                     self_closing = False
             else:
-                if self.mode != 'xhtml' and name in single_tags:
+                if self.mode != 'xhtml' and name in self.single_tags:
                     continue
                 single = False
                 self_closing = False
@@ -194,9 +190,12 @@ class TagMatch(object):
     def __init__(self, view, bfr, threshold, first, second, center, outside_adj, mode):
         """Prepare tag match object."""
 
+        tag_settings = sublime.load_settings('bh_tag.sublime-settings')
         self.view = view
         self.bfr = bfr
         self.mode = mode
+        self.self_closing_tags = set(tag_settings.get('self_closing_tags', []))
+        self.single_tags = set(tag_settings.get('single_tags', []))
         tag, tag_type, tag_end = self.get_first_tag(first[0])
         self.left, self.right = None, None
         self.window = None
@@ -239,11 +238,11 @@ class TagMatch(object):
             name = m.group(1).lower()
             single = bool(m.group(3) != "")
             if not single and self.mode != 'xhtml':
-                single = name in single_tags
+                single = name in self.single_tags
             if self.mode == "html":
-                self_closing = name in self_closing_tags
+                self_closing = name in self.self_closing_tags
             elif self.mode == "cfml":
-                self_closing = name in self_closing_tags or name.startswith("cf")
+                self_closing = name in self.self_closing_tags or name.startswith("cf")
             start = m.start(0) + offset
             end = m.end(0) + offset
             tag = TagEntry(start, end, name, self_closing, single)
@@ -300,8 +299,20 @@ class TagMatch(object):
             return self.left, self.right
 
         # Init tag matching objects
-        osearch = TagSearch(self.view, self.bfr, self.window, self.center, START_TAG[self.mode], 0, self.mode)
-        csearch = TagSearch(self.view, self.bfr, self.window, self.center, END_TAG, 1, self.mode)
+        osearch = TagSearch(
+            self.view, self.bfr, self.window,
+            self.center, START_TAG[self.mode],
+            0, self.mode,
+            self.self_closing_tags,
+            self.single_tags
+        )
+        csearch = TagSearch(
+            self.view, self.bfr, self.window,
+            self.center, END_TAG,
+            1, self.mode,
+            self.self_closing_tags,
+            self.single_tags
+        )
 
         # Searching for opening or closing tag to match
         match_type = TAG_OPEN if self.right else TAG_CLOSE

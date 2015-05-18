@@ -44,6 +44,9 @@
     // Match brackets only when the cursor is touching the inside of the bracket
     "match_only_adjacent": false,
 
+    // Outside adjacent bracket matching
+    "bracket_outside_adjacent": true,
+
     // Character threshold to search
     "search_threshold": 5000,
 
@@ -463,30 +466,5 @@
             // "color": "brackethighlighter.quote",
             // "style": "underline"
         }
-    },
-
-    /* Plugin settings */
-
-    // Style to use for matched tags
-    "tag_style": "tag",
-
-    // Scopes to exclude from tag searches
-    "tag_scope_exclude": ["string", "comment"],
-
-    // Determine which style of tag-matching to use in which syntax
-    "tag_mode": {
-        "xhtml": ["XML"],
-        "html": [
-            "HTML",
-            "HTML 5",
-            "PHP",
-            "HTML (Jinja Templates)",
-            "HTML (Rails)",
-            "HTML (Twig)",
-            "laravel-blade",
-            "Handlebars",
-            "AngularJS"
-        ],
-        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     }
 }
