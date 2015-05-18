@@ -44,9 +44,14 @@ class BhCore(object):
     def __init__(
         self, override_thresh=False, count_lines=False,
         adj_only=None, no_outside_adj=False,
-        ignore={}, plugin={}, keycommand=False
+        ignore=None, plugin=None, keycommand=False
     ):
         """Load settings and setup reload events if settings changes."""
+
+        if ignore is None:
+            ignore = {}
+        if plugin is None:
+            plugin = {}
 
         self.settings = sublime.load_settings("bh_core.sublime-settings")
         self.keycommand = keycommand
@@ -57,9 +62,14 @@ class BhCore(object):
 
     def setup(
         self, override_thresh=False, count_lines=False, adj_only=None,
-        no_outside_adj=False, ignore={}, plugin={}
+        no_outside_adj=False, ignore=None, plugin=None
     ):
         """Initialize class settings from settings file and inputs."""
+
+        if ignore is None:
+            ignore = {}
+        if plugin is None:
+            plugin = {}
 
         # Init view params
         self.last_id_view = None
@@ -230,7 +240,7 @@ class BhCore(object):
                     bracket_type,
                     self.search.get_buffer()
                 )
-            except:
+            except Exception:
                 log("Plugin Bracket Find Error:\n%s" % str(traceback.format_exc()))
         return match
 
@@ -258,7 +268,7 @@ class BhCore(object):
                         bh_plugin.BracketRegion(second.begin, second.end),
                         self.search.get_buffer()
                     )
-            except:
+            except Exception:
                 log("Plugin Compare Error:\n%s" % str(traceback.format_exc()))
         return match
 
@@ -322,7 +332,7 @@ class BhCore(object):
                         right = bh_search.BracketEntry(rbracket.begin, rbracket.end, bracket_type)
                     else:
                         right = None
-            except:
+            except Exception:
                 log("Plugin Post Match Error:\n%s" % str(traceback.format_exc()))
 
         return left, right
@@ -420,7 +430,7 @@ class BhCore(object):
 
         # Find brackets inside scope
         bracket = None
-        left, right, scope_adj = self.match_brackets(sel, scope)
+        left, right = self.match_brackets(sel, scope)[:2]
 
         regions = [sublime.Region(sel.a, sel.b)]
 
@@ -508,7 +518,7 @@ class BhCore(object):
                 scope_search = self.search.new_scope_search(
                     center, before_center, scope, adj_dir
                 )
-            except:
+            except Exception:
                 # log(str(traceback.format_exc()))
                 scope_count += 1
                 continue
@@ -797,7 +807,7 @@ class BhDebugCommand(sublime_plugin.ApplicationCommand):
         else:
             settings.set("debug_enable", set_value)
 
-    def is_checked(self, set_value=None):
+    def is_checked(self):
         """Check if command should be checked in menu."""
 
         return sublime.load_settings("bh_core.sublime-settings").get('debug_enable', False)

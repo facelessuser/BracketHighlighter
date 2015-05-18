@@ -360,7 +360,7 @@ class BracketSearch(object):
             try:
                 start = m.start(g)
                 end = m.end(g)
-            except:
+            except Exception:
                 continue
 
             match_type = int(not bool(g % 2))

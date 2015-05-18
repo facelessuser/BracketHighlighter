@@ -14,7 +14,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
 
     """Select Bracket plugin."""
 
-    def run(self, edit, name, select='', tags=DEFAULT_TAGS, always_include_brackets=False, alternate=False):
+    def run(self, edit, name, select='', tags=None, always_include_brackets=False, alternate=False):
         """
         Select the content between brackets.
 
@@ -23,6 +23,8 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
         parent.
         """
 
+        if tags is None:
+            tags = DEFAULT_TAGS
         current_left, current_right = self.selection[0].begin(), self.selection[0].end()
         left, right = self.left, self.right
         first, last = left.end, right.begin

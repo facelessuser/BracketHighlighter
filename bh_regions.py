@@ -86,42 +86,38 @@ def select_bracket_icons(option, icon_path):
             pth = "%s/%s.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             icon = pth
-        except:
+        except Exception:
             pass
         try:
             pth = "%s/%s_small.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             small_icon = pth
-        except:
+        except Exception:
             pass
         try:
             pth = "%s/%s_open.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             open_icon = pth
-        except:
+        except Exception:
             open_icon = icon
-            pass
         try:
             pth = "%s/%s_open_small.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             small_open_icon = pth
-        except:
+        except Exception:
             small_open_icon = small_icon
-            pass
         try:
             pth = "%s/%s_close.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             close_icon = pth
-        except:
+        except Exception:
             close_icon = icon
-            pass
         try:
             pth = "%s/%s_close_small.png" % (icon_path, option)
             sublime.load_binary_resource(pth)
             small_close_icon = pth
-        except:
+        except Exception:
             small_close_icon = small_icon
-            pass
 
     return icon, small_icon, open_icon, small_open_icon, close_icon, small_close_icon
 

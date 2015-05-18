@@ -80,7 +80,7 @@ def load_modules(obj, loaded):
         obj["validate"] = getattr(module, "validate", None)
         obj["highlighting"] = getattr(module, "highlighting", None)
         loaded.add(plib)
-    except:
+    except Exception:
         log("Could not load module %s\n%s" % (plib, str(traceback.format_exc())))
         raise
 

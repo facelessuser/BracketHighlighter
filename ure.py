@@ -13,13 +13,13 @@ import sys
 from os.path import exists, join
 try:
     import unicodedata
-except:
+except Exception:
     from os.path import dirname
     sys.path.append(dirname(sys.executable))
     import unicodedata
 try:
     import cpickle as pickle
-except:
+except Exception:
     import pickle
 from os import unlink
 PY3 = sys.version_info[0] >= 3
@@ -66,7 +66,7 @@ def _build_unicode_property_table(unicode_range):
         try:
             c = uchr(i)
             p = unicodedata.category(c)
-        except:
+        except Exception:
             continue
         if p[0] not in table:
             table[p[0]] = {}
@@ -75,7 +75,7 @@ def _build_unicode_property_table(unicode_range):
         table[p[0]][p[1]].append(c)
 
     # Join as one string
-    for k1, v1 in table.items():
+    for v1 in table.values():
         for k2, v2 in v1.items():
             v1[k2] = ''.join(v2)
 
@@ -160,7 +160,6 @@ def parse_unicode_properties(re_pattern):
     """Replace regex property notation with unicode values."""
 
     # Init unicode table if it has not already been initialized
-    global _loaded
     if not _loaded:
         _init_unicode()
 
@@ -181,7 +180,7 @@ def parse_unicode_properties(re_pattern):
     return ure_pattern
 
 
-def compile(pattern, flags=0):
+def compile(pattern, flags=0):  # pylint: disable=redefined-builtin
     """compile after parsing unicode properties and set flag to unicode."""
 
     return re.compile(parse_unicode_properties(pattern), flags | re.UNICODE)
@@ -226,7 +225,7 @@ def sub(pattern, repl, string, count=0, flags=0):
 def subn(pattern, repl, string, count=0, flags=0):
     """subn after parsing unicode properties and set flag to unicode."""
 
-    re.subn(parse_unicode_properties(pattern), repl, string, flags | re.UNICODE)
+    re.subn(parse_unicode_properties(pattern), repl, string, count, flags | re.UNICODE)
 
 
 # _init_unicode()

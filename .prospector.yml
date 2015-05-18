@@ -1,0 +1,14 @@
+strictness: medium
+doc-warnings: false
+test-warnings: false
+max-line-length: 120
+ignore-patterns:
+  - docs
+  - docs_theme
+dodgy:
+  run: false
+pylint:
+  disable:
+    - import-error
+  options:
+    ignored-modules: bracketremove
