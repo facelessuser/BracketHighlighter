@@ -1,5 +1,5 @@
 strictness: medium
-doc-warnings: false
+doc-warnings: true
 test-warnings: false
 max-line-length: 120
 ignore-patterns:
@@ -7,6 +7,9 @@ ignore-patterns:
   - docs_theme
 dodgy:
   run: false
+pep257:
+  disable:
+    - D202
 pylint:
   disable:
     - import-error

@@ -32,7 +32,7 @@ Currently BH supports the following brackets out of the box:
 BH also supports highlighting basic sub brackets `(), [], {}` within supported regex and strings.
 
 # General Commands
-BH has a couple of additional features built-in.
+BH has a couple of additional features built-in which are found in the command palette.
 
 ## Toggle Global Enable
 The `bh_toggle_enable` command enables and disables BH globally.
@@ -44,7 +44,7 @@ The `bh_toggle_enable` command enables and disables BH globally.
 BH is also extendable via plugins and provides a number of built in Bracket Plugins that take advantage of BH&rsquo;s matching to provide additional features.  Most plugin features are available via the `Tools->Packages->BracketHighlighter` menu or the command palette.  To see how to configure shortcuts, see the `Example.sublime-settings` file.
 
 ## Bracket Select Plugin
-This plugin changes the selection inside between the brackets.  It can select the content or move the bracket to the opening and closing bracket.  Behavior is slightly modified for tags.
+This plugin changes the selection inside between the brackets.  It can select the content or move the bracket to the opening or closing bracket.  Behavior is slightly modified for tags.
 
 ## Swap Brackets Plugin
 This plugin allows the swapping of the current brackets to another type of bracket.  When selected, it will displayed the bracket options that allowed for the current language.  Allowed brackets are defined in `bh_swapping.sublime-settings`.
