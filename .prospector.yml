@@ -13,5 +13,3 @@ pep257:
 pylint:
   disable:
     - import-error
-  options:
-    ignored-modules: bracketremove
