@@ -3,10 +3,10 @@ Tweaking BracketHighlighter.
 
 ---
 
-# Overview
+## Overview
 BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and style rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
 
-# Core Settings
+## Core Settings
 Style and color will be discussed in greater depth in the [`Configuring Highlight Style`](#configuring-highlight-style) section.  But there are a number of general setting you can adjust to change how things look or work.  These settings are found in `bh_core.sublime-settings`.
 
 ## Visual Settings
@@ -157,7 +157,7 @@ This a boolean which disables gutter icons when doing multiple selections.
     "no_multi_select_icons": false,
 ```
 
-# Tag Plugin Settings
+## Tag Plugin Settings
 Tag settings found in `bh_core.sublime-settings`.
 
 ### tag_style
@@ -211,7 +211,7 @@ These are tag names that never have a closing tag.
     ]
 ```
 
-# Swap Brackets Plugin Settings
+## Swap Brackets Plugin Settings
 Swappable brackets for a given language can be defined in `bh_swapping.sublime-settings`.  Swap rules are found under the key `swapping` where `swapping` is an array of language swap rules.
 
 ```js
@@ -290,13 +290,13 @@ Within the `brackets`, you can specify the where the cursor(s) will appear by us
 
 Within the `brackets`, you can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax `${BH_TAB:optional text}`.
 
-# Configuring Brackets
+## Configuring Brackets
 BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 !!! tip "Tip"
     Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
-## Configuring Brackets Rules
+### Configuring Brackets Rules
 Brackets are defined under `brackets` in `bh_core.sublime-settings`.
 
 Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
@@ -343,7 +343,7 @@ Angle and Curly bracket will be used as an example (not all options may be shown
 | find_in_sub_search&nbsp;(optional) | This rule should be included when doing sub bracket matching in `scope_brackets` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a `scope_bracket`. |
 | ignore_string_escape&nbsp;(optional) | Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set. |
 
-## Configuring Scope Brackets Rules
+### Configuring Scope Brackets Rules
 Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
 
 Python Single Quote bracket will be used as an example (not all options are shown in this example):
@@ -375,7 +375,7 @@ Python Single Quote bracket will be used as an example (not all options are show
 | enabled | Disable or enable rule. |
 | plugin_library&nbsp;(optional) | Defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins). |
 
-## Bracket Rule Management
+### Bracket Rule Management
 In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
 
 BracketHighlighter now let's you add or modify existing rules without overriding the entire rule set or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
@@ -496,7 +496,7 @@ So, unless you are forking BH to pull request a change to the default rules, you
 
 This will allow you to make changes, but still receive new updated rules.
 
-# Configuring Highlight Style
+## Configuring Highlight Style
 Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you give a style definition to.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
 
 There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern (see `curly` below and compare to the special style definitions; format is the same)  All custom styles follow this pattern.  See description below:
@@ -570,7 +570,7 @@ And then use the scope:
         },
 ```
 
-## My personal configurations
+### My personal configurations
 
 If you are curious about my personal configuration, here it is. The color scheme I use is from my [Aprosopo theme](https://github.com/facelessuser/Aprosopo).
 
@@ -740,7 +740,7 @@ If you are curious about my personal configuration, here it is. The color scheme
 </dict>
 ```
 
-# Bracket Plugin API
+## Bracket Plugin API
 There are two kinds of plugins that can be written `definition` plugins (plugins attached to bracket definitions via the `plugin_library` option) or `run instance` plugins (plugins that are that are fed in the BracketHighligher via the command parameter `plugin`).
 
 Bracket plugins use `BracketRegions`.
@@ -796,10 +796,10 @@ class BracketRegion(begin_pt, end_pt)
         |--------|-------------|
         | SublimeRegion | A Sublime Region. |
 
-## 'Definition' Plugins
+### 'Definition' Plugins
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kinds of plugins have three methods you can provide: `post_match`, `compare`, and/or `validate`.
 
-### validate
+#### validate
 def validate(name, bracket, bracket_size, bfr)
 : 
     `validate` before comparing it to its corresponding opening or closing side.  This is used to determine perform additional validation on a found bracket.  For example, lets say you have a bracket that is case sensitive.  BH uses a case insensitive search.  With validate, you can ensure the originally found bracket matches the desired case.
@@ -837,7 +837,7 @@ def validate(name, bracket, bracket_size, bfr)
 
     ```
 
-### compare
+#### compare
 def compare(name, first, second, bfr)
 : 
 
@@ -864,7 +864,7 @@ def compare(name, first, second, bfr)
         return "end" + bfr[first.begin:first.end].lower() == bfr[second.begin:second.end].lower()
     ```
 
-### post_match
+#### post_match
 def post_match(name, style, first, second, center, bfr, threshold)
 : 
     `post_match` is run after the brackets have been matched.  You can do things like alter the highlighting region and change the bracket_style if needed. You should not change the text in the view during this operation.
@@ -924,7 +924,7 @@ def post_match(name, style, first, second, center, bfr, threshold)
         return left, right, bracket_style
     ```
 
-### highlighting
+#### highlighting
 def highlighting(view, name, style, right)
 : 
     `highlighting` is the last hook that gets run.  This is at a point when BH no longer cares about what the *actual* bracket region is, so it is safe to modify it for highlighting purposes.  The view really shouldn't be modified here.
@@ -964,7 +964,7 @@ def highlighting(view, name, style, right)
         return left, right
     ```
 
-## 'Run Instance' Plugins
+### 'Run Instance' Plugins
 `Run instance` plugins are fed into the command executing a BracketHighlighter match via the `plugin` parameter.
 
 Example of run instance plugin getting called:

@@ -3,7 +3,7 @@ Steps for contributing and getting support.
 
 ---
 
-# Overview
+## Overview
 
 | Sublime Versions | Description |
 |------------------|-------------|
@@ -22,7 +22,7 @@ Contribution from the community is encouraged and can be done in a variety of wa
 
     Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions and guidance to help those who may struggle to create rules for their specific language of interest.
 
-# Bug Reports
+## Bug Reports
 
 1. Please **read the documentation** and **search the issue tracker** to try to find the answer to your question **before** posting an issue.
 
@@ -38,17 +38,17 @@ Contribution from the community is encouraged and can be done in a variety of wa
 
 3. Be prepared to answer questions and provide additional information if required.  Issues in which the creator refuses to respond to follow up questions will be marked as stale and closed.
 
-# Reviewing Code
+## Reviewing Code
 Take part in reviewing pull requests and/or reviewing direct commits.  Make suggestions to improve the code and discuss solutions to overcome weakness in the algorithm.
 
-# Pull Requests
+## Pull Requests
 Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be mindful of.
 
 Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
 
 Feel free to use a virtual environment if you are concerned about installing any of the Python packages.  In the future, I may use tox, but as I currently only test on Python 3.3, I wanted to keep things simple.
 
-## Running Validation Tests
+### Running Validation Tests
 
 !!! tip "Tip"
     If you are running Sublime on a OSX or Linux/Unix system, you run all tests by by running the shell script (assuming you have installed your environment fulfills all requirements below):
@@ -88,7 +88,7 @@ There are a couple of dependencies that must be present before running the tests
     flake8 .
     ```
 
-# Documentation Improvements
+## Documentation Improvements
 A ton of time has been not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
 
 I currently use a combination of using [mkdocs][mkdocs.org] with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve`.

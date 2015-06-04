@@ -3,7 +3,7 @@ Installing BracketHighlighter.
 
 ---
 
-# Package Control
+## Package Control
 The recommended way to install BracketHighlighter is via [Package Control](https://packagecontrol.io/).  Package Control will install the correct branch on your system and keep it up to date.
 
 1. Ensure Package Control is installed.  Instructions are found [here](https://packagecontrol.io/installation).
@@ -16,7 +16,7 @@ The recommended way to install BracketHighlighter is via [Package Control](https
 
 5. Enjoy!
 
-# Git Cloning
+## Git Cloning
 
 !!! warning "Warning"
     This is not the recommended way to install BracketHighlighter for the casual user as it requires the user to know which branch to install, know how to use git, and **will not** get automatically updated.

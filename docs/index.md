@@ -3,7 +3,7 @@ A bracket matcher and highlighter for Sublime.
 
 ---
 
-# Overview
+## Overview
 Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `#!xml <tag></tag>`, and even custom brackets.
 
 This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available).  I forked this to fix some issues I had and to add some features I had wanted.  I also wanted to improve the efficiency of the matching.
@@ -12,7 +12,7 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 
 <img src="http://dl.dropbox.com/u/342698/BracketHighlighter/Example1.png" border="0">
 
-# Feature List
+## Feature List
 - Customizable to highlight almost any bracket
 - Customizable bracket highlight style
 - High visibility bracket highlight mode
@@ -25,7 +25,7 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 - Toggle bracket escape mode for string brackets (regex|string)
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selections with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold content between brackets, toggle through tag attribute selection, select both the opening and closing tag name to change both simultaneously.
 
-# Credits
+## Credits
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration for this project.
 - BoundInCode: for his Tag icon
 

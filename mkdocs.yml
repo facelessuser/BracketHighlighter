@@ -2,31 +2,31 @@ site_name: BracketHighlighter Documentation
 repo_url: https://github.com/facelessuser/BracketHighlighter
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 pages:
-- About BracketHighlighter: index.md
-- Installation: installation.md
-- User Guide:
-    - Usage: usage.md
-    - Customizing: customize.md
-- Contributing & Support: contributing.md
-- License: license.md
+  - About BracketHighlighter: index.md
+  - Installation: installation.md
+  - User Guide:
+      - Usage: usage.md
+      - Customizing: customize.md
+  - Contributing & Support: contributing.md
+  - License: license.md
 theme: readthedocs
 theme_dir: doc_theme
 markdown_extensions:
-- markdown.extensions.toc
-- markdown.extensions.extra
-- markdown.extensions.admonition
-- markdown.extensions.smarty
-- markdown.extensions.nl2br
-- markdown.extensions.codehilite:
-    guess_lang: false
-- pymdownx.inlinehilite
-- pymdownx.magiclink
-- pymdownx.betterem
-- pymdownx.tilde
-- pymdownx.caret
-- pymdownx.smartsymbols
-- pymdownx.githubemoji
-- pymdownx.tasklist
-- pymdownx.superfences
-- pymdownx.progressbar
-- pymdownx.headeranchor
+  - markdown.extensions.toc
+  - markdown.extensions.extra
+  - markdown.extensions.admonition
+  - markdown.extensions.smarty
+  - markdown.extensions.nl2br
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.betterem
+  - pymdownx.tilde
+  - pymdownx.caret
+  - pymdownx.smartsymbols
+  - pymdownx.githubemoji
+  - pymdownx.tasklist
+  - pymdownx.superfences
+  - pymdownx.progressbar
+  - pymdownx.headeranchor
