@@ -7,7 +7,7 @@ pages:
   - User Guide:
       - Usage: usage.md
       - Customizing: customize.md
-  - Contributing & Support: contributing.md
+  - Contributing &amp; Support: contributing.md
   - License: license.md
 theme: readthedocs
 theme_dir: doc_theme
