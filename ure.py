@@ -60,6 +60,7 @@ def set_cache_directory(pth, prefix=""):
 
 def _build_unicode_property_table(unicode_range):
     """Build property table for unicode range."""
+
     table = {}
     p = None
     for i in range(*unicode_range):
@@ -84,6 +85,7 @@ def _build_unicode_property_table(unicode_range):
 
 def _build_unicode_key_pattern():
     """Build regex key pattern."""
+
     unicode_prop = r"\p\{(%s)\}"
     unicode_keys = []
     for k1, v1 in _unicode_properties.items():
