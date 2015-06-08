@@ -4,16 +4,16 @@ Tweaking BracketHighlighter.
 ---
 
 ## Overview
-BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and style rules live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
+BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step to customizing the existing rules and settings is to create a `bh_core.sublime-settings` in your `User` folder.  This is where the bracket and style rules and settings live.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.
 
 ## Core Settings
-Style and color will be discussed in greater depth in the [`Configuring Highlight Style`](#configuring-highlight-style) section.  But there are a number of general setting you can adjust to change how things look or work.  These settings are found in `bh_core.sublime-settings`.
+Styles and colors will be discussed in greater depth in the [Configuring Highlight Style](#configuring-highlight-style) section.  But there are a number of general setting you can adjust to change how things look or work.  These settings are found in `bh_core.sublime-settings`.
 
 ## Visual Settings
 These are the settings related to the visual appearance of BH.
 
 ### show_in_minimap
-This will show highlighted brackets in the minimap.  This will work with all highlight styles accept `underline`; `thin_underline` has no issues.
+Shows highlighted brackets in the minimap.  This will work with all highlight styles except `underline`; `thin_underline` has no issues.
 
 ```js
     // Show brackets in the minimap.
@@ -21,7 +21,7 @@ This will show highlighted brackets in the minimap.  This will work with all hig
 ```
 
 ### show_unmatched
-This setting is a boolean, and when possible, this will display a special highlight for brackets that cannot be matched.
+Displays a special highlight for brackets that cannot be matched.
 
 ```js
     // When only either the left or right bracket can be found
@@ -30,7 +30,7 @@ This setting is a boolean, and when possible, this will display a special highli
 ```
 
 ### show_unmatched_exceptions
-This is a list of languages in which the `show_unmatched` option will be reversed.
+List of languages in which the `show_unmatched` option logic will be reversed.
 
 ```js
     // Do the opposite of "show_unmatched" for the languages listed below
@@ -38,7 +38,7 @@ This is a list of languages in which the `show_unmatched` option will be reverse
 ```
 
 ### content_highlight_bar
-This is an experimental setting which can enable displaying a vertical bar from the line containing the opening bracket to the line with the closing bracket.  When [`align_content_highlight_bar`](#align_content_highlight_bar) set to `false`, the bar will be shown on the first column regardless of indent level of the brackets.  When `align_content_highlight_bar` is set to `true`, the bar will be aligned and the bracket indent level.
+An experimental setting which can enable the display of a vertical bar that extends from the line containing the opening bracket to the line with the closing bracket.  Takes a boolean `true` or `false`.  When [align_content_highlight_bar](#align_content_highlight_bar) is set to `false`, the bar will be shown on the first column regardless of indent level of the brackets.  When `align_content_highlight_bar` is set to `true`, the bar will be aligned at the bracket indent level.
 
 ```js
     // Experimental: Creates a visible bar at the beginning of all lines between
@@ -47,11 +47,11 @@ This is an experimental setting which can enable displaying a vertical bar from 
 ```
 
 ### align_content_highlight_bar
-This setting is a boolean which will modify the behavior of `content_highlight_bar` and draw the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations though:
+Modifies the behavior of [content_highlight_bar](#content-highlight-bar) and draws the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations:
 
-    - Content bar cannot extend through a line an empty line unless the bar is on the first column.  This is a limitation of the Sublime API.
+- The content bar cannot extend through an empty line unless the bar is on the first column.  This is a limitation of the Sublime API.  Empty lines will have cause a gap in the bar.
 
-    - Content bar will not be shown on a line where non-whitespace characters cross the bar.
+- The content bar will not be shown on a line where non-whitespace characters cross the bar.
 
 ```js
     // Experimental: Align the content highlight bar at the bracket indent level
@@ -59,7 +59,7 @@ This setting is a boolean which will modify the behavior of `content_highlight_b
 ```
 
 ### high_visibility_enabled_by_default
-This enables high visibility mode by default.  High visibility mode highlights not only the bracket but the content between as well, but it is disabled by default and must be toggled on.  This reverses the behavior and has it on by default and must be toggled off.
+Enables high visibility mode by default.  High visibility mode highlights not only the bracket but the content between as well, but it is disabled by default and must be toggled on to be used.  This reverses the behavior and has it on by default. Takes a boolean `true` or `false`.
 
 ```js
     // Enable high visibility by default when sublime starts up
@@ -67,7 +67,7 @@ This enables high visibility mode by default.  High visibility mode highlights n
 ```
 
 ### high_visibility_style
-This setting modifies the styling of high visibility mode.  The available options are `solid`, `outline`, `underline`, `thin_underline`, `squiggly`, and `stippled`.
+Modifies the styling of high visibility mode.  The available options are `solid`, `outline`, `underline`, `thin_underline`, `squiggly`, and `stippled`.
 
 ```js
     // High visibility style and color for high visibility mode
@@ -76,13 +76,13 @@ This setting modifies the styling of high visibility mode.  The available option
 
 
 ### high_visibility_color
-This modifies the color of the high visibility color.  There are three types of settings you can use:
+Modifies the high visibility color.  There are three types of settings you can use:
 
-    - `__default__` is a special reserved value which will use the color set in `bracket_styles` (see [Configuring Highlight Style](#configuring-highlight-style) for more info).
+- `__default__` is a special reserved value which will use the color set in `bracket_styles`.  See [Configuring Highlight Style](#configuring-highlight-style) for more info.
 
-    - `__bracket__` is a special reserved value which will inherit the defined color of the highlighted bracket.
+- `__bracket__` is a special reserved value which will inherit the defined color of the highlighted bracket.
 
-    - Any valid scope found in your color scheme.
+- Any valid scope found in your color scheme.
 
 ```js
     // Color for high visibility mode
@@ -93,7 +93,7 @@ This modifies the color of the high visibility color.  There are three types of 
 These settings affect the matching behavior.
 
 ### match_only_adjacent
-This will will only match and highlight brackets when the cursor is adjacent to a bracket.  This is set with either `true` or `false`.
+Causes BH to only match and highlight brackets when the cursor is adjacent to a bracket.
 
 ```js
     // Match brackets only when the cursor is touching the inside of the bracket
@@ -101,7 +101,7 @@ This will will only match and highlight brackets when the cursor is adjacent to 
 ```
 
 ### bracket_outside_adjacent
-This is a boolean which augments the matching behavior and will trigger matching when the cursor is adjacent to a cursor on the outside (not between the brackets).
+Augments the matching behavior and will trigger matching when the cursor is adjacent to a cursor on the outside (not between the brackets).
 
 ```js
     // Outside adjacent bracket matching
@@ -109,7 +109,7 @@ This is a boolean which augments the matching behavior and will trigger matching
 ```
 
 ### bracket_string_escape_mode
-Is a setting that takes a string value.  When matching sub-brackets inside strings, this changes the matching behavior in regards to escaped brackets.  This takes two values `string` and `regex`.
+Depending on the setting, BH will either match sub-brackets inside strings with traditional string escape logic, or will match sub-brackets in strings with regex escape logic.  Takes a string value of either `regex` or `string`.
 
 ```js
     // Set mode for string escapes to ignore (regex|string)
@@ -117,7 +117,7 @@ Is a setting that takes a string value.  When matching sub-brackets inside strin
 ```
 
 ### search_threshold
-This setting is numerical value which sets the search threshold.  The search threshold determines how many characters BH will search through to find matching brackets before giving up.  This setting only affects auto-matching and not on-demand calls from the command palette and menu. By default, this value is very conservative and can be increased.  Keep in mind that very large values may impact performance.
+Sets the search threshold.  The search threshold determines how many characters BH will search through to find matching brackets before giving up.  This setting only affects auto-matching and not on-demand calls from the command palette and menu. By default, this value is very conservative and can be increased.  Keep in mind that a very large values may impact performance.
 
 ```js
     // Character threshold to search
@@ -125,7 +125,7 @@ This setting is numerical value which sets the search threshold.  The search thr
 ```
 
 ### ignore_threshold
-This boolean will cause [`search_threshold`](#search_threshold)'s limit to be ignored.  It is not advised to use this as very large files may cause a noticeable performance hit, but has been made available due to a number of requests.
+Causes [search_threshold's](#search_threshold) limit to be ignored.  It is not advised to use this as very large files may cause a noticeable performance hit, but has been made available due to a number of requests.
 
 ```js
     // Ignore threshold
@@ -133,7 +133,7 @@ This boolean will cause [`search_threshold`](#search_threshold)'s limit to be ig
 ```
 
 ### auto_selection_threshold
-This setting is aimed at helping performance.  It is a numerical value which controls the maximum number of simultaneous auto-matched brackets that are allowed.  This setting will not be considered when running on-demand calls via the command palette or menu.
+A numerical value which controls the maximum number of simultaneous auto-matched brackets that are allowed.  This setting will not be considered when running on-demand calls via the command palette or menu.
 
 ```js
     // Set max number of multi-select brackets that will be searched automatically
@@ -141,7 +141,7 @@ This setting is aimed at helping performance.  It is a numerical value which con
 ```
 
 ### kill_highlight_on_threshold
-This is a boolean which can be enabled to completely kill highlighting when [`auto_selection_threshold`](#auto-selection-threshold).  When disabled, BH will just highlight up to the threshold limit.
+Completely kills highlighting when [auto_selection_threshold](#auto_selection_threshold).  When disabled, BH will just highlight up to the threshold limit.
 
 ```js
     // Enable this to completely kill highlighting if "auto_selection_threshold"
@@ -150,7 +150,7 @@ This is a boolean which can be enabled to completely kill highlighting when [`au
 ```
 
 ### no_multi_select_icons
-This a boolean which disables gutter icons when doing multiple selections.
+Disables gutter icons when doing multiple selections.
 
 ```js
     // Disable gutter icons when doing multi-select
@@ -161,7 +161,7 @@ This a boolean which disables gutter icons when doing multiple selections.
 Tag settings found in `bh_core.sublime-settings`.
 
 ### tag_style
-This setting is the allows you to set the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles` (see [Configuring Highlight Style](#configuring-highlight-style) for more info).
+Sets the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles`.  See [Configuring Highlight Style](#configuring-highlight-style) for more info.
 
 ```js
     // Style to use for matched tags
@@ -169,7 +169,7 @@ This setting is the allows you to set the highlight style for the tag plugin.  T
 ```
 
 ### tag_scope_exclude
-This excludes certain scopes from being evaluated when searching for tags.
+Excludes certain scopes from being evaluated when searching for tags.
 
 ```js
     // Scopes to exclude from tag searches
@@ -177,7 +177,7 @@ This excludes certain scopes from being evaluated when searching for tags.
 ```
 
 ### tag_mode
-This setting contains a dictionary of three modes: `xhtml`, `html`, `cfml`.  Each mode tweaks the tag matching for the respective type.  Each entry in the dictionary consists of a list of languages that should be evaluated as that type.
+A directory that contains a dictionary of three modes: `xhtml`, `html`, `cfml`.  Each mode tweaks the tag matching for the respective mode.  Each entry in the dictionary consists of a list of languages that should be evaluated in that mode.
 
 ```js
     // Determine which style of tag-matching to use in which syntax
@@ -189,7 +189,7 @@ This setting contains a dictionary of three modes: `xhtml`, `html`, `cfml`.  Eac
 ```
 
 ### self_closing_tags
-These are tag names that will be evaluated as self closing.
+A list of tag names that will be evaluated as self closing.
 
 ```js
     // Self closing HTML tags
@@ -200,7 +200,7 @@ These are tag names that will be evaluated as self closing.
 ```
 
 ### single_tags
-These are tag names that never have a closing tag.
+A list of tag names that never have a closing tag.
 
 ```js
     // Tags that never have a closing
@@ -242,19 +242,17 @@ Each language rule contains the following attributes:
 | language_filter | string | A string that specifies if the `language_list` is either a `whitelist` or `blacklist`. |
 | entries | [dict] | An array of dictionaries, where each dictionary describes a type of bracket that can be swapped to. |
 
-Within the language rules under `entries`, swap entries are defined.  Each entry represents a bracket you can swap to.
+The `entries` key is used to define the related bracket swap rules for the given langauge.  Each entry represents a bracket you can swap to.
 
 | Entry | Type | Description |
 |-------|------|-------------|
 | name | string | The name of the entry as it will be seen in the command palette. |
 | brackets | [string] | An array consisting of a string that represents the opening bracket and a string that represents the closing bracket. |
 
-Within the `brackets`, you can specify the where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`.
-
-Within the `brackets`, you can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax `${BH_TAB:optional text}`.
+Within the `brackets` key, you can specify the where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`.  You can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered at the tab stop using the following syntax: `${BH_TAB:optional text}`.
 
 ## Wrap Brackets Plugin Settings
-Wrapping brackets for a given language can be defined in `bh_wrapping.sublime-settings`.  Wrap rules are found under the key `wrapping` where `wrapping` is an array of language swap rules.
+Wrapping brackets for a given language can be defined in `bh_wrapping.sublime-settings`.  Wrap rules are found under the key `wrapping` where `wrapping` is an array of language wrap rules.
 
 ```js
     "wrapping": [
@@ -278,7 +276,7 @@ Each language rule contains the following attributes:
 | language_filter | string | A string that specifies if the `language_list` is either a `whitelist` or `blacklist`. |
 | entries | [dict] | An array of dictionaries, where each dictionary describes a type of bracket that can be used to wrap the selection. |
 
-Within the language rules under `entries`, wrap entries are defined.  Each entry represents a bracket you can wrap the selection with.
+The `entries` key is used to define the related bracket warp rules for the given langauge.  Each entry represents a bracket you can wrap the selection with.
 
 | Entry | Type | Description |
 |-------|------|-------------|
@@ -286,20 +284,18 @@ Within the language rules under `entries`, wrap entries are defined.  Each entry
 | brackets | [string] | An array consisting of a string that represents the opening bracket and a string that represents the closing bracket. |
 | insert_style | [string] | An array consisting of allowed insertion styles.  Allowed insertion styles are: `inline`, `block`, and `indent_block`.  Default is `#!js ['inline']`. |
 
-Within the `brackets`, you can specify the where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`.
-
-Within the `brackets`, you can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax `${BH_TAB:optional text}`.
+Within the `brackets` key, you can specify where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`. You can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax: `${BH_TAB:optional text}`.
 
 ## Configuring Brackets
-BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` (search file for scope regions and then use regex to test for opening and closing brackets) and `brackets` (use regex to find opening and closing brackets).  `bracket` type should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and not distinguishable form one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
+BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` which search the file for scope regions and then use regex to test for opening and closing brackets, and `brackets` which use regex to find opening and closing brackets.  `brackets` type rules should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and are not easily distinguishable from one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 !!! tip "Tip"
-    Brackets can be modified or even added without copying the entire bracket rule lists to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
+    Brackets can be modified, or even added, without copying the entire bracket rule list to the user settings.  See [Bracket Rule Management](#bracket-rule-management) for more info.
 
 ### Configuring Brackets Rules
 Brackets are defined under `brackets` in `bh_core.sublime-settings`.
 
-Angle and Curly bracket will be used as an example (not all options may be shown in these examples):
+`angle` and `curly` brackets will be used as an example (not all options may be shown in these examples):
 
 ```javascript
         {
@@ -346,7 +342,7 @@ Angle and Curly bracket will be used as an example (not all options may be shown
 ### Configuring Scope Brackets Rules
 Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
 
-Python Single Quote bracket will be used as an example (not all options are shown in this example):
+`py_single_quote` bracket will be used as an example (not all options are shown in this example):
 
 ```javascript
         {
@@ -378,7 +374,7 @@ Python Single Quote bracket will be used as an example (not all options are show
 ### Bracket Rule Management
 In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
 
-BracketHighlighter now let's you add or modify existing rules without overriding the entire rule set or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
+BracketHighlighter now lets you add or modify existing rules without overriding the entire rule set, or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
 
 ```js
     "user_scope_brackets": [],
@@ -485,21 +481,19 @@ And if you run the debug command again, you will see that the position has chang
         {"name": "php_angle", "position": 6},
 ```
 
-This can be used to adjust the position of default rules from your user settings as well as shown by overrides above.
+This can be used to adjust the position of default rules from your user settings as seen in the overrides above.
 
-So, unless you are forking BH to pull request a change to the default rules, you can now modify the rules all in these two settings without copying or touching the default rules:
+So, unless you are forking BH to pull request a change to the default rules, you can now modify the rules in just these two settings without copying or touching the default rules. This will allow you to make changes, but still receive new updated rules.
 
 ```js
     "user_scope_brackets": [],
     "user_brackets": [],
 ```
 
-This will allow you to make changes, but still receive new updated rules.
-
 ## Configuring Highlight Style
-Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you give a style definition to.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
+Each bracket definition (described in `Configuring Scope Brackets` and `Configuring Brackets`) has a `style` setting that you can assign a specific style to.  The name of the style corresponds to a style definition.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
 
-There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern (see `curly` below and compare to the special style definitions; format is the same)  All custom styles follow this pattern.  See description below:
+There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern.  You can look at `curly` below and compare to the special style definitions; the format is the same.  All custom styles follow this pattern.  See description below:
 
 ```javascript
         // "default" style defines attributes that
@@ -575,7 +569,7 @@ And then use the scope:
 If you are curious about my personal configuration, here it is. The color scheme I use is from my [Aprosopo theme](https://github.com/facelessuser/Aprosopo).
 
 !!! note "Note"
-    If a scope is not defined, it won't change the color. For instance, below I assign the hash rule for C/C++ preprocessors conditionals to `brackethighlighter.c_define`, but I don't have `brackethighlighter.c_define` in my theme `<dict>`. So it will look like the default color, white.
+    If a scope is not defined, it won't change the color. For instance, below I assign the hash rule for C/C++ preprocessors conditionals to `brackethighlighter.c_define`, but I don't have `brackethighlighter.c_define` in my theme `<dict>`. So it will look like the default color for this theme, white.
 
 
 **My personal conf: bh_core.sublime-settings**
@@ -741,7 +735,7 @@ If you are curious about my personal configuration, here it is. The color scheme
 ```
 
 ## Bracket Plugin API
-There are two kinds of plugins that can be written `definition` plugins (plugins attached to bracket definitions via the `plugin_library` option) or `run instance` plugins (plugins that are that are fed in the BracketHighligher via the command parameter `plugin`).
+There are two kinds of plugins that can be written `definition` plugins (plugins attached to bracket definitions via the `plugin_library` option) or `run instance` plugins (plugins that are that are fed directly into the BracketHighligher command via the command parameter `plugin`).
 
 Bracket plugins use `BracketRegions`.
 
@@ -802,7 +796,7 @@ These are plugins that are attached to the bracket definition and aid in process
 #### validate
 def validate(name, bracket, bracket_size, bfr)
 : 
-    `validate` before comparing it to its corresponding opening or closing side.  This is used to determine perform additional validation on a found bracket.  For example, lets say you have a bracket that is case sensitive.  BH uses a case insensitive search.  With validate, you can ensure the originally found bracket matches the desired case.
+    `validate` is run before comparing the bracket to its corresponding opening or closing partner.  This is used to perform additional validation on a found bracket.  For example, lets say you have a bracket that is case sensitive.  BH uses a case insensitive search, so with validate, you can ensure the originally found bracket matches the desired case.
 
     **Parameters**:
 
@@ -965,7 +959,7 @@ def highlighting(view, name, style, right)
     ```
 
 ### 'Run Instance' Plugins
-`Run instance` plugins are fed into the command executing a BracketHighlighter match via the `plugin` parameter.
+`Run instance` plugins are fed into the BracketHighlighter command via the `plugin` parameter.  They are executed after a match is made.
 
 Example of run instance plugin getting called:
 ```javascript
@@ -986,7 +980,7 @@ Example of run instance plugin getting called:
     },
 ```
 
-The `plugin` paramter is a dictionary that contains 3 parameters to define what plugin should get run, with what arguments, and on what bracket definition.
+The `plugin` paramter is a dictionary that contains 3 arguments that define which plugin should get run, under which circumstance it is run, and with what parameters it is run with.
 
 | Parameter | Description |
 |-----------|-------------|
