@@ -78,7 +78,7 @@
         // Quotes
         {
             "name": "py_single_quote",
-            "open": "u?r?((?:'')?')",
+            "open": "(?:u|b)?r?((?:'')?')",
             "close": "((?:'')?')",
             "style": "single_quote",
             "scopes": ["string"],
@@ -89,7 +89,7 @@
         },
         {
             "name": "py_double_quote",
-            "open": "u?r?((?:\"\")?\")",
+            "open": "(?:u|b)?r?((?:\"\")?\")",
             "close": "((?:\"\")?\")",
             "style": "double_quote",
             "scopes": ["string"],
