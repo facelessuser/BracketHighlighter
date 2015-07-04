@@ -191,7 +191,7 @@
             "open": "(\\{)",
             "close": "(\\})",
             "style": "curly",
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "constant.character.escape"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
@@ -212,7 +212,8 @@
             "scope_exclude": [
                 "string",
                 "comment",
-                "punctuation.definition.case-pattern.shell"
+                "punctuation.definition.case-pattern.shell",
+                "constant.character.escape"
             ],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
@@ -225,7 +226,7 @@
             "open": "(\\[)",
             "close": "(\\])",
             "style": "square",
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "constant.character.escape"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
