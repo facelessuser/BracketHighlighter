@@ -4,7 +4,7 @@ BracketHighlighter.
 Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
-import BracketHighlighter.ure as ure
+import BracketHighlighter.backrefs as bre
 import BracketHighlighter.bh_plugin as bh_plugin
 from BracketHighlighter.bh_logging import debug, log
 from operator import itemgetter
@@ -160,11 +160,11 @@ class ScopeDefinition(object):
         """Setup the bracket object by reading the passed in dictionary."""
 
         self.style = bracket.get("style", BH_STYLE)
-        self.open = ure.compile(
-            "\\A" + bracket.get("open", ""), ure.MULTILINE | ure.IGNORECASE
+        self.open = bre.compile_search(
+            "\\A" + bracket.get("open", ""), bre.MULTILINE | bre.IGNORECASE
         )
-        self.close = ure.compile(
-            bracket.get("close", "") + "\\Z", ure.MULTILINE | ure.IGNORECASE
+        self.close = bre.compile_search(
+            bracket.get("close", "") + "\\Z", bre.MULTILINE | bre.IGNORECASE
         )
         self.name = bracket["name"]
         sub_search = bracket.get("sub_bracket_search", BH_SUB_BRACKET)
@@ -262,8 +262,8 @@ class SearchRules(object):
                 "SubBracket Pattern: (%s)\n" % ','.join(subnames) +
                 "    (Opening|Closing): (?:%s)\n" % '|'.join(sub_find_regex)
             )
-            self.sub_pattern = ure.compile("(?:%s)" % '|'.join(sub_find_regex), ure.MULTILINE | ure.IGNORECASE)
-            self.pattern = ure.compile("(?:%s)" % '|'.join(find_regex), ure.MULTILINE | ure.IGNORECASE)
+            self.sub_pattern = bre.compile_search("(?:%s)" % '|'.join(sub_find_regex), bre.MULTILINE | bre.IGNORECASE)
+            self.pattern = bre.compile_search("(?:%s)" % '|'.join(find_regex), bre.MULTILINE | bre.IGNORECASE)
             if (
                 self.sub_pattern.groups != len(sub_find_regex) or
                 self.pattern.groups != len(find_regex)

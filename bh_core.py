@@ -10,7 +10,6 @@ from os.path import basename, join, splitext
 from time import time, sleep
 import threading
 import traceback
-import BracketHighlighter.ure as ure
 import BracketHighlighter.bh_plugin as bh_plugin
 import BracketHighlighter.bh_search as bh_search
 import BracketHighlighter.bh_regions as bh_regions
@@ -963,7 +962,6 @@ def plugin_loaded():
     global bh_thread
 
     init_bh_match()
-    ure.set_cache_directory(join(sublime.packages_path(), "User"), "bh")
 
     global HIGH_VISIBILITY
     if sublime.load_settings("bh_core.sublime-settings").get('high_visibility_enabled_by_default', False):
