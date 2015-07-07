@@ -5,6 +5,7 @@ max-line-length: 120
 ignore-patterns:
   - docs
   - docs_theme
+  - backrefs(\\|/)uniprops\.py
 dodgy:
   run: false
 pep257:

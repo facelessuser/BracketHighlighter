@@ -6,7 +6,7 @@ License: MIT
 """
 import sublime
 import sublime_plugin
-from os.path import basename, join, splitext
+from os.path import basename, splitext
 from time import time, sleep
 import threading
 import traceback
