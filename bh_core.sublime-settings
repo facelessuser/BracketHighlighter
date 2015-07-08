@@ -191,7 +191,7 @@
             "open": "(\\{)",
             "close": "(\\})",
             "style": "curly",
-            "scope_exclude": ["string", "comment", "constant.character.escape"],
+            "scope_exclude": ["string", "comment", "source.yaml-tmlanguage constant.character.escape"],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
@@ -213,7 +213,7 @@
                 "string",
                 "comment",
                 "punctuation.definition.case-pattern.shell",
-                "constant.character.escape"
+                "source.yaml-tmlanguage constant.character.escape"
             ],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
@@ -226,8 +226,8 @@
             "open": "(\\[)",
             "close": "(\\])",
             "style": "square",
-            "scope_exclude": ["string", "comment", "constant.character.escape"],
-            "scope_exclude_exceptions": ["text.tex string.other.math"],
+            "scope_exclude": ["string", "comment", "source.yaml-tmlanguage constant.character.escape"],
+            "scope_exclude_exceptions": ["text.tex string.other.math", "source.yaml-tmlanguage -constant.character.escape"],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
