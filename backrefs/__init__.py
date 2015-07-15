@@ -132,14 +132,15 @@ _LOWER = 1
 
 # Mapping of friendly unicode category names to shorthand codes.
 unicode_property_map = {
-    # General
+    # Other
+    "Other": "C",
     "Control": "Cc",
     "Format": "Cf",
     "Surrogate": "Cs",
     "Private_Use": "Co",
     "Unassigned": "Cn",
 
-    # Letters
+    # Letter
     "Letter": "L",
     "Uppercase_Letter": "Lu",
     "Lowercase_Letter": "Ll",
