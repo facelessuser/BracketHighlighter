@@ -7,6 +7,7 @@ pages:
   - User Guide:
       - Usage: usage.md
       - Customizing: customize.md
+      - Extended Regex Guide: extended-regex.md
   - Contributing &amp; Support: contributing.md
   - License: license.md
 theme: readthedocs
