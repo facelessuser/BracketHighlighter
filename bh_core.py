@@ -78,6 +78,8 @@ class BhCore(object):
         self.adj_only = adj_only if adj_only is not None else bool(self.settings.get("match_only_adjacent", False))
         self.auto_selection_threshold = int(self.settings.get("auto_selection_threshold", 10))
         self.kill_highlight_on_threshold = bool(self.settings.get("kill_highlight_on_threshold", False))
+        if no_outside_adj is None:
+            no_outside_adj = self.settings.get('ignore_outside_adjacent_in_plugin', True)
 
         # Init search object
         self.rules = bh_rules.SearchRules(

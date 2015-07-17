@@ -47,6 +47,11 @@
     // Outside adjacent bracket matching
     "bracket_outside_adjacent": true,
 
+    // When "bracket_outside_adjacet" is set, and a plugin command explicitly sets
+    // "no_outside_adj" to "None" instead of "true" or the default "false",
+    // this value will be used.
+    "ignore_outside_adjacent_in_plugin": true,
+
     // Character threshold to search
     "search_threshold": 5000,
 

@@ -107,6 +107,15 @@ Augments the matching behavior and will trigger matching when the cursor is adja
     // Outside adjacent bracket matching
     "bracket_outside_adjacent": true,
 ```
+### ignore_outside_adjacent_in_plugin
+Ignores the [bracket_outside_adjacent](#bracket_outside_adjacent) setting when running a plugin **if** the plugin sets `no_outside_adj` to `null` (`null` for JSON or `None` in Python).
+
+```js
+    // When "bracket_outside_adjacet" is set, and a plugin command explicitly sets
+    // "no_outside_adj" "None" instead of "true" or the default "false",
+    // this value will be used.
+    "ignore_outside_adjacent_in_plugin": true,
+```
 
 ### bracket_string_escape_mode
 Depending on the setting, BH will either match sub-brackets inside strings with traditional string escape logic, or will match sub-brackets in strings with regex escape logic.  Takes a string value of either `regex` or `string`.
@@ -961,7 +970,8 @@ def highlighting(view, name, style, right)
     ```
 
 ### 'Run Instance' Plugins
-`Run instance` plugins are fed into the BracketHighlighter command via the `plugin` parameter.  They are executed after a match is made.
+`Run instance` plugins are manually invoked bracket matching with an attached plugin.  
+The plugin itself is executed after a match is made.  When defining a manually invoked BH command, either `bh_key` or `bh_async_key` should be used (key referring to key binding, but is also used for the menu and command palette).  It may be misleading as to what `bh_async_key` means, but it is mainly a workaround to launch BH keys from the command palette.  The command is kicked off asynchronously to ensure the palette closes before executing, but the BH command itself is still synchronous.
 
 Example of run instance plugin getting called:
 ```javascript
@@ -982,7 +992,15 @@ Example of run instance plugin getting called:
     },
 ```
 
-The `plugin` paramter is a dictionary that contains 3 arguments that define which plugin should get run, under which circumstance it is run, and with what parameters it is run with.
+The `args` parameter is a dictionary.
+
+| Parameter | Description |
+|-----------|-------------|
+| lines     | Show the number of lines between the matched brackets in the status bar. |
+| no_outside_adj | This is a parameter used to tell the plugin to ignore the `bracket_outside_adjacent` setting.  This is by default used for the `bracketselect` commands to ignore outside adjacent matching so it can do expanding selections or jump to parents brackets.  The default is `false` when not defined, but it can be set to `true` or `null` in JSON (it would be `None` if defined directly in Python code).  When `null`, the value will be read from `ignore_outside_adjacent_in_plugin` setting in the `bh_core.sublime-settings` file for convenient altering of the behavior. |
+| plugin    | Configuration for the plugin to be used. |
+
+The `plugin` parameter is a dictionary that contains 3 arguments that define which plugin should get run, under which circumstance it is run, and with what parameters it is run with.
 
 | Parameter | Description |
 |-----------|-------------|
