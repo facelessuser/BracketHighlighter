@@ -32,6 +32,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
             if name in tags and left.size() > 1:
                 first, last = left.begin + 1, left.begin + 1
                 if first == current_left and last == current_right:
+                    self.refresh_match = True
                     if alternate:
                         first, last = right.begin + 1, right.begin + 1
                     else:
@@ -39,6 +40,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
             else:
                 first, last = left.end, left.end
                 if first == current_left and last == current_right:
+                    self.refresh_match = True
                     if alternate:
                         first, last = right.begin, right.begin
                     else:
@@ -48,6 +50,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
                 if name in tags and left.size() > 1:
                     first, last = right.begin + 1, right.begin + 1
                     if first == current_left and last == current_right:
+                        self.refresh_match = True
                         if alternate:
                             first, last = left.begin + 1, left.begin + 1
                         else:
@@ -55,6 +58,7 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
                 else:
                     first, last = right.begin, right.begin
                     if first == current_left and last == current_right:
+                        self.refresh_match = True
                         if alternate:
                             first, last = left.end, left.end
                         else:
@@ -64,15 +68,18 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
                 if name in tags and left.size() > 1:
                     first, last = left.begin + 1, left.begin + 1
                     if first == current_left and last == current_right:
+                        self.refresh_match = True
                         if not alternate:
                             first, last = left.end, left.end
                 else:
                     first, last = right.end, right.end
                     if first == current_left and last == current_right:
+                        self.refresh_match = True
                         if not alternate:
                             first, last = right.end, right.end
         elif first == current_left and last == current_right or always_include_brackets:
             first, last = left.begin, right.end
+            self.refresh_match = True
 
         self.selection = [sublime.Region(first, last)]
 

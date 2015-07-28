@@ -71,6 +71,7 @@ class BhCore(object):
             plugin = {}
 
         # Init view params
+        self.refresh_match = False
         self.last_id_view = None
         self.last_id_sel = None
         self.view_tracker = (None, None)
@@ -158,11 +159,13 @@ class BhCore(object):
             self.plugin is not None and
             self.plugin.is_enabled()
         ):
-            lbracket, rbracket, regions, nobracket = self.plugin.run_command(
+            lbracket, rbracket, regions, nobracket, refresh_match = self.plugin.run_command(
                 self.view, name, lbracket, rbracket, regions
             )
             left = left.move(lbracket.begin, lbracket.end) if lbracket is not None else None
             right = right.move(rbracket.begin, rbracket.end) if rbracket is not None else None
+            if refresh_match:
+                self.refresh_match = True
         return left, right, regions, nobracket
 
     def highlighting(self, left, right, scope_bracket=False):
@@ -367,6 +370,7 @@ class BhCore(object):
 
         # Setup view
         self.view = view
+        self.refresh_match = False
         sels = view.sel()
         num_sels = len(sels)
 
@@ -421,6 +425,13 @@ class BhCore(object):
         # Free up BH
         self.search = None
         self.view = None
+
+        # Setup thread to do another match to refresh the match
+        if self.refresh_match:
+            bh_thread.type = BH_MATCH_TYPE_SELECTION
+            bh_thread.modified = True
+            bh_thread.time = time()
+
         view.settings().set("BracketHighlighterBusy", False)
 
     def sub_search(self, sel, scope=None):

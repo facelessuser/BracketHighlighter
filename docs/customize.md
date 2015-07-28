@@ -1022,6 +1022,8 @@ class BracketPluginCommand()
     | left | A bracket region for the opening bracket (can be changed). |
     | right | A bracket region for the closing bracket (can be changed). |
     | selection | An array containing the selection that triggered the match (can be changed). |
+    | refresh_match | A plugin can set this to true if the plugin has moved the cursor in such a way that the current highlighted match is no longer valid.  This will cause BH to setup another match when idle. An example of this is in the `bracketselect` bh_plugin; the cursor can be moved outside the matching brackets requiring a refresh to match the parent when the command is complete. |
+    | nobracket | This was added mainly for sub-bracket matching (a bracket inside other brackets like round brackets in quotes/strings).  This is set to true if the plugin has caused both left and right brackets to be returned as `None` and it is not desired to fall back and match the parent. |
 
     **Methods**:
 
