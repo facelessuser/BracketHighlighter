@@ -69,6 +69,9 @@ U = re.U
 UNICODE = re.UNICODE
 X = re.X
 VERBOSE = re.VERBOSE
+if compat.PY3:
+    A = re.A
+    ASCII = re.ASCII
 escape = re.escape
 purge = re.purge
 
@@ -152,7 +155,6 @@ _UPROP = r'''
 
 # Unicode string related references
 utokens = {
-    "def_back_ref": set("abfnrtvAbBdDsSwWZuxg"),
     "uni_prop": "p",
     "inverse_uni_prop": "P",
     "ascii_low_props": 'a-z',
@@ -186,8 +188,9 @@ utokens = {
         ''' % {"uni_prop": _UPROP}
     ),
     "re_flags": re.compile(
-        r'(?s)(\\.)|\(\?([iLmsux]+)\)|(.)'
-    )
+        r'(?s)(\\.)|\(\?([aiLmsux]+)\)|(.)' if compat.PY3 else r'(?s)(\\.)|\(\?([iLmsux]+)\)|(.)'
+    ),
+    "ascii_flag": "a"
 }
 
 # Byte string related references
@@ -229,8 +232,9 @@ btokens = {
         '''
     ),
     "re_flags": re.compile(
-        br'(?s)(\\.)|\(\?([iLmsux]+)\)|(.)'
-    )
+        br'(?s)(\\.)|\(\?([aiLmsux]+)\)|(.)' if compat.PY3 else br'(?s)(\\.)|\(\?([iLmsux]+)\)|(.)'
+    ),
+    "ascii_flag": b"a"
 }
 
 
@@ -392,27 +396,23 @@ class ReplaceTemplate(object):
     def __init__(self, pattern, template):
         """Initialize."""
 
-        self.setup_template(pattern, template)
-
-    def setup_template(self, pattern, template):
-        """Setup the template."""
-
         if isinstance(template, compat.binary_type):
             self.binary = True
-            tokens = btokens
             ctokens = ctok.btokens
         else:
             self.binary = False
-            tokens = utokens
             ctokens = ctok.utokens
 
         self._original = template
         self._back_ref = set()
-        self._def_back_ref = tokens["def_back_ref"]
         self._b_slash = ctokens["b_slash"]
         self._empty = ctokens["empty"]
         self._add_back_references(ctokens["replace_tokens"])
         self._template = self._escape_template(template)
+        self.parse_template(pattern)
+
+    def parse_template(self, pattern):
+        """Parse template."""
         self.groups, self.literals = sre_parse.parse_template(self._template, pattern)
 
     def get_base_template(self):
@@ -453,8 +453,7 @@ class ReplaceTemplate(object):
 
         for arg in args:
             if isinstance(arg, compat.binary_type if self.binary else compat.string_type) and len(arg) == 1:
-                if arg not in self._def_back_ref and arg not in self._back_ref:
-                    self._back_ref.add(arg)
+                self._back_ref.add(arg)
 
     def get_group_index(self, index):
         """Find and return the appropriate group index."""
@@ -471,7 +470,7 @@ class SearchTemplate(object):
 
     """Search Template."""
 
-    def __init__(self, search, re_verbose=False, re_unicode=False):
+    def __init__(self, search, re_verbose=False, re_unicode=None):
         """Initialize."""
 
         if isinstance(search, compat.binary_type):
@@ -489,6 +488,7 @@ class SearchTemplate(object):
         self._ls_bracket = ctokens["ls_bracket"]
         self._rs_bracket = ctokens["rs_bracket"]
         self._unicode_flag = ctokens["unicode_flag"]
+        self._ascii_flag = tokens["ascii_flag"]
         self._esc_end = ctokens["esc_end"]
         self._end = ctokens["end"]
         self._uni_prop = tokens["uni_prop"]
@@ -520,11 +520,15 @@ class SearchTemplate(object):
 
         new = []
         start = 0
-        verbose_flag = re_verbose
-        unicode_flag = re_unicode
+        verbose_flag = bool(re_verbose)
+        unicode_flag = bool(re_unicode)
+        if compat.PY3:
+            ascii_flag = re_unicode is not None and not re_unicode
+        else:
+            ascii_flag = False
         avoid = quotes + self.groups
         avoid.sort()
-        if unicode_flag and verbose_flag:
+        if (unicode_flag or ascii_flag) and verbose_flag:
             return bool(verbose_flag), bool(unicode_flag)
         for a in avoid:
             new.append(s[start:a[0] + 1])
@@ -532,12 +536,16 @@ class SearchTemplate(object):
         new.append(s[start:])
         for m in self._re_flags.finditer(self._empty.join(new)):
             if m.group(2):
+                if compat.PY3 and self._ascii_flag in m.group(2):
+                    ascii_flag = True
+                elif self._unicode_flag in m.group(2):
+                    unicode_flag = True
                 if self._verbose_flag in m.group(2):
                     verbose_flag = True
-                if self._unicode_flag in m.group(2):
-                    unicode_flag = True
-            if unicode_flag and verbose_flag:
+            if (unicode_flag or ascii_flag) and verbose_flag:
                 break
+        if compat.PY3 and not unicode_flag and not ascii_flag:
+            unicode_flag = True
         return bool(verbose_flag), bool(unicode_flag)
 
     def find_char_groups(self, s):
@@ -882,7 +890,7 @@ class ReplaceTemplateExpander(object):
 def _apply_replace_backrefs(m, repl=None):
     """Expand with either the ReplaceTemplate or the user function, compile on the fly, or return None."""
 
-    if repl is not None:
+    if repl is not None and m is not None:
         if hasattr(repl, '__call__'):
             return repl(m)
         elif isinstance(repl, ReplaceTemplate):
@@ -895,8 +903,12 @@ def _apply_search_backrefs(pattern, flags=0):
     """Apply the search backrefs to the search pattern."""
 
     if isinstance(pattern, (compat.string_type, compat.binary_type)):
-        re_verbose = VERBOSE & flags
-        re_unicode = UNICODE & flags
+        re_verbose = bool(VERBOSE & flags)
+        re_unicode = None
+        if compat.PY3 and bool(ASCII & flags):
+            re_unicode = False
+        elif bool(UNICODE & flags):
+            re_unicode = True
         pattern = SearchTemplate(pattern, re_verbose, re_unicode).apply()
 
     return pattern

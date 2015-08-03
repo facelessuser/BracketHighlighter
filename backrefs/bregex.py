@@ -1,14 +1,15 @@
 r"""
 Backrefs for the 'regex' module.
 
-Only extends the replace if a compiled replace is used.
+Add the ability to use the following backrefs with re:
 
+    * \Q and \Q...\E - Escape/quote chars (search)
     * \c and \C...\E - Uppercase char or chars (replace)
     * \l and \L...\E - Lowercase char or chars (replace)
 
 Compiling
 =========
-pattern = regex.compile(r'somepattern', flags)
+pattern = compile_search(r'somepattern', flags)
 replace = compile_replace(pattern, r'\1 some replace pattern')
 
 Usage
@@ -71,12 +72,12 @@ if REGEX_SUPPORT:
     VERSION1 = regex.VERSION1
     W = regex.W
     WORD = regex.WORD
+    DEFAULT_VERSION = regex.DEFAULT_VERSION
+    REGEX_TYPE = type(regex.compile('', 0))
     escape = regex.escape
     purge = regex.purge
-    REGEX_TYPE = type(regex.compile('', 0))
 
     utokens = {
-        "def_back_ref": set("abfnrtvAbBdDsSwWZuxgmM"),
         "regex_flags": re.compile(
             r'(?s)(\\.)|\(\?((?:[Laberux]|V0|V1|-?[imsfw])+)[):]|(.)'
         ),
@@ -107,15 +108,6 @@ if REGEX_SUPPORT:
     }
 
     btokens = {
-        "def_back_ref": set(
-            [
-                b"a", b"b", b"f", b"n", b"r",
-                b"t", b"v", b"A", b"b", b"B",
-                b"d", b"D", b"s", b"S", b"w",
-                b"W", b"Z", b"u", b"x", b"g",
-                b"m", b"M"
-            ]
-        ),
         "regex_flags": re.compile(
             br'(?s)(\\.)|\(\?((?:[Laberux]|V0|V1|-?[imsfw])+)[):]|(.)'
         ),
@@ -233,11 +225,11 @@ if REGEX_SUPPORT:
             self.search = search
             if regex.DEFAULT_VERSION == V0:
                 self.groups, quotes = self.find_char_groups_v0(search)
-            else:
+            else:  # pragma: no cover
                 self.groups, quotes = self.find_char_groups_v1(search)
             self.verbose, self.version = self.find_flags(search, quotes, re_verbose, re_version)
             if self.version != regex.DEFAULT_VERSION:
-                if self.version == V0:
+                if self.version == V0:  # pragma: no cover
                     self.groups = self.find_char_groups_v0(search)[0]
                 else:
                     self.groups = self.find_char_groups_v1(search)[0]
@@ -439,43 +431,32 @@ if REGEX_SUPPORT:
 
         """Replace template for the regex module."""
 
-        def setup_template(self, pattern, template):
-            """Setup template."""
-
-            if isinstance(template, compat.binary_type):
-                self.binary = True
-                tokens = btokens
-                ctokens = ctok.btokens
-            else:
-                self.binary = False
-                tokens = utokens
-                ctokens = ctok.utokens
-
-            self._original = template
-            self._back_ref = set()
-            self._b_slash = ctokens["b_slash"]
-            self._def_back_ref = tokens["def_back_ref"]
-            self._empty = ctokens["empty"]
-            self._add_back_references(ctokens["replace_tokens"])
-            self._template = self._escape_template(template)
-            self.parse_template(pattern)
-
         def parse_template(self, pattern):
-            """Parse template for the regex module."""
+            """
+            Parse template for the regex module.
+
+            Do NOT edit the literal list returned by
+            _compile_replacement_helper as you will edit
+            the original cached value.  Copy the values
+            instead.
+            """
 
             self.groups = []
-            self.literals = regex._compile_replacement_helper(pattern, self._template)
+            self.literals = []
+            literals = regex._compile_replacement_helper(pattern, self._template)
             count = 0
-            for part in self.literals:
+            for part in literals:
                 if isinstance(part, int):
-                    self.literals[count] = None
+                    self.literals.append(None)
                     self.groups.append((count, part))
+                else:
+                    self.literals.append(part)
                 count += 1
 
     def _apply_replace_backrefs(m, repl=None):
         """Expand with either the RegexReplaceTemplate or the user function, compile on the fly, or return None."""
 
-        if repl is not None:
+        if repl is not None and m is not None:
             if hasattr(repl, '__call__'):
                 return repl(m)
             elif isinstance(repl, RegexReplaceTemplate):
@@ -558,7 +539,7 @@ if REGEX_SUPPORT:
 
         return regex.subf(
             _apply_search_backrefs(pattern, flags), format, string,
-            count, flags, pos, endpos, concurrent, kwargs
+            count, flags, pos, endpos, concurrent, **kwargs
         )
 
     def subn(pattern, repl, string, count=0, flags=0, pos=None, endpos=None, concurrent=None, **kwargs):
