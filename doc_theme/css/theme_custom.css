@@ -7,6 +7,18 @@
   padding: 2px 5px;
 }
 
+.rst-content a code, .rst-content a tt {
+    color: #2980B9;
+}
+
+.rst-content a:hover code, .rst-content a:hover tt {
+    color: #3091d1;
+}
+
+.rst-content a:visited code, .rst-content a:visited tt {
+    color: #9B59B6;
+}
+
 .rst-content div.codehilite {
   margin-bottom: 24px;
   overflow: auto;
