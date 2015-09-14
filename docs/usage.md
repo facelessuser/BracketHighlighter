@@ -14,8 +14,9 @@ BH supports a variety of brackets out of the box; here are some examples:
 - curly
 - angle
 - single and double quotes
-- python single and double quotes (Unicode and raw)
-- python triple single and double quotes (Unicode and raw)
+- Python single and double quotes (Unicode and raw)
+- Python triple single and double quotes (Unicode and raw)
+- Django Python templates with mixed HTML, CSS, and JS
 - JavaScript regex
 - Perl regex
 - Ruby regex
@@ -62,7 +63,7 @@ Folds the content of the current surrounding brackets.
 Swaps the quote style of surrounding quotes from double to single or vice versa.  It also handles escaping and un-escaping of sub quotes.
 
 ### Tag Plugin
-Provides extra logic to target and highlight XML/HTML tags.
+Provides extra logic to target and highlight XML/HTML tags.  To use BracketHighlighter's built-in HTML highlighting in your HTML-like template language of choice, add it to the list in `bh_tag.sublime_settings`.
 
 ### Tag Attribute Select Plugin
 Cycles through selecting tag attributes.
