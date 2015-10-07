@@ -14,20 +14,18 @@ theme: readthedocs
 theme_dir: doc_theme
 markdown_extensions:
   - markdown.extensions.toc
-  - markdown.extensions.extra
   - markdown.extensions.admonition
   - markdown.extensions.smarty
   - markdown.extensions.nl2br
   - markdown.extensions.codehilite:
       guess_lang: false
+  - pymdownx.extra
   - pymdownx.inlinehilite
   - pymdownx.magiclink
-  - pymdownx.betterem
   - pymdownx.tilde
   - pymdownx.caret
   - pymdownx.smartsymbols
   - pymdownx.githubemoji
   - pymdownx.tasklist
-  - pymdownx.superfences
   - pymdownx.progressbar
   - pymdownx.headeranchor
