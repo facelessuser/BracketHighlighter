@@ -167,7 +167,7 @@ Disables gutter icons when doing multiple selections.
 ```
 
 ## Tag Plugin Settings
-Tag settings found in `bh_core.sublime-settings`.
+Tag settings found in `bh_tag.sublime-settings`.
 
 ### tag_style
 Sets the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles`.  See [Configuring Highlight Style](#configuring-highlight-style) for more info.
