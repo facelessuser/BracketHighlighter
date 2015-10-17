@@ -8,7 +8,6 @@ import BracketHighlighter.bh_plugin as bh_plugin
 
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
-
     """Select attribute plugin."""
 
     def run(self, edit, name, direction='right'):

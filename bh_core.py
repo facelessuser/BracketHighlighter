@@ -32,7 +32,6 @@ HIGH_VISIBILITY = False
 # Match Code
 ####################
 class BhCore(object):
-
     """Bracket matching class."""
 
     plugin_reload = False
@@ -687,7 +686,6 @@ class BhCore(object):
 # Commands
 ####################
 class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
-
     """Toggle between regex escape and string escape for brackets in strings."""
 
     def run(self, edit):
@@ -703,7 +701,6 @@ class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
 
 
 class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
-
     """Shoe current string escape mode for sub brackets in strings."""
 
     def run(self, edit):
@@ -718,7 +715,6 @@ class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
 
 
 class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
-
     """
     Toggle high visibility mode.
 
@@ -734,7 +730,6 @@ class BhToggleHighVisibilityCommand(sublime_plugin.ApplicationCommand):
 
 
 class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
-
     """Toggle global enable for BracketHighlighter."""
 
     def run(self):
@@ -747,7 +742,6 @@ class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
 
 
 class BhKeyCommand(sublime_plugin.WindowCommand):
-
     """
     Command to process shortcuts, menu calls, and command palette calls.
 
@@ -790,7 +784,6 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
 
 class BhAsyncKeyCommand(BhKeyCommand):
-
     """Call BH key command asynchronously."""
 
     def execute(self):
@@ -811,7 +804,6 @@ class BhAsyncKeyCommand(BhKeyCommand):
 # Debug
 ####################
 class BhDebugCommand(sublime_plugin.ApplicationCommand):
-
     """Toggle debug commands."""
 
     def run(self, set_value=None):
@@ -845,7 +837,6 @@ class BhDebugCommand(sublime_plugin.ApplicationCommand):
 # Events
 ####################
 class BhListenerCommand(sublime_plugin.EventListener):
-
     """
     Manage when to kick off bracket matching.
 
@@ -904,7 +895,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
 
 class BhThread(threading.Thread):
-
     """BH threading."""
 
     def __init__(self):

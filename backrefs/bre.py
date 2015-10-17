@@ -253,7 +253,6 @@ def _get_unicode_category(prop, negate=False):
 
 # Break apart template patterns into char tokens
 class ReplaceTokens(compat.Tokens):
-
     """Tokens."""
 
     def __init__(self, string, boundaries):
@@ -333,7 +332,6 @@ class ReplaceTokens(compat.Tokens):
 
 
 class SearchTokens(compat.Tokens):
-
     """Tokens."""
 
     def __init__(self, string, verbose):
@@ -390,7 +388,6 @@ class SearchTokens(compat.Tokens):
 
 # Templates
 class ReplaceTemplate(object):
-
     """Replace template."""
 
     def __init__(self, pattern, template):
@@ -467,7 +464,6 @@ class ReplaceTemplate(object):
 
 
 class SearchTemplate(object):
-
     """Search Template."""
 
     def __init__(self, search, re_verbose=False, re_unicode=None):
@@ -714,7 +710,6 @@ class SearchTemplate(object):
 
 # Template expander
 class ReplaceTemplateExpander(object):
-
     """Backrefereces."""
 
     def __init__(self, match, template):

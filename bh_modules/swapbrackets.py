@@ -10,7 +10,6 @@ BracketRemove = ImpMod.import_from("bh_modules.bracketremove", "BracketRemove")
 
 
 class SwapBrackets(BracketRemove):
-
     """Swap bracket plugin."""
 
     def run(self, edit, name, remove_content=False, remove_indent=False, remove_block=False):

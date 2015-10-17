@@ -6,7 +6,6 @@ import fnmatch
 
 
 class TestSettings(unittest.TestCase):
-
     """Test JSON settings."""
 
     def _get_json_files(self, pattern, folder='.'):

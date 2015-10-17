@@ -142,7 +142,6 @@ def get_bracket_regions(settings, minimap):
 
 
 class StyleDefinition(object):
-
     """Styling definition."""
 
     def __init__(self, name, style, default_highlight, icon_path, minimap):
@@ -175,7 +174,6 @@ class StyleDefinition(object):
 
 
 class BhRegion(object):
-
     """Class for handling highlight regions."""
 
     def __init__(self, alter_select, count_lines):

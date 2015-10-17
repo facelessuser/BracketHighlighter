@@ -71,7 +71,6 @@ VIOLATION_MSG = {
 
 
 class CheckJsonFormat(object):
-
     """
     Test JSON for format irregularities.
 

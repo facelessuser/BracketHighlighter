@@ -10,7 +10,6 @@ import sublime
 
 
 class BracketRemove(bh_plugin.BracketPluginCommand):
-
     """Bracket remove plugin."""
 
     def decrease_indent_level(self, edit, row_first, row_last):

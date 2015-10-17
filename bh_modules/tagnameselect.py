@@ -8,7 +8,6 @@ import BracketHighlighter.bh_plugin as bh_plugin
 
 
 class TagNameSelect(bh_plugin.BracketPluginCommand):
-
     """Tag name select plugin."""
 
     def run(self, edit, name):

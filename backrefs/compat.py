@@ -23,7 +23,6 @@ if PY3:
                 yield c
 
     class Tokens(object):
-
         """Tokens base for PY3."""
 
         def iternext(self):
@@ -45,7 +44,6 @@ else:
             yield c
 
     class Tokens(object):
-
         """Tokens base for PY2."""
 
         def iternext(self):

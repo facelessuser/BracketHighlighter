@@ -132,7 +132,6 @@ def is_valid_definition(params, language):
 
 
 class BracketDefinition(object):
-
     """Normal bracket definition."""
 
     def __init__(self, bracket):
@@ -153,7 +152,6 @@ class BracketDefinition(object):
 
 
 class ScopeDefinition(object):
-
     """Scope bracket definition."""
 
     def __init__(self, bracket):
@@ -181,7 +179,6 @@ class ScopeDefinition(object):
 
 
 class SearchRules(object):
-
     """Search rule object."""
 
     def __init__(self, brackets, scopes, string_escape_mode, outside_adj):
@@ -337,7 +334,6 @@ class SearchRules(object):
 # Debug
 ####################
 class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
-
     """Debug rule edit command."""
 
     def run(self, edit, text):
@@ -347,7 +343,6 @@ class BhDebugRuleEditCommand(sublime_plugin.TextCommand):
 
 
 class BhDebugRuleCommand(sublime_plugin.WindowCommand):
-
     """Debug rule command."""
 
     filter_keys = [

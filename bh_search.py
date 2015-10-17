@@ -16,7 +16,6 @@ BH_ADJACENT_RIGHT = 1
 
 
 class BhEntry(object):
-
     """Generic object for bracket regions."""
 
     def move(self, begin, end):
@@ -36,21 +35,18 @@ class BhEntry(object):
 
 
 class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False), BhEntry):
-
     """Bracket object."""
 
     pass
 
 
 class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False), BhEntry):
-
     """Scope bracket object."""
 
     pass
 
 
 class Search(object):
-
     """Search buffer object."""
 
     def __init__(self, view, rules, sel, selection_threshold=None):
@@ -105,7 +101,6 @@ class Search(object):
 
 
 class ScopeSearch(object):
-
     """Object that extracts brackets from scope."""
 
     def __init__(self, search, center, before_center, scope, adj_dir):
@@ -191,7 +186,6 @@ class ScopeSearch(object):
 
 
 class BracketSearch(object):
-
     """Object that performs regex search on the view's buffer and finds brackets."""
 
     def __init__(self, search, center, sub_search, scope):
