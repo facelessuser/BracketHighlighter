@@ -95,6 +95,7 @@
                 "MagicPython"
             ],
             "sub_bracket_search": "true",
+            "plugin_library": "bh_modules.pyquotes",
             "enabled": true
         },
         {
@@ -111,6 +112,7 @@
                 "MagicPython"
             ],
             "sub_bracket_search": "true",
+            "plugin_library": "bh_modules.pyquotes",
             "enabled": true
         },
         {
