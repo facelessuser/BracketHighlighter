@@ -47,6 +47,9 @@
     // Outside adjacent bracket matching
     "bracket_outside_adjacent": true,
 
+    // Special matching mode for block cursor
+    "block_cursor_mode": false,
+
     // When "bracket_outside_adjacet" is set, and a plugin command explicitly sets
     // "no_outside_adj" to "None" instead of "true" or the default "false",
     // this value will be used.

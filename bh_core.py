@@ -86,7 +86,8 @@ class BhCore(object):
             self.settings.get("brackets", []) + self.settings.get("user_brackets", []),
             self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", []),
             str(self.settings.get('bracket_string_escape_mode', "string")),
-            False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False)
+            False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False),
+            self.settings.get('block_cursor_mode', False)
         )
 
         # Init selection params
@@ -519,7 +520,7 @@ class BhCore(object):
 
         # Cannot be inside a bracket pair if cursor is at zero
         if center == 0:
-            if not self.rules.outside_adj:
+            if not self.rules.outside_adj and not self.rules.block_cursor:
                 return left, right, selected_scope, False
 
         for s in self.rules.scopes:
@@ -564,7 +565,13 @@ class BhCore(object):
             left, right = partial_find[0], partial_find[1]
 
         # Make sure cursor in highlighted sub group
-        if self.rules.outside_adj:
+        if self.rules.block_cursor:
+            if (
+                (left and center < left.begin and adjusted_center <= left.begin) or
+                (right and center >= right.end and adjusted_center >= right.end)
+            ):
+                left, right = None, None
+        elif self.rules.outside_adj:
             if (
                 (left and center <= left.begin and adjusted_center <= left.begin) or
                 (right and center >= right.end and adjusted_center >= right.end)

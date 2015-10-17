@@ -181,14 +181,15 @@ class ScopeDefinition(object):
 class SearchRules(object):
     """Search rule object."""
 
-    def __init__(self, brackets, scopes, string_escape_mode, outside_adj):
+    def __init__(self, brackets, scopes, string_escape_mode, outside_adj, block_cursor):
         """Setup search rulel object."""
 
         self.bracket_rules = process_overrides(brackets)
         self.scope_rules = process_overrides(scopes)
         self.enabled = False
         self.string_escape_mode = string_escape_mode
-        self.outside_adj = outside_adj
+        self.outside_adj = outside_adj and not block_cursor
+        self.block_cursor = block_cursor
         self.sub_pattern = None
         self.pattern = None
 
