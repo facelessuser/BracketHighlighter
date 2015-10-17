@@ -18,7 +18,8 @@
             "HTML (Django)",
             "laravel-blade",
             "Handlebars",
-            "AngularJS"
+            "AngularJS",
+            "Java Server Pages (JSP)"
         ],
         "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
     },

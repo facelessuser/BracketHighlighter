@@ -290,7 +290,8 @@
                 "ColdFusionCFC",
                 "laravel-blade",
                 "Handlebars",
-                "AngularJS"
+                "AngularJS",
+                "Java Server Pages (JSP)"
             ],
             "plugin_library": "bh_modules.tags",
             "enabled": true
