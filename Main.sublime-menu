@@ -234,6 +234,17 @@
                             { "caption": "-" },
                             {
                                 "command": "open_file",
+                                "args": {"file": "${packages}/BracketHighlighter/bh_tag.sublime-settings"},
+                                "caption": "Tag Settings – Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/User/bh_tag.sublime-settings"},
+                                "caption": "Tag Settings – User"
+                            },
+                            { "caption": "-" },
+                            {
+                                "command": "open_file",
                                 "args": {"file": "${packages}/BracketHighlighter/bh_wrapping.sublime-settings"},
                                 "caption": "Wrap Settings – Default"
                             },
