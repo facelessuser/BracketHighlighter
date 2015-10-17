@@ -9,7 +9,6 @@ import sublime
 
 
 class SwapQuotes(bh_plugin.BracketPluginCommand):
-
     """Swap quotes plugin."""
 
     def escaped(self, idx):

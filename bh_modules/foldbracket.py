@@ -9,7 +9,6 @@ import sublime
 
 
 class FoldBrackets(bh_plugin.BracketPluginCommand):
-
     """Fold bracket plugin."""
 
     def run(self, edit, name):

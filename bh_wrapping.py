@@ -46,7 +46,6 @@ def exclude_entry(enabled, filter_type, language_list, language):
 
 
 class WrapInstance(object):
-
     """Track wrap instance globally."""
 
     obj = None
@@ -61,7 +60,6 @@ class WrapInstance(object):
 
 
 class TextInsertion(object):
-
     """Wrapper class for inserting text."""
 
     def __init__(self, view, edit):
@@ -77,7 +75,6 @@ class TextInsertion(object):
 
 
 class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
-
     """Execute the wrap instance."""
 
     def run(self, edit):
@@ -101,7 +98,6 @@ class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
 
 
 class WrapBrackets(object):
-
     """Wrap the current selection(s) with the defined wrapping options."""
 
     def __init__(self, view, setting_file, attribute):
@@ -297,7 +293,6 @@ class WrapBrackets(object):
 
 
 class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
-
     """Bracket wrapping command."""
 
     def run(self, edit):
@@ -317,7 +312,6 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
 
 
 class BhNextWrapSelCommand(sublime_plugin.TextCommand):
-
     """Navigate wrapping tab stop regions."""
 
     def run(self, edit):
@@ -334,7 +328,6 @@ class BhNextWrapSelCommand(sublime_plugin.TextCommand):
 
 
 class BhWrapListener(sublime_plugin.EventListener):
-
     """Listen for wrapping tab stop tabbing."""
 
     def on_query_context(self, view, key, operator, operand, match_all):

@@ -10,7 +10,6 @@ import BracketHighlighter.bh_wrapping as bh_wrapping
 
 
 class SwapBrackets(bh_wrapping.WrapBrackets):
-
     """
     Swap Base Class.
 
@@ -30,7 +29,6 @@ class SwapBrackets(bh_wrapping.WrapBrackets):
 
 
 class SwapBracketsCommand(sublime_plugin.WindowCommand):
-
     """Swap bracket command."""
 
     def finalize(self, callback):

@@ -16,7 +16,6 @@ from BracketHighlighter.bh_logging import log
 
 
 class Payload(object):
-
     """Plugin payload."""
 
     status = False
@@ -33,7 +32,6 @@ class Payload(object):
 
 
 class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
-
     """Bracket Regions for plugins."""
 
     def move(self, begin, end):
@@ -86,7 +84,6 @@ def load_modules(obj, loaded):
 
 
 class ImportModule(object):
-
     """Dynamically import modules."""
 
     @classmethod
@@ -127,7 +124,6 @@ class ImportModule(object):
 
 
 class BracketPluginRunCommand(sublime_plugin.TextCommand):
-
     """Sublime run command to run BH plugins."""
 
     def run(self, edit):
@@ -142,7 +138,6 @@ class BracketPluginRunCommand(sublime_plugin.TextCommand):
 
 
 class BracketPlugin(object):
-
     """Class for preparing and running plugins."""
 
     def __init__(self, plugin, loaded):
@@ -196,7 +191,6 @@ class BracketPlugin(object):
 
 
 class BracketPluginCommand(object):
-
     """Bracket Plugin base class."""
 
     def run(self, bracket, content, selection):

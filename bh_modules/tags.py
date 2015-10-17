@@ -34,7 +34,6 @@ END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>', FLAGS)
 
 
 class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
-
     """Tag entry tuple."""
 
     def move(self, begin, end):
@@ -106,7 +105,6 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
 
 
 class TagSearch(object):
-
     """Searches for tags."""
 
     def __init__(
@@ -184,7 +182,6 @@ class TagSearch(object):
 
 
 class TagMatch(object):
-
     """Find a tag match."""
 
     def __init__(self, view, bfr, threshold, first, second, center, outside_adj, mode):
