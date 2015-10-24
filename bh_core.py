@@ -80,6 +80,8 @@ class BhCore(object):
         self.kill_highlight_on_threshold = bool(self.settings.get("kill_highlight_on_threshold", False))
         if no_outside_adj is None:
             no_outside_adj = self.settings.get('ignore_outside_adjacent_in_plugin', True)
+        block_cursor = self.settings.get('block_cursor_mode', False)
+        self.selected_only = self.settings.get('block_cursor_selected_only') and block_cursor
 
         # Init search object
         self.rules = bh_rules.SearchRules(
@@ -87,7 +89,7 @@ class BhCore(object):
             self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", []),
             str(self.settings.get('bracket_string_escape_mode', "string")),
             False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False),
-            self.settings.get('block_cursor_mode', False)
+            block_cursor
         )
 
         # Init selection params
@@ -599,6 +601,9 @@ class BhCore(object):
         if self.adj_only:
             left, right = self.adjacent_check(left, right, center)
 
+        if self.selected_only:
+            left, right = self.selected_check(left, right, center)
+
         left, right = self.post_match(left, right, center, scope_bracket=True)
         return left, right, bracket, False
 
@@ -675,6 +680,9 @@ class BhCore(object):
         if self.adj_only:
             left, right = self.adjacent_check(left, right, center)
 
+        if self.selected_only:
+            left, right = self.selected_check(left, right, center)
+
         left, right = self.post_match(left, right, center)
         return left, right, False
 
@@ -685,6 +693,16 @@ class BhCore(object):
             if left.end < center < right.begin:
                 left, right = None, None
         elif (left and left.end < center) or (right and center < right.begin):
+            left, right = None, None
+        return left, right
+
+    def selected_check(self, left, right, center):
+        """Check if block bracket pair have the cursor directly on a bracket."""
+
+        if left and right:
+            if left.begin < center < right.begin:
+                left, right = None, None
+        elif (left and left.begin < center) or (right and center < right.begin):
             left, right = None, None
         return left, right
 
