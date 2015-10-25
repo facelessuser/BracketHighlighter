@@ -41,7 +41,7 @@ class BhCore(object):
     ####################
     def __init__(
         self, override_thresh=False, count_lines=False,
-        adj_only=None, no_outside_adj=False,
+        adj_only=None, no_outside_adj=False, no_block_mode=False,
         ignore=None, plugin=None, keycommand=False
     ):
         """Load settings and setup reload events if settings changes."""
@@ -56,11 +56,14 @@ class BhCore(object):
         if not keycommand:
             self.settings.clear_on_change('reload')
             self.settings.add_on_change('reload', self.setup)
-        self.setup(override_thresh, count_lines, adj_only, no_outside_adj, ignore, plugin)
+        self.setup(
+            override_thresh, count_lines, adj_only,
+            no_outside_adj, no_block_mode, ignore, plugin
+        )
 
     def setup(
         self, override_thresh=False, count_lines=False, adj_only=None,
-        no_outside_adj=False, ignore=None, plugin=None
+        no_outside_adj=False, no_block_mode=False, ignore=None, plugin=None
     ):
         """Initialize class settings from settings file and inputs."""
 
@@ -80,8 +83,9 @@ class BhCore(object):
         self.kill_highlight_on_threshold = bool(self.settings.get("kill_highlight_on_threshold", False))
         if no_outside_adj is None:
             no_outside_adj = self.settings.get('ignore_outside_adjacent_in_plugin', True)
-        block_cursor = self.settings.get('block_cursor_mode', False)
-        self.selected_only = self.settings.get('block_cursor_selected_only') and block_cursor
+        if no_block_mode is None:
+            no_block_mode = self.settings.get('ignore_block_mode_in_plugin', True)
+        block_cursor = self.settings.get('block_cursor_mode', False) and not no_block_mode
 
         # Init search object
         self.rules = bh_rules.SearchRules(
@@ -509,7 +513,7 @@ class BhCore(object):
         endcaps to determine if valid scope bracket.
         """
 
-        center = sel.a
+        center = sel.b
         left = None
         right = None
         scope_count = 0
@@ -599,10 +603,10 @@ class BhCore(object):
                     left, right, bracket = None, None, None
 
         if self.adj_only:
-            left, right = self.adjacent_check(left, right, center)
-
-        if self.selected_only:
-            left, right = self.selected_check(left, right, center)
+            if self.rules.block_cursor:
+                left, right = self.block_adjacent_check(left, right, center)
+            else:
+                left, right = self.adjacent_check(left, right, center)
 
         left, right = self.post_match(left, right, center, scope_bracket=True)
         return left, right, bracket, False
@@ -610,7 +614,7 @@ class BhCore(object):
     def match_brackets(self, sel, scope=None):
         """Regex bracket matching."""
 
-        center = sel.a
+        center = sel.b
         left = None
         right = None
         stack = []
@@ -678,10 +682,10 @@ class BhCore(object):
             break
 
         if self.adj_only:
-            left, right = self.adjacent_check(left, right, center)
-
-        if self.selected_only:
-            left, right = self.selected_check(left, right, center)
+            if self.rules.block_cursor:
+                left, right = self.block_adjacent_check(left, right, center)
+            else:
+                left, right = self.adjacent_check(left, right, center)
 
         left, right = self.post_match(left, right, center)
         return left, right, False
@@ -696,7 +700,7 @@ class BhCore(object):
             left, right = None, None
         return left, right
 
-    def selected_check(self, left, right, center):
+    def block_adjacent_check(self, left, right, center):
         """Check if block bracket pair have the cursor directly on a bracket."""
 
         if left and right:
@@ -775,7 +779,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
     def run(
         self, threshold=True, lines=False, adjacent=False,
-        no_outside_adj=False, ignore=None, plugin=None
+        no_outside_adj=False, no_block_mode=False, ignore=None, plugin=None
     ):
         """Run BH key command."""
 
@@ -792,6 +796,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             lines,
             adjacent,
             no_outside_adj,
+            no_block_mode,
             ignore,
             plugin,
             True

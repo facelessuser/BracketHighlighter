@@ -62,6 +62,11 @@
     // this value will be used.
     "ignore_outside_adjacent_in_plugin": true,
 
+    // When "block_cursor_mode" is set, and a plugin command explicitly sets
+    // "no_block_mode" to "None" instead of "true" or the default "false",
+    // this value will be used.
+    "ignore_block_mode_in_plugin": true,
+
     // Character threshold to search
     "search_threshold": 5000,
 
