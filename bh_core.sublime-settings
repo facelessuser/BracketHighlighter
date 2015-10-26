@@ -53,10 +53,6 @@
     // This will override "match_only_adjacet" and "bracket_outside_adjacent".
     "block_cursor_mode": false,
 
-    // EXPERIMENTAL: When in block cursor mode, only highlight when the cursor
-    // is on (or selecting) either the opening or closing bracket.
-    "block_cursor_selected_only": false,
-
     // When "bracket_outside_adjacet" is set, and a plugin command explicitly sets
     // "no_outside_adj" to "None" instead of "true" or the default "false",
     // this value will be used.
