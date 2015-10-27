@@ -149,9 +149,13 @@ class ScopeSearch(object):
                 self.view.match_selector(center, scope) and
                 self.view.match_selector(before_center, scope)
             )
-        if not match and self.search.rules.outside_adj:
+        if not match and (self.search.rules.outside_adj or self.search.rules.block_cursor):
             if adj_dir == BH_ADJACENT_LEFT:
-                if before_center > 0:
+                if self.search.rules.block_cursor:
+                    match = self.view.match_selector(center, scope)
+                    if match:
+                        self.adjusted_center += 1
+                elif before_center > 0 and not self.search.rules.block_cursor:
                     match = self.view.match_selector(before_center, scope)
                     if match:
                         self.adjusted_center = before_center
@@ -159,7 +163,7 @@ class ScopeSearch(object):
                 match = self.view.match_selector(center, scope)
                 if match:
                     self.adjusted_center += 1
-        elif match and self.search.rules.outside_adj:
+        elif match and (self.search.rules.outside_adj or self.search.rules.block_cursor):
             if adj_dir == BH_ADJACENT_RIGHT:
                 self.adjusted_center += 1
             else:
@@ -201,6 +205,8 @@ class BracketSearch(object):
             self.pattern = search.rules.pattern
         if search.rules.outside_adj:
             self.bracket_sort = self.sort_brackets_adj
+        elif search.rules.block_cursor:
+            self.bracket_sort = self.sort_block_cursor
         else:
             self.bracket_sort = self.sort_brackets
         self.prev_match = [None, None]
@@ -301,6 +307,30 @@ class BracketSearch(object):
         """
 
         if (end <= self.center if match_type else start < self.center):
+            # Sort bracket to left
+            self.left[match_type].append(BracketEntry(start, end, bracket_id))
+        elif (end > self.center if match_type else start >= self.center):
+            # Sort bracket to right
+            self.right[match_type].append(BracketEntry(start, end, bracket_id))
+
+    def sort_block_cursor(self, start, end, match_type, bracket_id):
+        """
+        Special sort for block cursor mode.
+
+        Sorting to favor the visual representation of block cursors.
+        """
+
+        if (
+            self.touch_right is False and
+            self.touch_left is False and
+            match_type == BH_SEARCH_OPEN and
+            start == self.center
+        ):
+            # Check for adjacent opening bracket on right
+            entry = BracketEntry(start, end, bracket_id)
+            self.touch_left = entry
+            self.left[match_type].append(entry)
+        elif (end <= self.center if match_type else start < self.center):
             # Sort bracket to left
             self.left[match_type].append(BracketEntry(start, end, bracket_id))
         elif (end > self.center if match_type else start >= self.center):

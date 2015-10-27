@@ -107,6 +107,20 @@ Augments the matching behavior and will trigger matching when the cursor is adja
     // Outside adjacent bracket matching
     "bracket_outside_adjacent": true,
 ```
+
+### block_cursor_mode (EXPERIMENTAL)
+Modifies the bracket matching mode for block cursor.  The bracket matching mode is one that makes a little more sense to some people in regards to the visual representation of block cursors.  So if you are someone that uses block cursors and find that toggling [bracket_outside_adjacent](#bracket_outside_adjacent) still doesn't quite match brackets how you would like, you can give this setting a try.
+
+When this setting is enabled, [bracket_outside_adjacent](#bracket_outside_adjacent) will be ignored.
+
+```js
+    // EXPERIMENTAL: Special matching mode for block cursor.
+    // Essentially, this provides a matching mode that makes a little more
+    // sense to some in regards to the visual representation of block cursors.
+    // This will override "match_only_adjacent" and "bracket_outside_adjacent".
+    "block_cursor_mode": false,
+```
+
 ### ignore_outside_adjacent_in_plugin
 Ignores the [bracket_outside_adjacent](#bracket_outside_adjacent) setting when running a plugin **if** the plugin sets `no_outside_adj` to `null` (`null` for JSON or `None` in Python).
 
@@ -115,6 +129,16 @@ Ignores the [bracket_outside_adjacent](#bracket_outside_adjacent) setting when r
     // "no_outside_adj" "None" instead of "true" or the default "false",
     // this value will be used.
     "ignore_outside_adjacent_in_plugin": true,
+```
+
+### ignore_block_mode_in_plugin (EXPERIMENTAL)
+Ignores the [block_cursor_mode](#block_cursor_mode) setting when running a plugin **if** the plugin sets `no_block_mode` to `null` (`null` for JSON or `None` in Python).
+
+```js
+    // When "block_cursor_mode" is set, and a plugin command explicitly sets
+    // "no_block_mode" to "None" instead of "true" or the default "false",
+    // this value will be used.
+    "ignore_block_mode_in_plugin": true,
 ```
 
 ### bracket_string_escape_mode

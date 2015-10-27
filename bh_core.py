@@ -41,7 +41,7 @@ class BhCore(object):
     ####################
     def __init__(
         self, override_thresh=False, count_lines=False,
-        adj_only=None, no_outside_adj=False,
+        adj_only=None, no_outside_adj=False, no_block_mode=False,
         ignore=None, plugin=None, keycommand=False
     ):
         """Load settings and setup reload events if settings changes."""
@@ -56,11 +56,14 @@ class BhCore(object):
         if not keycommand:
             self.settings.clear_on_change('reload')
             self.settings.add_on_change('reload', self.setup)
-        self.setup(override_thresh, count_lines, adj_only, no_outside_adj, ignore, plugin)
+        self.setup(
+            override_thresh, count_lines, adj_only,
+            no_outside_adj, no_block_mode, ignore, plugin
+        )
 
     def setup(
         self, override_thresh=False, count_lines=False, adj_only=None,
-        no_outside_adj=False, ignore=None, plugin=None
+        no_outside_adj=False, no_block_mode=False, ignore=None, plugin=None
     ):
         """Initialize class settings from settings file and inputs."""
 
@@ -80,13 +83,17 @@ class BhCore(object):
         self.kill_highlight_on_threshold = bool(self.settings.get("kill_highlight_on_threshold", False))
         if no_outside_adj is None:
             no_outside_adj = self.settings.get('ignore_outside_adjacent_in_plugin', True)
+        if no_block_mode is None:
+            no_block_mode = self.settings.get('ignore_block_mode_in_plugin', True)
+        block_cursor = self.settings.get('block_cursor_mode', False) and not no_block_mode
 
         # Init search object
         self.rules = bh_rules.SearchRules(
             self.settings.get("brackets", []) + self.settings.get("user_brackets", []),
             self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", []),
             str(self.settings.get('bracket_string_escape_mode', "string")),
-            False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False)
+            False if no_outside_adj else self.settings.get("bracket_outside_adjacent", False),
+            block_cursor
         )
 
         # Init selection params
@@ -506,7 +513,7 @@ class BhCore(object):
         endcaps to determine if valid scope bracket.
         """
 
-        center = sel.a
+        center = sel.b
         left = None
         right = None
         scope_count = 0
@@ -519,7 +526,7 @@ class BhCore(object):
 
         # Cannot be inside a bracket pair if cursor is at zero
         if center == 0:
-            if not self.rules.outside_adj:
+            if not self.rules.outside_adj and not self.rules.block_cursor:
                 return left, right, selected_scope, False
 
         for s in self.rules.scopes:
@@ -564,7 +571,13 @@ class BhCore(object):
             left, right = partial_find[0], partial_find[1]
 
         # Make sure cursor in highlighted sub group
-        if self.rules.outside_adj:
+        if self.rules.block_cursor:
+            if (
+                (left and center < left.begin and adjusted_center <= left.begin) or
+                (right and center >= right.end and adjusted_center >= right.end)
+            ):
+                left, right = None, None
+        elif self.rules.outside_adj:
             if (
                 (left and center <= left.begin and adjusted_center <= left.begin) or
                 (right and center >= right.end and adjusted_center >= right.end)
@@ -590,7 +603,10 @@ class BhCore(object):
                     left, right, bracket = None, None, None
 
         if self.adj_only:
-            left, right = self.adjacent_check(left, right, center)
+            if self.rules.block_cursor:
+                left, right = self.block_adjacent_check(left, right, center)
+            else:
+                left, right = self.adjacent_check(left, right, center)
 
         left, right = self.post_match(left, right, center, scope_bracket=True)
         return left, right, bracket, False
@@ -598,7 +614,7 @@ class BhCore(object):
     def match_brackets(self, sel, scope=None):
         """Regex bracket matching."""
 
-        center = sel.a
+        center = sel.b
         left = None
         right = None
         stack = []
@@ -666,7 +682,10 @@ class BhCore(object):
             break
 
         if self.adj_only:
-            left, right = self.adjacent_check(left, right, center)
+            if self.rules.block_cursor:
+                left, right = self.block_adjacent_check(left, right, center)
+            else:
+                left, right = self.adjacent_check(left, right, center)
 
         left, right = self.post_match(left, right, center)
         return left, right, False
@@ -678,6 +697,16 @@ class BhCore(object):
             if left.end < center < right.begin:
                 left, right = None, None
         elif (left and left.end < center) or (right and center < right.begin):
+            left, right = None, None
+        return left, right
+
+    def block_adjacent_check(self, left, right, center):
+        """Check if block bracket pair have the cursor directly on a bracket."""
+
+        if left and right:
+            if left.begin < center < right.begin:
+                left, right = None, None
+        elif (left and left.begin < center) or (right and center < right.begin):
             left, right = None, None
         return left, right
 
@@ -750,7 +779,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
 
     def run(
         self, threshold=True, lines=False, adjacent=False,
-        no_outside_adj=False, ignore=None, plugin=None
+        no_outside_adj=False, no_block_mode=False, ignore=None, plugin=None
     ):
         """Run BH key command."""
 
@@ -767,6 +796,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             lines,
             adjacent,
             no_outside_adj,
+            no_block_mode,
             ignore,
             plugin,
             True

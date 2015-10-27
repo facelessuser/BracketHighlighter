@@ -2,11 +2,11 @@
     "@python": 3,
     "linters": {
         "flake8": {
-            "ignore": "",
+            "ignore": "D202,D203",
             "max-line-length": 120
         },
         "pep257": {
-            "ignore": "D202"
+            "ignore": "D202,D203"
         }
     }
 }

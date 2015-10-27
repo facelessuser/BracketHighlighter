@@ -42,6 +42,7 @@
         "args":
         {
             "no_outside_adj": null,
+            "no_block_mode": null,
             "lines" : true,
             "plugin":
             {
@@ -58,6 +59,7 @@
         "args":
         {
             "no_outside_adj": null,
+            "no_block_mode": null,
             "lines" : true,
             "plugin":
             {
