@@ -117,7 +117,7 @@ When this setting is enabled, [bracket_outside_adjacent](#bracket_outside_adjace
     // EXPERIMENTAL: Special matching mode for block cursor.
     // Essentially, this provides a matching mode that makes a little more
     // sense to some in regards to the visual representation of block cursors.
-    // This will override "match_only_adjacent" and "bracket_outside_adjacent".
+    // This will ignore "bracket_outside_adjacent".
     "block_cursor_mode": false,
 ```
 
@@ -132,7 +132,7 @@ Ignores the [bracket_outside_adjacent](#bracket_outside_adjacent) setting when r
 ```
 
 ### ignore_block_mode_in_plugin (EXPERIMENTAL)
-Ignores the [block_cursor_mode](#block_cursor_mode) setting when running a plugin **if** the plugin sets `no_block_mode` to `null` (`null` for JSON or `None` in Python).
+Ignores the [block_cursor_mode](#block_cursor_mode-experimental) setting when running a plugin **if** the plugin sets `no_block_mode` to `null` (`null` for JSON or `None` in Python).
 
 ```js
     // When "block_cursor_mode" is set, and a plugin command explicitly sets
