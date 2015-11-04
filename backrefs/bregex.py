@@ -182,10 +182,7 @@ if REGEX_SUPPORT:
                 m = self._re_search_ref.match(self.string[self.index + 1:])
                 if m:
                     if m.group(1):
-                        if m.group(2):
-                            self.index += 1
-                        else:
-                            char += self._b_slash
+                        char += self._b_slash
                     else:
                         char += m.group(3)
 
