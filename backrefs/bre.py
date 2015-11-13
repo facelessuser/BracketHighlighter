@@ -276,7 +276,13 @@ class ReplaceTokens(compat.Tokens):
     def _in_boundary(self, index):
         """Check if index is in current boundary."""
 
-        return self.boundary is not None and index >= self.boundary[0] and index < self.boundary[1]
+        return (
+            self.boundary and
+            (
+                self.boundary[0] <= index < self.boundary[1] or
+                self.boundary[0] == index == self.boundary[1]
+            )
+        )
 
     def in_boundary(self):
         """Check if last/current index is in current boundary (public)."""
