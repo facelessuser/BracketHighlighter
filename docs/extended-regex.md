@@ -82,7 +82,7 @@ Unicode properties can be used with the format: `\p{UnicodeProperty}`.  The inve
 You can import backrefs into a `bh_plugin`:
 
 ```python
-import BracketHighlighter.backrefs as bre
+from backrefs as bre
 ```
 
 Backrefs does provide a wrapper for all of re's normal functions such as `match`, `sub`, etc., but is recommended to pre-compile your search patterns **and** your replace patterns for the best performance; especially if you plan on reusing the same pattern multiple times.  As re does cache a certain amount of the non-compiled calls you will be spared from some of the performance hit, but backrefs does not cache the pre-processing of search and replace patterns.

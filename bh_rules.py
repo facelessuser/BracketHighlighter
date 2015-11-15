@@ -4,7 +4,7 @@ BracketHighlighter.
 Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
-from BracketHighlighter.backrefs import bre
+from backrefs import bre
 import BracketHighlighter.bh_plugin as bh_plugin
 from BracketHighlighter.bh_logging import debug, log
 from operator import itemgetter
