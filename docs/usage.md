@@ -82,3 +82,8 @@ BH provides no shortcuts in order to avoid shortcut conflicts, but you can view 
 *[BH]: BracketHighlighter
 *[ST2]: Sublime Text 2
 *[ST3]: Sublime Text 3
+
+## Suggested User Settings
+```js
+"match_brackets": false // disable default ST bracket highlighting
+```
