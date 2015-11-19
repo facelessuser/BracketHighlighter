@@ -25,6 +25,9 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 # Documentation
 http://facelessuser.github.io/BracketHighlighter/
 
+# Suggested User Settings
+``` "match_brackets": false // disable default ST bracket highlighting ```
+
 # License
 Released under the MIT license.
 
