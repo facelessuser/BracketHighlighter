@@ -409,6 +409,18 @@
             "language_filter": "whitelist",
             "language_list": ["fish"],
             "enabled": true
+        },
+        // Lua
+        {
+            "name": "lua",
+            "open": "(?<=[\\s;])(if|while|function|do|repeat)\\b",
+            "close": "(?<=[\\s;])(end|until)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.luakeywords",
+            "language_filter": "whitelist",
+            "language_list": ["Lua"],
+            "enabled": true
         }
     ],
 
