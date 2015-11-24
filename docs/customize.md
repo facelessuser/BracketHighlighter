@@ -320,7 +320,7 @@ The `entries` key is used to define the related bracket warp rules for the given
 Within the `brackets` key, you can specify where the cursor(s) will appear by using `${BH_SEL}`  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use `${BH_SEL:optional text}`. You can also define tab stops that a user can tab through and enter text.  The tab stop syntax is `${BH_TAB}`.  You can also define optional text within a tab stop to give the user a hint of what should be entered in at the tab stop using the following syntax: `${BH_TAB:optional text}`.
 
 ## Configuring Brackets
-BH has been written to allow users to define any brackets they would like to have highlighted.  There are two kinds of brackets you can define: `scope_brackets` which search the file for scope regions and then use regex to test for opening and closing brackets, and `brackets` which use regex to find opening and closing brackets.  `brackets` type rules should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and are not easily distinguishable from one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
+BH has been written to allow users to define any brackets they would like to have highlighted.  Bracket rules are defined with case insensitive regular expressions, syntax scoping, and bh_plugins.  There are two kinds of brackets you can define: `scope_brackets` which search the file for scope regions and then use regex to test for opening and closing brackets, and `brackets` which use regex to find opening and closing brackets.  `brackets` type rules should usually be the preferred type.  `scope_brackets` are usually used for brackets whose opening and closing are the same and are not easily distinguishable from one another by regex; scope brackets must be contained in a continuous scope region like string for quotes etc.
 
 BH uses a wrapper around Python's re regex library to add support for additional back references.  See the [Extended Regex Guide](./extended-regex.md#extended-regex-guide).
 
@@ -371,7 +371,7 @@ Brackets are defined under `brackets` in `bh_core.sublime-settings`.
 | enabled | Disable or enable rule. |
 | scope_exclude_exceptions&nbsp;(optional) | Used to ignore excluding of sub scopes such as in the curly example above where `string` is excluded, but not `string.other.math.block.environment.latex`. |
 | plugin_library&nbsp;(optional) | Defines plugin to use for determining matches (see Bracket Plugin API for more info on matching plugins). |
-| find_in_sub_search&nbsp;(optional) | This rule should be included when doing sub bracket matching in `scope_brackets` (like finding round brackets between quotes etc.).  The setting must be as string and can be either (true|false|only); only means this bracket is only matched as a sub bracket of a `scope_bracket`. |
+| find_in_sub_search&nbsp;(optional) | This rule should be included when doing sub bracket matching in `scope_brackets` (like finding round brackets between quotes etc.).  The setting must be a string and can be either `true`, `false`, or `only`; `only` means this bracket is only matched as a sub bracket of a `scope_bracket`. |
 | ignore_string_escape&nbsp;(optional) | Do not ignore sub brackets found in strings and regex when escaped, but use internal escape logic to determine if the brackets should be ignored based on whether regex or string escape mode is set. |
 
 ### Configuring Scope Brackets Rules
@@ -857,13 +857,13 @@ def validate(name, bracket, bracket_size, bfr)
     end
     ```
 
-    Example (from erlangcase.py):
+    Example (from lowercase.py):
 
     ```python
     def validate(name, bracket, bracket_side, bfr):
-        text = bfr[bracket.begin:bracket.end]
-        return text.lower() == text
+        """Check if bracket is lowercase."""
 
+        return bfr[bracket.begin:bracket.end].islower()
     ```
 
 #### compare
