@@ -72,7 +72,7 @@ def load_modules(obj, loaded):
         return
 
     try:
-        module = ImportModule.import_module(plib, loaded)
+        module = _import_module(plib, loaded)
         obj["compare"] = getattr(module, "compare", None)
         obj["post_match"] = getattr(module, "post_match", None)
         obj["validate"] = getattr(module, "validate", None)
@@ -83,44 +83,41 @@ def load_modules(obj, loaded):
         raise
 
 
-class ImportModule(object):
-    """Dynamically import modules."""
+def _import_module(module_name, loaded=None):
+    """
+    Import the module.
 
-    @classmethod
-    def import_module(cls, module_name, loaded=None):
-        """
-        Import the module.
+    Import the module and track which modules have been loaded
+    so we don't load already loaded modules.
+    """
 
-        Import the module and track which modules have been loaded
-        so we don't load already loaded modules.
-        """
+    # Pull in built-in and custom plugin directory
+    if module_name.startswith("bh_modules."):
+        path_name = join("Packages", "BracketHighlighter", normpath(module_name.replace('.', '/')))
+    else:
+        path_name = join("Packages", normpath(module_name.replace('.', '/')))
+    path_name += ".py"
+    if loaded is not None and module_name in loaded:
+        module = sys.modules[module_name]
+    else:
+        module = imp.new_module(module_name)
+        sys.modules[module_name] = module
+        exec(
+            compile(
+                sublime.load_resource(sublime_format_path(path_name)),
+                module_name,
+                'exec'
+            ),
+            sys.modules[module_name].__dict__
+        )
+    return module
 
-        # Pull in built-in and custom plugin directory
-        if module_name.startswith("bh_modules."):
-            path_name = join("Packages", "BracketHighlighter", normpath(module_name.replace('.', '/')))
-        else:
-            path_name = join("Packages", normpath(module_name.replace('.', '/')))
-        path_name += ".py"
-        if loaded is not None and module_name in loaded:
-            module = sys.modules[module_name]
-        else:
-            module = imp.new_module(module_name)
-            sys.modules[module_name] = module
-            exec(
-                compile(
-                    sublime.load_resource(sublime_format_path(path_name)),
-                    module_name,
-                    'exec'
-                ),
-                sys.modules[module_name].__dict__
-            )
-        return module
 
-    @classmethod
-    def import_from(cls, module_name, attribute):
-        """Import from the given module."""
+def import_module(module, attribute=None):
+    """Import module or module attribute."""
 
-        return getattr(cls.import_module(module_name), attribute)
+    mod = _import_module(module)
+    return getattr(mod, attribute) if attribute is not None else mod
 
 
 class BracketPluginRunCommand(sublime_plugin.TextCommand):
@@ -149,7 +146,7 @@ class BracketPlugin(object):
         if 'command' in plugin:
             plib = plugin['command']
             try:
-                module = ImportModule.import_module(plib, loaded)
+                module = _import_module(plib, loaded)
                 self.plugin = getattr(module, 'plugin')()
                 loaded.add(plib)
                 self.enabled = True
