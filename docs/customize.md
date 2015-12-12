@@ -825,6 +825,19 @@ class BracketRegion(begin_pt, end_pt)
         |--------|-------------|
         | SublimeRegion | A Sublime Region. |
 
+If needed, bracket plugins can be imported into each other reuse functionality, but because they are not in Python's path, you need to use the special import method.
+
+def import_module(module, attribute=None)
+: 
+    Imports a bh_plugin and returns the module or the module attribute if `attribute` is defined.
+
+    **Parameters**:
+
+    | Parameter | Description |
+    |-----------|-------------|
+    | module | The desired module to import. For internal plugins, they are referenced by `bh_modules.<plugin name>`.  For custom plugins, you should use the folder path relative to `Packages`.  So if I had a plugin called `myplugin.py` in my `User\bh_modules` folder, I would use `User.bh_modules.myplugin`. |
+    | attribute | The attribute to import from the module. |
+
 ### 'Definition' Plugins
 These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kinds of plugins have three methods you can provide: `post_match`, `compare`, and/or `validate`.
 
@@ -1029,7 +1042,7 @@ The `plugin` parameter is a dictionary that contains 3 arguments that define whi
 | Parameter | Description |
 |-----------|-------------|
 | type | An array containing the bracket definition names that the plugin should be run on.  Use `__all__` for all bracket definitions. |
-| command | The plugin to run.  For internal plugins, they are referenced by `bh_modules.<plugin name>`.  For custom plugins, you should use the folder path relative to `Packages`.  So if I had a plugin called `myplugin.py` in my `User` folder, I would use `User.myplugin`. |
+| command | The plugin to run.  For internal plugins, they are referenced by `bh_modules.<plugin name>`.  For custom plugins, you should use the folder path relative to `Packages`.  So if I had a plugin called `myplugin.py` in my `User\bh_modules` folder, I would use `User.bh_modules.myplugin`. |
 | args | A dictionary containing the arguments to feed into the plugin. |
 
 

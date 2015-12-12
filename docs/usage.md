@@ -31,6 +31,7 @@ BH supports a variety of brackets out of the box; here are some examples:
 - HTML, ColdFusion, XML, and various other template tags
 - Bash conditional and looping constructs
 - Fish conditional and looping constructs
+- Lua
 
 Within supported regex and strings, BH can also highlight basic sub brackets between the matched quotes: `(), [], {}`.
 
