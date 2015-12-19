@@ -6,77 +6,11 @@ BH uses Python's re regex engine, but it also adds some additional back referenc
 
 Backrefs was written to add various additional backrefs that are known to some regex engines, but not to Python's re.  Backrefs adds: `\p`, `\P`, `\u`, `\U`, `\l`, `\L`, `\Q` or `\E` (though `\u` and `\U` are replaced with `\c` and `\C`).
 
-### Search Back References
+You can read more about backrefs' features in the [backrefs documentation](https://github.com/facelessuser/sublime-backrefs/blob/master/readme.md).
 
-| Back&nbsp;References | Description |
-| ---------------------|-------------|
-| `\c`                 | Uppercase character class.  ASCII or Unicode when re Unicode flag is used.  Can be used in character classes `[]`. |
-| `\l`                 | Lowercase character class.  ASCII or Unicode when re Unicode flag is used.  Can be used in character classes `[]`. |
-| `\C`                 | Inverse uppercase character class.  ASCII or Unicode when re Unicode flag is used.  Can be used in character classes `[]`. |
-| `\L`                 | Inverse lowercase character class.  ASCII or Unicode when re Unicode flag is used.  Can be used in character classes `[]`. |
-| `\Q...\E`            | Quotes (escapes) text for regex.  `\E` signifies the end of the quoting. Will be ignored in character classes `[]`. |
-| `\p{UnicodeProperty}`| Unicode property character class. Search string must be a Unicode string. Can be used in character classes `[]`. See [Unicode Properties](#unicode-properties) for more info. |
-| `\P{UnicodeProperty}`| Inverse Unicode property character class. Search string must be a Unicode string. Can be used in character classes `[]`. See [Unicode Properties](#unicode-properties) for more info. |
+### Getting the Latest Backrefs
+It is not always clear when Package Control updates dependencies.  So to force dependency updates, you can run Package Control's `Satisfy Dependencies` command which will update to the latest release.
 
-### Replace Back References
-None of the replace back references can be used in character classes `[]`.  Since bracket rules are only for search, replace back references will only apply if using the backrefs module in a bh_plugin.
-
-| Back&nbsp;References | Description |
-| ---------------------|-------------|
-| `\c`                 | Uppercase the next character. |
-| `\l`                 | Lowercase the next character. |
-| `\C...\E`            | Apply uppercase to all characters until either the end of the string or the end marker `\E` is found. |
-| `\L...\E`            | Apply lowercase to all characters until either the end of the string or the end marker `\E` is found. |
-
-!!! tip "Tip"
-    Complex configurations of casing should work fine.
-
-    - `\L\cTEST\E` --> `Test`
-    - `\c\LTEST\E` --> `Test`
-    - `\L\cTEST \cTEST\E` --> `Test Test`
-
-### Unicode Properties
-Unicode properties can be used with the format: `\p{UnicodeProperty}`.  The inverse can also be used to specify everything not in a Unicode property: `\P{UnicodeProperty}`.  They are only used in the search patterns. You can use either the verbose format or the terse format, but only one property may specified between the curly braces.  If you want to use multiple properties, you can place them in a character class: `[\p{UnicodeProperty}\p{OtherUnicodeProperty}]`.  See the table below to see all the Unicode properties that can be used.
-
-| Verbose&nbsp;Property&nbsp;Form | Terse&nbsp;Property&nbsp;Form |
-|---------------------------------|-------------------------------|
-| Other | C |
-| Control | Cc |
-| Format | Cf |
-| Surrogate | Cs |
-| Private_Use | Co |
-| Unassigned | Cn |
-| Letter | L |
-| Uppercase_Letter | Lu |
-| Lowercase_Letter | Ll |
-| Titlecase_Letter | Lt |
-| Modifier_Letter | Lm |
-| Other_Letter | Lo |
-| Mark | M |
-| Nonspacing_Mark | Mc |
-| Spacing_Mark | Me |
-| Enclosing_Mark | Md |
-| Number | N |
-| Decimal_Number | Nd |
-| Letter_Number | Nl |
-| Other_Number | No |
-| Punctuation | P |
-| Connector_Punctuation | Pc |
-| Dash_Punctuation | Pd |
-| Open_Punctuation | Ps |
-| Close_Punctuation | Pe |
-| Initial_Punctuation | Pi |
-| Final_Punctuation | Pf |
-| Other_Punctuation | Po |
-| Symbol | S |
-| Math_Symbol | Sm |
-| Currency_Symbol | Sc |
-| Modifier_Symbol | Sk |
-| Other_Symbol | So |
-| Separator | Z |
-| Space_Separator | Zs |
-| Line_Separator | Zl |
-| Paragraph_Separator | Z |
 
 ### Using Backrefs in BracketHighlighter Plugins
 You can import backrefs into a `bh_plugin`:
