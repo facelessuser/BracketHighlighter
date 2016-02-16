@@ -44,7 +44,7 @@
             ]
         },
         {
-            "enabled": true, "language_list": ["C++", "C"], "language_filter": "whitelist", "entries": [
+            "enabled": true, "language_list": ["C++", "C", "C Improved"], "language_filter": "whitelist", "entries": [
                 {"name": "C/C++: #if", "brackets": ["#if ${BH_SEL:/* CONDITION */}", "#endif"], "insert_style": ["block"]},
                 {"name": "C/C++: #if, #else", "brackets": ["#if ${BH_SEL:/* CONDITION */}", "#else\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": ["block"]},
                 {"name": "C/C++: #if, #elif", "brackets": ["#if ${BH_SEL:/* CONDITION */}", "#elif ${BH_TAB:/* CONDITION */}\n${BH_TAB:/* CODE */}\n#endif"], "insert_style": ["block"]},

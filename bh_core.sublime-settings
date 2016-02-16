@@ -352,7 +352,7 @@
             "style": "c_define",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C", "Objective-C", "CCpp"],
+            "language_list": ["C++", "C", "Objective-C", "CCpp", "C Improved"],
             "enabled": true
         },
         // PHP conditional keywords
