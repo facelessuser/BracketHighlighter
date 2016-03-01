@@ -32,6 +32,11 @@
             ]
         },
         {
+            "enabled": true, "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"], "language_filter": "whitelist", "entries": [
+                {"name": "LaTeX Environment", "brackets": ["\\begin{${BH_SEL:NAME}}", "\\end{${BH_SEL:NAME}}"]}
+            ]
+        },
+        {
             "enabled": true, "language_list": ["C++", "C", "C Improved"], "language_filter": "whitelist", "entries": [
                 {"name": "C/C++: #if", "brackets": ["#if ${BH_SEL}", "#endif"]},
                 {"name": "C/C++: #if, #else", "brackets": ["#if${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},

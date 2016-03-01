@@ -202,6 +202,18 @@
             "language_list": ["Markdown"],
             "sub_bracket_search": "true",
             "enabled": true
+        },
+        // LaTeX
+        {
+            "name": "latexmath_inline",
+            "open": "(\\$)",
+            "close": "(\\$)",
+            "style": "default",
+            "scopes": ["string.other.math.tex"],
+            "language_filter": "whitelist",
+            "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
+            "sub_bracket_search": "true",
+            "enabled": true
         }
     ],
 
@@ -420,6 +432,19 @@
             "plugin_library": "bh_modules.luakeywords",
             "language_filter": "whitelist",
             "language_list": ["Lua"],
+            "enabled": true
+        },
+        // LaTeX
+        {
+            "name": "latexenv",
+            "open": "(\\\\begin{[^}]*})",
+            "close": "(\\\\end{[^}]*})",
+            "style": "tag",
+            "scope_exclude": ["comment"],
+            "plugin_library": "bh_modules.latexenvironments",
+            "language_filter": "whitelist",
+            "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
+            "sub_bracket_search": "true",
             "enabled": true
         }
     ],
