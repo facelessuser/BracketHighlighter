@@ -4,7 +4,6 @@ BracketHighlighter.
 Copyright (c) 2013 - 2015 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
-from BracketHighlighter.bh_plugin import import_module
 
 
 def compare(name, first, second, bfr):
