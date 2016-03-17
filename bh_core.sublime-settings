@@ -450,10 +450,11 @@
         // Pascal
         {
             "name": "pascal",
-            "open": "(?<=[\\s;])(try|class|record|begin|unit|repeat)\\b",
-            "close": "(?<=[\\s;])(end|until)\\b",
+            "open": "(?:(?<=^)|(?<=[\\s;]))(try|(?<=\\=\\s)class|(?<=\\=\\s)record|(?<=\\=\\s)interface|begin|unit|repeat)\\b",
+            "close": "(?<=[\\s;])(end\\.|end(?=[;\\s])|until(?=\\b))",
             "style": "default",
             "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.pascalkeywords",
             "language_filter": "whitelist",
             "language_list": ["Pascal"],
             "enabled": true
