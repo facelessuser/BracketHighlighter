@@ -7,8 +7,6 @@ License: MIT
 
 
 def compare(name, first, second, bfr):
-    """Differentiate 'repeat..until' and 'unit..end.' from '*..end' brackets."""
+    """Differentiate 'repeat..until' from '*..end' brackets."""
     brackets = (bfr[first.begin:first.end], bfr[second.begin:second.end])
-    return (brackets[0] == "repeat" and brackets[1] == "until") \
-        or (brackets[0] == "unit" and brackets[1] == "end.") \
-        or (brackets[0] != "repeat" and brackets[0] != "unit" and (brackets[1] == "end"))
+    return (brackets[0] == "repeat") ^ (brackets[1] == "end")
