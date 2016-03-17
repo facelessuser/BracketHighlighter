@@ -32,6 +32,7 @@ BH supports a variety of brackets out of the box; here are some examples:
 - Bash conditional and looping constructs
 - Fish conditional and looping constructs
 - Lua
+- Pascal
 
 Within supported regex and strings, BH can also highlight basic sub brackets between the matched quotes: `(), [], {}`.
 
