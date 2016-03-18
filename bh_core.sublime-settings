@@ -203,6 +203,28 @@
             "sub_bracket_search": "true",
             "enabled": true
         },
+        {
+            "name": "mdcodeinline",
+            "open": "(`+)",
+            "close": "(`+)",
+            "style": "default",
+            "scopes": ["markup.raw.inline.markdown"],
+            "language_filter": "whitelist",
+            "language_list": ["Markdown"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
+            "name": "mdcodeblock",
+            "open": "\\s*(```)",
+            "close": "(```)\\n?",
+            "style": "default",
+            "scopes": ["markup.raw.block.fenced.markdown"],
+            "language_filter": "whitelist",
+            "language_list": ["Markdown"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
         // LaTeX
         {
             "name": "latexmath_inline",
