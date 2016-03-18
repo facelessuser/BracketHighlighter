@@ -450,7 +450,7 @@
         // Pascal
         {
             "name": "pascal",
-            "open": "(?:(?<=^)|(?<=[\\s;]))(try|(?<=\\=\\s)class|(?<=\\=\\s)record|(?<=\\=\\s)interface|begin|repeat)\\b",
+            "open": "(?:(?<=^)|(?<=[\\s;]))(try|(?<=\\=\\s)(?:class|record|interface)|begin|repeat)\\b",
             "close": "(?<=[\\s;])(end(?=[;\\s])|until(?=\\s))",
             "style": "default",
             "scope_exclude": ["string", "comment"],
