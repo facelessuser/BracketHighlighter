@@ -446,6 +446,18 @@
             "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
             "sub_bracket_search": "true",
             "enabled": true
+        },
+        // Pascal
+        {
+            "name": "pascal",
+            "open": "(?:(?<=^)|(?<=[\\s;]))(try|(?<=\\=\\s)(?:class|record|interface)|begin|repeat)\\b",
+            "close": "(?<=[\\s;])(end(?=[;\\s])|until(?=\\s))",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "plugin_library": "bh_modules.pascalkeywords",
+            "language_filter": "whitelist",
+            "language_list": ["Pascal"],
+            "enabled": true
         }
     ],
 
