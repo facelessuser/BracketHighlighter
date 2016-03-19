@@ -212,6 +212,7 @@
             "language_filter": "whitelist",
             "language_list": ["Markdown"],
             "sub_bracket_search": "true",
+            "plugin_library": "bh_modules.mdcodeinline",
             "enabled": true
         },
         {
