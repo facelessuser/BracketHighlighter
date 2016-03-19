@@ -216,8 +216,8 @@
         },
         {
             "name": "mdcodeblock",
-            "open": "\\s*(```)",
-            "close": "(```)\\n?",
+            "open": "\\s*(`{3,})",
+            "close": "(`{3,})\\n?",
             "style": "default",
             "scopes": ["markup.raw.block.fenced.markdown"],
             "language_filter": "whitelist",
