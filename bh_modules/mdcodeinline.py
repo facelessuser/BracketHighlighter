@@ -8,10 +8,6 @@ License: MIT
 
 def post_match(view, name, style, first, second, center, bfr, threshold):
     """Ensure that backticks inside the inline are not highlighted."""
-    # ensure this is only used for inline markdown
-    if name != "mdcodeinline":
-        return first, second, style
-
     inline_content_scope = "markup.raw.inline.content.markdown"
     # move the first scope back to the left
     if first is not None:
