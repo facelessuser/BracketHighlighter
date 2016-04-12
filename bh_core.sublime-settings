@@ -278,7 +278,7 @@
                 "source.yaml-tmlanguage constant.character.escape"
             ],
             "language_filter": "blacklist",
-            "language_list": ["Plain text", "Hex"],
+            "language_list": ["Plain text", "Hex", "RTF"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
@@ -291,7 +291,7 @@
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["text.tex string.other.math", "source.yaml-tmlanguage meta.value -constant.character.escape"],
             "language_filter": "blacklist",
-            "language_list": ["Plain text", "Hex"],
+            "language_list": ["Plain text", "Hex", "RTF"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
             "enabled": true
