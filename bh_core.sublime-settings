@@ -188,7 +188,7 @@
             "style": "default",
             "scopes": ["markup.italic"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -197,9 +197,33 @@
             "open": "(\\*\\*|__)",
             "close": "(\\*\\*|__)",
             "style": "default",
-            "scopes": ["markup.bold"],
+            "scopes": ["markup.bold", "Multimarkdown", "GithubFlavoredMarkdown"],
             "language_filter": "whitelist",
             "language_list": ["Markdown"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
+            "name": "mdcodeinline",
+            "open": "(`+)",
+            "close": "(`+)",
+            "style": "default",
+            "scopes": ["markup.raw.inline.markdown"],
+            "language_filter": "whitelist",
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "sub_bracket_search": "true",
+            "plugin_library": "bh_modules.mdcode",
+            "enabled": true
+        },
+        {
+            "name": "mdcodeblock",
+            "open": "\\s*(`{3,}|~{3,})",
+            "close": "(`{3,}|~{3,})\\n?",
+            "style": "default",
+            "scopes": ["markup.raw.block.fenced.markdown, markup.raw.block.markdown.fenced"],
+            "language_filter": "whitelist",
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "plugin_library": "bh_modules.mdcode",
             "sub_bracket_search": "true",
             "enabled": true
         },
