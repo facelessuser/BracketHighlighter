@@ -197,9 +197,9 @@
             "open": "(\\*\\*|__)",
             "close": "(\\*\\*|__)",
             "style": "default",
-            "scopes": ["markup.bold", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "scopes": ["markup.bold"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
             "sub_bracket_search": "true",
             "enabled": true
         },
