@@ -482,6 +482,17 @@
             "language_filter": "whitelist",
             "language_list": ["Pascal"],
             "enabled": true
+        },
+        // Elixir
+        {
+            "name": "elixir",
+            "open": "\\b(do$|fn)\\b",
+            "close": "\\b(end)\\b",
+            "style": "default",
+            "scope_exclude": ["string", "comment"],
+            "language_filter": "whitelist",
+            "language_list": ["Elixir"],
+            "enabled": true
         }
     ],
 
