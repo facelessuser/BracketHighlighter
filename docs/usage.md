@@ -14,14 +14,12 @@ BH supports a variety of brackets out of the box; here are some examples:
 - curly
 - angle
 - single and double quotes
-- Python single and double quotes (Unicode and raw)
-- Python triple single and double quotes (Unicode and raw)
+- Python single, double, and triple quotes (Unicode and raw)
 - Django Python templates with mixed HTML, CSS, and JS
 - JavaScript regex
 - Perl regex
 - Ruby regex
-- Markdown italic
-- Markdown bold
+- Markdown bold, italic, and code blocks
 - CSSedit groups
 - Ruby conditional statements
 - C/C++ compiler switches
@@ -33,6 +31,7 @@ BH supports a variety of brackets out of the box; here are some examples:
 - Fish conditional and looping constructs
 - Lua
 - Pascal
+- Elixir
 
 Within supported regex and strings, BH can also highlight basic sub brackets between the matched quotes: `(), [], {}`.
 
