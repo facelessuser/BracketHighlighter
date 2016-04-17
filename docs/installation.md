@@ -8,7 +8,7 @@ The recommended way to install BracketHighlighter is via [Package Control](https
 
 1. Ensure Package Control is installed.  Instructions are found [here](https://packagecontrol.io/installation).
 
-2. In Sublime Text, press <kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (Win, Linux) or <kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (OSX) to bring up the quick panel.  It will show a list of installable plugins.
+2. In Sublime Text, press <kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (Win, Linux) or <kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (OSX) to bring up the quick panel and start typing `Package Control: Install Package`.  Select the command and it will show a list of installable plugins.
 
 3. Start typing `BracketHighlighter`; when you see it, select it.
 
@@ -32,4 +32,4 @@ The recommended way to install BracketHighlighter is via [Package Control](https
     git clone https://github.com/facelessuser/BracketHighlighter.git BracketHighlighter
     ```
 
-3 Restart Sublime Text.
+3. Restart Sublime Text.
