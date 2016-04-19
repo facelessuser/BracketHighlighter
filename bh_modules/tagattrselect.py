@@ -4,7 +4,11 @@ BracketHighlighter.
 Copyright (c) 2013 - 2016 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
+import sublime
+from os.path import basename, splitext
 import BracketHighlighter.bh_plugin as bh_plugin
+from BracketHighlighter.bh_plugin import import_module
+tags = import_module("bh_modules.tags")
 
 
 class SelectAttr(bh_plugin.BracketPluginCommand):
@@ -19,8 +23,13 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
 
         if self.left.size() <= 1:
             return
+        tag_settings = sublime.load_settings("bh_tag.sublime-settings")
+        tag_mode = tags.get_tag_mode(self.view, tag_settings.get("tag_mode", {}))
         tag_name = r'[\w\:\.\-]+'
-        attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:(?:"((?:\.|[^"])*)")|(?:'((?:\.|[^'])*)')))?'''
+        if tag_mode == 'xhtml':
+            attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:"(?:\.|[^"])*"|'(?:\.|[^'])*'))?'''
+        else:
+            attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:"(?:\.|[^"])*"|'(?:\.|[^'])*'|[^\s"'`=<>]+))?'''
         tname = self.view.find(tag_name, self.left.begin)
         current_region = self.selection[0]
         current_pt = self.selection[0].b
