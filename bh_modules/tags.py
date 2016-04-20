@@ -12,32 +12,36 @@ from os.path import basename, splitext
 TAG_OPEN = 0
 TAG_CLOSE = 1
 
-FLAGS = re.MULTILINE | re.IGNORECASE
 XHTML_START = re.compile(
-    r'''(?x)
-    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'))?)*)\s*(\/?)>
-    ''',
-    FLAGS
+    r'''(?xmi)
+    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'))?)*)\s*(/?)>
+    '''
 )
 HTML_START = re.compile(
-    r'''(?x)
-    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?)*)\s*(\/?)>
-    ''',
-    FLAGS
+    r'''(?xmi)
+    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?)*)\s*(/?)>
+    '''
 )
 CFML_START = re.compile(
-    r'''(?x)
+    r'''(?xmi)
     <([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?)*|
-    (?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(\/?)>
-    ''',
-    FLAGS
+    (?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(/?)>
+    '''
 )
 START_TAG = {
     "html": HTML_START,
     "xhtml": XHTML_START,
     "cfml": CFML_START
 }
-END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>', FLAGS)
+END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>')
+
+
+def process_tag_pattern(pattern, attributes):
+    """Process the tag pattern."""
+
+    if isinstance(pattern, str):
+        pattern = re.compile(pattern % attributes)
+    return pattern
 
 
 class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
@@ -100,6 +104,7 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
     tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
     tag_style = tag_settings.get("tag_style", "angle")
     outside_adj = bh_settings.get("bracket_outside_adjacent", False)
+
     bracket_style = style
 
     if first is not None and tag_mode is not None:
@@ -198,6 +203,20 @@ class TagMatch(object):
         self.view = view
         self.bfr = bfr
         self.mode = mode
+        try:
+            attributes = {"attributes": tag_settings.get('attributes', {}).get(mode, '')}
+            self.tag_open = process_tag_pattern(tag_settings.get(
+                "start_tag", START_TAG)[mode], attributes
+            )
+        except Exception:
+            self.tag_open = START_TAG[mode]
+
+        try:
+            self.tag_close = process_tag_pattern(tag_settings.get(
+                "end_tag", END_TAG), tag_settings.get('attributes', {})
+            )
+        except Exception:
+            self.tag_close = END_TAG
         self.self_closing_tags = set(tag_settings.get('self_closing_tags', []))
         self.single_tags = set(tag_settings.get('single_tags', []))
         tag, tag_type, tag_end = self.get_first_tag(first[0])
@@ -236,7 +255,7 @@ class TagMatch(object):
         tag_type = None
         self_closing = False
         single = False
-        m = START_TAG[self.mode].match(self.bfr[offset:])
+        m = self.tag_open.match(self.bfr[offset:])
         end = None
         if m:
             name = m.group(1).lower()
@@ -253,7 +272,7 @@ class TagMatch(object):
             tag_type = "open"
             self.center = end
         else:
-            m = END_TAG.match(self.bfr[offset:])
+            m = self.tag_close.match(self.bfr[offset:])
             if m:
                 name = m.group(1).lower()
                 start = m.start(0) + offset
@@ -305,14 +324,14 @@ class TagMatch(object):
         # Init tag matching objects
         osearch = TagSearch(
             self.view, self.bfr, self.window,
-            self.center, START_TAG[self.mode],
+            self.center, self.tag_open,
             0, self.mode,
             self.self_closing_tags,
             self.single_tags
         )
         csearch = TagSearch(
             self.view, self.bfr, self.window,
-            self.center, END_TAG,
+            self.center, self.tag_close,
             1, self.mode,
             self.self_closing_tags,
             self.single_tags

@@ -25,10 +25,7 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
         tag_settings = sublime.load_settings("bh_tag.sublime-settings")
         tag_mode = tags.get_tag_mode(self.view, tag_settings.get("tag_mode", {}))
         tag_name = r'[\w\:\.\-]+'
-        if tag_mode == 'xhtml':
-            attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:"(?:\.|[^"])*"|'(?:\.|[^'])*'))?'''
-        else:
-            attr_name = r'''([\w\-\.:]+)(?:\s*=\s*(?:"(?:\.|[^"])*"|'(?:\.|[^'])*'|[^\s"'`=<>]+))?'''
+        attr_name = tag_settings.get('attributes')[tag_mode]
         tname = self.view.find(tag_name, self.left.begin)
         current_region = self.selection[0]
         current_pt = self.selection[0].b

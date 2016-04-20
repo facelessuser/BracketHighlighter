@@ -35,5 +35,24 @@
         "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
         "img", "input", "isindex", "keygen", "link", "meta", "param",
         "source", "track", "wbr"
-    ]
+    ],
+
+    // HTML attributes.  Only xhtml, html, and cfml allowed.
+    "attributes":
+    {
+        "xhtml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"(?:\\.|[^\"])*\"|'(?:\\.|[^'])*'))?",
+        "html": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?",
+        "cfml": "[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?"
+    },
+
+    // Regex for start/opening tag.  Only xhtml, html, and cfml allowed.
+    // Attributes are inserted using python string formatting: the keyword 'attributes' is used.
+    "start_tag": {
+        "xhtml": "(?mi)<([\\w:\\.\\-]+)((?:\\s+%(attributes)s)*)\\s*(/?)>",
+        "html": "(?mi)<([\\w\\:\\.\\-]+)((?:\\s+%(attibutes)s)*)\\s*(/?)>",
+        "cfml": "(?mi)<([\\w\\:\\.\\-]+)((?:\\s+%(attibutes)s)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*(/?)>"
+    },
+
+    // Regex for end/closing tag.  There are not usually end variants, so only one is currently supported.
+    "end_tag": "(?mi)</([\\w\\:\\.\\-]+)[^>]*>"
 }
