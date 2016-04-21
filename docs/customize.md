@@ -191,26 +191,13 @@ Disables gutter icons when doing multiple selections.
 ```
 
 ## Tag Plugin Settings
-Tag settings found in `bh_tag.sublime-settings`.
+Tag settings found in `bh_tag.sublime-settings`.  All tag settings are dictionaries.  Each key is represents a tag mode such as: `html`, `xhtml`, `cfml`, etc.  All of these are exposed so that even non-standard HTML syntax can be supported.
 
-### tag_style
-Sets the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles`.  See [Configuring Highlight Style](#configuring-highlight-style) for more info.
-
-```js
-    // Style to use for matched tags
-    "tag_style": "tag",
-```
-
-### tag_scope_exclude
-Excludes certain scopes from being evaluated when searching for tags.
-
-```js
-    // Scopes to exclude from tag searches
-    "tag_scope_exclude": ["string", "comment"],
-```
+!!! warning "Attention!"
+    More tag mode keys can be added, but they **must** be added to **every** setting with valid parameters.
 
 ### tag_mode
-A directory that contains a dictionary of three modes: `xhtml`, `html`, `cfml`.  Each mode tweaks the tag matching for the respective mode.  Each entry in the dictionary consists of a list of languages that should be evaluated in that mode.
+A directory that contains a dictionary of different modes.  Each mode tweaks the tag matching for the respective mode.  Each entry in the dictionary consists of a list of languages that should be evaluated in that mode.
 
 ```js
     // Determine which style of tag-matching to use in which syntax
@@ -221,27 +208,104 @@ A directory that contains a dictionary of three modes: `xhtml`, `html`, `cfml`. 
     }
 ```
 
-### self_closing_tags
-A list of tag names that will be evaluated as self closing.
+### tag_style
+Sets the highlight style for the tag plugin.  The string value should correspond to a style entry in `bracket_styles`.  See [Configuring Highlight Style](#configuring-highlight-style) for more info.
 
 ```js
-    // Self closing HTML tags
-    "self_closing_tags": [
-        "colgroup", "dd", "dt", "li", "options", "p", "td",
-        "tfoot", "th", "thead", "tr"
-    ],
+    // Style to use for matched tags
+    "tag_style": {
+        "xhtml": "tag",
+        "html": "tag",
+        "cfml": "tag"
+    },
 ```
 
-### single_tags
-A list of tag names that never have a closing tag.
+### tag_scope_exclude
+Excludes certain scopes from being evaluated when searching for tags.
 
 ```js
-    // Tags that never have a closing
-    "single_tags": [
-        "area", "base", "basefont", "br", "col", "embed", "frame", "hr",
-        "img", "input", "isindex", "keygen", "link", "meta", "param",
-        "source", "track", "wbr"
-    ]
+    // Scopes to exclude from tag searches.
+    "tag_scope_exclude": {
+        "xhtml": ["string", "comment"],
+        "html": ["string", "comment"],
+        "cfml": ["string", "comment"]
+    },
+```
+
+### self_closing_patterns
+Specifies a regex pattern for names that will be evaluated as self closing. `null` can be used to specify that there is no pattern for specified tag mode.
+
+```js
+    // Self closing HTML tags. You can use 'null' if it does not require a pattern.
+    "self_closing_patterns": {
+        "xhtml": null,
+        "html": "colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr",
+        "cfml": "cf.+|colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr"
+    },
+```
+
+### single_tag_patterns
+Specifies a regex pattern for names that never have a closing tag.  `null` can be used to specify that there is no pattern for specified tag mode.
+
+```js
+    // Tags that never have a closing.  You can use 'null' if it does not require a pattern.
+    "single_tag_patterns": {
+        "xhtml": null,
+        "html": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr",
+        "cfml": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr"
+    },
+```
+
+### tag_name
+Specifies the regex pattern for identifying the tag name for a given tag mode.  This is broken out as a separate pattern so that the `tagattrselect` bh_plugin needs access to the tag_name and tag attributes separate form the whole HTML tag regex.
+
+```js
+    // Regex for tag name. Do not use capturing groups.
+    "tag_name":
+    {
+        "xhtml": "[\\w:\\.\\-]+",
+        "html": "[\\w:\\.\\-]+",
+        "cfml": "[\\w:\\.\\-]+"
+    },
+```
+
+### attributes
+Specifies the regex pattern for identifying the tag attributes for a given tag mode.  This is broken out as a separate pattern so that the `tagattrselect` bh_plugin needs access to the tag_name and tag attributes separate from the whole HTML tag regex.
+
+```js
+    // HTML attributes.  Do not use capturing groups.
+    "attributes":
+    {
+        "xhtml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"(?:\\.|[^\"])*\"|'(?:\\.|[^'])*'))?",
+        "html": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?",
+        "cfml": "[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?"
+    },
+```
+
+### start_tag
+Specifies the starting/opening tag regex.  The pattern can accept the tag name and attribute portion of the pattern from the [`tag_name`](#tag_name) and [`attributes`](#attributes) settings via the python string formatting variables `tag_name` and `attributes`: see example below.  `tag_name` and `attributes` are broken out as a separate patterns so that the `tagattrselect` bh_plugin can have access to the tag_name and tag attributes separate from the whole HTML tag regex.
+
+```js
+    // Regex for start/opening tag.  Use a capturing group for tag name and self closing indicator '/' only.
+    // Attributes and tag names are inserted using python string formatting:
+    // the keyword 'attributes' and `tag_name` are used.
+    "start_tag": {
+        "xhtml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
+        "html": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
+        "cfml": "<(%(tag_name)s)(?:(?:\\s+%(attributes)s)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*(/?)>"
+    },
+```
+
+### end_tag
+Specifies the ending/closing tag regex.
+
+```js
+    // Regex for end/closing tag.  Only use a capturing group for name.
+    "end_tag": {
+        "xhtml": "</([\\w\\:\\.\\-]+)[^>]*>",
+        "html": "</([\\w\\:\\.\\-]+)[^>]*>",
+        "cfml": "</([\\w\\:\\.\\-]+)[^>]*>"
+    }
 ```
 
 ## Swap Brackets Plugin Settings

@@ -68,8 +68,8 @@
     },
 
     // Regex for start/opening tag.  Use a capturing group for tag name and self closing indicator '/' only.
-    // Attributes and tag_name are inserted using python string formatting:
-    // the keyword 'attributes' is used.
+    // Attributes and tag names are inserted using python string formatting:
+    // the keyword 'attributes' and `tag_name` are used.
     "start_tag": {
         "xhtml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
         "html": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
@@ -77,7 +77,6 @@
     },
 
     // Regex for end/closing tag.  Only use a capturing group for name.
-    // There are not usually end variants, so only one is currently supported.
     "end_tag": {
         "xhtml": "</([\\w\\:\\.\\-]+)[^>]*>",
         "html": "</([\\w\\:\\.\\-]+)[^>]*>",
