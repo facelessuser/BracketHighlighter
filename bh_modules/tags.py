@@ -12,35 +12,17 @@ from os.path import basename, splitext
 TAG_OPEN = 0
 TAG_CLOSE = 1
 
-XHTML_START = re.compile(
-    r'''(?xmi)
-    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'))?)*)\s*(/?)>
-    '''
-)
-HTML_START = re.compile(
-    r'''(?xmi)
-    <([\w\:\.\-]+)((?:\s+[\w\-:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?)*)\s*(/?)>
-    '''
-)
-CFML_START = re.compile(
-    r'''(?xmi)
-    <([\w\:\.\-]+)((?:\s+[\w\-\.:]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'`=<>]+))?)*|
-    (?:(?<=cfif)|(?<=cfelseif))[^>]+)\s*(/?)>
-    '''
-)
-START_TAG = {
-    "html": HTML_START,
-    "xhtml": XHTML_START,
-    "cfml": CFML_START
-}
-END_TAG = re.compile(r'<\/([\w\:\.\-]+)[^>]*>')
+last_mode = None
 
 
-def process_tag_pattern(pattern, attributes):
+def process_tag_pattern(pattern, variables=None):
     """Process the tag pattern."""
 
+    if variables is None:
+        variables = {}
+
     if isinstance(pattern, str):
-        pattern = re.compile(pattern % attributes)
+        pattern = re.compile(pattern % variables, re.I | re.M)
     return pattern
 
 
@@ -70,7 +52,7 @@ def get_tag_mode(view, tag_mode_config):
     default_mode = None
     syntax = view.settings().get('syntax')
     language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
-    for mode in ["html", "xhtml", "cfml"]:
+    for mode in tag_mode_config.keys():
         if compare_languge(language, tag_mode_config.get(mode, [])):
             return mode
     return default_mode
@@ -78,8 +60,10 @@ def get_tag_mode(view, tag_mode_config):
 
 def highlighting(view, name, style, left, right):
     """Highlight only the tag name."""
-    if style == "tag":
-        tag_name = '[\w\:\.\-]+'
+    tag_settings = sublime.load_settings("bh_tag.sublime-settings")
+    match_style = tag_settings.get("tag_style", {}).get(last_mode, None)
+    if match_style is not None and style == match_style:
+        tag_name = tag_settings.get('tag_name', {}).get(last_mode, '[\w\:\.\-]+')
         if left is not None:
             region = view.find(tag_name, left.begin)
             left = left.move(region.begin(), region.end())
@@ -97,12 +81,15 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
     find its respective closing or opening.
     """
 
+    # We need to know the mode during the highlight event, so track the last mode.
+    global last_mode
     left, right = first, second
     threshold = [0, len(bfr)] if threshold is None else threshold
     bh_settings = sublime.load_settings("bh_core.sublime-settings")
     tag_settings = sublime.load_settings("bh_tag.sublime-settings")
     tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
-    tag_style = tag_settings.get("tag_style", "angle")
+    tag_style = tag_settings.get("tag_style", {}).get(tag_mode, '?')
+    last_mode = tag_mode
     outside_adj = bh_settings.get("bracket_outside_adjacent", False)
 
     bracket_style = style
@@ -138,7 +125,11 @@ class TagSearch(object):
         self.return_prev = False
         self.done = False
         self.view = view
-        self.scope_exclude = sublime.load_settings("bh_tag.sublime-settings").get("tag_scope_exclude")
+        settings = sublime.load_settings("bh_tag.sublime-settings")
+        try:
+            self.scope_exclude = settings.get("tag_scope_exclude", {}).get(mode, ['string', 'comment'])
+        except Exception:
+            self.scope_exclude = ['string', 'comment']
 
     def scope_check(self, pt):
         """Check if scope is good."""
@@ -172,15 +163,15 @@ class TagSearch(object):
         for m in self.pattern.finditer(self.bfr, self.start, self.end):
             name = m.group(1).lower()
             if not self.match_type:
-                single = bool(m.group(3) != "")
-                if not single and self.mode != 'xhtml':
-                    single = name in self.single_tags
-                if self.mode != 'xhtml':
-                    self_closing = name in self.self_closing_tags or name.startswith("cf")
+                single = bool(m.group(2) != "")
+                if not single and self.single_tags is not None:
+                    single = self.single_tags.match(name) is not None
+                if self.self_closing_tags is not None:
+                    self_closing = self.self_closing_tags.match(name) is not None
                 else:
                     self_closing = False
             else:
-                if self.mode != 'xhtml' and name in self.single_tags:
+                if self.single_tags is not None and self.single_tags.match(name) is not None:
                     continue
                 single = False
                 self_closing = False
@@ -203,22 +194,28 @@ class TagMatch(object):
         self.view = view
         self.bfr = bfr
         self.mode = mode
-        try:
-            attributes = {"attributes": tag_settings.get('attributes', {}).get(mode, '')}
-            self.tag_open = process_tag_pattern(tag_settings.get(
-                "start_tag", START_TAG)[mode], attributes
-            )
-        except Exception:
-            self.tag_open = START_TAG[mode]
+        self.tag_open = process_tag_pattern(
+            tag_settings.get("start_tag")[mode],
+            {
+                "attributes": tag_settings.get('attributes', {}).get(mode, ''),
+                "tag_name": tag_settings.get('tag_name', {}).get(mode, '')
+            }
+        )
+
+        self.tag_close = process_tag_pattern(
+            tag_settings.get("end_tag")[mode]
+        )
 
         try:
-            self.tag_close = process_tag_pattern(tag_settings.get(
-                "end_tag", END_TAG), tag_settings.get('attributes', {})
-            )
+            self.self_closing_tags = re.compile(tag_settings.get('self_closing_patterns')[self.mode], re.I)
         except Exception:
-            self.tag_close = END_TAG
-        self.self_closing_tags = set(tag_settings.get('self_closing_tags', []))
-        self.single_tags = set(tag_settings.get('single_tags', []))
+            self.self_closing_tags = None
+
+        try:
+            self.single_tags = re.compile(tag_settings.get('single_tag_patterns')[self.mode], re.I)
+        except Exception:
+            self.single_tags = None
+
         tag, tag_type, tag_end = self.get_first_tag(first[0])
         self.left, self.right = None, None
         self.window = None
@@ -259,13 +256,9 @@ class TagMatch(object):
         end = None
         if m:
             name = m.group(1).lower()
-            single = bool(m.group(3) != "")
-            if not single and self.mode != 'xhtml':
-                single = name in self.single_tags
-            if self.mode == "html":
-                self_closing = name in self.self_closing_tags
-            elif self.mode == "cfml":
-                self_closing = name in self.self_closing_tags or name.startswith("cf")
+            single = bool(m.group(2) != "")
+            single = self.single_tags is not None and self.single_tags.match(name) is not None
+            self_closing = self.self_closing_tags is not None and self.self_closing_tags.match(name) is not None
             start = m.start(0) + offset
             end = m.end(0) + offset
             tag = TagEntry(start, end, name, self_closing, single)
