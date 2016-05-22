@@ -161,6 +161,8 @@ class BracketPlugin(object):
     def run_command(self, view, name, left, right, selection):
         """Load arguments into plugin and run."""
 
+        nobracket = False
+        refresh_match = False
         Payload.status = False
         Payload.plugin = self.plugin()
         setattr(Payload.plugin, "left", left)
