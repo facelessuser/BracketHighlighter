@@ -318,7 +318,8 @@
                 "comment",
                 "keyword.operator",
                 "source.ruby.rails.embedded.html",
-                "source.ruby.embedded.html"
+                "source.ruby.embedded.html",
+                "storage.type.function.arrow.js"
             ],
             "language_filter": "whitelist",
             "language_list": [
