@@ -362,8 +362,8 @@
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
             "scope_exclude_exceptions": [
-                "source.ruby.rails.embedded.html",
-                "source.ruby.embedded.html"
+                "source.ruby.rails.embedded.html -comment -string",
+                "source.ruby.embedded.html -comment -string"
             ],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
