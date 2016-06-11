@@ -355,6 +355,7 @@
             "enabled": true
         },
         // Ruby embedded HTML
+        // !!! May conflict with 'php_keywords' if enabled in same file !!!
         {
             "name": "ruby_embedded_html",
             "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module|def\\b[\\p{Ll}\\p{Lu}]*)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
@@ -367,7 +368,7 @@
             ],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "PHP", "HTML (Rails)"],
+            "language_list": ["HTML", "HTML 5", "HTML (Rails)"],
             "enabled": true
         },
         // Ruby conditional statements
@@ -394,13 +395,17 @@
             "enabled": true
         },
         // PHP conditional keywords
+        // !!! May conflict with 'ruby_embedded_html' if enabled in same file !!!
         {
             "name": "php_keywords",
-            "open": "(?:^\\s*|<\\?(?:php)?\\s*)?\\b(if|foreach|for|while|switch)\\b(?=.*:\\s*(?:\\?>\\s*)?$)",
-            "close": "(?:^\\s*|<\\?(?:php)?\\s*)?\\b(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*;\\s*(?:\\?>\\s*)?$)",
+            "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*?:[\\t ]*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
+            "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=[\\t ]*;\\s*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
             "style": "default",
             "language_filter": "whitelist",
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["string", "comment", "text.html"],
+            "scope_exclude_exceptions": [
+                "source.php -comment -string"
+            ],
             "plugin_library": "bh_modules.phpkeywords",
             "language_list": [
                 "HTML",
