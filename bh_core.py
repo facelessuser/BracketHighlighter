@@ -929,7 +929,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         return (
             (
-                view.settings().get('is_widget')
+                view.settings().get('is_widget') and
+                not view.settings().get('bracket_highlighter.widget_okay', False)
             ) or
             bh_thread.ignore_all
         )
