@@ -241,7 +241,7 @@ class BracketSearch(object):
         first = False
         if (
             self.search.view.settings().get(
-                "bracket_string_escape_mode", self.search.rules.string_escape_mode
+                "bracket_highlighter.bracket_string_escape_mode", self.search.rules.string_escape_mode
             ) == "string"
         ):
             first = True

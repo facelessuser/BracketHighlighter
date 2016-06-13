@@ -15,7 +15,7 @@ MENU = namedtuple("Menu", "simple content block block_indent")(
 )
 
 
-class BhRemoveBracketsCommand(sublime_plugin.WindowCommand):
+class BhRemoveBracketsCommand(sublime_plugin.TextCommand):
     """Command to remove current highlighted brackets and optionally content."""
 
     def remove_brackets(self, value):
@@ -27,7 +27,7 @@ class BhRemoveBracketsCommand(sublime_plugin.WindowCommand):
             block = menu_item == MENU.block or menu_item == MENU.block_indent
             content = menu_item == MENU.content
 
-            self.window.run_command(
+            self.view.run_command(
                 "bh_key",
                 {
                     "plugin": {
@@ -42,9 +42,10 @@ class BhRemoveBracketsCommand(sublime_plugin.WindowCommand):
                 }
             )
 
-    def run(self):
+    def run(self, edit):
         """Show menu of removal options."""
 
+        self.window = self.view.window()
         self.window.show_quick_panel(
             list(MENU),
             self.remove_brackets

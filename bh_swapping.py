@@ -28,14 +28,14 @@ class SwapBrackets(bh_wrapping.WrapBrackets):
         self.wrap_brackets(0)
 
 
-class SwapBracketsCommand(sublime_plugin.WindowCommand):
+class SwapBracketsCommand(sublime_plugin.TextCommand):
     """Swap bracket command."""
 
     def finalize(self, callback):
         """Execute post wrap callback."""
 
         if self.view is not None:
-            if not self.view.settings().get("BracketHighlighterBusy", False):
+            if not self.view.settings().get("bracket_highlighter.busy", False):
                 callback()
             else:
                 sublime.set_timeout(lambda: self.finalize(callback), 100)
@@ -48,7 +48,7 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
 
         self.brackets = self.wrap._brackets[value]
 
-        self.window.run_command(
+        self.view.run_command(
             "bh_async_key" if self.async else "bh_key",
             {
                 "plugin": {
@@ -65,14 +65,12 @@ class SwapBracketsCommand(sublime_plugin.WindowCommand):
         else:
             self.finalize(self.wrap.wrap(value))
 
-    def run(self, async=False):
+    def run(self, edit, async=False):
         """Initiate the swap."""
 
         self.async = async
-        view = self.window.active_view()
-        if view is None:
-            return
-        self.wrap = SwapBrackets(view, "bh_swapping.sublime-settings", "swapping")
+        self.window = self.view.window()
+        self.wrap = SwapBrackets(self.view, "bh_swapping.sublime-settings", "swapping")
 
         if len(self.wrap._menu):
             self.window.show_quick_panel(

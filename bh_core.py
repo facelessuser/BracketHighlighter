@@ -357,13 +357,13 @@ class BhCore(object):
             return
 
         # Ensure nothing else calls BH until done
-        view.settings().set("BracketHighlighterBusy", True)
+        view.settings().set("bracket_highlighter.busy", True)
 
         # Abort if disabled
         if not GLOBAL_ENABLE:
-            for region_key in view.settings().get("bh_regions", []):
+            for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
-            view.settings().set("BracketHighlighterBusy", False)
+            view.settings().set("bracket_highlighter.busy", False)
             return
 
         # Handle key command quirks
@@ -385,7 +385,7 @@ class BhCore(object):
             if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
                 self.regions.reset(view, num_sels)
                 self.regions.highlight(HIGH_VISIBILITY)
-                view.settings().set("BracketHighlighterBusy", False)
+                view.settings().set("bracket_highlighter.busy", False)
                 return
 
         # Initialize
@@ -395,7 +395,7 @@ class BhCore(object):
 
             # Nothing to search for
             if not self.rules.enabled:
-                view.settings().set("BracketHighlighterBusy", False)
+                view.settings().set("bracket_highlighter.busy", False)
                 return
 
             # Process selections.
@@ -438,7 +438,7 @@ class BhCore(object):
             bh_thread.modified = True
             bh_thread.time = time()
 
-        view.settings().set("BracketHighlighterBusy", False)
+        view.settings().set("bracket_highlighter.busy", False)
 
     def sub_search(self, sel, scope=None):
         """Search a scope bracket match for bracekts within."""
@@ -721,11 +721,11 @@ class BhToggleStringEscapeModeCommand(sublime_plugin.TextCommand):
         """Perform string escape toggling."""
 
         default_mode = sublime.load_settings("bh_core.sublime-settings").get('bracket_string_escape_mode', 'string')
-        if self.view.settings().get('bracket_string_escape_mode', default_mode) == "regex":
-            self.view.settings().set('bracket_string_escape_mode', "string")
+        if self.view.settings().get('bracket_highlighter.bracket_string_escape_mode', default_mode) == "regex":
+            self.view.settings().set('bracket_highlighter.bracket_string_escape_mode', "string")
             sublime.status_message("Bracket String Escape Mode: string")
         else:
-            self.view.settings().set('bracket_string_escape_mode', "regex")
+            self.view.settings().set('bracket_highlighter.bracket_string_escape_mode', "regex")
             sublime.status_message("Bracket String Escape Mode: regex")
 
 
@@ -739,7 +739,10 @@ class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
             "BracketHighlighter.sublime-settings"
         ).get('bracket_string_escape_mode', 'string')
         sublime.status_message(
-            "Bracket String Escape Mode: %s" % self.view.settings().get('bracket_string_escape_mode', default_mode)
+            "Bracket String Escape Mode: %s" % self.view.settings().get(
+                'bracket_highlighter.bracket_string_escape_mode',
+                default_mode
+            )
         )
 
 
@@ -770,7 +773,7 @@ class BhToggleEnableCommand(sublime_plugin.ApplicationCommand):
             bh_regions.clear_all_regions()
 
 
-class BhKeyCommand(sublime_plugin.WindowCommand):
+class BhKeyCommand(sublime_plugin.TextCommand):
     """
     Command to process shortcuts, menu calls, and command palette calls.
 
@@ -778,7 +781,7 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
     """
 
     def run(
-        self, threshold=True, lines=False, adjacent=False,
+        self, edit, threshold=True, lines=False, adjacent=False,
         no_outside_adj=False, no_block_mode=False, ignore=None, plugin=None
     ):
         """Run BH key command."""
@@ -801,7 +804,6 @@ class BhKeyCommand(sublime_plugin.WindowCommand):
             plugin,
             True
         )
-        self.view = self.window.active_view()
         self.execute()
 
     def execute(self):
@@ -880,6 +882,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if self.ignore_event(view):
             return
         bh_thread.type = BH_MATCH_TYPE_SELECTION
+        bh_thread.view = view
         sublime.set_timeout(bh_thread.payload, 0)
 
     def on_modified(self, view):
@@ -889,6 +892,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             return
         bh_thread.type = BH_MATCH_TYPE_EDIT
         bh_thread.modified = True
+        bh_thread.view = view
         bh_thread.time = time()
 
     def on_activated(self, view):
@@ -897,6 +901,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if self.ignore_event(view):
             return
         bh_thread.type = BH_MATCH_TYPE_SELECTION
+        bh_thread.view = view
         sublime.set_timeout(bh_thread.payload, 0)
 
     def on_selection_modified(self, view):
@@ -907,6 +912,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if bh_thread.type != BH_MATCH_TYPE_EDIT:
             bh_thread.type = BH_MATCH_TYPE_SELECTION
         now = time()
+        bh_thread.view = view
         if now - bh_thread.time > bh_thread.wait_time:
             sublime.set_timeout(bh_thread.payload, 0)
         else:
@@ -921,7 +927,12 @@ class BhListenerCommand(sublime_plugin.EventListener):
         or if it is too soon to accept an event.
         """
 
-        return (view.settings().get('is_widget') or bh_thread.ignore_all)
+        return (
+            (
+                view.settings().get('is_widget')
+            ) or
+            bh_thread.ignore_all
+        )
 
 
 class BhThread(threading.Thread):
@@ -931,6 +942,7 @@ class BhThread(threading.Thread):
         """Setup the thread."""
 
         self.reset()
+        self.view = None
         threading.Thread.__init__(self)
 
     def reset(self):
@@ -947,11 +959,10 @@ class BhThread(threading.Thread):
         """Code to run."""
 
         self.modified = False
-        window = sublime.active_window()
-        view = window.active_view() if window is not None else None
         self.ignore_all = True
         if bh_match is not None:
-            bh_match(view, self.type == BH_MATCH_TYPE_EDIT)
+            bh_match(self.view, self.type == BH_MATCH_TYPE_EDIT)
+        self.view = None
         self.ignore_all = False
         self.time = time()
 

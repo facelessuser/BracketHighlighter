@@ -40,7 +40,7 @@ def clear_all_regions():
 
     for window in sublime.windows():
         for view in window.views():
-            for region_key in view.settings().get("bh_regions", []):
+            for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
 
 
@@ -489,7 +489,7 @@ class BhRegion(object):
 
         self.change_sel()
 
-        for region_key in self.view.settings().get("bh_regions", []):
+        for region_key in self.view.settings().get("bracket_highlighter.regions", []):
             self.view.erase_regions(region_key)
 
         regions = []
@@ -517,7 +517,7 @@ class BhRegion(object):
                 "bh_" + name + "_content", "no_icon", "content_selections", r, regions, high_visibility
             )
         # Track which regions were set in the view so that they can be cleaned up later.
-        self.view.settings().set("bh_regions", regions)
+        self.view.settings().set("bracket_highlighter.regions", regions)
 
         if self.count_lines:
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
