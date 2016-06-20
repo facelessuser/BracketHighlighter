@@ -398,8 +398,8 @@
         // !!! May conflict with 'ruby_embedded_html' if enabled in same file !!!
         {
             "name": "php_keywords",
-            "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*?:)",
-            "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=[\\t ]*;)",
+            "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*:\\s*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
+            "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*;)",
             "style": "default",
             "language_filter": "whitelist",
             "scope_exclude": ["string", "comment", "text.html"],
