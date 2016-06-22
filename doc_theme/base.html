@@ -3,7 +3,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% if page_description %}<meta name="description" content="{{ page_description }}">{% endif %}
+  {% if site_author %}<meta name="author" content="{{ site_author }}">{% endif %}
   {% block htmltitle %}
   <title>{% if page_title %}{{ page_title }} - {% endif %}{{ site_name }}</title>
   {% endblock %}
@@ -22,6 +25,14 @@
   <link href="{{ path }}" rel="stylesheet">
   {%- endfor %}
 
+  {% if current_page %}
+  <script>
+    // Current page data
+    var mkdocs_page_name = "{{ page_title }}";
+    var mkdocs_page_input_path = "{{ current_page.input_path }}";
+    var mkdocs_page_url = "{{ current_page.abs_url }}";
+  </script>
+  {% endif %}
   <script src="{{ base_url }}/js/jquery-2.1.1.min.js"></script>
   <script src="{{ base_url }}/js/modernizr-2.8.3.min.js"></script>
   <script src="{{ base_url }}/js/theme.js"></script>
@@ -95,21 +106,7 @@
 
   </div>
 
-<div class="rst-versions" role="note" style="cursor: pointer">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      {% if repo_name == 'GitHub' %}
-          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
-      {% elif repo_name == 'Bitbucket' %}
-          <a class="icon icon-bitbucket" style="float: left; color: #fcfcfc"> BitBucket</a>
-      {% endif %}
-      {% if previous_page %}
-        <span><a href="{{ previous_page.url }}" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      {% endif %}
-      {% if next_page %}
-        <span style="margin-left: 15px"><a href="{{ next_page.url }}" style="color: #fcfcfc">Next &raquo;</a></span>
-      {% endif %}
-    </span>
-</div>
+{% include "versions.html" %}
 
 </body>
 </html>
