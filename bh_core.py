@@ -914,8 +914,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
         disabled = (
             (
                 settings.get('is_widget') and
-                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False) or
-            )
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            ) or
             settings.get('bracket_highlighter.ignore', False)
         )
         if disabled and settings.get('bracket_highlighter.regions'):
