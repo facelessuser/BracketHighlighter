@@ -515,6 +515,18 @@
             "language_filter": "whitelist",
             "language_list": ["Elixir"],
             "enabled": true
+        },
+        // CMake
+        {
+            "name": "cmake",
+            "open": "\\b(foreach|function|if|macro|while)\\b",
+            "close": "\\b(end(?:foreach|function|if|macro|while))\\b",
+            "style": "default",
+            "scope_exclude": ["-keyword.cmake"],
+            "plugin_library": "bh_modules.cmakekeywords",
+            "language_filter": "whitelist",
+            "language_list": ["CMake"],
+            "enabled": true
         }
     ],
 
