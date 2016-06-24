@@ -819,10 +819,10 @@ class BhKeyCommand(sublime_plugin.TextCommand):
 
         settings = self.view.settings()
         return bool(
-            settings.get('bracket_highlighter.ignore', False) or
+            not settings.get('bracket_highlighter.ignore', False) and
             (
-                settings.get('is_widget') and
-                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+                not settings.get('is_widget') or
+                sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
             )
         )
 
@@ -914,9 +914,9 @@ class BhListenerCommand(sublime_plugin.EventListener):
         disabled = (
             (
                 settings.get('is_widget') and
-                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False) or
             )
-            or settings.get('bracket_highlighter.ignore', False)
+            settings.get('bracket_highlighter.ignore', False)
         )
         if disabled and settings.get('bracket_highlighter.regions'):
             for region_key in view.settings().get("bracket_highlighter.regions", []):

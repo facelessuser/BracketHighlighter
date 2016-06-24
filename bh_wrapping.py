@@ -315,10 +315,10 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
 
         settings = self.view.settings()
         return bool(
-            settings.get('bracket_highlighter.ignore', False) or
+            not settings.get('bracket_highlighter.ignore', False) and
             (
-                settings.get('is_widget') and
-                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+                not settings.get('is_widget') or
+                sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
             )
         )
 
