@@ -814,6 +814,18 @@ class BhKeyCommand(sublime_plugin.TextCommand):
         bh_thread.ignore_all = False
         bh_thread.time = time()
 
+    def is_enabled(self, **kwargs):
+        """Check if command is enabled."""
+
+        settings = self.view.settings()
+        return bool(
+            settings.get('bracket_highlighter.ignore', False) or
+            (
+                settings.get('is_widget') and
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            )
+        )
+
 
 class BhAsyncKeyCommand(BhKeyCommand):
     """Call BH key command asynchronously."""
@@ -895,8 +907,25 @@ class BhListenerCommand(sublime_plugin.EventListener):
         bh_thread.view = view
         bh_thread.time = time()
 
+    def clear_disabled(self, view):
+        """Clear disabled regions."""
+
+        settings = view.settings()
+        disabled = (
+            (
+                settings.get('is_widget') and
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            )
+            or settings.get('bracket_highlighter.ignore', False)
+        )
+        if disabled and settings.get('bracket_highlighter.regions'):
+            for region_key in view.settings().get("bracket_highlighter.regions", []):
+                view.erase_regions(region_key)
+
     def on_activated(self, view):
         """Highlight brackets when the view gains focus again."""
+
+        self.clear_disabled(view)
 
         if self.ignore_event(view):
             return
@@ -927,12 +956,14 @@ class BhListenerCommand(sublime_plugin.EventListener):
         or if it is too soon to accept an event.
         """
 
+        settings = view.settings()
         return (
+            bh_thread.ignore_all or
+            settings.get('bracket_highlighter.ignore', False) or
             (
-                view.settings().get('is_widget') and
-                not view.settings().get('bracket_highlighter.widget_okay', False)
-            ) or
-            bh_thread.ignore_all
+                settings.get('is_widget') and
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            )
         )
 
 

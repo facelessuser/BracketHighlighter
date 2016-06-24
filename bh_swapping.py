@@ -77,3 +77,15 @@ class SwapBracketsCommand(sublime_plugin.TextCommand):
                 self.wrap._menu,
                 self.swap_brackets
             )
+
+    def is_enabled(self, **kwargs):
+        """Check if command is enabled."""
+
+        settings = self.view.settings()
+        return bool(
+            settings.get('bracket_highlighter.ignore', False) or
+            (
+                settings.get('is_widget') and
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            )
+        )

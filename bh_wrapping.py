@@ -310,6 +310,18 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
                 self.wrap_style
             )
 
+    def is_enabled(self, **kwargs):
+        """Check if command is enabled."""
+
+        settings = self.view.settings()
+        return bool(
+            settings.get('bracket_highlighter.ignore', False) or
+            (
+                settings.get('is_widget') and
+                not sublime.load_settings("bh_core.sublime-settings").get('search_in_widgets', False)
+            )
+        )
+
 
 class BhNextWrapSelCommand(sublime_plugin.TextCommand):
     """Navigate wrapping tab stop regions."""
