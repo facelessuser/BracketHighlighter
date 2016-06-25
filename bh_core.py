@@ -16,6 +16,10 @@ import BracketHighlighter.bh_regions as bh_regions
 import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 
+HOVER_SUPPORT = int(sublime.version()) >= 3116
+if HOVER_SUPPORT:
+    import mdpopups
+
 if 'bh_thread' not in globals():
     bh_thread = None
 
@@ -363,6 +367,7 @@ class BhCore(object):
         if not GLOBAL_ENABLE:
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
+            view.settings().set('bracket_highlighter.locations', [])
             view.settings().set("bracket_highlighter.busy", False)
             return
 
@@ -888,6 +893,95 @@ class BhListenerCommand(sublime_plugin.EventListener):
     background thread ensure certain needed match occurs
     """
 
+    popup_view = None
+
+    def on_navigate(self, href):
+        """Navigate to code position."""
+        if HOVER_SUPPORT:
+            try:
+                pt = int(href)
+                self.popup_view.show(pt)
+                mdpopups.hide_popup(self.popup_view)
+                self.popup_view.sel().clear()
+                self.popup_view.sel().add(sublime.Region(pt, pt))
+            except Exception:
+                pass
+
+    def guess_lang(self, view):
+        """Guess current language."""
+
+        if HOVER_SUPPORT:
+            lang = "text"
+            done = False
+            lang_map = mdpopups.st_mapping.lang_map
+            syntax = splitext(view.settings().get('syntax').replace('Packages/', '', 1))[0]
+            for k, v in lang_map.items():
+                for x in v[1]:
+                    print(x)
+                    if syntax == x:
+                        lang = k
+                        done = True
+                        break
+                if done:
+                    break
+            return lang
+
+    def on_hover(self, view, point, hover_zone):
+        """Show popup indicating where other offscreen bracket is located."""
+
+        show_popup = sublime.load_settings('bh_core.sublime-settings').get('show_offscreen_bracket_popup', False)
+        if HOVER_SUPPORT and show_popup:
+            # Find other bracket
+            region = None
+            if hover_zone == sublime.HOVER_TEXT:
+                locations = view.settings().get('bracket_highlighter.locations', {})
+                index = None
+                for k, v in locations.get('open', {}).items():
+                    if v[0] <= point <= v[1]:
+                        index = k
+                        break
+                if index is None:
+                    for k, v in locations.get('close', {}).items():
+                        if v[0] <= point <= v[1]:
+                            index = k
+                            break
+                    if index is not None:
+                        region = locations.get('open', {}).get(index)
+                else:
+                    region = locations.get('close', {}).get(index)
+
+            # Show other bracket text
+            if region is not None:
+                line = view.line(point)
+                line2 = view.line(region[0])
+                if line.begin() != line2.begin():
+                    visible = view.visible_region()
+                    if not visible.contains(line2):
+                        end = region[1] + 128
+                        start = region[1] - 128
+                        if start < 0:
+                            start = 0
+                        if start < line2.begin():
+                            start = line2.begin()
+                        if end > view.size():
+                            end = view.size()
+                        if end > line2.end():
+                            end = line2.end()
+                        text = view.substr(sublime.Region(start, end)).strip()
+                        code = mdpopups.syntax_highlight(view, text, self.guess_lang(view))
+                        code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
+                            view.rowcol(region[0])[0] + 1,
+                            region[0]
+                        )
+                        self.popup_view = view
+                        mdpopups.show_popup(
+                            view,
+                            code,
+                            max_width=800,
+                            location=point,
+                            on_navigate=self.on_navigate
+                        )
+
     def on_load(self, view):
         """Search brackets on view load."""
 
@@ -921,6 +1015,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if disabled and settings.get('bracket_highlighter.regions'):
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
+            view.settings().set('bracket_highlighter.locations', [])
 
     def on_activated(self, view):
         """Highlight brackets when the view gains focus again."""

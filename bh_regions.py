@@ -42,6 +42,7 @@ def clear_all_regions():
         for view in window.views():
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
+            view.settings().set('bracket_highlighter.locations', [])
 
 
 def select_bracket_style(option, minimap):
@@ -181,6 +182,8 @@ class BhRegion(object):
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         minimap = settings.get('show_in_minimap', False)
+        self.log_regions = {'open': {}, 'close': {}}
+        self.log_count = 0
         self.count_lines = count_lines
         self.hv_style = select_bracket_style(settings.get("high_visibility_style", "outline"), minimap)
         self.hv_underline = self.hv_style & sublime.DRAW_EMPTY_AS_OVERWRITE
@@ -226,6 +229,8 @@ class BhRegion(object):
         self.multi_select = num_sels > 1
         self.sels = []
         self.view = view
+        self.log_regions = {'open': {}, 'close': {}}
+        self.log_count = 0
 
         for r in self.bracket_regions.values():
             r.clear()
@@ -292,6 +297,15 @@ class BhRegion(object):
 
         if sublime.load_settings("bh_core.sublime-settings").get("content_highlight_bar", False) and lines > 1:
             self.save_content_regions(left, right, bracket, lines)
+
+        begin_region = None if left is None else (left.begin, left.end)
+        end_region = None if right is None else (right.begin, right.end)
+        if begin_region:
+            self.log_regions['open'][str(self.log_count + 1)] = begin_region
+        if end_region:
+            self.log_regions['close'][str(self.log_count + 1)] = end_region
+        if begin_region or end_region:
+            self.log_count += 1
 
         self.store_sel(regions)
 
@@ -491,6 +505,7 @@ class BhRegion(object):
 
         for region_key in self.view.settings().get("bracket_highlighter.regions", []):
             self.view.erase_regions(region_key)
+            self.view.settings().set('bracket_highlighter.locations', [])
 
         regions = []
         icon_type = "no_icon"
@@ -518,6 +533,7 @@ class BhRegion(object):
             )
         # Track which regions were set in the view so that they can be cleaned up later.
         self.view.settings().set("bracket_highlighter.regions", regions)
+        self.view.settings().set("bracket_highlighter.locations", self.log_regions)
 
         if self.count_lines:
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))

@@ -59,6 +59,23 @@ An experimental setting that enables bracket highlighting in widgets (panels etc
 
 Output panels are widgets as well, but sometimes the widget flag gets removed from them (Sublime issue). So this flag may or may not affect the output panel depending on its state.  If you are a developer and wish to ensure an output panel that is created by your plugin does **not** have bracket highlighting, you can set the following setting to the view as `True`: `bracket_highlighter.ignore`.
 
+### show_offscreen_bracket_popup
+This will show an popup when the mouse hovers over a visible bracket and its matching pair is off screen.  The popup will show line context of the off screen bracket (-128 chars from the start of the bracket and +128 from the end of the bracket).  It will indicate line number and provide a link that can be clicked that will jump to the off screen bracket.
+
+![popup](https://dl.dropboxusercontent.com/u/342698/BracketHighlighter/popup.png)
+
+```js
+    // Experimental: Show hover popup
+    // This will show a hover popup when mousing over
+    // the visible bracket if the other
+    // highlighted matching bracket is off screen.
+    // It will show line text of the off screen bracket -/+ 128 chars
+    // from the bracket start and end points.
+    // A link will be available allowing the user to click and jump to
+    // the other bracket.
+    "show_offscreen_bracket_popup": false,
+```
+
 ### align_content_highlight_bar
 Modifies the behavior of [content_highlight_bar](#content-highlight-bar) and draws the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations:
 

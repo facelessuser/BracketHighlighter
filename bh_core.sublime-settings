@@ -18,6 +18,16 @@
     // multiline bracket spans.
     "content_highlight_bar": false,
 
+    // Experimental: Show hover popup
+    // This will show a hover popup when mousing over
+    // the visible bracket if the other
+    // highlighted matching bracket is off screen.
+    // It will show line text of the off screen bracket -/+ 128 chars
+    // from the bracket start and end points.
+    // A link will be available allowing the user to click and jump to
+    // the other bracket.
+    "show_offscreen_bracket_popup": false,
+
     // Experimental: Align the content highlight bar at the bracket indent level
     "align_content_highlight_bar": false,
 
