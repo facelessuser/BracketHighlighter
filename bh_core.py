@@ -17,8 +17,11 @@ import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 
 HOVER_SUPPORT = int(sublime.version()) >= 3116
+NEW_LANG_GUESS = False
 if HOVER_SUPPORT:
     import mdpopups
+    if mdpopups.version() >= (1, 4, 4):
+        NEW_LANG_GUESS = True
 
 if 'bh_thread' not in globals():
     bh_thread = None
@@ -911,17 +914,17 @@ class BhListenerCommand(sublime_plugin.EventListener):
         """Guess current language."""
 
         if HOVER_SUPPORT:
-            lang = "text"
+            lang = None
             done = False
+            user_map = sublime.load_settings('Preferences.sublime-settings').get('mdpopups.sublime_user_lang_map', {})
             lang_map = mdpopups.st_mapping.lang_map
             syntax = splitext(view.settings().get('syntax').replace('Packages/', '', 1))[0]
-            for k, v in lang_map.items():
-                for x in v[1]:
-                    if syntax == x:
-                        lang = k
-                        done = True
-                        break
-                if done:
+            keys = set(list(lang_map.keys()) + list(user_map.keys()))
+            for key in keys:
+                v1 = lang_map.get(key, (tuple(), tuple()))[1]
+                v2 = user_map.get(key, (tuple(), tuple()))[1]
+                if syntax in (tuple(v2) + v1):
+                    lang = key
                     break
             return lang
 
@@ -963,7 +966,11 @@ class BhListenerCommand(sublime_plugin.EventListener):
                         if end > line2.end():
                             end = line2.end()
                         text = view.substr(sublime.Region(start, end)).strip()
-                        code = mdpopups.syntax_highlight(view, text, self.guess_lang(view))
+                        code = mdpopups.syntax_highlight(
+                            view,
+                            text,
+                            mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
+                        )
                         code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
                             view.rowcol(region[0])[0] + 1,
                             region[0]
