@@ -917,7 +917,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
             syntax = splitext(view.settings().get('syntax').replace('Packages/', '', 1))[0]
             for k, v in lang_map.items():
                 for x in v[1]:
-                    print(x)
                     if syntax == x:
                         lang = k
                         done = True
@@ -959,12 +958,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     if not visible.contains(line2):
                         end = region[1] + 128
                         start = region[1] - 128
-                        if start < 0:
-                            start = 0
                         if start < line2.begin():
                             start = line2.begin()
-                        if end > view.size():
-                            end = view.size()
                         if end > line2.end():
                             end = line2.end()
                         text = view.substr(sublime.Region(start, end)).strip()
