@@ -46,6 +46,19 @@ An experimental setting which can enable the display of a vertical bar that exte
     "content_highlight_bar": false,
 ```
 
+### show_in_widgets
+An experimental setting that enables bracket highlighting in widgets (panels etc.).  By default, BH does not highlight any brackets in plain text which is what the majority of the widget text boxes are.  Regex search boxes are not plain text and should get bracket highlighting.
+
+```js
+    // Experimental: Allow bracket highlighter to search in widgets.
+    // Most widgets use Plain Text which BH should ignore,
+    // But regex find views views are usually regular expression
+    // Which should be the only views to trigger BH.
+    "search_in_widgets": false,
+```
+
+Output panels are widgets as well, but sometimes the widget flag gets removed from them (Sublime issue). So this flag may or may not affect the output panel depending on its state.  If you are a developer and wish to ensure an output panel that is created by your plugin does **not** have bracket highlighting, you can set the following setting to the view as `True`: `bracket_highlighter.ignore`.
+
 ### align_content_highlight_bar
 Modifies the behavior of [content_highlight_bar](#content-highlight-bar) and draws the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations:
 
