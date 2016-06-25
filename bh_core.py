@@ -20,7 +20,7 @@ HOVER_SUPPORT = int(sublime.version()) >= 3116
 NEW_LANG_GUESS = False
 if HOVER_SUPPORT:
     import mdpopups
-    if mdpopups.version() >= (1, 4, 4):
+    if mdpopups.version() >= (1, 5, 0):
         NEW_LANG_GUESS = True
 
 if 'bh_thread' not in globals():
