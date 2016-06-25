@@ -915,7 +915,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         if HOVER_SUPPORT:
             lang = None
-            done = False
             user_map = sublime.load_settings('Preferences.sublime-settings').get('mdpopups.sublime_user_lang_map', {})
             lang_map = mdpopups.st_mapping.lang_map
             syntax = splitext(view.settings().get('syntax').replace('Packages/', '', 1))[0]
