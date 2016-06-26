@@ -927,46 +927,75 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     break
             return lang
 
-    def show_popup(self, view, point, region, context):
-        """Show the popup."""
+    def on_navigate_unmatched(self, href):
+        """Handle unmatched click."""
+        if HOVER_SUPPORT:
+            if href == 'match':
+                mdpopups.hide_popup(self.popup_view)
+                self.popup_view.run_command("bh_async_key", {"lines": True})
 
-        line2 = view.line(region[0])
-        if not view.visible_region().contains(line2):
-            end = region[1] + context
-            start = region[1] - context
-            overage = 0
-            if start < line2.begin():
-                overage = line2.begin() - start
-                start = line2.begin()
-            if end > line2.end():
-                if not overage:
-                    start -= end - line2.end()
-                    if start < line2.begin():
-                        start = line2.begin()
-                end = line2.end()
-            elif overage:
-                end += overage
-                if end > line2.end():
-                    end = line2.end()
-            text = view.substr(sublime.Region(start, end)).strip()
-            code = mdpopups.syntax_highlight(
-                view,
-                text,
-                mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
-            )
-            code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
-                view.rowcol(region[0])[0] + 1,
-                region[0]
-            )
+    def show_unmatched_popup(self, view, point):
+        """Show unmatched popup."""
+
+        if HOVER_SUPPORT:
             self.popup_view = view
             mdpopups.show_popup(
                 view,
-                code,
+                (
+                    '### <span class="invalid">Matching bracket could not be found!</span>\n\n'
+                    '- Bracket *might* have no match.\n'
+                    '- Bracket *might* be nested poorly --> ([)(])\n'
+                    '- Matching bracket *might* be beyond the search threshold. '
+                    '  A match done without the threshold *might* find it.\n\n'
+                    '[(Match brackets without threshold)](match)'
+                ),
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                max_width=1024,
+                max_width=400,
                 location=point,
-                on_navigate=self.on_navigate
+                on_navigate=self.on_navigate_unmatched
             )
+
+    def show_popup(self, view, point, region, context):
+        """Show the popup."""
+
+        if HOVER_SUPPORT:
+            line2 = view.line(region[0])
+            if not view.visible_region().contains(line2):
+                end = region[1] + context
+                start = region[1] - context
+                overage = 0
+                if start < line2.begin():
+                    overage = line2.begin() - start
+                    start = line2.begin()
+                if end > line2.end():
+                    if not overage:
+                        start -= end - line2.end()
+                        if start < line2.begin():
+                            start = line2.begin()
+                    end = line2.end()
+                elif overage:
+                    end += overage
+                    if end > line2.end():
+                        end = line2.end()
+                text = view.substr(sublime.Region(start, end)).strip()
+                code = mdpopups.syntax_highlight(
+                    view,
+                    text,
+                    mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
+                )
+                code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
+                    view.rowcol(region[0])[0] + 1,
+                    region[0]
+                )
+                self.popup_view = view
+                mdpopups.show_popup(
+                    view,
+                    code,
+                    flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                    max_width=1024,
+                    location=point,
+                    on_navigate=self.on_navigate
+                )
 
     def on_hover(self, view, point, hover_zone):
         """Show popup indicating where other offscreen bracket is located."""
@@ -974,25 +1003,33 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', False):
             # Find other bracket
             region = None
+            index = None
+            unmatched = False
             if hover_zone == sublime.HOVER_TEXT:
                 locations = view.settings().get('bracket_highlighter.locations', {})
-                index = None
-                for k, v in locations.get('open', {}).items():
+                for k, v in locations.get('unmatched', {}).items():
                     if v[0] <= point <= v[1]:
-                        index = k
+                        unmatched = True
                         break
-                if index is None:
-                    for k, v in locations.get('close', {}).items():
+                if not unmatched:
+                    for k, v in locations.get('open', {}).items():
                         if v[0] <= point <= v[1]:
                             index = k
                             break
-                    if index is not None:
-                        region = locations.get('open', {}).get(index)
-                else:
-                    region = locations.get('close', {}).get(index)
+                    if index is None:
+                        for k, v in locations.get('close', {}).items():
+                            if v[0] <= point <= v[1]:
+                                index = k
+                                break
+                        if index is not None:
+                            region = locations.get('open', {}).get(index)
+                    else:
+                        region = locations.get('close', {}).get(index)
 
             # Show other bracket text
-            if region is not None:
+            if unmatched:
+                self.show_unmatched_popup(view, point)
+            elif region is not None:
                 self.show_popup(view, point, region, int(settings.get('popup_line_context', 256)) / 2)
 
     def on_load(self, view):

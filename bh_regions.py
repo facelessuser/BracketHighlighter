@@ -182,7 +182,7 @@ class BhRegion(object):
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         minimap = settings.get('show_in_minimap', False)
-        self.log_regions = {'open': {}, 'close': {}}
+        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}}
         self.log_count = 0
         self.count_lines = count_lines
         self.hv_style = select_bracket_style(settings.get("high_visibility_style", "outline"), minimap)
@@ -229,7 +229,7 @@ class BhRegion(object):
         self.multi_select = num_sels > 1
         self.sels = []
         self.view = view
-        self.log_regions = {'open': {}, 'close': {}}
+        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}}
         self.log_count = 0
 
         for r in self.bracket_regions.values():
@@ -260,6 +260,8 @@ class BhRegion(object):
             bracket.selections += underline((found.toregion(),))
         else:
             bracket.selections += [found.toregion()]
+        self.log_regions['unmatched'][str(self.log_count + 1)] = (found.begin, found.end)
+        self.log_count += 1
         self.store_sel(regions)
 
     def save_regions(self, left, right, regions, style, high_visibility):
