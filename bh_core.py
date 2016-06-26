@@ -903,12 +903,12 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if HOVER_SUPPORT:
             try:
                 pt = int(href)
+                self.popup_view.sel().clear()
+                self.popup_view.sel().add(sublime.Region(pt))
                 self.popup_view.show(pt)
                 mdpopups.hide_popup(self.popup_view)
-                self.popup_view.sel().clear()
-                self.popup_view.sel().add(sublime.Region(pt, pt))
             except Exception:
-                pass
+                log("Problem handling popup event:\n%s" % str(traceback.format_exc()))
 
     def guess_lang(self, view):
         """Guess current language."""
@@ -927,11 +927,51 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     break
             return lang
 
+    def show_popup(self, view, point, region, context):
+        """Show the popup."""
+
+        line2 = view.line(region[0])
+        if not view.visible_region().contains(line2):
+            end = region[1] + context
+            start = region[1] - context
+            overage = 0
+            if start < line2.begin():
+                overage = line2.begin() - start
+                start = line2.begin()
+            if end > line2.end():
+                if not overage:
+                    start -= end - line2.end()
+                    if start < line2.begin():
+                        start = line2.begin()
+                end = line2.end()
+            elif overage:
+                end += overage
+                if end > line2.end():
+                    end = line2.end()
+            text = view.substr(sublime.Region(start, end)).strip()
+            code = mdpopups.syntax_highlight(
+                view,
+                text,
+                mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
+            )
+            code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
+                view.rowcol(region[0])[0] + 1,
+                region[0]
+            )
+            self.popup_view = view
+            mdpopups.show_popup(
+                view,
+                code,
+                flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                max_width=1024,
+                location=point,
+                on_navigate=self.on_navigate
+            )
+
     def on_hover(self, view, point, hover_zone):
         """Show popup indicating where other offscreen bracket is located."""
-
-        show_popup = sublime.load_settings('bh_core.sublime-settings').get('show_offscreen_bracket_popup', False)
-        if HOVER_SUPPORT and show_popup:
+        settings = sublime.load_settings('bh_core.sublime-settings')
+        if HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', False):
             # Find other bracket
             region = None
             if hover_zone == sublime.HOVER_TEXT:
@@ -953,35 +993,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
             # Show other bracket text
             if region is not None:
-                line = view.line(point)
-                line2 = view.line(region[0])
-                if line.begin() != line2.begin():
-                    visible = view.visible_region()
-                    if not visible.contains(line2):
-                        end = region[1] + 128
-                        start = region[1] - 128
-                        if start < line2.begin():
-                            start = line2.begin()
-                        if end > line2.end():
-                            end = line2.end()
-                        text = view.substr(sublime.Region(start, end)).strip()
-                        code = mdpopups.syntax_highlight(
-                            view,
-                            text,
-                            mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
-                        )
-                        code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
-                            view.rowcol(region[0])[0] + 1,
-                            region[0]
-                        )
-                        self.popup_view = view
-                        mdpopups.show_popup(
-                            view,
-                            code,
-                            max_width=800,
-                            location=point,
-                            on_navigate=self.on_navigate
-                        )
+                self.show_popup(view, point, region, int(settings.get('popup_line_context', 256)) / 2)
 
     def on_load(self, view):
         """Search brackets on view load."""
