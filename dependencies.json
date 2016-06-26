@@ -9,7 +9,7 @@
             "mdpopups",
             "python-jinja2",
             "markupsafe",
-            "backrfs"
+            "backrefs"
         ]
     }
 }
