@@ -955,12 +955,28 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 on_navigate=self.on_navigate_unmatched
             )
 
+    def is_bracket_visible(self, view, region):
+        """
+        Check if bracket is visible.
+
+        Check if first point of bracket is visible or last point is visible.
+        In short, is any part visible?
+        """
+
+        xa, ya = view.viewport_position()
+        w, h = view.viewport_extent()
+        xb, yb = xa + w, ya + h
+        pxa, pya = view.text_to_layout(region[0])
+        pxb, pyb = view.text_to_layout(region[1])
+
+        return (xa <= pxa < xb and ya <= pya < yb) or (xa <= pxb < xb and ya <= pyb < yb)
+
     def show_popup(self, view, point, region, context):
         """Show the popup."""
 
         if HOVER_SUPPORT:
-            line2 = view.line(region[0])
-            if not view.visible_region().contains(line2):
+            if not self.is_bracket_visible(view, region):
+                line2 = view.line(region[0])
                 end = region[1] + context
                 start = region[1] - context
                 overage = 0
