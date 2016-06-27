@@ -961,6 +961,13 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         Check if first point of bracket is visible or last point is visible.
         In short, is any part visible?
+        (xa,ya)--------------------(xb,ya)
+        |                             |
+        |                             |
+        |    (pxa,pya){(pxb,pyb)      |
+        |                             |
+        |                             |
+        (xa,yb)------------------------
         """
 
         xa, ya = view.viewport_position()
