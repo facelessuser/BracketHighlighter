@@ -972,7 +972,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             c0 = c1
         diff = c1 - c0
         if diff > 120:
-            c1 -= 120 - diff
+            c1 -= diff - 120
 
         return self.escape_code(
             view.substr(
@@ -1028,9 +1028,14 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     end = line.end()
                     col_end = view.rowcol(line.end())[1]
                 code = view.substr(sublime.Region(start, end))
+                scope = settings.get('popup_bracket_emphasis', 'keyword')
+                if re.match(r'#([\da-fA-F]{3}){1,2}', scope):
+                    highlight_open = '<span class="brackethighlighter" style="color: %s;"><strong>' % scope
+                else:
+                    highlight_open = '<span class="brackethighlighter %s"><strong>' % scope
                 code = (
                     self.escape_code(code[:col - col_start], tab_size) +
-                    '<span class="keyword"><strong>' +
+                    highlight_open +
                     self.escape_code(code[col - col_start: col2 - col_start], tab_size) +
                     '</strong></span>' +
                     self.escape_code(code[col2 - col_start:], tab_size)

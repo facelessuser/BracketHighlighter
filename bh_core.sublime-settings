@@ -28,6 +28,19 @@
     // the other bracket.
     "show_offscreen_bracket_popup": false,
 
+    // Experimental: Adjust char per line context of bracket popup.
+    "popup_char_context": 120,
+
+    // Experimental: Adjust number of lines of additional context
+    // that are shown when brackets are vertically off screen.
+    // Specified line count is split to context before and after the target line.
+    // So a value of 4 would give you two lines of context before and two lines after.
+    "popup_line_context": 2,
+
+    // Experimental: Specify the scope (to get color) to emphasize the off screen bracket
+    // in popups.  Alternatively you can use a hex value in the form '#rgb' or '#rrggbb'.
+    "popup_bracket_emphasis": "keyword",
+
     // Experimental: Align the content highlight bar at the bracket indent level
     "align_content_highlight_bar": false,
 

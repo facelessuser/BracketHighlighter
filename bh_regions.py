@@ -42,7 +42,7 @@ def clear_all_regions():
         for view in window.views():
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
-            view.settings().set('bracket_highlighter.locations', [])
+            view.settings().set('bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}})
 
 
 def select_bracket_style(option, minimap):
@@ -507,7 +507,7 @@ class BhRegion(object):
 
         for region_key in self.view.settings().get("bracket_highlighter.regions", []):
             self.view.erase_regions(region_key)
-            self.view.settings().set('bracket_highlighter.locations', [])
+            self.view.settings().set('bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}})
 
         regions = []
         icon_type = "no_icon"
