@@ -986,6 +986,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
     def escape_code(self, text, tab_size):
         """Format text to HTML."""
+
         encode_table = {
             '&': '&amp;',
             '>': '&gt;',
@@ -998,11 +999,12 @@ class BhListenerCommand(sublime_plugin.EventListener):
             encode_table.get(c, c) for c in text
         )
 
-    def show_popup(self, view, point, region, context):
+    def show_popup(self, view, point, region):
         """Show the popup."""
 
         if HOVER_SUPPORT:
             if not self.is_bracket_visible(view, region):
+                settings = sublime.load_settings('bh_core.sublime-settings')
 
                 # Format and truncate (if necessary) the line with the bracket
                 tab_size = view.settings().get('tab_size', 4)
@@ -1011,6 +1013,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 bracket_size = col2 - col
                 last_row = view.rowcol(view.size())[0]
                 line = view.line(region[0])
+                context = int(settings.get('popup_char_context', 120))
                 context -= bracket_size - 1
                 start = region[1] - context
                 col_start = col2 - context
@@ -1035,15 +1038,37 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
                 if row != view.rowcol(point)[0]:
                     # Get context for vertical off screen brackets
+                    line_context = int(settings.get('popup_line_context', 2)) / 2
                     lines = [code]
 
-                    if row > 0:
-                        lines.insert(0, self.get_context_line(view, row - 1, col_start, col_end, tab_size))
+                    offset = 1
+                    while offset <= line_context:
+                        current_row = row - offset
+                        if current_row >= 0:
+                            lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
+                        else:
+                            break
+                        offset += 1
+                    last_offset = offset
 
-                    if row < last_row:
-                        lines.append(self.get_context_line(view, row + 1, col_start, col_end, tab_size))
-                        if len(lines) < 3 and row < last_row:
-                            lines.append(self.get_context_line(view, row + 2, col_start, col_end, tab_size))
+                    offset = 1
+                    while offset <= line_context or (len(lines) != (line_context * 2) + 1):
+                        current_row = row + offset
+                        if current_row <= last_row:
+                            lines.append(self.get_context_line(view, current_row, col_start, col_end, tab_size))
+                        else:
+                            break
+                        offset += 1
+
+                    offset = last_offset
+                    while len(lines) < ((line_context * 2) + 1):
+                        current_row = row - offset
+                        if current_row >= 0:
+                            lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
+                        else:
+                            break
+                        offset += 1
+
                     text = re.sub(
                         r'(?!\s($|\S))\s',
                         '&nbsp;',
@@ -1101,7 +1126,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             if unmatched:
                 self.show_unmatched_popup(view, point)
             elif region is not None:
-                self.show_popup(view, point, region, int(settings.get('popup_line_context', 120)))
+                self.show_popup(view, point, region)
 
     def on_load(self, view):
         """Search brackets on view load."""
