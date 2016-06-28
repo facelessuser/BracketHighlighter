@@ -74,18 +74,19 @@ There are a couple of dependencies that must be present before running the tests
     nosetests .
     ```
 
-3. Linting is performed on the entire project with `flake8`, `flake8_docstrings`, and `pep8-naming`.  These can be installed via:
+3. Linting is performed on the entire project with `flake8`, `pydocstyle`, and `pep8-naming`.  These can be installed via:
 
     ```
     pip install flake8
-    pip install flake8_docstrings
+    pip install pydocstyle
     pip install pep8-naming
     ```
 
-    Linting is performed with the following command:
+    Linting is performed with the following commands:
 
     ```
     flake8 .
+    pydocstyle .
     ```
 
 ## Documentation Improvements
