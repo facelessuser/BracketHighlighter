@@ -62,7 +62,9 @@ Output panels are widgets as well, but sometimes the widget flag gets removed fr
 ### show_offscreen_bracket_popup
 This experimental setting will show a popup when the mouse hovers over a visible bracket and its matching pair is off screen.  The popup will show about 120 chars of context of every line shown.  Additionally, if the bracket off screen bracket is located on a separate line, it will show an additional line(s) of context before and after.  The context is shown in plain text, but the bracket will be emphasized by making the bracket bold and colorizing it with the your theme's keyword color.  [Char context](#popup_char_context), [line context](#popup_line_context), and [emphasis color](#popup_bracket_emphasis) can all be configured in the settings file.
 
-![popup](https://dl.dropboxusercontent.com/u/342698/BracketHighlighter/popup.png)
+![popup1](https://dl.dropboxusercontent.com/u/342698/BracketHighlighter/popup1.png)
+
+![popup2](https://dl.dropboxusercontent.com/u/342698/BracketHighlighter/popup2.png)
 
 If a bracket was unmatched with the invalid highlight, you can mouse over it and will get the unmatched popup that explains the reasons why an unmatched bracket might occur.  It also offers the option to attempt matching without the threshold.
 
