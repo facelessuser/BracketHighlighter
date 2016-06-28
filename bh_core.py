@@ -15,13 +15,12 @@ import BracketHighlighter.bh_search as bh_search
 import BracketHighlighter.bh_regions as bh_regions
 import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
+import textwrap
+import re
 
 HOVER_SUPPORT = int(sublime.version()) >= 3116
-NEW_LANG_GUESS = False
 if HOVER_SUPPORT:
     import mdpopups
-    if mdpopups.version() >= (1, 5, 0):
-        NEW_LANG_GUESS = True
 
 if 'bh_thread' not in globals():
     bh_thread = None
@@ -910,23 +909,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
             except Exception:
                 log("Problem handling popup event:\n%s" % str(traceback.format_exc()))
 
-    def guess_lang(self, view):
-        """Guess current language."""
-
-        if HOVER_SUPPORT:
-            lang = None
-            user_map = sublime.load_settings('Preferences.sublime-settings').get('mdpopups.sublime_user_lang_map', {})
-            lang_map = mdpopups.st_mapping.lang_map
-            syntax = splitext(view.settings().get('syntax').replace('Packages/', '', 1))[0]
-            keys = set(list(lang_map.keys()) + list(user_map.keys()))
-            for key in keys:
-                v1 = lang_map.get(key, (tuple(), tuple()))[1]
-                v2 = user_map.get(key, (tuple(), tuple()))[1]
-                if syntax in (tuple(v2) + v1):
-                    lang = key
-                    break
-            return lang
-
     def on_navigate_unmatched(self, href):
         """Handle unmatched click."""
         if HOVER_SUPPORT:
@@ -978,38 +960,104 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         return (xa <= pxa < xb and ya <= pya < yb) or (xa <= pxb < xb and ya <= pyb < yb)
 
+    def get_context_line(self, view, row, col_start, col_end, tab_size):
+        """Get line context."""
+
+        line = view.line(view.text_point(row, 0))
+        c0 = view.rowcol(line.begin())[1]
+        c1 = view.rowcol(line.end())[1]
+        if c0 < col_start:
+            c0 = col_start
+        if c0 > c1:
+            c0 = c1
+        diff = c1 - c0
+        if diff > 120:
+            c1 -= 120 - diff
+
+        return self.escape_code(
+            view.substr(
+                sublime.Region(
+                    view.text_point(row, c0),
+                    view.text_point(row, c1)
+                )
+            ),
+            tab_size
+        )
+
+    def escape_code(self, text, tab_size):
+        """Format text to HTML."""
+        encode_table = {
+            '&': '&amp;',
+            '>': '&gt;',
+            '<': '&lt;',
+            '\t': ' ' * tab_size,
+            '\n': ''
+        }
+
+        return ''.join(
+            encode_table.get(c, c) for c in text
+        )
+
     def show_popup(self, view, point, region, context):
         """Show the popup."""
 
         if HOVER_SUPPORT:
             if not self.is_bracket_visible(view, region):
-                line2 = view.line(region[0])
-                end = region[1] + context
+
+                # Format and truncate (if necessary) the line with the bracket
+                tab_size = view.settings().get('tab_size', 4)
+                row, col = view.rowcol(region[0])
+                col2 = view.rowcol(region[1])[1]
+                bracket_size = col2 - col
+                last_row = view.rowcol(view.size())[0]
+                line = view.line(region[0])
+                context -= bracket_size - 1
                 start = region[1] - context
+                col_start = col2 - context
                 overage = 0
-                if start < line2.begin():
-                    overage = line2.begin() - start
-                    start = line2.begin()
-                if end > line2.end():
-                    if not overage:
-                        start -= end - line2.end()
-                        if start < line2.begin():
-                            start = line2.begin()
-                    end = line2.end()
-                elif overage:
-                    end += overage
-                    if end > line2.end():
-                        end = line2.end()
-                text = view.substr(sublime.Region(start, end)).strip()
-                code = mdpopups.syntax_highlight(
-                    view,
-                    text,
-                    mdpopups.get_language_from_view(view) if NEW_LANG_GUESS else self.guess_lang(view)
+                if start < line.begin():
+                    overage = line.begin() - start
+                    start = line.begin()
+                    col_start = 0
+                end = region[1] + overage
+                col_end = col2 + overage
+                if end > line.end():
+                    end = line.end()
+                    col_end = view.rowcol(line.end())[1]
+                code = view.substr(sublime.Region(start, end))
+                code = (
+                    self.escape_code(code[:col - col_start], tab_size) +
+                    '<span class="keyword"><strong>' +
+                    self.escape_code(code[col - col_start: col2 - col_start], tab_size) +
+                    '</strong></span>' +
+                    self.escape_code(code[col2 - col_start:], tab_size)
                 )
-                code += '\n' + '[(jump to bracket - line: %d)](%d)' % (
-                    view.rowcol(region[0])[0] + 1,
-                    region[0]
-                )
+
+                if row != view.rowcol(point)[0]:
+                    # Get context for vertical off screen brackets
+                    lines = [code]
+
+                    if row > 0:
+                        lines.insert(0, self.get_context_line(view, row - 1, col_start, col_end, tab_size))
+
+                    if row < last_row:
+                        lines.append(self.get_context_line(view, row + 1, col_start, col_end, tab_size))
+                        if len(lines) < 3 and row < last_row:
+                            lines.append(self.get_context_line(view, row + 2, col_start, col_end, tab_size))
+                    text = re.sub(
+                        r'(?!\s($|\S))\s',
+                        '&nbsp;',
+                        textwrap.dedent('\n'.join(lines)).replace('\n', '<br>')
+                    )
+                else:
+                    # Show just the line the bracket is on for horizontal off screen
+                    text = re.sub(
+                        r'(?!\s($|\S))\s',
+                        '&nbsp;',
+                        code.strip()
+                    )
+                code = '<div class="highlight"><pre>%s</pre></div>\n' % text
+                code += '\n' + '[(jump to bracket - line: %d)](%d)' % (row + 1, region[0])
                 self.popup_view = view
                 mdpopups.show_popup(
                     view,
@@ -1053,7 +1101,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             if unmatched:
                 self.show_unmatched_popup(view, point)
             elif region is not None:
-                self.show_popup(view, point, region, int(settings.get('popup_line_context', 256)) / 2)
+                self.show_popup(view, point, region, int(settings.get('popup_line_context', 120)))
 
     def on_load(self, view):
         """Search brackets on view load."""
