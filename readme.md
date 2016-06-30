@@ -1,4 +1,5 @@
 [![Unix Build Status][travis-image]][travis-link]
+[![Package Control Downloads][pc-image]][pc-link]
 ![License][license-image]
 # BracketHighlighter
 Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `#!xml <tag></tag>`, and even custom brackets.
@@ -38,4 +39,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [travis-image]: https://img.shields.io/travis/facelessuser/BracketHighlighter/master.svg
 [travis-link]: https://travis-ci.org/facelessuser/BracketHighlighter
+[pc-image]: https://img.shields.io/packagecontrol/dt/BracketHighlighter.svg
+[pc-link]: https://packagecontrol.io/packages/BracketHighlighter
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg
