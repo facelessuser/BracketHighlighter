@@ -1,10 +1,7 @@
 import sublime
 import sublime_plugin
-import mdpopups
-import backrefs
-import textwrap
 
-__version__ = (2, 19, 0)
+__version__ = "2.19.0"
 __pc_name__ = 'BracketHighlighter'
 
 
@@ -40,15 +37,42 @@ def is_installed_by_package_control():
 
 class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
     def run(self):
-        info = {
-            "platform": sublime.platform(),
-            "version": sublime.version(),
-            "arch": sublime.arch(),
-            "bh_version": list2string(__version__),
-            "mdpopups_version": format_version(mdpopups, 'version', call=True),
-            "backrefs_version": format_version(backrefs, 'version'),
-            "pc_install": is_installed_by_package_control()
-        }
+        info = {}
+
+        info["platform"] = sublime.platform()
+        info["version"] = sublime.version()
+        info["arch"] = sublime.arch()
+        info["bh_version"] = __version__
+        info["pc_install"] = is_installed_by_package_control()
+        try:
+            import mdpopups
+            info["mdpopups_version"] = format_version(mdpopups, 'version', call=True)
+        except Exception:
+            info["mdpopups_version"] = 'Version could not be acquired!'
+
+        try:
+            import backrefs
+            info["backrefs_version"] = format_version(backrefs, 'version')
+        except Exception:
+            info["backrefs_version"] = 'Version could not be acquired!'
+
+        try:
+            import markdown
+            info["markdown_version"] = format_version(markdown, 'version')
+        except Exception:
+            info["markdown_version"] = 'Version could not be acquired!'
+
+        try:
+            import jinja2
+            info["jinja_version"] = format_version(jinja2, '__version__')
+        except Exception:
+            info["jinja_version"] = 'Version could not be acquired!'
+
+        try:
+            import pygments
+            info["pygments_version"] = format_version(pygments, '__version__')
+        except Exception:
+            info["pygments_version"] = 'Version could not be acquired!'
 
         msg = textwrap.dedent(
             """\
@@ -57,8 +81,11 @@ class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
             - Arch:           %(arch)s
             - Plugin ver.:    %(bh_version)s
             - Install via PC: %(pc_install)s
-            - Mdpopups ver.:  %(mdpopups_version)s
-            - Backrefs ver.:  %(backrefs_version)s
+            - mdpopups ver.:  %(mdpopups_version)s
+            - backrefs ver.:  %(backrefs_version)s
+            - markdown ver.:  %(markdown_version)s
+            - pygments ver.:  %(pygments_version)s
+            - jinja2 ver.:    %(jinja_version)s
             """ % info
         )
 
