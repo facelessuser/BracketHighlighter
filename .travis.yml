@@ -3,10 +3,9 @@ python:
   - "3.3"
 install:
   - pip install flake8
-  - pip install pydocstyle
+  - pip install flake8-docstrings
   - pip install pep8-naming
   - pip install nose
 script:
   - nosetests .
   - flake8 .
-  - pydocstyle .
