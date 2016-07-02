@@ -1,5 +1,7 @@
+"""Support command."""
 import sublime
 import sublime_plugin
+import textwrap
 
 __version__ = "2.19.0"
 __pc_name__ = 'BracketHighlighter'
@@ -36,7 +38,11 @@ def is_installed_by_package_control():
 
 
 class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
+    """Support info."""
+
     def run(self):
+        """Run command."""
+
         info = {}
 
         info["platform"] = sublime.platform()
