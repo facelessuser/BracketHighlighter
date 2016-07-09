@@ -42,7 +42,9 @@ def clear_all_regions():
         for view in window.views():
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
-            view.settings().set('bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}})
+            view.settings().set(
+                'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
+            )
 
 
 def select_bracket_style(option, minimap):
@@ -182,7 +184,7 @@ class BhRegion(object):
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         minimap = settings.get('show_in_minimap', False)
-        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}}
+        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
         self.log_count = 0
         self.count_lines = count_lines
         self.hv_style = select_bracket_style(settings.get("high_visibility_style", "outline"), minimap)
@@ -229,7 +231,7 @@ class BhRegion(object):
         self.multi_select = num_sels > 1
         self.sels = []
         self.view = view
-        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}}
+        self.log_regions = {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
         self.log_count = 0
 
         for r in self.bracket_regions.values():
@@ -307,6 +309,10 @@ class BhRegion(object):
         if end_region:
             self.log_regions['close'][str(self.log_count + 1)] = end_region
         if begin_region or end_region:
+            self.log_regions['icon'][str(self.log_count + 1)] = (
+                bracket.icon,
+                self.get_color(bracket.color, high_visibility),
+            )
             self.log_count += 1
 
         self.store_sel(regions)
@@ -507,7 +513,9 @@ class BhRegion(object):
 
         for region_key in self.view.settings().get("bracket_highlighter.regions", []):
             self.view.erase_regions(region_key)
-            self.view.settings().set('bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}})
+            self.view.settings().set(
+                'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
+            )
 
         regions = []
         icon_type = "no_icon"

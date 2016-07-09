@@ -21,6 +21,7 @@ import re
 HOVER_SUPPORT = int(sublime.version()) >= 3116
 if HOVER_SUPPORT:
     import mdpopups
+    SCOPE_GUESS_SUPPORT = mdpopups.version() >= (1, 7, 0)
 
 if 'bh_thread' not in globals():
     bh_thread = None
@@ -924,7 +925,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             mdpopups.show_popup(
                 view,
                 (
-                    '### <span class="invalid">Matching bracket could not be found!</span>\n\n'
+                    '### <span class="error">Matching bracket could not be found!</span>\n\n'
                     '- Bracket *might* have no match.\n'
                     '- Bracket *might* be nested poorly --> ([)(])\n'
                     '- Matching bracket *might* be beyond the search threshold. '
@@ -984,6 +985,47 @@ class BhListenerCommand(sublime_plugin.EventListener):
             tab_size
         )
 
+    def get_multiline_context(self, view, code, row, col_start, col_end, tab_size, line_context):
+        """Get multi-line context for vertical offscreen brackets."""
+
+        last_row = view.rowcol(view.size())[0]
+
+        lines = [code]
+
+        offset = 1
+        while offset <= line_context:
+            current_row = row - offset
+            if current_row >= 0:
+                lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
+            else:
+                break
+            offset += 1
+        last_offset = offset
+
+        offset = 1
+        while offset <= line_context or (len(lines) != (line_context * 2) + 1):
+            current_row = row + offset
+            if current_row <= last_row:
+                lines.append(self.get_context_line(view, current_row, col_start, col_end, tab_size))
+            else:
+                break
+            offset += 1
+
+        offset = last_offset
+        while len(lines) < ((line_context * 2) + 1):
+            current_row = row - offset
+            if current_row >= 0:
+                lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
+            else:
+                break
+            offset += 1
+
+        return re.sub(
+            r'(?!\s($|\S))\s',
+            '&nbsp;',
+            textwrap.dedent('\n'.join(lines)).replace('\n', '<br>')
+        )
+
     def escape_code(self, text, tab_size):
         """Format text to HTML."""
 
@@ -999,25 +1041,36 @@ class BhListenerCommand(sublime_plugin.EventListener):
             encode_table.get(c, c) for c in text
         )
 
-    def show_popup(self, view, point, region):
+    def show_popup(self, view, point, region, icon):
         """Show the popup."""
 
         if HOVER_SUPPORT:
             if not self.is_bracket_visible(view, region):
                 settings = sublime.load_settings('bh_core.sublime-settings')
-
-                # Format and truncate (if necessary) the line with the bracket
                 tab_size = view.settings().get('tab_size', 4)
+
+                # Get highlight colors
+                if icon is not None:
+                    if SCOPE_GUESS_SUPPORT:
+                        color = mdpopups.scope2style(view, icon[1]).get('color')
+                    else:
+                        color = None
+                    if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
+                        bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
+                    else:
+                        bracket_em = color
+
+                # Get positions of bracket extents on the line
                 row, col = view.rowcol(region[0])
                 col2 = view.rowcol(region[1])[1]
-                bracket_size = col2 - col
-                last_row = view.rowcol(view.size())[0]
-                line = view.line(region[0])
-                context = int(settings.get('popup_char_context', 120))
-                context -= bracket_size - 1
+
+                # Calculate how far before and after bracket we can/should grab for context
+                # Format and truncate (if necessary).
+                context = int(settings.get('popup_char_context', 120)) - (col2 - col) - 1
                 start = region[1] - context
                 col_start = col2 - context
                 overage = 0
+                line = view.line(region[0])
                 if start < line.begin():
                     overage = line.begin() - start
                     start = line.begin()
@@ -1027,71 +1080,35 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 if end > line.end():
                     end = line.end()
                     col_end = view.rowcol(line.end())[1]
-                code = view.substr(sublime.Region(start, end))
-                scope = settings.get('popup_bracket_emphasis', 'keyword')
-                if re.match(r'#([\da-fA-F]{3}){1,2}', scope):
-                    highlight_open = '<span class="brackethighlighter" style="color: %s;"><strong>' % scope
+
+                # Get line of code with bracket and emphasize the bracket
+                content = view.substr(sublime.Region(start, end))
+                if re.match(r'#([\da-fA-F]{3}){1,2}', bracket_em):
+                    highlight_open = '<span class="brackethighlighter" style="color: %s;"><strong>' % bracket_em
                 else:
-                    highlight_open = '<span class="brackethighlighter %s"><strong>' % scope
-                code = (
-                    self.escape_code(code[:col - col_start], tab_size) +
+                    highlight_open = '<span class="brackethighlighter %s"><strong>' % bracket_em
+                content = (
+                    self.escape_code(content[:col - col_start], tab_size) +
                     highlight_open +
-                    self.escape_code(code[col - col_start: col2 - col_start], tab_size) +
+                    self.escape_code(content[col - col_start: col2 - col_start], tab_size) +
                     '</strong></span>' +
-                    self.escape_code(code[col2 - col_start:], tab_size)
+                    self.escape_code(content[col2 - col_start:], tab_size)
                 )
 
+                # Get additional lines of context (if required) and format text
                 if row != view.rowcol(point)[0]:
-                    # Get context for vertical off screen brackets
-                    line_context = int(settings.get('popup_line_context', 2)) / 2
-                    lines = [code]
-
-                    offset = 1
-                    while offset <= line_context:
-                        current_row = row - offset
-                        if current_row >= 0:
-                            lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
-                        else:
-                            break
-                        offset += 1
-                    last_offset = offset
-
-                    offset = 1
-                    while offset <= line_context or (len(lines) != (line_context * 2) + 1):
-                        current_row = row + offset
-                        if current_row <= last_row:
-                            lines.append(self.get_context_line(view, current_row, col_start, col_end, tab_size))
-                        else:
-                            break
-                        offset += 1
-
-                    offset = last_offset
-                    while len(lines) < ((line_context * 2) + 1):
-                        current_row = row - offset
-                        if current_row >= 0:
-                            lines.insert(0, self.get_context_line(view, current_row, col_start, col_end, tab_size))
-                        else:
-                            break
-                        offset += 1
-
-                    text = re.sub(
-                        r'(?!\s($|\S))\s',
-                        '&nbsp;',
-                        textwrap.dedent('\n'.join(lines)).replace('\n', '<br>')
-                    )
+                    line_context = int(int(settings.get('popup_line_context', 2)) / 2)
+                    content = self.get_multiline_context(view, content, row, col_start, col_end, tab_size, line_context)
                 else:
-                    # Show just the line the bracket is on for horizontal off screen
-                    text = re.sub(
-                        r'(?!\s($|\S))\s',
-                        '&nbsp;',
-                        code.strip()
-                    )
-                code = '<div class="highlight"><pre>%s</pre></div>\n' % text
-                code += '\n' + '[(jump to bracket - line: %d)](%d)' % (row + 1, region[0])
+                    content = re.sub(r'(?!\s($|\S))\s', '&nbsp;', content.strip())
+
+                # Put together the markup to show
+                markup = '<div class="highlight"><pre>%s</pre></div>\n' % content
+                markup += '\n' + '[(jump to bracket - line: %d)](%d)' % (row + 1, region[0])
                 self.popup_view = view
                 mdpopups.show_popup(
                     view,
-                    code,
+                    markup,
                     flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     max_width=1024,
                     location=point,
@@ -1124,14 +1141,16 @@ class BhListenerCommand(sublime_plugin.EventListener):
                                 break
                         if index is not None:
                             region = locations.get('open', {}).get(index)
+                            icon = locations.get('icon', {}).get(index)
                     else:
                         region = locations.get('close', {}).get(index)
+                        icon = locations.get('icon', {}).get(index)
 
             # Show other bracket text
             if unmatched:
                 self.show_unmatched_popup(view, point)
             elif region is not None:
-                self.show_popup(view, point, region)
+                self.show_popup(view, point, region, icon)
 
     def on_load(self, view):
         """Search brackets on view load."""
