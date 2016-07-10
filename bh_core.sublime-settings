@@ -85,7 +85,7 @@
     // Outside adjacent bracket matching
     "bracket_outside_adjacent": true,
 
-    // EXPERIMENTAL: Special matching mode for block cursor.
+    // Experimental: Special matching mode for block cursor.
     // Essentially, this provides a matching mode that makes a little more
     // sense to some in regards to the visual representation of block cursors.
     // This will ignore "bracket_outside_adjacent".

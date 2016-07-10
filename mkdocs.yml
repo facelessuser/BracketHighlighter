@@ -4,10 +4,9 @@ site_description: A customizable Sublime Text plugin that highlights matching br
 pages:
   - About BracketHighlighter: index.md
   - Installation: installation.md
-  - User Guide:
-      - Usage: usage.md
-      - Customizing: customize.md
-      - Extended Regex Guide: extended-regex.md
+  - Basic Usage: usage.md
+  - Customizing: customize.md
+  - Extended Regex Guide: extended-regex.md
   - Contributing &amp; Support: contributing.md
   - License: license.md
 theme: readthedocs

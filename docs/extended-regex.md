@@ -8,11 +8,11 @@ Backrefs was written to add various additional backrefs that are known to some r
 
 You can read more about backrefs' features in the [backrefs documentation](https://github.com/facelessuser/sublime-backrefs/blob/master/readme.md).
 
-### Getting the Latest Backrefs
+## Getting the Latest Backrefs
 It is not always clear when Package Control updates dependencies.  So to force dependency updates, you can run Package Control's `Satisfy Dependencies` command which will update to the latest release.
 
 
-### Using Backrefs in BracketHighlighter Plugins
+## Using Backrefs in BracketHighlighter Plugins
 You can import backrefs into a `bh_plugin`:
 
 ```python

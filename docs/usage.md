@@ -1,10 +1,12 @@
-# User Guide {: .doctitle}
+# Basic Usage {: .doctitle}
 How to use BracketHighlighter.
 
 ---
 
 ## General Use
 In general, BracketHighlighter (BH) will highlight brackets (or defined brackets like start and end blocks) surrounding the cursor.  By default, BH will put opening and closing icons in the gutter of the corresponding line containing open or closing bracket.
+
+If you are using Sublime Text build 3116+, a new feature has been added which shows a popup when you mouse over a bracket that has its matching bracket pair off screen.  It will show where the other bracket is located with line context and and provide a link to jump to the other bracket.  When mousing over a bracket in which the match could not be found, a popup explaining why this might be will show up giving you the option to click a link which will perform a search without thresholds to see if it can find the brackets when restraints are removed.
 
 ## Built-in Supported brackets
 BH supports a variety of brackets out of the box; here are some examples:
