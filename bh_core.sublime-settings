@@ -1,6 +1,11 @@
 {
-    //Debug logging
+    // Debug logging
     "debug_enable": false,
+
+    // Try to ensure dependencies are up to date.
+    // If it is not desirable to have this done (like developing) on a specific dependency,
+    // or some other reason, set this to False.
+    "upgrade_dependencies": true,
 
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
@@ -18,7 +23,7 @@
     // multiline bracket spans.
     "content_highlight_bar": false,
 
-    // Experimental: Show hover popup
+    // Show hover popup
     // This will show a hover popup when mousing over
     // the visible bracket if the other
     // highlighted matching bracket is off screen.
@@ -26,16 +31,20 @@
     // from the bracket start and end points.
     // A link will be available allowing the user to click and jump to
     // the other bracket.
-    "show_offscreen_bracket_popup": false,
+    "show_offscreen_bracket_popup": true,
 
-    // Experimental: Adjust char per line context of bracket popup.
+    // Adjust char per line context of bracket popup.
     "popup_char_context": 120,
 
-    // Experimental: Adjust number of lines of additional context
+    // Adjust number of lines of additional context
     // that are shown when brackets are vertically off screen.
     // Specified line count is split to context before and after the target line.
     // So a value of 4 would give you two lines of context before and two lines after.
     "popup_line_context": 2,
+
+
+    // Experimental: Use 'popup_bracket_emphasis' to customize the popup's bracket emphasis color
+    "use_custom_popup_bracket_emphasis": false,
 
     // Experimental: Specify the scope (to get color) to emphasize the off screen bracket
     // in popups.  Alternatively you can use a hex value in the form '#rgb' or '#rrggbb'.

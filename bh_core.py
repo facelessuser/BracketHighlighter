@@ -18,9 +18,12 @@ from BracketHighlighter.bh_logging import debug, log
 import textwrap
 import re
 
+__name__ = "BracketHighlighter"
 HOVER_SUPPORT = int(sublime.version()) >= 3116
 if HOVER_SUPPORT:
     import mdpopups
+    # This is the version with the latest mdpopus
+    LATEST_SUPPORTED_MDPOPUPS = mdpopups.version() >= (1, 7, 3)
     SCOPE_GUESS_SUPPORT = mdpopups.version() >= (1, 7, 0)
 
 if 'bh_thread' not in globals():
@@ -1118,7 +1121,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
     def on_hover(self, view, point, hover_zone):
         """Show popup indicating where other offscreen bracket is located."""
         settings = sublime.load_settings('bh_core.sublime-settings')
-        if HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', False):
+        if HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', True):
             # Find other bracket
             region = None
             index = None
@@ -1301,6 +1304,21 @@ def plugin_loaded():
 
     global HIGH_VISIBILITY
     global bh_thread
+
+    settings = sublime.load_settings("bh_core.sublime-settings")
+
+    # Try and ensure key dependencies are at the latest known good version.
+    # This is only done because Package Control does not do this on package upgrade at the present.
+    try:
+        from package_control import events
+
+        if HOVER_SUPPORT and events.post_upgrade(__name__):
+            if not LATEST_SUPPORTED_MDPOPUPS and settings.get('upgrade_dependencies', True):
+                window = sublime.active_window()
+                if window:
+                    window.run_command('satisfy_dependencies')
+    except ImportError:
+        log('Could not import Package Control')
 
     init_bh_match()
 
