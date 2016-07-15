@@ -271,7 +271,7 @@
             "open": "(\\$)",
             "close": "(\\$)",
             "style": "default",
-            "scopes": ["string.other.math.tex"],
+            "scopes": ["string.other.math.tex", "meta.environment.math.inline.dollar.latex"],
             "language_filter": "whitelist",
             "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
             "sub_bracket_search": "true",
