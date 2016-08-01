@@ -17,14 +17,15 @@ import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 import textwrap
 import re
+from BracketHighlighter import bh_support
 
-__name__ = "BracketHighlighter"
 HOVER_SUPPORT = int(sublime.version()) >= 3116
+WRAPPER_CLASS = "bracket-highlighter"
+CSS = '.bracket-highlighter { padding: 0; margin: 0; }\n'
 if HOVER_SUPPORT:
     import mdpopups
     # This is the version with the latest mdpopus
-    LATEST_SUPPORTED_MDPOPUPS = mdpopups.version() >= (1, 7, 3)
-    SCOPE_GUESS_SUPPORT = mdpopups.version() >= (1, 7, 0)
+    LATEST_SUPPORTED_MDPOPUPS = mdpopups.version() >= (1, 9, 0)
 
 if 'bh_thread' not in globals():
     bh_thread = None
@@ -927,16 +928,22 @@ class BhListenerCommand(sublime_plugin.EventListener):
             self.popup_view = view
             mdpopups.show_popup(
                 view,
-                (
-                    '### <span class="error">Matching bracket could not be found!</span>\n\n'
-                    '- Bracket *might* have no match.\n'
-                    '- Bracket *might* be nested poorly --> ([)(])\n'
-                    '- Matching bracket *might* be beyond the search threshold. '
-                    '  A match done without the threshold *might* find it.\n\n'
-                    '[(Match brackets without threshold)](match)'
+                textwrap.dedent(
+                    """
+                    ### Matching bracket could not be found! {: .error}
+
+                    - Bracket *might* have no match.
+                    - Bracket *might* be nested poorly --> `([)(])`
+                    - Matching bracket *might* be beyond the search threshold.
+                    A match done without the threshold *might* find it.
+                    [(Match brackets without threshold)](match)
+                    """
                 ),
+                wrapper_class=WRAPPER_CLASS,
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                max_width=400,
+                css=CSS,
+                max_width=1000,
+                max_height=800,
                 location=point,
                 on_navigate=self.on_navigate_unmatched
             )
@@ -1054,10 +1061,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
                 # Get highlight colors
                 if icon is not None:
-                    if SCOPE_GUESS_SUPPORT:
-                        color = mdpopups.scope2style(view, icon[1]).get('color')
-                    else:
-                        color = None
+                    color = mdpopups.scope2style(view, icon[1]).get('color')
                     if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
                         bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
                     else:
@@ -1112,6 +1116,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 mdpopups.show_popup(
                     view,
                     markup,
+                    wrapper_class=WRAPPER_CLASS,
+                    css=CSS,
                     flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     max_width=1024,
                     location=point,
@@ -1312,7 +1318,7 @@ def plugin_loaded():
     try:
         from package_control import events
 
-        if HOVER_SUPPORT and events.post_upgrade(__name__):
+        if HOVER_SUPPORT and events.post_upgrade(bh_support.__pc_name__):
             if not LATEST_SUPPORTED_MDPOPUPS and settings.get('upgrade_dependencies', True):
                 window = sublime.active_window()
                 if window:
