@@ -3,7 +3,7 @@ import sublime
 import sublime_plugin
 import textwrap
 
-__version__ = "2.20.0"
+__version__ = "2.21.1"
 __pc_name__ = 'BracketHighlighter'
 
 

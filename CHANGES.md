@@ -1,3 +1,8 @@
+# BracketHighlighter 2.21.1
+> Released Jul 31, 2016
+
+- **NEW**: Message to not freak people out :).
+
 # BracketHighlighter 2.21.0
 > Released Jul 31, 2016
 
