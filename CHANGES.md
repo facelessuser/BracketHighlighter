@@ -1,7 +1,7 @@
 # BracketHighlighter 2.21.2
 > Released Aug 1, 2016
 
-- **NEW**: Fix changelog typo :).
+- **FIX**: Fix changelog typo :).
 
 # BracketHighlighter 2.21.1
 > Released Aug 1, 2016
