@@ -293,6 +293,11 @@
                             },
                             { "caption": "-" },
                             {
+                                "caption": "Changelog",
+                                "command": "bh_changes"
+                            },
+                            { "caption": "-" },
+                            {
                                 "caption": "Support Info",
                                 "command": "bh_support_info"
                             },
