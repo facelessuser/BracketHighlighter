@@ -1,3 +1,8 @@
+# BracketHighlighter 2.21.3
+> Released Aug 1, 2016
+
+- **FIX**: Don't fail if mdpopups was not installed on old Sublime version.
+
 # BracketHighlighter 2.21.2
 > Released Aug 1, 2016
 

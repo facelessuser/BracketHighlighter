@@ -1,7 +1,6 @@
 """Changelog."""
 import sublime
 import sublime_plugin
-import mdpopups
 
 CSS = '''
 .bracket-highlighter h1, .bracket-highlighter h2, .bracket-highlighter h3,
@@ -17,6 +16,8 @@ class BhChangesCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         """Show the changelog in a new view."""
+        import mdpopups
+
         text = sublime.load_resource('Packages/BracketHighlighter/CHANGES.md')
         view = self.window.new_file()
         view.set_name('BracketHighlighter - Changelog')
@@ -28,6 +29,11 @@ class BhChangesCommand(sublime_plugin.WindowCommand):
 
     def is_enabled(self):
         """Check if is enabled."""
+        try:
+            import mdpopups
+        except Exception:
+            return False
+
         return (mdpopups.version() >= (1, 7, 3)) and (int(sublime.version()) >= 3118)
 
     is_visible = is_enabled
