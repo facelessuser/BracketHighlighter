@@ -294,12 +294,12 @@
                             { "caption": "-" },
                             {
                                 "caption": "Changelog",
-                                "command": "bh_changes"
+                                "command": "bracket_highlighter_changes"
                             },
                             { "caption": "-" },
                             {
                                 "caption": "Support Info",
-                                "command": "bh_support_info"
+                                "command": "bracket_highlighter_support_info"
                             },
                             { "caption": "-" }
                         ]

@@ -3,7 +3,7 @@ import sublime
 import sublime_plugin
 import textwrap
 
-__version__ = "2.21.3"
+__version__ = "2.21.4"
 __pc_name__ = 'BracketHighlighter'
 
 
@@ -37,7 +37,7 @@ def is_installed_by_package_control():
     return str(__pc_name__ in set(settings.get('installed_packages', [])))
 
 
-class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
+class BracketHighlighterSupportInfoCommand(sublime_plugin.ApplicationCommand):
     """Support info."""
 
     def run(self):
@@ -48,7 +48,7 @@ class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
         info["platform"] = sublime.platform()
         info["version"] = sublime.version()
         info["arch"] = sublime.arch()
-        info["bh_version"] = __version__
+        info["plugin_version"] = __version__
         info["pc_install"] = is_installed_by_package_control()
         try:
             import mdpopups
@@ -82,16 +82,16 @@ class BhSupportInfoCommand(sublime_plugin.ApplicationCommand):
 
         msg = textwrap.dedent(
             """\
-            - ST ver.:        %(version)s
-            - Platform:       %(platform)s
-            - Arch:           %(arch)s
-            - Plugin ver.:    %(bh_version)s
+            - ST ver.: %(version)s
+            - Platform: %(platform)s
+            - Arch: %(arch)s
+            - Plugin ver.: %(plugin_version)s
             - Install via PC: %(pc_install)s
-            - mdpopups ver.:  %(mdpopups_version)s
-            - backrefs ver.:  %(backrefs_version)s
-            - markdown ver.:  %(markdown_version)s
-            - pygments ver.:  %(pygments_version)s
-            - jinja2 ver.:    %(jinja_version)s
+            - mdpopups ver.: %(mdpopups_version)s
+            - backrefs ver.: %(backrefs_version)s
+            - markdown ver.: %(markdown_version)s
+            - pygments ver.: %(pygments_version)s
+            - jinja2 ver.: %(jinja_version)s
             """ % info
         )
 

@@ -28,8 +28,7 @@ _Though I will not personally implement rules for your favorite language, I am m
 
 2. When creating an issue on the repository, please provide as much info as possible:
 
-    - Sublime Text build.
-    - Operating system.
+    - Provide environment information by running `Preferences->Package Settings->ApplySyntax->Support Info`.  The information will be copied to the clipboard; paste the info in issue.
     - Errors in console.
     - Detailed description of the problem.
     - Examples for reproducing the error.  You can post pictures, but if specific text or code is required to reproduce the issue, please provide the text in a plain text format for easy copy/paste.

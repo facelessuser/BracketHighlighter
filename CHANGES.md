@@ -1,3 +1,8 @@
+# BracketHighlighter 2.21.4
+> Released Aug 21, 2016
+
+- **FIX**: Changelog command now works for older ST3 versions.
+
 # BracketHighlighter 2.21.3
 > Released Aug 1, 2016
 
