@@ -17,7 +17,7 @@ import BracketHighlighter.bh_rules as bh_rules
 from BracketHighlighter.bh_logging import debug, log
 import textwrap
 import re
-from BracketHighlighter import bh_support
+from BracketHighlighter import support
 
 HOVER_SUPPORT = int(sublime.version()) >= 3116
 WRAPPER_CLASS = "bracket-highlighter"
