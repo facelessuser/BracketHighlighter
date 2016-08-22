@@ -1318,7 +1318,7 @@ def plugin_loaded():
     try:
         from package_control import events
 
-        if HOVER_SUPPORT and events.post_upgrade(bh_support.__pc_name__):
+        if HOVER_SUPPORT and events.post_upgrade(support.__pc_name__):
             if not LATEST_SUPPORTED_MDPOPUPS and settings.get('upgrade_dependencies', True):
                 window = sublime.active_window()
                 if window:
