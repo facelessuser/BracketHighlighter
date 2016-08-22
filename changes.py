@@ -8,10 +8,10 @@ html { {{'.background'|css}} }
 div.bracket-highlighter { padding: 0; margin: 0; {{'.background'|css}} }
 .bracket-highlighter h1, .bracket-highlighter h2, .bracket-highlighter h3,
 .bracket-highlighter h4, .bracket-highlighter h5, .bracket-highlighter h6 {
-    {{'.string'|css('color')}}
+    {{'.string'|css}}
 }
-.bracket-highlighter blockquote { {{'.comment'|css('color')}} }
-.apply-syntax a { text-decoration: none; }
+.bracket-highlighter blockquote { {{'.comment'|css}} }
+.bracket-highlighter a { text-decoration: none; }
 '''
 
 
@@ -31,9 +31,14 @@ class BracketHighlighterChangesCommand(sublime_plugin.WindowCommand):
         view.set_name('BracketHighlighter - Changelog')
         view.settings().set('gutter', False)
         if has_phantom_support:
-            html = '<div class="bracket-highlighter">%s</div>' % mdpopups.md2html(view, text)
             mdpopups.add_phantom(
-                view, 'changelog', sublime.Region(0), html, sublime.LAYOUT_INLINE, css=CSS, on_navigate=self.on_navigate
+                view,
+                'changelog',
+                sublime.Region(0),
+                text,
+                sublime.LAYOUT_INLINE,
+                wrapper_class="bracket-highlighter",
+                css=CSS
             )
         else:
             view.run_command('insert', {"characters": text})

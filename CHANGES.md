@@ -2,6 +2,7 @@
 > Released Aug 21, 2016
 
 - **FIX**: Fix a break caused by 2.21.4 [#364](https://github.com/facelessuser/BracketHighlighter/issues/364)
+- **FIX**: Fix CSS in changelog
 
 # BracketHighlighter 2.21.4
 > Released Aug 21, 2016
