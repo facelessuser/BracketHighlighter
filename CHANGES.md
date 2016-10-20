@@ -1,3 +1,9 @@
+# BracketHighlighter 2.21.6
+> Released Oct 19, 2016
+
+- **FIX**: Fix PHP conditional [#366](https://github.com/facelessuser/BracketHighlighter/issues/366)
+- **FIX**: No line wrapping in code snippets in popups.
+
 # BracketHighlighter 2.21.5
 > Released Aug 21, 2016
 
