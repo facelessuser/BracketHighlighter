@@ -447,7 +447,7 @@
         {
             "name": "php_keywords",
             "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*:\\s*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
-            "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*;)",
+            "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*(?:;|;?\\?>))",
             "style": "default",
             "language_filter": "whitelist",
             "scope_exclude": ["string", "comment", "text.html"],
