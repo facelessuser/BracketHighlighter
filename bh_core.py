@@ -942,7 +942,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 wrapper_class=WRAPPER_CLASS,
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                 css=CSS,
-                max_width=1000,
+                max_width=800,
                 max_height=800,
                 location=point,
                 on_navigate=self.on_navigate_unmatched
@@ -1030,11 +1030,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 break
             offset += 1
 
-        return re.sub(
-            r'(?!\s($|\S))\s',
-            '&nbsp;',
-            textwrap.dedent('\n'.join(lines)).replace('\n', '<br>')
-        )
+        return textwrap.dedent('\n'.join(lines)).replace('\n', '<br>')
 
     def escape_code(self, text, tab_size):
         """Format text to HTML."""
@@ -1044,7 +1040,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
             '>': '&gt;',
             '<': '&lt;',
             '\t': ' ' * tab_size,
-            '\n': ''
+            '\n': '',
+            ' ': '&nbsp;'
         }
 
         return ''.join(
@@ -1107,7 +1104,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     line_context = int(int(settings.get('popup_line_context', 2)) / 2)
                     content = self.get_multiline_context(view, content, row, col_start, col_end, tab_size, line_context)
                 else:
-                    content = re.sub(r'(?!\s($|\S))\s', '&nbsp;', content.strip())
+                    content = content.strip()
 
                 # Put together the markup to show
                 markup = '<div class="highlight"><pre>%s</pre></div>\n' % content
@@ -1119,7 +1116,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                     wrapper_class=WRAPPER_CLASS,
                     css=CSS,
                     flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                    max_width=1024,
+                    max_width=800,
                     location=point,
                     on_navigate=self.on_navigate
                 )
