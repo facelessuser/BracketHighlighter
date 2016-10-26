@@ -563,19 +563,21 @@
         // SINUMERIK 840D SL G-Code
         {
             "name": "s840d_gcode",
-            "open": "(?i)\\b(IF(?!.*GOTO)|FOR|WHILE|REPEAT(?!.*GOTO))\\b",
-            "close": "(?i)\\b(END(?:IF|FOR|WHILE)|UNTIL)\\b",
+            "open": "\\b(IF(?!.*GOTO)|FOR|WHILE|REPEAT(?!.*GOTO))\\b",
+            "close": "\\b(END(?:IF|FOR|WHILE)|UNTIL)\\b",
             "style": "tag",
+            "plugin_library": "bh_modules.s840d_gcode",
             "language_filter": "whitelist",
             "language_list": ["s840d_gcode"],
             "enabled": true
         },
         // SINUMERIK 840D SL RunMyHmi
         {
-            "name": "s840d_hmi_method",
-            "open": "(?i)^\\s*(ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB)\\b",
-            "close": "(?i)^\\s*(END_(?:ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB))\\b",
+            "name": "s840d_hmi",
+            "open": "^\\s*(//[ABGMS]|ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB)\\b",
+            "close": "^\\s*(//END|END_(?:ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB))\\b",
             "style": "tag",
+            "plugin_library": "bh_modules.s840d_hmi",
             "language_filter": "whitelist",
             "language_list": ["s840d_hmi"],
             "enabled": true
