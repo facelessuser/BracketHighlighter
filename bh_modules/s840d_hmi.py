@@ -6,6 +6,9 @@ License: MIT
 """
 
 
+S840D_HMI_CLASSES = ("//a", "//b", "//g", "//m", "//s")
+
+
 def compare(name, first, second, bfr):
     """Ensure correct open is paired with correct close."""
 
@@ -14,7 +17,7 @@ def compare(name, first, second, bfr):
 
     match = False
     # classes
-    if o in ["//a", "//b", "//g", "//m", "//s"] and c == "//end":
+    if o in S840D_HMI_CLASSES and c == "//end":
         match = True
     # methods
     elif c == "end_" + o:
