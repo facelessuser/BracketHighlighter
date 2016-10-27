@@ -7,7 +7,6 @@ License: MIT
 from BracketHighlighter.bh_plugin import import_module
 lowercase = import_module("bh_modules.lowercase")
 
-
 BASH_KEYWORDS = ("select", "for", "while", "until")
 
 

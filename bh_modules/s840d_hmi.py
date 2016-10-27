@@ -5,7 +5,6 @@ Copyright (c) 2013 - 2016 Deathaxe <deathaxe82@gmail.com>
 License: MIT
 """
 
-
 S840D_HMI_CLASSES = ("//a", "//b", "//g", "//m", "//s")
 
 
