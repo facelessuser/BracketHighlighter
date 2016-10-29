@@ -190,5 +190,9 @@
     {
         "caption": "BracketHighlighter: Wrap Selections with Brackets",
         "command": "wrap_brackets"
+    },
+    {
+        "caption": "BracketHighlighter: Find Matching Offscreen Bracket",
+        "command": "bh_offscreen_popup"
     }
 ]

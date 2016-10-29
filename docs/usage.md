@@ -46,6 +46,9 @@ The `bh_toggle_enable` command enables and disables BH globally.
 ### Toggle String Bracket Escape Mode
 `bh_toggle_string_escape_mode` toggles BH's recognition mode of escaped sub brackets in strings and regex.  The modes are 'string escape' mode and 'regex escape' mode.
 
+### Find Matching Offscreen Bracket
+When the setting `show_offscreen_bracket_popup` is enabled, the `bh_offscreen_popup` command shows a popup on the screen showing the location of the matching offscreen bracket (only available for Sublime Text 3 versions that support this).  The cursor must currently be on an onscreen bracket for this to work (this may change in the future to allow the cursor to just be between matching brackets).  The popup will also auto popup when the mouse hovers over an onscreen bracket when the other matching bracket is offscreen.
+
 ## Bracket Plugin Commands
 BH is also extendable via plugins and provides a number of built in Bracket Plugins that take advantage of BH&rsquo;s matching to provide additional features.  Most plugin features are available via the `Tools->Packages->BracketHighlighter` menu or the command palette.  To see how to configure shortcuts, see the `Example.sublime-settings` file.
 

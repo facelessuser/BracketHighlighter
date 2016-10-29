@@ -207,7 +207,7 @@ Disables gutter icons when doing multiple selections.
 Settings related to the new popup hints when brackets are off the viewable screen.
 
 ### show_offscreen_bracket_popup
-Setting will show a popup when the mouse hovers over a visible bracket and its matching pair is off screen.  The popup will show about 120 chars of context of every line shown.  Additionally, if the bracket off screen bracket is located on a separate line, it will show an additional line(s) of context before and after.  The context is shown in plain text, but the bracket will be emphasized by making the bracket bold and colorizing it with the your theme's keyword color.  [Char context](#popup_char_context), [line context](#popup_line_context), and [emphasis color](#popup_bracket_emphasis) can all be configured in the settings file.
+Setting this will show a popup when the mouse hovers over a visible bracket and its matching pair is off screen.  The popup will show about 120 chars of context of every line shown.  Additionally, if the bracket off screen bracket is located on a separate line, it will show an additional line(s) of context before and after.  The context is shown in plain text, but the bracket will be emphasized by making the bracket bold and colorizing it with the your theme's keyword color.  [Char context](#popup_char_context), [line context](#popup_line_context), and [emphasis color](#popup_bracket_emphasis) can all be configured in the settings file.
 
 ![popup1](https://dl.dropboxusercontent.com/u/342698/BracketHighlighter/popup1.png)
 
