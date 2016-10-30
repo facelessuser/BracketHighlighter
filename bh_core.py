@@ -761,15 +761,24 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
         unmatched = False
         between = None
 
+        # Ensure only 1 point is set
+        if point is not None:
+            sels = self.view.sel()
+            sels.clear()
+            sels.add(sublime.Region(point))
+
+        # Search with no threshold
         if no_threshold:
             self.view.run_command("bh_key", {"lines": True})
 
+        # Get point if not specified
         if point is None:
             sels = self.view.sel()
             if len(sels) == 1 and sels[0].size() == 0:
                 point = sels[0].begin()
 
-        if point:
+        # Get relative bracket regions for point
+        if point is not None:
             locations = self.view.settings().get('bracket_highlighter.locations', {})
             for k, v in locations.get('unmatched', {}).items():
                 if v[0] <= point <= v[1]:
