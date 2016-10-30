@@ -752,18 +752,22 @@ class BhShowStringEscapeModeCommand(sublime_plugin.TextCommand):
 class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
     """Command to manually show offscreen popup."""
 
-    def run(self, edit):
+    def run(self, edit, point=None, no_threshold=False):
         """Force popup."""
 
         # Find other bracket
         region = None
         index = None
         unmatched = False
-        point = None
+        between = None
 
-        sels = self.view.sel()
-        if len(sels) == 1 and sels[0].size() == 0:
-            point = sels[0].begin()
+        if no_threshold:
+            self.view.run_command("bh_key", {"lines": True})
+
+        if point is None:
+            sels = self.view.sel()
+            if len(sels) == 1 and sels[0].size() == 0:
+                point = sels[0].begin()
 
         if point:
             locations = self.view.settings().get('bracket_highlighter.locations', {})
@@ -775,11 +779,16 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
                 for k, v in locations.get('open', {}).items():
                     if v[0] <= point <= v[1]:
                         index = k
+                        between = None
                         break
+                    elif v[0] <= point <= locations.get('close', {}).get(k)[1]:
+                        between = k
+
                 if index is None:
                     for k, v in locations.get('close', {}).items():
                         if v[0] <= point <= v[1]:
                             index = k
+                            between = None
                             break
                     if index is not None:
                         region = locations.get('open', {}).get(index)
@@ -788,10 +797,15 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
                     region = locations.get('close', {}).get(index)
                     icon = locations.get('icon', {}).get(index)
 
-            if unmatched:
-                bh_popup.BhOffscreenPopup().show_unmatched_popup(self.view, point)
+            if between:
+                region = locations.get('open', {}).get(between)
+                region2 = locations.get('close', {}).get(between)
+                icon = locations.get('icon', {}).get(between)
+                bh_popup.BhOffscreenPopup().show_popup_between(self.view, point, region, region2, icon)
             elif region is not None:
                 bh_popup.BhOffscreenPopup().show_popup(self.view, point, region, icon)
+            elif not no_threshold:
+                bh_popup.BhOffscreenPopup().show_unmatched_popup(self.view, point)
 
     def is_enabled(self):
         """Check if enabled."""

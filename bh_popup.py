@@ -41,9 +41,9 @@ class BhOffscreenPopup(object):
     def on_navigate_unmatched(self, href):
         """Handle unmatched click."""
         if HOVER_SUPPORT:
-            if href == 'match':
-                mdpopups.hide_popup(self.popup_view)
-                self.popup_view.run_command("bh_async_key", {"lines": True})
+            pt = int(href)
+            mdpopups.hide_popup(self.popup_view)
+            self.popup_view.run_command("bh_offscreen_popup", {"point": pt, "no_threshold": True})
 
     def show_unmatched_popup(self, view, point):
         """Show unmatched popup."""
@@ -56,12 +56,12 @@ class BhOffscreenPopup(object):
                     """
                     ### Matching bracket could not be found! {: .error}
 
-                    - Bracket *might* have no match.
-                    - Bracket *might* be nested poorly --> `([)(])`
+                    - There *might* be no match.
+                    - Brackets *might* be nested poorly --> `([)(])`
                     - Matching bracket *might* be beyond the search threshold.
                     A match done without the threshold *might* find it.
-                    [(Match brackets without threshold)](match)
-                    """
+                    [(Match brackets without threshold)](%d)
+                    """ % point
                 ),
                 wrapper_class=WRAPPER_CLASS,
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
@@ -172,67 +172,98 @@ class BhOffscreenPopup(object):
             encode_table.get(c, c) for c in text
         )
 
+    def show_popup_between(self, view, point, region, region2, icon):
+        """Show popup between."""
+        if HOVER_SUPPORT:
+            markup = ''
+            if not self.is_bracket_visible(view, region):
+                markup += self.get_markup(view, point, region, icon)
+            if not self.is_bracket_visible(view, region2):
+                markup += self.get_markup(view, point, region2, icon)
+            if markup:
+                self.popup_view = view
+                mdpopups.show_popup(
+                    view,
+                    markup,
+                    wrapper_class=WRAPPER_CLASS,
+                    css=CSS,
+                    flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                    max_width=800,
+                    location=point,
+                    on_navigate=self.on_navigate
+                )
+            else:
+                self.show_unmatched_popup(view, point)
+
+    def get_markup(self, view, point, region, icon):
+        """Get markup."""
+
+        settings = sublime.load_settings('bh_core.sublime-settings')
+        tab_size = view.settings().get('tab_size', 4)
+
+        # Get highlight colors
+        if icon is not None:
+            color = mdpopups.scope2style(view, icon[1]).get('color')
+            if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
+                bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
+            else:
+                bracket_em = color
+
+        # Get positions of bracket extents on the line
+        row, col = view.rowcol(region[0])
+        col2 = view.rowcol(region[1])[1]
+
+        # Calculate how far before and after bracket we can/should grab for context
+        # Format and truncate (if necessary).
+        context = int(settings.get('popup_char_context', 120)) - (col2 - col) - 1
+        start = region[1] - context
+        col_start = col2 - context
+        overage = 0
+        line = view.line(region[0])
+        if start < line.begin():
+            overage = line.begin() - start
+            start = line.begin()
+            col_start = 0
+        end = region[1] + overage
+        col_end = col2 + overage
+        if end > line.end():
+            end = line.end()
+            col_end = view.rowcol(line.end())[1]
+
+        # Get line of code with bracket and emphasize the bracket
+        content = view.substr(sublime.Region(start, end))
+        if re.match(r'#([\da-fA-F]{3}){1,2}', bracket_em):
+            highlight_open = '<span class="brackethighlighter" style="color: %s;"><strong>' % bracket_em
+        else:
+            highlight_open = '<span class="brackethighlighter %s"><strong>' % bracket_em
+        content = (
+            self.escape_code(content[:col - col_start], tab_size) +
+            highlight_open +
+            self.escape_code(content[col - col_start: col2 - col_start], tab_size) +
+            '</strong></span>' +
+            self.escape_code(content[col2 - col_start:], tab_size)
+        )
+
+        # Get additional lines of context (if required) and format text
+        if row != view.rowcol(point)[0]:
+            line_context = int(int(settings.get('popup_line_context', 2)) / 2)
+            content = self.get_multiline_context(view, content, row, col_start, col_end, tab_size, line_context)
+        else:
+            content = content.strip()
+
+        # Put together the markup to show
+        markup = '<div class="highlight"><pre>%s</pre></div>\n' % content
+        markup += '\n' + '[(jump to bracket - line: %d)](%d)' % (row + 1, region[0])
+
+        return markup
+
     def show_popup(self, view, point, region, icon):
         """Show the popup."""
 
         if HOVER_SUPPORT:
             if not self.is_bracket_visible(view, region):
-                settings = sublime.load_settings('bh_core.sublime-settings')
-                tab_size = view.settings().get('tab_size', 4)
+                markup = self.get_markup(view, point, region, icon)
 
-                # Get highlight colors
-                if icon is not None:
-                    color = mdpopups.scope2style(view, icon[1]).get('color')
-                    if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
-                        bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
-                    else:
-                        bracket_em = color
-
-                # Get positions of bracket extents on the line
-                row, col = view.rowcol(region[0])
-                col2 = view.rowcol(region[1])[1]
-
-                # Calculate how far before and after bracket we can/should grab for context
-                # Format and truncate (if necessary).
-                context = int(settings.get('popup_char_context', 120)) - (col2 - col) - 1
-                start = region[1] - context
-                col_start = col2 - context
-                overage = 0
-                line = view.line(region[0])
-                if start < line.begin():
-                    overage = line.begin() - start
-                    start = line.begin()
-                    col_start = 0
-                end = region[1] + overage
-                col_end = col2 + overage
-                if end > line.end():
-                    end = line.end()
-                    col_end = view.rowcol(line.end())[1]
-
-                # Get line of code with bracket and emphasize the bracket
-                content = view.substr(sublime.Region(start, end))
-                if re.match(r'#([\da-fA-F]{3}){1,2}', bracket_em):
-                    highlight_open = '<span class="brackethighlighter" style="color: %s;"><strong>' % bracket_em
-                else:
-                    highlight_open = '<span class="brackethighlighter %s"><strong>' % bracket_em
-                content = (
-                    self.escape_code(content[:col - col_start], tab_size) +
-                    highlight_open +
-                    self.escape_code(content[col - col_start: col2 - col_start], tab_size) +
-                    '</strong></span>' +
-                    self.escape_code(content[col2 - col_start:], tab_size)
-                )
-
-                # Get additional lines of context (if required) and format text
-                if row != view.rowcol(point)[0]:
-                    line_context = int(int(settings.get('popup_line_context', 2)) / 2)
-                    content = self.get_multiline_context(view, content, row, col_start, col_end, tab_size, line_context)
-                else:
-                    content = content.strip()
-
-                # Put together the markup to show
-                markup = '<div class="highlight"><pre>%s</pre></div>\n' % content
-                markup += '\n' + '[(jump to bracket - line: %d)](%d)' % (row + 1, region[0])
                 self.popup_view = view
                 mdpopups.show_popup(
                     view,
