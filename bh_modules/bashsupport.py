@@ -7,6 +7,8 @@ License: MIT
 from BracketHighlighter.bh_plugin import import_module
 lowercase = import_module("bh_modules.lowercase")
 
+BASH_KEYWORDS = ("select", "for", "while", "until")
+
 
 def validate(*args):
     """Check if bracket is lowercase."""
@@ -22,7 +24,7 @@ def compare(name, first, second, bfr):
     match = False
     if o == "if" and c == "fi":
         match = True
-    elif o in ["select", "for", "while", "until"] and c == "done":
+    elif o in BASH_KEYWORDS and c == "done":
         match = True
     elif o == "case" and c == "esac":
         match = True
