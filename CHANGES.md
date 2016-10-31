@@ -1,3 +1,12 @@
+# BracketHighlighter 2.22.0
+> Released Oct 30, 2016
+
+- **NEW**: Manual command to show offscreen bracket popup.  Can be invoked when cursor is anywhere between target  
+bracket [#378](https://github.com/facelessuser/BracketHighlighter/issues/378)
+- **NEW**: When selecting the "Match brackets without threshold" link on the unmatched bracket popup, reshow the  
+offscreen popup.
+- **NEW**: Add support for "SINUMERIK840D" language [#379](https://github.com/facelessuser/BracketHighlighter/pull/379).
+
 # BracketHighlighter 2.21.6
 > Released Oct 19, 2016
 
