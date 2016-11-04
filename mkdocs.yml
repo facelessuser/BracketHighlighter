@@ -1,6 +1,7 @@
 site_name: BracketHighlighter Documentation
 repo_url: https://github.com/facelessuser/BracketHighlighter
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
+copyright: Copyright &copy; 2014 - 2016 <a href="https://github.com/facelessuser">Isaac Muse</a>
 pages:
   - About BracketHighlighter: index.md
   - Installation: installation.md
