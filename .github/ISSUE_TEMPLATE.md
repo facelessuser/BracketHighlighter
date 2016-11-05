@@ -7,11 +7,25 @@ Please mark if you have done done this.  Mark by placing an `x` in the box: `- [
 
 ### Description
 
-For bugs, provide errors from console, examples etc.  For feature requests, describe the desired feature.  Be as detailed as possible. Vague issues/requests will be marked with `Insufficient Details` for about a week.  If not corrected, they will be marked `Stale` for about a week and then closed.
+Vague issues/requests will be marked with `Insufficient Details` for about a week.  If not corrected, they will be marked `Stale` for about a week and then closed.
+
+For feature requests or proposals:
+
+- Clearly define in as much detail as possible how you imagine the feature to work.
+- Examples are also appreciated.
+- Feature requests and proposals do not require reproduction steps.
+
+For bugs and support questions:
+
+- Describe the bug/question in as much detail as possible to make it clear what is wrong or what you do not understand.
+- Provide errors from console (if available).
+- Pictures or screencasts can also be used to clarify what the issue is or what the question is.
+- Provide "Support Info".
+- Provide "Steps to Reproduce" if reporting a bug.  When asking questions you can also use the "Steps to Reproduce" section to illustrate the concept you are having difficulty with. 
 
 ---
 
-### Issue Support Info
+### Support Info
 
 For bugs, run the following command from the menu: `Preferences->Package Settings->BracketHighlighter->Support Info`.  Post the result here.  Omit for feature requests.
 
