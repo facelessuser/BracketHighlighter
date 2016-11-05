@@ -21,7 +21,7 @@ For bugs and support questions:
 - Provide errors from console (if available).
 - Pictures or screencasts can also be used to clarify what the issue is or what the question is.
 - Provide "Support Info".
-- Provide "Steps to Reproduce" if reporting a bug.  When asking questions you can also use the "Steps to Reproduce" section to illustrate the concept you are having difficulty with. 
+- Provide "Steps to Reproduce" if reporting a bug.  When asking questions you can also use the "Steps to Reproduce" section to illustrate the concept you are having difficulty with.
 
 ---
 
