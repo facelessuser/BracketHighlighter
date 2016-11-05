@@ -27,7 +27,7 @@ For bugs and support questions:
 
 ### Support Info
 
-For bugs, run the following command from the menu: `Preferences->Package Settings->BracketHighlighter->Support Info`.  Post the result here.  Omit for feature requests.
+For bugs or questions, run the following command from the menu: `Preferences->Package Settings->BracketHighlighter->Support Info`.  Post the result here.  Omit for feature requests.
 
 ### Steps to Reproduce Issue
 
