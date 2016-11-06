@@ -38,7 +38,8 @@ class BracketHighlighterChangesCommand(sublime_plugin.WindowCommand):
                 text,
                 sublime.LAYOUT_INLINE,
                 wrapper_class="bracket-highlighter",
-                css=CSS
+                css=CSS,
+                on_navigate=self.on_navigate
             )
         else:
             view.run_command('insert', {"characters": text})
