@@ -1,3 +1,8 @@
+# BracketHighlighter 2.22.1
+> Released Nov 5, 2016
+
+- **FIX**: Fix changelog links
+
 # BracketHighlighter 2.22.0
 > Released Oct 30, 2016
 
