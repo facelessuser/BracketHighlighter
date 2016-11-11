@@ -3,8 +3,6 @@ import sublime
 import sublime_plugin
 import textwrap
 import webbrowser
-import base64
-import re
 
 __version__ = "2.22.1"
 __pc_name__ = 'BracketHighlighter'
