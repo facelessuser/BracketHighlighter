@@ -296,10 +296,31 @@
                                 "caption": "Changelog",
                                 "command": "bracket_highlighter_changes"
                             },
+                            {
+                                "caption": "Documentation",
+                                "command": "bracket_highlighter_open_site",
+                                "args": {
+                                    "url": "http://facelessuser.github.io/BracketHighlighter/"
+                                }
+                            },
+                            {
+                                "caption": "Quick Start Guide",
+                                "command": "bracket_highlighter_doc",
+                                "args": {
+                                    "page": "${packages}/BracketHighlighter/quickstart.md"
+                                }
+                            },
                             { "caption": "-" },
                             {
                                 "caption": "Support Info",
                                 "command": "bracket_highlighter_support_info"
+                            },
+                            {
+                                "caption": "Issues",
+                                "command": "bracket_highlighter_open_site",
+                                "args": {
+                                    "url": "https://github.com/facelessuser/BracketHighlighter/issues"
+                                }
                             },
                             { "caption": "-" }
                         ]
