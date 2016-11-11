@@ -6,7 +6,7 @@ BracketHighlighter (if you are on the latest version of Sublime Text 3) also wil
 
 # Where It Doesn't Work
 
-BracketHighlighter excludes plain text by default due to the free form nature and lack of syntax highlight scoping in plain text makes it more difficult to detect intended brackets.
+BracketHighlighter excludes plain text by default. The free form nature of plain text and lack of syntax highlight scoping makes it more difficult to detect intended brackets.
 
 Some language might not be supported yet, but they can be added via pull requests.  Check out the [documentation](http://facelessuser.github.io/BracketHighlighter/customize/#configuring-brackets) to learn about adding bracket rules and take a look at the default [settings file](sub://Packages/BracketHighlighter/bh_core.sublime-settings) to see examples.
 
