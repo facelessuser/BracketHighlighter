@@ -8,7 +8,7 @@ __version__ = "2.22.1"
 __pc_name__ = 'BracketHighlighter'
 
 CSS = '''
-div.bracket-highlighter { padding: 20px; margin: 0; }
+div.bracket-highlighter { padding: 10px; margin: 0; }
 .bracket-highlighter h1, .bracket-highlighter h2, .bracket-highlighter h3,
 .bracket-highlighter h4, .bracket-highlighter h5, .bracket-highlighter h6 {
     {{'.string'|css}}
@@ -146,6 +146,7 @@ class BracketHighlighterDoc(sublime_plugin.WindowCommand):
             view = self.window.new_file()
             view.set_name('BracketHighlighter - Quick Start')
             view.settings().set('gutter', False)
+            view.settings().set('word_wrap', False)
             if has_phantom_support:
                 mdpopups.add_phantom(
                     view,
