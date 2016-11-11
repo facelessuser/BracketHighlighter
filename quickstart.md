@@ -21,6 +21,21 @@ scoping makes it more difficult to detect intended brackets.
 Some language might not be supported yet, but they can be added via pull requests.  Check out the [documentation](http://facelessuser.github.io/BracketHighlighter/customize/#configuring-brackets) to  
 learn about adding bracket rules and take a look at the default [settings file](sub://Packages/BracketHighlighter/bh_core.sublime-settings) to see examples.
 
+# My Language Isn't Supported
+
+BracketHighlighter supports numerous different languages and specialty bracket types, but your language might not be 
+supported yet. The most common requested enhancement for BracketHighlighter is for new rules to support for a new a
+previously unsupported language. I, like you, am proficient in very specific languages. I probably don’t use your  
+favorite language or there would already be a support for it. I don’t have time to learn the nuances of your language.  
+For these reasons, support for new language brackets requires pull requests from the community.
+
+Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions  
+and guidance to help those who may struggle to create rules for their specific language of interest.
+
+If you find a bug in a supported language I am familiar with, I am happy to address the issue.  If the bug is found in  
+a language I am not proficient in, it is likely I will defer fixes to the community.  I may offer suggestions and  
+encourage the issue creator to do the actual testing as they will be more familiar with the language.
+
 # Customizing
 
 BracketHighlighter can be tweaked to show specific brackets with specific colors and styles. Due to the way sublime  
@@ -31,7 +46,9 @@ handles colored regions, the method of specifying specific colors can be cumbers
 BracketHighlighter's auto highlighting does not scan the entire file all at once, but it scans a small window for  
 performance reasons.  If you see a question mark, it may be simply that the search threshold has been reached.  You  
 can run a bracket match with no threshold from the command palette or the offscreen bracket popup dialog (if using  
-the latest version of Sublime Text 3).
+the latest version of Sublime Text 3).  If you are dissatisfied with the default small threshold, it can be increased  
+in the settings file.  Be mindful that extremely large thresholds may affect performance.  I personally use a value of  
+`10000`.
 
 ![unmatched](res://Packages/BracketHighlighter/docs/images/unmatched_popup.png){: width=486, height=210}
 
