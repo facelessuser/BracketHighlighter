@@ -4,8 +4,7 @@ import sublime_plugin
 import webbrowser
 
 CSS = '''
-html { {{'.background'|css}} }
-div.bracket-highlighter { padding: 0; margin: 0; {{'.background'|css}} }
+div.bracket-highlighter { padding: 20px; margin: 0; }
 .bracket-highlighter h1, .bracket-highlighter h2, .bracket-highlighter h3,
 .bracket-highlighter h4, .bracket-highlighter h5, .bracket-highlighter h6 {
     {{'.string'|css}}
