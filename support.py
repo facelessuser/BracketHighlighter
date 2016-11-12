@@ -111,7 +111,7 @@ class BracketHighlighterSupportInfoCommand(sublime_plugin.ApplicationCommand):
         sublime.set_clipboard(msg)
 
 
-class BracketHighlighterOpenSite(sublime_plugin.ApplicationCommand):
+class BracketHighlighterOpenSiteCommand(sublime_plugin.ApplicationCommand):
     """Open site links."""
 
     def run(self, url):
@@ -120,7 +120,7 @@ class BracketHighlighterOpenSite(sublime_plugin.ApplicationCommand):
         webbrowser.open_new_tab(url)
 
 
-class BracketHighlighterDoc(sublime_plugin.WindowCommand):
+class BracketHighlighterDocCommand(sublime_plugin.WindowCommand):
     """Open doc page."""
 
     re_pkgs = re.compile(r'^Packages')
@@ -182,6 +182,7 @@ class BracketHighlighterChangesCommand(sublime_plugin.WindowCommand):
         view = self.window.new_file()
         view.set_name('BracketHighlighter - Changelog')
         view.settings().set('gutter', False)
+        view.settings().set('word_wrap', False)
         if has_phantom_support:
             mdpopups.add_phantom(
                 view,
