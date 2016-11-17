@@ -8,7 +8,7 @@
 `void_tag_patterns`, and `self_closing_tag_patterns`.
 - **NEW**: Add new `first_line` rule for determining tag mode.
 - **NEW**: New XML tag mode and better XHTML mode.
-- **NEW**: Better special tag logic with handles optional tags, void tags, and self closing tags better. [#384](https://github.com/facelessuser/BracketHighlighter/issues/384)
+- **NEW**: Better special tag logic which handles optional tags, void tags, and self closing tags better. [#384](https://github.com/facelessuser/BracketHighlighter/issues/384)
 
 # BracketHighlighter 2.22.1
 > Released Nov 5, 2016
