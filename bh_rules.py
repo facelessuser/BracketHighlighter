@@ -96,7 +96,7 @@ def process_overrides(rules):
     for rule in final:
         index = rule.get("position")
         if index is not None:
-            if isinstance(index, int) and index > 0 and index not in indexes:
+            if isinstance(index, int) and index >= 0 and index not in indexes:
                 indexes.add(rule["position"])
             else:
                 del rule["position"]
