@@ -1,3 +1,15 @@
+# BracketHighlighter 2.23.0
+> Released Nov 16, 2016
+
+- **NEW**: Add links in menu to documentation and issues.
+- **NEW**: Provide new local quickstart guide from the menu.
+- **NEW**: Breaking change to `bh_tag.sublime-settings`. `tag_mode` is now an ordered list of dictionaries.  
+`self_closing_patterns` and `single_tag_patterns` and replaced with `optional_tag_patterns`,  
+`void_tag_patterns`, and `self_closing_tag_patterns`.
+- **NEW**: Add new `first_line` rule for determining tag mode.
+- **NEW**: New XML tag mode and better XHTML mode.
+- **NEW**: Better special tag logic with handles optional tags, void tags, and self closing tags better. [#384](https://github.com/facelessuser/BracketHighlighter/issues/384)
+
 # BracketHighlighter 2.22.1
 > Released Nov 5, 2016
 
