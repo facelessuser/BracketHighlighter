@@ -1,8 +1,8 @@
-## Requirements
-
-Please read and fill in the template below.  Make sure you've read: http://facelessuser.github.io/BracketHighlighter/contributing/.  If the template is not followed, the issue will be marked `Invalid` and closed.
+Please read and fill out this template by replacing the instructions with appropriate information.  Make sure you've read: http://facelessuser.github.io/BracketHighlighter/contributing/.  If the template is not followed, the issue will be marked `Invalid` and closed.
 
 Search past issues and read the area of the [documentation](http://facelessuser.github.io/BracketHighlighter/) related to your specific question, issue, or request. Often the answer to your question is already found there.  You may also find the feature you are requesting already exists. It is okay if after doing this you are still confused, just mention what you didn't understand in the documentation below so we can make it better.
+
+---
 
 ## Description
 
@@ -19,8 +19,6 @@ For bugs and support questions:
 - Provide errors from console (if available).
 - Pictures or screencasts can also be used to clarify what the issue is or what the question is.
 - Provide links to 3rd party syntax highlighting package you are using if applicable.
-
----
 
 ## Support Info
 
