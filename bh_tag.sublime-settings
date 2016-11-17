@@ -5,27 +5,52 @@
     // This new tag_mode key must be used in all other settings in this file
     // to set up its specific settings.
     // Determine which style of tag-matching to use in which syntax.
-    "tag_mode": {
-        "xhtml": ["XML"],
-        "html": [
-            "HTML",
-            "HTML 5",
-            "PHP",
-            "HTML (Jinja Templates)",
-            "HTML (Rails)",
-            "HTML (Twig)",
-            "HTML (Django)",
-            "laravel-blade",
-            "blade",
-            "Handlebars",
-            "AngularJS",
-            "Java Server Pages (JSP)"
-        ],
-        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
-    },
+    "tag_mode": [
+        {"mode": "xml", "syntax": ["XML"]},
+        {
+            "mode": "xhtml",
+            "syntax": [
+                "HTML",
+                "HTML 5",
+                "PHP",
+                "HTML (Jinja Templates)",
+                "HTML (Rails)",
+                "HTML (Twig)",
+                "HTML (Django)",
+                "laravel-blade",
+                "blade",
+                "Handlebars",
+                "AngularJS",
+                "Java Server Pages (JSP)"
+            ],
+            "first_line": "^[ \\t]*<\\?xml"
+        },
+        {
+            "mode": "html",
+            "syntax": [
+                "HTML",
+                "HTML 5",
+                "PHP",
+                "HTML (Jinja Templates)",
+                "HTML (Rails)",
+                "HTML (Twig)",
+                "HTML (Django)",
+                "laravel-blade",
+                "blade",
+                "Handlebars",
+                "AngularJS",
+                "Java Server Pages (JSP)"
+            ]
+        },
+        {
+            "mode": "cfml",
+            "syntax": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+        }
+    ],
 
     // Style to use for matched tags
     "tag_style": {
+        "xml": "tag",
         "xhtml": "tag",
         "html": "tag",
         "cfml": "tag"
@@ -38,23 +63,34 @@
         "cfml": ["string", "comment"]
     },
 
-    // Self closing HTML tags. You can use 'null' if it does not require a pattern.
-    "self_closing_patterns": {
+    // Optional closing HTML tags. You can use 'null' if it does not require a pattern.
+    "optional_tag_patterns": {
+        "xml": null,
         "xhtml": null,
         "html": "colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr",
         "cfml": "cf.+|colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr"
     },
 
     // Tags that never have a closing.  You can use 'null' if it does not require a pattern.
-    "single_tag_patterns": {
+    "void_tag_patterns": {
+        "xml": null,
         "xhtml": null,
         "html": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr",
         "cfml": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr"
     },
 
+    // Self closing tags.  Single tags that are closed like this <tag />
+    "self_closing_tag_patterns": {
+        "xml": "[\\w:\\.\\-]+",
+        "xhtml": "[\\w:\\.\\-]+",
+        "html": null,
+        "cfml": "cf.+"
+    },
+
     // Regex for tag name. Do not use capturing groups.
     "tag_name":
     {
+        "xml": "[\\w:\\.\\-]+",
         "xhtml": "[\\w:\\.\\-]+",
         "html": "[\\w:\\.\\-]+",
         "cfml": "[\\w:\\.\\-]+"
@@ -63,6 +99,7 @@
     // HTML attributes.  Do not use capturing groups.
     "attributes":
     {
+        "xml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
         "xhtml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
         "html": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?",
         "cfml": "[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?"
@@ -72,6 +109,7 @@
     // Attributes and tag names are inserted using python string formatting:
     // the keyword 'attributes' and `tag_name` are used.
     "start_tag": {
+        "xml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
         "xhtml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
         "html": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
         "cfml": "<(%(tag_name)s)(?:(?:\\s+%(attributes)s)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*(/?)>"
@@ -79,6 +117,7 @@
 
     // Regex for end/closing tag.  Only use a capturing group for name.
     "end_tag": {
+        "xml": "</([\\w\\:\\.\\-]+)[^>]*>",
         "xhtml": "</([\\w\\:\\.\\-]+)[^>]*>",
         "html": "</([\\w\\:\\.\\-]+)[^>]*>",
         "cfml": "</([\\w\\:\\.\\-]+)[^>]*>"

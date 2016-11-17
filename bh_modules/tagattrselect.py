@@ -23,7 +23,7 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
         if self.left.size() <= 1:
             return
         tag_settings = sublime.load_settings("bh_tag.sublime-settings")
-        tag_mode = tags.get_tag_mode(self.view, tag_settings.get("tag_mode", {}))
+        tag_mode = tags.get_tag_mode(self.view, tag_settings.get("tag_mode", []))
         tag_name = tag_settings.get('tag_name')[tag_mode]
         attr_name = tag_settings.get('attributes')[tag_mode]
         tname = self.view.find(tag_name, self.left.begin)

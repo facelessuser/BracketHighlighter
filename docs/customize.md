@@ -302,15 +302,52 @@ Tag settings found in `bh_tag.sublime-settings`.  All tag settings are dictionar
     More tag mode keys can be added, but they **must** be added to **every** setting with valid parameters.
 
 ### tag_mode
-A directory that contains a dictionary of different modes.  Each mode tweaks the tag matching for the respective mode.  Each entry in the dictionary consists of a list of languages that should be evaluated in that mode.
+A list that contains a dictionary of different modes.  Each mode tweaks the tag matching for the respective mode.  Each entry in the list consists of a dictionary with the keys `mode`, `syntax`, and the optional `first_line`. `mode` specifies the mode name.  `syntax` is a list of languages that are allowed in that mode. `first_line` (which is optional) is a regular expression that is applied to the first line in the file as a condition for selecting that mode.  The `tag_mode` list is evaluated in order from top to bottom and selects the first entry that matches all the criteria.
 
 ```js
-    // Determine which style of tag-matching to use in which syntax
-    "tag_mode": {
-        "xhtml": ["XML"],
-        "html": ["HTML", "HTML 5", "PHP"],
-        "cfml": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
-    }
+    // Determine which style of tag-matching to use in which syntax.
+    "tag_mode": [
+        {"mode": "xml", "syntax": ["XML"]},
+        {
+            "mode": "xhtml",
+            "syntax": [
+                "HTML",
+                "HTML 5",
+                "PHP",
+                "HTML (Jinja Templates)",
+                "HTML (Rails)",
+                "HTML (Twig)",
+                "HTML (Django)",
+                "laravel-blade",
+                "blade",
+                "Handlebars",
+                "AngularJS",
+                "Java Server Pages (JSP)"
+            ],
+            "first_line": "^[ \\t]*<\\?xml"
+        },
+        {
+            "mode": "html",
+            "syntax": [
+                "HTML",
+                "HTML 5",
+                "PHP",
+                "HTML (Jinja Templates)",
+                "HTML (Rails)",
+                "HTML (Twig)",
+                "HTML (Django)",
+                "laravel-blade",
+                "blade",
+                "Handlebars",
+                "AngularJS",
+                "Java Server Pages (JSP)"
+            ]
+        },
+        {
+            "mode": "cfml",
+            "syntax": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+        }
+    ],
 ```
 
 ### tag_style
@@ -337,27 +374,42 @@ Excludes certain scopes from being evaluated when searching for tags.
     },
 ```
 
-### self_closing_patterns
-Specifies a regex pattern for names that will be evaluated as self closing. `null` can be used to specify that there is no pattern for specified tag mode.
+### optional_tag_patterns
+Specifies a regex pattern for names that will be evaluated as optional tags. Optional tags whose closing tag is optional. In the case of optional tags, you may only have an opening (with no self closing slash). `null` can be used to specify that there is no pattern for specified tag mode.
 
 ```js
-    // Self closing HTML tags. You can use 'null' if it does not require a pattern.
-    "self_closing_patterns": {
+    // Optional closing HTML tags. You can use 'null' if it does not require a pattern.
+    "optional_tag_patterns": {
+        "xml": null,
         "xhtml": null,
         "html": "colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr",
         "cfml": "cf.+|colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr"
     },
 ```
 
-### single_tag_patterns
-Specifies a regex pattern for names that never have a closing tag.  `null` can be used to specify that there is no pattern for specified tag mode.
+### void_tag_patterns
+Specifies a regex pattern for names that never have a closing tag.  Void or empty tags can optionally use the self closing slash: `<tag />`. `null` can be used to specify that there is no pattern for specified tag mode.
 
 ```js
     // Tags that never have a closing.  You can use 'null' if it does not require a pattern.
-    "single_tag_patterns": {
+    "void_tag_patterns": {
+        "xml": null,
         "xhtml": null,
         "html": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr",
         "cfml": "area|base|basefont|br|col|embed|frame|hr|img|input|isindex|keygen|link|meta|param|source|track|wbr"
+    },
+```
+
+### self_closing_tag_patterns
+Specifies a regex pattern for tag names that can be represented in self closing form: `<tag />`.  `null` can be used to specify that there is no pattern for specified tag mode.
+
+```js
+    // Self closing tags.  Single tags that are closed like this <tag />
+    "self_closing_tag_patterns": {
+        "xml": "[\\w:\\.\\-]+",
+        "xhtml": "[\\w:\\.\\-]+",
+        "html": null,
+        "cfml": "cf.+"
     },
 ```
 

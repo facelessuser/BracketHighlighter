@@ -4,7 +4,7 @@ BracketHighlighter.
 Copyright (c) 2013 - 2016 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
-import re
+from backrefs import bre
 from collections import namedtuple
 import sublime
 from os.path import basename, splitext
@@ -22,11 +22,11 @@ def process_tag_pattern(pattern, variables=None):
         variables = {}
 
     if isinstance(pattern, str):
-        pattern = re.compile(pattern % variables, re.I | re.M)
+        pattern = bre.compile_search(pattern % variables, bre.I | bre.M)
     return pattern
 
 
-class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'self_closing', 'single'], verbose=False)):
+class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'optional', 'single'], verbose=False)):
     """Tag entry tuple."""
 
     def move(self, begin, end):
@@ -52,9 +52,21 @@ def get_tag_mode(view, tag_mode_config):
     default_mode = None
     syntax = view.settings().get('syntax')
     language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
-    for mode in tag_mode_config.keys():
-        if compare_languge(language, tag_mode_config.get(mode, [])):
-            return mode
+    if isinstance(tag_mode_config, list):
+        for item in tag_mode_config:
+            if isinstance(item, dict) and compare_languge(language, item.get('syntax', [])):
+                first_line = item.get('first_line', '')
+                if first_line:
+                    size = view.size() - 1
+                    if size > 256:
+                        size = 256
+                    if (
+                        isinstance(first_line, str) and
+                        bre.compile_search(first_line, bre.I).match(view.substr(sublime.Region(0, size)))
+                    ):
+                        return item.get('mode', default_mode)
+                else:
+                    return item.get('mode', default_mode)
     return default_mode
 
 
@@ -87,7 +99,7 @@ def post_match(view, name, style, first, second, center, bfr, threshold):
     threshold = [0, len(bfr)] if threshold is None else threshold
     bh_settings = sublime.load_settings("bh_core.sublime-settings")
     tag_settings = sublime.load_settings("bh_tag.sublime-settings")
-    tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", {}))
+    tag_mode = get_tag_mode(view, tag_settings.get("tag_mode", []))
     tag_style = tag_settings.get("tag_style", {}).get(tag_mode, '?')
     last_mode = tag_mode
     outside_adj = bh_settings.get("bracket_outside_adjacent", False)
@@ -108,14 +120,15 @@ class TagSearch(object):
 
     def __init__(
         self, view, bfr, window, center, pattern,
-        match_type, mode, self_closing_tags, single_tags
+        match_type, mode, optional_tags, self_closing_tags, void_tags
     ):
         """Prepare tag search object."""
 
         self.start = int(window[0])
         self.end = int(window[1])
+        self.optional_tags = optional_tags
+        self.void_tags = void_tags
         self.self_closing_tags = self_closing_tags
-        self.single_tags = single_tags
         self.center = center
         self.pattern = pattern
         self.match_type = match_type
@@ -163,22 +176,32 @@ class TagSearch(object):
         for m in self.pattern.finditer(self.bfr, self.start, self.end):
             name = m.group(1).lower()
             if not self.match_type:
-                single = bool(m.group(2) != "")
-                if not single and self.single_tags is not None:
-                    single = self.single_tags.match(name) is not None
-                if self.self_closing_tags is not None:
+                self_closing_slash = bool(m.group(2) != "")
+                if not self_closing_slash and self.optional_tags is not None:
+                    optional = self.optional_tags.match(name) is not None
+                else:
+                    optional = False
+
+                if self_closing_slash and self.self_closing_tags is not None:
                     self_closing = self.self_closing_tags.match(name) is not None
                 else:
                     self_closing = False
+
+                if not optional and not self_closing and self.void_tags is not None:
+                    void = self.void_tags.match(name) is not None
+                else:
+                    void = False
+
             else:
-                if self.single_tags is not None and self.single_tags.match(name) is not None:
+                if self.void_tags is not None and self.void_tags.match(name) is not None:
                     continue
-                single = False
+                void = False
+                optional = False
                 self_closing = False
             start = m.start(0)
             end = m.end(0)
             if not self.scope_check(start):
-                self.prev_match = TagEntry(start, end, name, self_closing, single)
+                self.prev_match = TagEntry(start, end, name, optional, void or self_closing)
                 self.start = end
                 yield self.prev_match
         self.done = True
@@ -207,14 +230,19 @@ class TagMatch(object):
         )
 
         try:
-            self.self_closing_tags = re.compile(tag_settings.get('self_closing_patterns')[self.mode], re.I)
+            self.optional_tags = bre.compile_search(tag_settings.get('optional_tag_patterns')[self.mode], bre.I)
         except Exception:
-            self.self_closing_tags = None
+            self.optional_tags = None
 
         try:
-            self.single_tags = re.compile(tag_settings.get('single_tag_patterns')[self.mode], re.I)
+            self.void_tags = bre.compile_search(tag_settings.get('void_tag_patterns')[self.mode], bre.I)
         except Exception:
-            self.single_tags = None
+            self.void_tags = None
+
+        try:
+            self.self_closing_tags = bre.compile_search(tag_settings.get('self_closing_tag_patterns')[self.mode], bre.I)
+        except Exception:
+            self.self_closing_tags = None
 
         tag, tag_type, tag_end = self.get_first_tag(first[0])
         self.left, self.right = None, None
@@ -250,29 +278,48 @@ class TagMatch(object):
 
         tag = None
         tag_type = None
-        self_closing = False
-        single = False
+        optional = False
+        void = False
         m = self.tag_open.match(self.bfr[offset:])
         end = None
         if m:
             name = m.group(1).lower()
-            single = bool(m.group(2) != "")
-            single = self.single_tags is not None and self.single_tags.match(name) is not None
-            self_closing = self.self_closing_tags is not None and self.self_closing_tags.match(name) is not None
+            self_closing_slash = bool(m.group(2) != "")
+            optional = (
+                self.optional_tags is not None and
+                not self_closing_slash and
+                self.optional_tags.match(name) is not None
+            )
+            self_closing = (
+                self.self_closing_tags is not None and
+                self_closing_slash and
+                self.self_closing_tags.match(name) is not None
+            )
+            void = (
+                not optional and
+                not self_closing and
+                self.void_tags is not None and
+                self.void_tags.match(name) is not None
+            )
             start = m.start(0) + offset
             end = m.end(0) + offset
-            tag = TagEntry(start, end, name, self_closing, single)
+            tag = TagEntry(start, end, name, optional, void or self_closing)
             tag_type = "open"
             self.center = end
         else:
             m = self.tag_close.match(self.bfr[offset:])
             if m:
                 name = m.group(1).lower()
-                start = m.start(0) + offset
-                end = m.end(0) + offset
-                tag = TagEntry(start, end, name, self_closing, single)
-                tag_type = "close"
-                self.center = offset
+                void = (
+                    self.void_tags is not None and
+                    self.void_tags.match(name) is not None
+                )
+                if not void:
+                    start = m.start(0) + offset
+                    end = m.end(0) + offset
+                    tag = TagEntry(start, end, name, optional, void)
+                    tag_type = "close"
+                    self.center = offset
         return tag, tag_type, end
 
     def compare_tags(self, left, right):
@@ -280,7 +327,7 @@ class TagMatch(object):
 
         return left.name == right.name
 
-    def resolve_self_closing(self, stack, c):
+    def resolve_optional(self, stack, c):
         """Handle self closing tags."""
 
         found_tag = None
@@ -289,7 +336,7 @@ class TagMatch(object):
             found_tag = b
             stack.pop()
         else:
-            while b is not None and b.self_closing:
+            while b is not None and b.optional:
                 stack.pop()
                 if len(stack):
                     b = stack[-1]
@@ -319,15 +366,17 @@ class TagMatch(object):
             self.view, self.bfr, self.window,
             self.center, self.tag_open,
             0, self.mode,
+            self.optional_tags,
             self.self_closing_tags,
-            self.single_tags
+            self.void_tags
         )
         csearch = TagSearch(
             self.view, self.bfr, self.window,
             self.center, self.tag_close,
             1, self.mode,
+            self.optional_tags,
             self.self_closing_tags,
-            self.single_tags
+            self.void_tags
         )
 
         # Searching for opening or closing tag to match
@@ -336,7 +385,7 @@ class TagMatch(object):
         # Match the tags
         for c in csearch.get_tags():
             if len(stack) and osearch.done:
-                if self.resolve_self_closing(stack, c):
+                if self.resolve_optional(stack, c):
                     continue
             for o in osearch.get_tags():
                 if o.end <= c.begin:
@@ -348,14 +397,14 @@ class TagMatch(object):
                     break
 
             if len(stack):
-                if self.resolve_self_closing(stack, c):
+                if self.resolve_optional(stack, c):
                     continue
             elif match_type == TAG_OPEN and not osearch.done:
                 continue
             if match_type == TAG_CLOSE:
                 if self.left is None or self.compare_tags(self.left, c):
                     self.right = c
-                elif self.left.self_closing:
+                elif self.left.optional:
                     self.right = self.left
             break
 
@@ -367,8 +416,8 @@ class TagMatch(object):
                 if not o.single:
                     stack.append(o)
             if len(stack):
-                self.left = self.resolve_self_closing(stack, self.right)
-        elif self.right is None and self.left is not None and self.left.self_closing:
+                self.left = self.resolve_optional(stack, self.right)
+        elif self.right is None and self.left is not None and self.left.optional:
             # Account for the opening tag that was found being a self closing
             self.right = self.left
 
