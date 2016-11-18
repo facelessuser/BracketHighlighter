@@ -26,7 +26,7 @@ Contribution from the community is encouraged and can be done in a variety of wa
 
 1. Please **read the documentation** and **search the issue tracker** to try to find the answer to your question **before** posting an issue.
 
-2. When an issue is created, a template will be shown, please fill out the appropriate sections. If the template is not followed, the issue will be marked `Invalid` and closed.
+2. When an issue is created, a [template](https://github.com/facelessuser/BracketHighlighter/blob/master/.github/ISSUE_TEMPLATE.md) will be shown, please fill out the appropriate sections. If the template is not followed, the issue will be marked `Invalid` and closed.
 
 3. When creating an issue on the repository, please provide as much info as possible.  The template will reiterate what is mentioned here as a reminder:
 
