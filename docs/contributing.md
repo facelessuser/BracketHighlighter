@@ -46,9 +46,15 @@ Take part in reviewing pull requests and/or reviewing direct commits.  Make sugg
 ## Pull Requests
 Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be mindful of.
 
-Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
+1. Please describe the change in as much detail as possible so I can understand what is being added or modified.
 
-Feel free to use a virtual environment if you are concerned about installing any of the Python packages.  In the future, I may use tox, but as I currently only test on Python 3.3, I wanted to keep things simple.
+2. If you are solving a bug that does not already have an issue, please describe the bug in detail and provide info on how to reproduce if applicable (this is good for me and others to reference later when verifying the issue has been resolved).
+
+3. Please reference and link related open bugs or feature requests in this pull if applicable.
+
+4. Make sure you've documented or updated the existing documentation if introducing a new feature or modifying the behavior of an existing feature that a user needs to be aware of.  I will not accept new features or changes to existing features if you have not provided documentation describing the feature.
+
+Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.
 
 ### Running Validation Tests
 
@@ -64,16 +70,16 @@ There are a couple of dependencies that must be present before running the tests
 
 1. As ST3 is the only current, actively supported version, Python 3.3 must be used to validate the tests.
 
-2. Unit tests are run with `nose`.  You can install nose via:
+2. Unit tests are run with `pytest`.  You can install `pytest` via:
 
     ```
-    pip install nose
+    pip install pytest
     ```
 
     The tests should be run from the root folder of the plugin by using the following command:
 
     ```
-    nosetests .
+    pytest .
     ```
 
 3. Linting is performed on the entire project with `flake8`, `flake8-docstrings`, and `pep8-naming`.  These can be installed via:
@@ -93,7 +99,7 @@ There are a couple of dependencies that must be present before running the tests
 ## Documentation Improvements
 A ton of time has been spent not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
 
-You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [mkdocs](http://www.mkdocs.org) with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory.
+You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [mkdocs](http://www.mkdocs.org) with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory. You can then view the documents at `localhost:8000`.
 
 *[ST2]: Sublime Text 2
 *[ST3]: Sublime Text 3

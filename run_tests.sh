@@ -1,2 +1,2 @@
-nosetests .
+pytest .
 flake8 .
