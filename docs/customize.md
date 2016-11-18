@@ -732,7 +732,7 @@ And if you run the debug command again, you will see that the position has chang
         {"name": "round", "position": 1},
         {"name": "square", "position": 2},
         {"name": "html", "position": 3},
-        {"name": "trex", "position": 4}, // <-- New position
+        {"name": "mylang", "position": 4}, // <-- New position
         {"name": "cfml", "position": 5},
         {"name": "php_angle", "position": 6},
 ```
