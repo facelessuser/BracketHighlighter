@@ -3,7 +3,21 @@
 ![screenshot](res://Packages/BracketHighlighter/docs/images/Example1.png){: width=769, height=270}
 
 BracketHighlighter is designed to auto highlight your brackets in various source files.  In general, if you are using  
-one of the common languages, BracketHighlighter will work out of the box.  BracketHighlighter also contains a number  
+one of the common languages, BracketHighlighter will work out of the box.
+
+It is advised that you disable Sublime's default bracket and tag matcher in your `Preferences.sublime-settings` file  
+or you will have matching conflicts:
+
+```js
+    "match_brackets": false,
+    "match_brackets_angle": false,
+    "match_brackets_braces": false,
+    "match_brackets_content": false,
+    "match_brackets_square": false,
+    "match_tags": false
+```
+
+BracketHighlighter also contains a number  
 of extensions that allows for deleting, replacing, or even wrapping brackets; check out the [documentation](http://facelessuser.github.io/BracketHighlighter/usage/) to learn  
 more about basic usage.
 
