@@ -1041,7 +1041,8 @@ class BhListenerCommand(sublime_plugin.EventListener):
     def on_activated(self, view):
         """Highlight brackets when the view gains focus again."""
 
-        self.clear_disabled(view)
+        if bh_thread is not None:
+            self.clear_disabled(view)
 
         if self.ignore_event(view):
             return
@@ -1074,7 +1075,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
 
         settings = view.settings()
         return (
-            bh_thread.ignore_all or
+            bh_thread is None or bh_thread.ignore_all or
             settings.get('bracket_highlighter.ignore', False) or
             (
                 settings.get('is_widget') and
