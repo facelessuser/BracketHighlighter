@@ -1,3 +1,9 @@
+# BracketHighlighter 2.23.1
+> Released Nov 25, 2016
+
+- **FIX**: Rule position - zero is a valid position [#387](https://github.com/facelessuser/BracketHighlighter/issues/387).
+- **FIX**: Protect against race condition due to Sublime bug [#390](https://github.com/facelessuser/BracketHighlighter/issues/390).
+
 # BracketHighlighter 2.23.0
 > Released Nov 16, 2016
 
