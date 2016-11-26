@@ -20,6 +20,11 @@ The recommended way to install BracketHighlighter is via [Package Control](https
 
 ## Manual Installation
 
+!!! warning "Warning"
+    This is not the recommended way to install BracketHighlighter for the average user.  Installing this way **will not** get automatically updated.
+
+    If you are forking for a pull request, you should **just** clone BH and run Package Control's `Satisfy Dependency` command to get all the dependencies.
+
 For those who want to install BH without package control, here are the steps.  It understood that some people for what ever reason will prefer manually and may even have legitimate reasons to do so.  When going this route, you will have to keep all the packages updated yourself.
 
 ---
@@ -203,11 +208,6 @@ For those who want to install BH without package control, here are the steps.  I
 
 
 ## Git Cloning
-
-!!! warning "Warning"
-    This is not the recommended way to install BracketHighlighter for the casual user as it requires the user to know which branch to install, know how to use git, and **will not** get automatically updated.
-
-    If you are forking for a pull request, this is the way to go, just replace the official repository with the link for your fork.
 
 1. Quit Sublime Text.
 
