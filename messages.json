@@ -1,3 +1,4 @@
 {
+    "install": "messages/install.md",
     "2.23.0": "messages/recent.md"
 }
