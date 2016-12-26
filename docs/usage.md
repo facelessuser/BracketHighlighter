@@ -94,7 +94,7 @@ Selects the opening and closing tag name of current tag.
 Swaps the current surrounding bracket with different supported brackets of your choice.  Swapping definitions are configured in `bh_swapping.sublime-settings`.
 
 ## Shortcuts
-BH provides no shortcuts in order to avoid shortcut conflicts, but you can view the included `Example.sublime-keymaps` file to get an idea how to set up your own.
+BH provides no shortcuts in order to avoid shortcut conflicts, but you can view the included [`Example.sublime-keymap`](https://github.com/facelessuser/BracketHighlighter/blob/master/Example.sublime-keymap) file to get an idea how to set up your own.
 
 *[BH]: BracketHighlighter
 *[ST2]: Sublime Text 2
