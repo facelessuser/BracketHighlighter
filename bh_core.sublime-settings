@@ -184,6 +184,17 @@
             "sub_bracket_search": "true",
             "enabled": true
         },
+        {
+            "name": "backtick_quote",
+            "open": "(`)",
+            "close": "(`)",
+            "style": "single_quote",
+            "scopes": ["string.interpolated.ruby", "string.interpolated.backtick.shell"],
+            "language_filter": "whitelist",
+            "language_list": ["Ruby", "Shell-Unix-Generic"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
         // Regex for different Languages
         {
             "name": "jsregex",
