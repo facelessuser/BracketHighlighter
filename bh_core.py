@@ -365,7 +365,7 @@ class BhCore(object):
         if not GLOBAL_ENABLE:
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
-            view.settings().set('bracket_highlighter.locations', [])
+            view.settings().set('bracket_highlighter.locations', {})
             view.settings().set("bracket_highlighter.busy", False)
             return
 
@@ -969,7 +969,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
     def on_hover(self, view, point, hover_zone):
         """Show popup indicating where other offscreen bracket is located."""
         settings = sublime.load_settings('bh_core.sublime-settings')
-        if bh_popup.HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', True):
+        if GLOBAL_ENABLE and bh_popup.HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', True):
             # Find other bracket
             region = None
             index = None
