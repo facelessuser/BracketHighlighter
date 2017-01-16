@@ -26,12 +26,12 @@ For those who want to install BH without package control, here are the steps.  I
 
 1. Download the latest releases of the following dependencies and unpack or git clone in the `Packages` folder as shown below:
 
-    - https://bitbucket.org/teddy_beer_maniac/sublime-text-dependency-markupsafe -> markupsafe
-    - https://bitbucket.org/teddy_beer_maniac/sublime-text-dependency-jinja2 -> python-jinja2
-    - https://github.com/packagecontrol/pygments -> pygments
-    - https://github.com/facelessuser/sublime-markdown-popups -> mdpopups
-    - https://github.com/facelessuser/sublime-markdown -> python-markdown
-    - https://github.com/facelessuser/sublime-backrefs -> backrefs
+    - https://bitbucket.org/teddy_beer_maniac/sublime-text-dependency-markupsafe -> `markupsafe`
+    - https://bitbucket.org/teddy_beer_maniac/sublime-text-dependency-jinja2 -> `python-jinja2`
+    - https://github.com/packagecontrol/pygments -> `pygments`
+    - https://github.com/facelessuser/sublime-markdown-popups -> `mdpopups`
+    - https://github.com/facelessuser/sublime-markdown -> `python-markdown`
+    - https://github.com/facelessuser/sublime-backrefs -> `backrefs`
 
 2. Download and unpack, or git clone, the latest BracketHighlighter release and unpack as `BracketHighlighter`:
 

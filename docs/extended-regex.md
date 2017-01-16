@@ -12,7 +12,7 @@ It is not always clear when Package Control updates dependencies.  So to force d
 
 ## Using Backrefs in BracketHighlighter Plugins
 
-You can import backrefs into a `bh_plugin`:
+You can import Backrefs into a `bh_plugin`:
 
 ```python
 from backrefs as bre

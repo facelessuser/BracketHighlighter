@@ -25,7 +25,7 @@ BH supports a variety of brackets out of the box; here are some examples:
 - angle
 - single and double quotes
 - Python single, double, and triple quotes (Unicode and raw)
-- Django Python templates with mixed HTML, CSS, and JS
+- Django Python templates with mixed HTML, CSS, and JavaScript
 - JavaScript regex
 - Perl regex
 - Ruby regex

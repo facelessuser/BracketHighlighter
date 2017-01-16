@@ -6,6 +6,16 @@ install:
   - pip install flake8-docstrings
   - pip install pep8-naming
   - pip install pytest
+  - pip install mkdocs
+  - pip install mkdocs-material
+  - pip install pymdown-extensions
+  - pip install pygments
+addons:
+  apt:
+    packages:
+      - aspell
+      - aspell-en
 script:
   - py.test .
   - flake8 .
+  - python spellcheck.py

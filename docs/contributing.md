@@ -36,9 +36,11 @@ Contribution from the community is encouraged and can be done in a variety of wa
 4. Be prepared to answer questions and provide additional information if required.  Issues in which the creator refuses to respond to follow up questions will be marked as stale and closed.
 
 ## Reviewing Code
+
 Take part in reviewing pull requests and/or reviewing direct commits.  Make suggestions to improve the code and discuss solutions to overcome weakness in the algorithm.
 
 ## Pull Requests
+
 Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be mindful of.
 
 1. Please describe the change in as much detail as possible so I can understand what is being added or modified.
@@ -92,8 +94,9 @@ There are a couple of dependencies that must be present before running the tests
     ```
 
 ## Documentation Improvements
+
 A ton of time has been spent not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
 
-You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [mkdocs][mkdocs], the [Material theme][mkdocs-material], and [pymdown-extensions][pymdown-extensions] to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory. You can then view the documents at `localhost:8000`.
+You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [MkDocs][mkdocs], the [Material theme][mkdocs-material], and [PyMdown Extensions][pymdown-extensions] to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory. You can then view the documents at `localhost:8000`.
 
 --8<-- "refs.md"
