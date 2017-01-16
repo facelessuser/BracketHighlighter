@@ -1,14 +1,9 @@
-# Installation {: .doctitle}
-Installing BracketHighlighter.
-
----
-
 ## Package Control
-The recommended way to install BracketHighlighter is via [Package Control](https://packagecontrol.io/).  Package Control will install the correct branch on your system and keep it up to date.
+The recommended way to install BracketHighlighter is via [Package Control][package-control].  Package Control will install the correct branch on your system and keep it up to date.
 
 ---
 
-1. Ensure Package Control is installed.  Instructions are found [here](https://packagecontrol.io/installation).
+1. Ensure Package Control is installed.  Instructions are found [here][package-control-install].
 
 2. In Sublime Text, press <kbd>ctrl</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (Win, Linux) or <kbd>cmd</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> (OSX) to bring up the quick panel and start typing `Package Control: Install Package`.  Select the command and it will show a list of installable plugins.
 
@@ -25,7 +20,7 @@ The recommended way to install BracketHighlighter is via [Package Control](https
 
     If you are forking for a pull request, you should **just** clone BH and run Package Control's `Satisfy Dependency` command to get all the dependencies.
 
-For those who want to install BH without package control, here are the steps.  It understood that some people for what ever reason will prefer manually and may even have legitimate reasons to do so.  When going this route, you will have to keep all the packages updated yourself.
+For those who want to install BH without package control, here are the steps.  It is understood that some people, for what ever reason, will prefer manual install and may even have legitimate reasons to do so.  When going this route, you will have to keep all the packages updated yourself.
 
 ---
 
@@ -38,7 +33,7 @@ For those who want to install BH without package control, here are the steps.  I
     - https://github.com/facelessuser/sublime-markdown -> python-markdown
     - https://github.com/facelessuser/sublime-backrefs -> backrefs
 
-2. Download and unpack or git clone the latest BracketHighlighter release and unpack as `BracketHighlighter`:
+2. Download and unpack, or git clone, the latest BracketHighlighter release and unpack as `BracketHighlighter`:
 
     - https://github.com/facelessuser/BracketHighlighter -> BracketHighlighter
 
@@ -211,7 +206,7 @@ For those who want to install BH without package control, here are the steps.  I
 
 1. Quit Sublime Text.
 
-2. Open a terminal and enter the following.  For dependencies replace the url with the appropriate URL, and the appropriate folder to check it out to:
+2. Open a terminal and enter the following.  For dependencies, replace the URL with the appropriate URL, and the appropriate folder to check it out to:
 
     ```
     cd /path/to/Sublime Text 3/Packages
@@ -219,3 +214,5 @@ For those who want to install BH without package control, here are the steps.  I
     ```
 
 3. Restart Sublime Text.
+
+--8<-- "refs.md"

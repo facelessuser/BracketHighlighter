@@ -1,14 +1,9 @@
-# Contributing &amp; Support {: .doctitle}
-Steps for contributing and getting support.
-
----
-
 ## Overview
 
-| Sublime Versions | Description |
-|------------------|-------------|
-| ST2&nbsp;<=&nbsp;version&nbsp;<&nbsp;ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
-| ST3 | Fully supported and actively maintained. |
+Sublime Versions         | Description
+------------------------ | -----------
+ST2\ <=\ version\ <\ ST3 | Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than ST3 will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull **must** already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality. |
+ST3                      | Fully supported and actively maintained.
 
 Contribution from the community is encouraged and can be done in a variety of ways:
 
@@ -26,7 +21,7 @@ Contribution from the community is encouraged and can be done in a variety of wa
 
 1. Please **read the documentation** and **search the issue tracker** to try to find the answer to your question **before** posting an issue.
 
-2. When an issue is created, a [template](https://github.com/facelessuser/BracketHighlighter/blob/master/.github/ISSUE_TEMPLATE.md) will be shown, please fill out the appropriate sections. If the template is not followed, the issue will be marked `Invalid` and closed.
+2. When an issue is created, a [template][template] will be shown, please fill out the appropriate sections. If the template is not followed, the issue will be marked `Invalid` and closed.
 
 3. When creating an issue on the repository, please provide as much info as possible.  The template will reiterate what is mentioned here as a reminder:
 
@@ -99,7 +94,6 @@ There are a couple of dependencies that must be present before running the tests
 ## Documentation Improvements
 A ton of time has been spent not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.
 
-You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [mkdocs](http://www.mkdocs.org) with my own custom Python Markdown [extensions](https://github.com/facelessuser/pymdown-extensions) to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory. You can then view the documents at `localhost:8000`.
+You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of [mkdocs][mkdocs], the [Material theme][mkdocs-material], and [pymdown-extensions][pymdown-extensions] to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is `mkdocs serve` from the root directory. You can then view the documents at `localhost:8000`.
 
-*[ST2]: Sublime Text 2
-*[ST3]: Sublime Text 3
+--8<-- "refs.md"
