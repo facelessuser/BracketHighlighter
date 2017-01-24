@@ -1,3 +1,9 @@
+# BracketHighlighter 2.23.3
+
+> Released Jan 24, 2017
+
+- **FIX**: Fix error `ImportError: No module named 'yaml'` [#400](https://github.com/facelessuser/BracketHighlighter/issues/400).
+
 # BracketHighlighter 2.23.2
 
 > Released Jan 23, 2017
