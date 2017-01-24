@@ -1,10 +1,19 @@
+# BracketHighlighter 2.23.2
+
+> Released Jan 23, 2017
+
+- **FIX**: Add backtick quote support for ruby and shell script syntaxes [d884e8a](https://github.com/facelessuser/BracketHighlighter/commit/d884e8ab7aa69477c1af5d29cef24589efaf2b8e).
+- **FIX**: Fix console noise on global disable [#397](https://github.com/facelessuser/BracketHighlighter/issues/397).
+
 # BracketHighlighter 2.23.1
+
 > Released Nov 25, 2016
 
 - **FIX**: Rule position - zero is a valid position [#387](https://github.com/facelessuser/BracketHighlighter/issues/387).
 - **FIX**: Protect against race condition due to Sublime bug [#390](https://github.com/facelessuser/BracketHighlighter/issues/390).
 
 # BracketHighlighter 2.23.0
+
 > Released Nov 16, 2016
 
 - **NEW**: Add links in menu to documentation and issues.
@@ -17,11 +26,13 @@
 - **NEW**: Better special tag logic which handles optional tags, void tags, and self closing tags better. [#384](https://github.com/facelessuser/BracketHighlighter/issues/384)
 
 # BracketHighlighter 2.22.1
+
 > Released Nov 5, 2016
 
 - **FIX**: Fix changelog links
 
 # BracketHighlighter 2.22.0
+
 > Released Oct 30, 2016
 
 - **NEW**: Manual command to show offscreen bracket popup.  Can be invoked when cursor is anywhere between target  
@@ -31,38 +42,45 @@ offscreen popup.
 - **NEW**: Add support for "SINUMERIK840D" language [#379](https://github.com/facelessuser/BracketHighlighter/pull/379).
 
 # BracketHighlighter 2.21.6
+
 > Released Oct 19, 2016
 
 - **FIX**: Fix PHP conditional [#366](https://github.com/facelessuser/BracketHighlighter/issues/366)
 - **FIX**: No line wrapping in code snippets in popups.
 
 # BracketHighlighter 2.21.5
+
 > Released Aug 21, 2016
 
 - **FIX**: Fix a break caused by 2.21.4 [#364](https://github.com/facelessuser/BracketHighlighter/issues/364)
 - **FIX**: Fix CSS in changelog
 
 # BracketHighlighter 2.21.4
+
 > Released Aug 21, 2016
 
 - **FIX**: Changelog command now works for older ST3 versions.
 
 # BracketHighlighter 2.21.3
+
 > Released Aug 1, 2016
 
 - **FIX**: Don't fail if mdpopups was not installed on old Sublime version.
 
 # BracketHighlighter 2.21.2
+
 > Released Aug 1, 2016
 
 - **FIX**: Fix changelog typo :).
 
 # BracketHighlighter 2.21.1
+
 > Released Aug 1, 2016
 
 - **NEW**: Message to not freak people out :).
 
 # BracketHighlighter 2.21.0
+
 > Released Jul 31, 2016
 
 - **NEW**: Require mdpopups 1.9.0.
