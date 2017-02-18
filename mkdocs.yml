@@ -23,11 +23,25 @@ markdown_extensions:
   - markdown.extensions.smarty:
       smart_quotes: false
   - markdown.extensions.nl2br:
-  - markdown.extensions.codehilite:
-      guess_lang: false
-  - pymdownx.extra:
+  - pymdownx.betterem:
+  - markdown.extensions.attr_list:
+  - markdown.extensions.def_list:
+  - markdown.extensions.tables:
+  - markdown.extensions.abbr:
+  - pymdownx.extrarawhtml:
+  - pymdownx.superfences:
+      css_class: codehilite
+  - pymdownx.highlight:
+      extend_pygments_lang:
+        - name: php-inline
+          lang: php
+          options:
+            startinline: true
   - pymdownx.inlinehilite:
+      css_class: codehilite
   - pymdownx.magiclink:
+      repo_url_shortener: true
+      base_repo_url: https://github.com/facelessuser/BracketHighlighter
   - pymdownx.tilde:
   - pymdownx.caret:
   - pymdownx.smartsymbols:
