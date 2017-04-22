@@ -22,7 +22,6 @@ markdown_extensions:
   - markdown.extensions.admonition:
   - markdown.extensions.smarty:
       smart_quotes: false
-  - markdown.extensions.nl2br:
   - pymdownx.betterem:
   - markdown.extensions.attr_list:
   - markdown.extensions.def_list:
