@@ -406,7 +406,7 @@ class TagMatch(object):
                     self.right = c
                 elif self.left.optional:
                     self.right = self.left
-            break
+                break
 
         if match_type == TAG_OPEN:
             # Find the rest of the the unmatched left side open brackets
