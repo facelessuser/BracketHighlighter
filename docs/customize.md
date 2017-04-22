@@ -129,7 +129,7 @@ Augments the matching behavior and will trigger matching when the cursor is adja
 
 ### `block_cursor_mode`
 
-Experimental setting that modifies the bracket matching mode for block cursor.  The bracket matching mode is one that makes a little more sense to some people in regards to the visual representation of block cursors.  So if you are someone that uses block cursors and find that toggling [`bracket_outside_adjacent`](#bracket_outside_adjacent) still doesn't quite match brackets how you would like, you can give this setting a try.
+Experimental setting that modifies the bracket matching mode for block cursor.  The bracket matching mode is one that makes a little more sense to some people in regards to the visual representation of block cursors.  In this mode, brackets will match when the cursor is right before the bracket (or if using a block cursor, highlighting the character). So if you are someone that uses block cursors and find that toggling [`bracket_outside_adjacent`](#bracket_outside_adjacent) still doesn't quite match brackets how you would like, you can give this setting a try. It has also been mentioned that this makes sense with Vim.
 
 When this setting is enabled, [`bracket_outside_adjacent`](#bracket_outside_adjacent) will be ignored.
 
