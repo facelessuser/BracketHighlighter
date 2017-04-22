@@ -16,7 +16,6 @@ import BracketHighlighter.bh_regions as bh_regions
 import BracketHighlighter.bh_rules as bh_rules
 import BracketHighlighter.bh_popup as bh_popup
 from BracketHighlighter.bh_logging import debug, log
-from BracketHighlighter import support
 
 if 'bh_thread' not in globals():
     bh_thread = None
@@ -1153,8 +1152,6 @@ def plugin_loaded():
 
     global HIGH_VISIBILITY
     global bh_thread
-
-    settings = sublime.load_settings("bh_core.sublime-settings")
 
     init_bh_match()
 
