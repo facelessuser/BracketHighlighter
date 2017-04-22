@@ -1156,19 +1156,6 @@ def plugin_loaded():
 
     settings = sublime.load_settings("bh_core.sublime-settings")
 
-    # Try and ensure key dependencies are at the latest known good version.
-    # This is only done because Package Control does not do this on package upgrade at the present.
-    try:
-        from package_control import events
-
-        if bh_popup.HOVER_SUPPORT and events.post_upgrade(support.__pc_name__):
-            if not bh_popup.LATEST_SUPPORTED_MDPOPUPS and settings.get('upgrade_dependencies', True):
-                window = sublime.active_window()
-                if window:
-                    window.run_command('satisfy_dependencies')
-    except ImportError:
-        log('Could not import Package Control')
-
     init_bh_match()
 
     global HIGH_VISIBILITY
