@@ -179,6 +179,7 @@ class BhOffscreenPopup(object):
             if not self.is_bracket_visible(view, region):
                 markup += self.get_markup(view, point, region, icon)
             if not self.is_bracket_visible(view, region2):
+                markup += '\n\n'
                 markup += self.get_markup(view, point, region2, icon)
             if markup:
                 self.popup_view = view
