@@ -14,7 +14,7 @@ from BracketHighlighter.bh_logging import log
 
 HOVER_SUPPORT = int(sublime.version()) >= 3124
 WRAPPER_CLASS = "bracket-highlighter"
-CSS = '.bracket-highlighter { padding: 0; margin: 0; }\n'
+CSS = 'div.bracket-highlighter { padding: 0.5rem; margin: 0; }\n'
 if HOVER_SUPPORT:
     import mdpopups
 
