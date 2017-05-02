@@ -3,7 +3,7 @@
         ">=3000": [
             "backrefs"
         ],
-        ">=3116": [
+        ">=3124": [
             "pygments",
             "python-markdown",
             "mdpopups",

@@ -11,6 +11,8 @@ dodgy:
 pep257:
   disable:
     - D202
+    - D203
+    - D401
 pylint:
   disable:
     - import-error

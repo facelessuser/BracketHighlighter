@@ -12,13 +12,9 @@ import textwrap
 import traceback
 from BracketHighlighter.bh_logging import log
 
-HOVER_SUPPORT = int(sublime.version()) >= 3116
+HOVER_SUPPORT = int(sublime.version()) >= 3124
 WRAPPER_CLASS = "bracket-highlighter"
 CSS = '.bracket-highlighter { padding: 0; margin: 0; }\n'
-if HOVER_SUPPORT:
-    import mdpopups
-    # This is the version with the latest mdpopus
-    LATEST_SUPPORTED_MDPOPUPS = mdpopups.version() >= (1, 9, 0)
 
 
 class BhOffscreenPopup(object):
