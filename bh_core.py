@@ -1064,6 +1064,20 @@ class BhListenerCommand(sublime_plugin.EventListener):
             bh_thread.modified = True
             bh_thread.time = now
 
+    def on_window_command(self, view, command_name, args):
+        """
+        Highlight brackets when Vintageous sends a key.
+        """
+        if command_name != "press_key":
+            return
+        now = time()
+        if now - BhEventMgr.time > BhEventMgr.wait_time:
+            sublime.set_timeout(bh_run, 0)
+        else:
+            BhEventMgr.modified = True
+            BhEventMgr.time = now
+
+
     def ignore_event(self, view):
         """
         Ignore highlight request.
