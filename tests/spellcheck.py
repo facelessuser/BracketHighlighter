@@ -179,6 +179,8 @@ def check_spelling():
                         '--add-html-skip=code',
                         '--add-html-skip=pre',
                         '--add-html-skip=nospell',
+                        '--add-html-skip=nav',
+                        '--add-html-skip=footer',
                         '--extra-dicts=%s' % COMPILED_DICT
                     ],
                     file_name
