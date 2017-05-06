@@ -138,7 +138,7 @@ class BracketHighlighterDocCommand(sublime_plugin.WindowCommand):
 
         try:
             import mdpopups
-            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3118)
+            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3124)
         except Exception:
             has_phantom_support = False
 
@@ -174,7 +174,7 @@ class BracketHighlighterChangesCommand(sublime_plugin.WindowCommand):
         """Show the changelog in a new view."""
         try:
             import mdpopups
-            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3118)
+            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3124)
         except Exception:
             has_phantom_support = False
 

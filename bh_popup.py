@@ -14,10 +14,34 @@ from BracketHighlighter.bh_logging import log
 
 HOVER_SUPPORT = int(sublime.version()) >= 3124
 WRAPPER_CLASS = "bracket-highlighter"
-CSS = 'div.bracket-highlighter { padding: 0.5rem; margin: 0; }\n'
 if HOVER_SUPPORT:
     import mdpopups
 
+    if mdpopups.version() >= (2, 0, 0):
+        CSS = 'div.bracket-highlighter { padding: 0.5rem; margin: 0; }\n'
+
+        MATCH_ERR = """
+                    !!! panel-error "Matching bracket could not be found!"
+
+                        - There *might* be no match.
+                        - Brackets *might* be nested poorly --> `([)(])`
+                        - Matching bracket *might* be beyond the search threshold.
+                        A match done without the threshold *might* find it.
+                    
+                    [(Match brackets without threshold)](%d)
+                    """
+    else:
+        CSS = 'div.bracket-highlighter { padding: 0; margin: 0; }\n'
+
+        MATCH_ERR = """
+                    ### Matching bracket could not be found! {: .error}
+
+                    - There *might* be no match.
+                    - Brackets *might* be nested poorly --> `([)(])`
+                    - Matching bracket *might* be beyond the search threshold.
+                    A match done without the threshold *might* find it.
+                    [(Match brackets without threshold)](%d)
+                    """
 
 class BhOffscreenPopup(object):
     """Handle offscreen popups."""
@@ -50,17 +74,7 @@ class BhOffscreenPopup(object):
             self.popup_view = view
             mdpopups.show_popup(
                 view,
-                textwrap.dedent(
-                    """
-                    ### Matching bracket could not be found! {: .error}
-
-                    - There *might* be no match.
-                    - Brackets *might* be nested poorly --> `([)(])`
-                    - Matching bracket *might* be beyond the search threshold.
-                    A match done without the threshold *might* find it.
-                    [(Match brackets without threshold)](%d)
-                    """ % point
-                ),
+                textwrap.dedent(MATCH_ERR % point),
                 wrapper_class=WRAPPER_CLASS,
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                 css=CSS,
