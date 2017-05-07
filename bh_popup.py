@@ -14,34 +14,38 @@ from BracketHighlighter.bh_logging import log
 
 HOVER_SUPPORT = int(sublime.version()) >= 3124
 WRAPPER_CLASS = "bracket-highlighter"
+
+CSS = '''
+{%- if var.mdpopups_version >= (2, 0, 0) %}
+div.bracket-highlighter { padding: 0.5rem; margin: 0; }
+{%- else %}
+div.bracket-highlighter { padding: 0; margin: 0; }
+{%- endif %}
+'''
+MATCH_ERR = '''
+{%%- if plugin.mdpopups_version >= (2, 0, 0) %%}
+!!! panel-error "Matching bracket could not be found!"
+
+    - There *might* be no match.
+    - Brackets *might* be nested poorly --> `([)(])`
+    - Matching bracket *might* be beyond the search threshold.
+    A match done without the threshold *might* find it.
+
+[(Match brackets without threshold)](%(pt)s)
+{%%- else %%}
+### Matching bracket could not be found! {: .error}
+
+- There *might* be no match.
+- Brackets *might* be nested poorly --> `([)(])`
+- Matching bracket *might* be beyond the search threshold.
+A match done without the threshold *might* find it.
+[(Match brackets without threshold)](%(pt)s)
+{%%- endif %%}
+'''
+
 if HOVER_SUPPORT:
     import mdpopups
 
-    if mdpopups.version() >= (2, 0, 0):
-        CSS = 'div.bracket-highlighter { padding: 0.5rem; margin: 0; }\n'
-
-        MATCH_ERR = """
-                    !!! panel-error "Matching bracket could not be found!"
-
-                        - There *might* be no match.
-                        - Brackets *might* be nested poorly --> `([)(])`
-                        - Matching bracket *might* be beyond the search threshold.
-                        A match done without the threshold *might* find it.
-                    
-                    [(Match brackets without threshold)](%d)
-                    """
-    else:
-        CSS = 'div.bracket-highlighter { padding: 0; margin: 0; }\n'
-
-        MATCH_ERR = """
-                    ### Matching bracket could not be found! {: .error}
-
-                    - There *might* be no match.
-                    - Brackets *might* be nested poorly --> `([)(])`
-                    - Matching bracket *might* be beyond the search threshold.
-                    A match done without the threshold *might* find it.
-                    [(Match brackets without threshold)](%d)
-                    """
 
 class BhOffscreenPopup(object):
     """Handle offscreen popups."""
@@ -74,14 +78,15 @@ class BhOffscreenPopup(object):
             self.popup_view = view
             mdpopups.show_popup(
                 view,
-                textwrap.dedent(MATCH_ERR % point),
+                textwrap.dedent(MATCH_ERR % {"pt": str(point)}),
                 wrapper_class=WRAPPER_CLASS,
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                 css=CSS,
                 max_width=800,
                 max_height=800,
                 location=point,
-                on_navigate=self.on_navigate_unmatched
+                on_navigate=self.on_navigate_unmatched,
+                template_vars={'mdpopups_version': mdpopups.version()}
             )
 
     def is_bracket_visible(self, view, region):
@@ -203,7 +208,8 @@ class BhOffscreenPopup(object):
                     flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     max_width=800,
                     location=point,
-                    on_navigate=self.on_navigate
+                    on_navigate=self.on_navigate,
+                    template_vars={'mdpopups_version': mdpopups.version()}
                 )
             else:
                 self.show_unmatched_popup(view, point)
@@ -286,5 +292,6 @@ class BhOffscreenPopup(object):
                     flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     max_width=800,
                     location=point,
-                    on_navigate=self.on_navigate
+                    on_navigate=self.on_navigate,
+                    template_vars={'mdpopups_version': mdpopups.version()}
                 )
