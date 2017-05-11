@@ -13,7 +13,7 @@ It is advised that you disable Sublime's default bracket and tag matcher in your
     "match_tags": false
 ```
 
-If you are using Sublime Text build 3116+, a new feature has been added which shows a popup when you mouse over a bracket that has its matching bracket pair off screen.  It will show where the other bracket is located with line context and provide a link to jump to the other bracket.  When mousing over a bracket in which the match could not be found, a popup explaining why this might occur will be shown and give the option to click a link which will perform a search without thresholds to see if it can find the brackets when restraints are removed.
+If you are using Sublime Text build 3124+, a new feature has been added which shows a popup when you mouse over a bracket that has its matching bracket pair off screen.  It will show where the other bracket is located with line context and provide a link to jump to the other bracket.  When mousing over a bracket in which the match could not be found, a popup explaining why this might occur will be shown and give the option to click a link which will perform a search without thresholds to see if it can find the brackets when restraints are removed.
 
 ## Built-in Supported brackets
 
