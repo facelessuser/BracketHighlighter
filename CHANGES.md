@@ -4,7 +4,7 @@
 
 - **NEW**: Popup/Phantom support limited to 3124+ moving forward to prepare for `mdpopups` 2.0 that will drop legacy
 support for old, early implementation of popups and phantoms.
-- **NEW**: No longer try and force dependency updates.  Leave it up to Package Control (whether it they do it or not).
+- **NEW**: No longer try and force dependency updates.  Leave it up to Package Control (whether they do it or not).
 - **NEW**: CSS adjustments to popups.
 - **FIX**: Fix tag matching corner case [#409](https://github.com/facelessuser/BracketHighlighter/issues/409).
 
