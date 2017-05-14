@@ -511,11 +511,16 @@ class BhRegion(object):
 
         self.change_sel()
 
-        for region_key in self.view.settings().get("bracket_highlighter.regions", []):
-            self.view.erase_regions(region_key)
-            self.view.settings().set(
-                'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
-            )
+        # Sometimes Sublime is in a weird state and returns None istead fo the default we ask for
+        highlight_regions = self.view.settings().get("bracket_highlighter.regions", [])
+        if highlight_regions is not None:
+            for region_key in highlight_regions:
+                self.view.erase_regions(region_key)
+
+        # Clear regions
+        self.view.settings().set(
+            'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
+        )
 
         regions = []
         icon_type = "no_icon"
