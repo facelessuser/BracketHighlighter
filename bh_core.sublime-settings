@@ -514,8 +514,8 @@
         // Lua
         {
             "name": "lua",
-            "open": "(?<=[\\s;])(if|while|function|do|repeat)\\b",
-            "close": "(?<=[\\s;])(end|until)\\b",
+            "open": "(?:(?<=[\\s;])|(?<=^))(if|while|function|do|repeat)\\b",
+            "close": "(?:(?<=[\\s;])|(?<=^))(end|until)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.luakeywords",
