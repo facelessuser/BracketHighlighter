@@ -95,20 +95,19 @@ def yaml_load(source, loader=yaml.Loader):
 def patch_doc_config(config_file):
     """Patch the config file to wrap arithmatex with a tag aspell can ignore."""
 
-    nospell = {
-        'tex_inline_wrap': ['<nospell>\\(', '</nospell>\\)'],
-        'tex_block_wrap': ['<nospell>\\[', '</nospell>\\]']
-    }
     with open(config_file, 'rb') as f:
         config = yaml_load(f)
 
     index = 0
     for extension in config.get('markdown_extensions', []):
         if isinstance(extension, str if PY3 else unicode) and extension == 'pymdownx.arithmatex':  # noqa
-            config['markdown_extensions'][index] = {'pymdownx.arithmatex': nospell}
+            config['markdown_extensions'][index] = {'pymdownx.arithmatex': {'insert_as_script': True}}
             break
         elif isinstance(extension, dict) and 'pymdownx.arithmatex' in extension:
-            extension['pymdownx.arithmatex'] = nospell
+            if isinstance(extension['pymdownx.arithmatex'], dict):
+                extension['pymdownx.arithmatex']['insert_as_script'] = True
+            elif extension['pymdownx.arithmatex'] is None:
+                extension['pymdownx.arithmatex'] = {'insert_as_script': True}
             break
         index += 1
 
@@ -178,7 +177,6 @@ def check_spelling():
                         '--encoding=utf-8',
                         '--add-html-skip=code',
                         '--add-html-skip=pre',
-                        '--add-html-skip=nospell',
                         '--add-html-skip=nav',
                         '--add-html-skip=footer',
                         '--extra-dicts=%s' % COMPILED_DICT

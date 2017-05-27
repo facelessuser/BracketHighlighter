@@ -1,9 +1,11 @@
-# BracketHighlighter 2.24.0
+# BracketHighlighter 2.24.1
 
 > Released May 26, 2017
 
 - **FIX**: Random regions failure.
 - **FIX**: Lua keyword match at beginning of line.
+
+# BracketHighlighter 2.24.0
 
 > Released May 10, 2017
 
