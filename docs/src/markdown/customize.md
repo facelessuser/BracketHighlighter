@@ -1,3 +1,5 @@
+# Customizing
+
 ## Overview
 
 BH is extremely flexible and can be customized and extended to fit a user's needs.  The first step to customizing the existing rules and settings is to create a `bh_core.sublime-settings` in your `User` folder.  With this file you can override any of the settings or bracket rules.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.

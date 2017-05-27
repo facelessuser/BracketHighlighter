@@ -1,3 +1,5 @@
+# About BracketHighlighter
+
 ## Overview
 
 BracketHighlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `#!xml <tag></tag>`, and even custom brackets.

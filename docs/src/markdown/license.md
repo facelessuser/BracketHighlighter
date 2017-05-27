@@ -1,3 +1,5 @@
+# License
+
 Released under the MIT license.
 
 Copyright (c) 2013 - 2017 Isaac Muse <isaacmuse@gmail.com>

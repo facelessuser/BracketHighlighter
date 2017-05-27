@@ -1,4 +1,6 @@
-## General Use
+# Basic Usage
+
+## Overview
 
 Out of the box, BH will highlight brackets (or defined brackets like start and end blocks) surrounding the cursor.  BH will also put opening and closing icons in the gutter of the corresponding line containing open or closing bracket.
 
