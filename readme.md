@@ -8,7 +8,7 @@ This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagma
 
 Moving forward, I have thrown away all of the code and have completely rewritten the entire code base to allow for a more flexibility, faster, and more feature rich experience.
 
-![screenshot](docs/images/Example1.png)
+![screenshot](docs/src/markdown/images/Example1.png)
 
 # Feature List
 - Customizable to highlight almost any bracket.
