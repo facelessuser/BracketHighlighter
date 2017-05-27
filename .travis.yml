@@ -19,3 +19,14 @@ script:
   - py.test .
   - flake8 .
   - python tests/spellcheck.py
+  - mkdocs build --clean --verbose --strict
+deploy:
+  - provider: pages
+    github_token: $GITHUB_TOKEN
+    name: $GITHUB_USER
+    email: $GITHUB_EMAIL
+    skip_cleanup: true
+    local_dir: site
+    on:
+      tags: true
+      repo: facelessuser/BracketHighlighter
