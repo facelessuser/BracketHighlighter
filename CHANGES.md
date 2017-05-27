@@ -1,5 +1,10 @@
 # BracketHighlighter 2.24.0
 
+> Released May 26, 2017
+
+- **FIX**: Random regions failure.
+- **FIX**: Lua keyword match at beginning of line.
+
 > Released May 10, 2017
 
 - **NEW**: Popup/Phantom support limited to 3124+ moving forward to prepare for `mdpopups` 2.0 that will drop legacy
