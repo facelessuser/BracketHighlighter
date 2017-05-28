@@ -64,7 +64,7 @@ markdown_extensions:
 extra:
   palette:
     primary: blue
-    accent: purple
+    accent: blue
   font:
     text: Roboto
     code: Roboto Mono
