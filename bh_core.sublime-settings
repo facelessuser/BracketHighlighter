@@ -378,7 +378,8 @@
                 "keyword.operator",
                 "source.ruby.rails.embedded.html",
                 "source.ruby.embedded.html",
-                "storage.type.function.arrow.js"
+                "storage.type.function.arrow.js",
+                "punctuation.accessor.php"
             ],
             "language_filter": "whitelist",
             "language_list": [
