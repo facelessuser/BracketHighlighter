@@ -132,10 +132,10 @@
         // Quotes
         {
             "name": "py_single_quote",
-            "open": "(?:u|b)?r?((?:'')?')",
+            "open": "(?:u|b|f)?r?((?:'')?')",
             "close": "((?:'')?')",
             "style": "single_quote",
-            "scopes": ["string"],
+            "scopes": ["string", "meta.string"],
             "language_filter": "whitelist",
             "language_list": [
                 "Python",
@@ -148,10 +148,10 @@
         },
         {
             "name": "py_double_quote",
-            "open": "(?:u|b)?r?((?:\"\")?\")",
+            "open": "(?:u|b|f)?r?((?:\"\")?\")",
             "close": "((?:\"\")?\")",
             "style": "double_quote",
-            "scopes": ["string"],
+            "scopes": ["string", "meta.string"],
             "language_filter": "whitelist",
             "language_list": [
                 "Python",
