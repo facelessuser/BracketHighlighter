@@ -1,3 +1,10 @@
+# BracketHighlighter 2.24.2
+
+> Released June 15, 2017
+
+- **FIX**: Avoid things like `->` in PHP due to new Sublime default syntax changes [#417](https://github.com/facelessuser/BracketHighlighter/issues/417).
+- **FIX**: Add support for Python f-strings.
+
 # BracketHighlighter 2.24.1
 
 > Released May 26, 2017
