@@ -237,7 +237,7 @@
             "style": "default",
             "scopes": ["markup.italic"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -248,7 +248,7 @@
             "style": "default",
             "scopes": ["markup.bold"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -259,7 +259,7 @@
             "style": "default",
             "scopes": ["markup.raw.inline.markdown"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "plugin_library": "bh_modules.mdcode",
             "enabled": true
@@ -271,7 +271,7 @@
             "style": "default",
             "scopes": ["markup.raw.block.fenced.markdown, markup.raw.block.markdown.fenced"],
             "language_filter": "whitelist",
-            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown"],
+            "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "plugin_library": "bh_modules.mdcode",
             "sub_bracket_search": "true",
             "enabled": true
