@@ -1,6 +1,6 @@
 # Getting Started
 
-![screenshot](res://Packages/BracketHighlighter/docs/images/Example1.png){: width=769, height=270}
+![screenshot](res://Packages/BracketHighlighter/docs/src/markdown/images/Example1.png){: width=769, height=270}
 
 BracketHighlighter is designed to auto highlight your brackets in various source files.  In general, if you are using  
 one of the common languages, BracketHighlighter will work out of the box.
@@ -25,7 +25,7 @@ BracketHighlighter (if you are on the latest version of Sublime Text 3) also wil
 over a bracket and the other matching pair is offscreen.  The popup will show the offscreen bracket with surrounding  
 lines and allow you to jump to the offscreen bracket.
 
-![popup](res://Packages/BracketHighlighter/docs/images/popup1.png){: width=300, height=179}
+![popup](res://Packages/BracketHighlighter/docs/src/markdown/images/popup1.png){: width=300, height=179}
 
 # Where It Doesn't Work
 
@@ -64,7 +64,7 @@ the latest version of Sublime Text 3).  If you are dissatisfied with the default
 in the settings file.  Be mindful that extremely large thresholds may affect performance.  I personally use a value of  
 `10000`.
 
-![unmatched](res://Packages/BracketHighlighter/docs/images/unmatched_popup.png){: width=486, height=210}
+![unmatched](res://Packages/BracketHighlighter/docs/src/markdown/images/unmatched_popup.png){: width=486, height=210}
 
 # I Need Help!
 
