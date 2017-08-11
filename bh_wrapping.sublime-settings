@@ -38,9 +38,10 @@
             ]
         },
         {
-            "enabled": true, "language_list": ["Markdown"], "language_filter": "whitelist", "entries": [
+            "enabled": true, "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"], "language_filter": "whitelist", "entries": [
                 {"name": "Mardown: Bold", "brackets": ["**", "**${BH_SEL}"]},
-                {"name": "Mardown: Italic", "brackets": ["_", "_${BH_SEL}"]}
+                {"name": "Mardown: Italic", "brackets": ["_", "_${BH_SEL}"]},
+                {"name": "Mardown: Monospace", "brackets": ["`", "`${BH_SEL}"]}
             ]
         },
         {

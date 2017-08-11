@@ -341,6 +341,7 @@ A list that contains a dictionary of different modes.  Each mode tweaks the tag 
                 "HTML 5",
                 "PHP",
                 "HTML (Jinja Templates)",
+                "HTML (Jinja2)",
                 "HTML (Rails)",
                 "HTML (Twig)",
                 "HTML (Django)",
@@ -359,6 +360,7 @@ A list that contains a dictionary of different modes.  Each mode tweaks the tag 
                 "HTML 5",
                 "PHP",
                 "HTML (Jinja Templates)",
+                "HTML (Jinja2)",
                 "HTML (Rails)",
                 "HTML (Twig)",
                 "HTML (Django)",
@@ -705,9 +707,9 @@ Let's say you want to modify an existing rule, maybe just tweak the language lis
             "name": "angle",
             "language_list": [
                 "HTML", "HTML 5", "XML", "PHP", "HTML (Rails)",
-                "HTML (Jinja Templates)", "HTML (Twig)", "HTML+CFML",
-                "ColdFusion", "ColdFusionCFC", "laravel-blade",
-                "Handlebars", "AngularJS",
+                "HTML (Jinja Templates)", "HTML (Jinja2)", "HTML (Twig)",
+                "HTML+CFML", "ColdFusion", "ColdFusionCFC",
+                "laravel-blade", "Handlebars", "AngularJS",
                 "SomeNewLanguage" // <--- New language
             ]
         }
