@@ -1,20 +1,30 @@
+# BracketHighlighter 2.25.0
+
+Released Aug 12, 2017
+
+- **FIX**: Quick start image links.
+- **FIX**: Allow Markdown related brackets to work in Markdown Extended.
+- **FIX**: Allow `HTML (Jinja2)` to work in HTML.
+- **NEW**: Add Markdown `` ` `` to swap and wrap.
+- **NEW**: Add commonly used commands to the command panel (documents and settings) [#419](https://github.com/facelessuser/BracketHighlighter/issues/419).
+
 # BracketHighlighter 2.24.2
 
-> Released June 15, 2017
+Released June 15, 2017
 
 - **FIX**: Avoid things like `->` in PHP due to new Sublime default syntax changes [#417](https://github.com/facelessuser/BracketHighlighter/issues/417).
 - **FIX**: Add support for Python f-strings.
 
 # BracketHighlighter 2.24.1
 
-> Released May 26, 2017
+Released May 26, 2017
 
 - **FIX**: Random regions failure.
 - **FIX**: Lua keyword match at beginning of line.
 
 # BracketHighlighter 2.24.0
 
-> Released May 10, 2017
+Released May 10, 2017
 
 - **NEW**: Popup/Phantom support limited to 3124+ moving forward to prepare for `mdpopups` 2.0 that will drop legacy
 support for old, early implementation of popups and phantoms.
@@ -24,27 +34,27 @@ support for old, early implementation of popups and phantoms.
 
 # BracketHighlighter 2.23.3
 
-> Released Jan 24, 2017
+Released Jan 24, 2017
 
 - **FIX**: Fix error `ImportError: No module named 'yaml'` [#400](https://github.com/facelessuser/BracketHighlighter/issues/400).
 
 # BracketHighlighter 2.23.2
 
-> Released Jan 23, 2017
+Released Jan 23, 2017
 
 - **FIX**: Add backtick quote support for ruby and shell script syntaxes [d884e8a](https://github.com/facelessuser/BracketHighlighter/commit/d884e8ab7aa69477c1af5d29cef24589efaf2b8e).
 - **FIX**: Fix console noise on global disable [#397](https://github.com/facelessuser/BracketHighlighter/issues/397).
 
 # BracketHighlighter 2.23.1
 
-> Released Nov 25, 2016
+Released Nov 25, 2016
 
 - **FIX**: Rule position - zero is a valid position [#387](https://github.com/facelessuser/BracketHighlighter/issues/387).
 - **FIX**: Protect against race condition due to Sublime bug [#390](https://github.com/facelessuser/BracketHighlighter/issues/390).
 
 # BracketHighlighter 2.23.0
 
-> Released Nov 16, 2016
+Released Nov 16, 2016
 
 - **NEW**: Add links in menu to documentation and issues.
 - **NEW**: Provide new local quickstart guide from the menu.
@@ -57,13 +67,13 @@ support for old, early implementation of popups and phantoms.
 
 # BracketHighlighter 2.22.1
 
-> Released Nov 5, 2016
+Released Nov 5, 2016
 
 - **FIX**: Fix changelog links
 
 # BracketHighlighter 2.22.0
 
-> Released Oct 30, 2016
+Released Oct 30, 2016
 
 - **NEW**: Manual command to show offscreen bracket popup.  Can be invoked when cursor is anywhere between target  
 bracket [#378](https://github.com/facelessuser/BracketHighlighter/issues/378)
@@ -73,45 +83,45 @@ offscreen popup.
 
 # BracketHighlighter 2.21.6
 
-> Released Oct 19, 2016
+Released Oct 19, 2016
 
 - **FIX**: Fix PHP conditional [#366](https://github.com/facelessuser/BracketHighlighter/issues/366)
 - **FIX**: No line wrapping in code snippets in popups.
 
 # BracketHighlighter 2.21.5
 
-> Released Aug 21, 2016
+Released Aug 21, 2016
 
 - **FIX**: Fix a break caused by 2.21.4 [#364](https://github.com/facelessuser/BracketHighlighter/issues/364)
 - **FIX**: Fix CSS in changelog
 
 # BracketHighlighter 2.21.4
 
-> Released Aug 21, 2016
+Released Aug 21, 2016
 
 - **FIX**: Changelog command now works for older ST3 versions.
 
 # BracketHighlighter 2.21.3
 
-> Released Aug 1, 2016
+Released Aug 1, 2016
 
 - **FIX**: Don't fail if mdpopups was not installed on old Sublime version.
 
 # BracketHighlighter 2.21.2
 
-> Released Aug 1, 2016
+Released Aug 1, 2016
 
 - **FIX**: Fix changelog typo :).
 
 # BracketHighlighter 2.21.1
 
-> Released Aug 1, 2016
+Released Aug 1, 2016
 
 - **NEW**: Message to not freak people out :).
 
 # BracketHighlighter 2.21.0
 
-> Released Jul 31, 2016
+Released Jul 31, 2016
 
 - **NEW**: Require mdpopups 1.9.0.
 - **NEW**: New changelog command.
