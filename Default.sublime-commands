@@ -196,7 +196,7 @@
         "command": "bh_offscreen_popup"
     },
     {
-        "caption": "BracketHighlighter: Main Settings",
+        "caption": "BracketHighlighter: Settings",
         "command": "edit_settings",
         "args": {
             "base_file": "${packages}/BracketHighlighter/bh_core.sublime-settings",
