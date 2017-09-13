@@ -181,9 +181,8 @@ class CheckJsonFormat(object):
                     self.log_failure(W_NL_END, count)
                 if RE_TRAILING_SPACES.match(line):
                     self.log_failure(W_TRAILING_SPACE, count)
-                if self.use_tabs:
-                    if (RE_LINE_INDENT_TAB if self.use_tabs else RE_LINE_INDENT_SPACE).match(line) is None:
-                        self.log_failure(W_INDENT, count)
+                if (RE_LINE_INDENT_TAB if self.use_tabs else RE_LINE_INDENT_SPACE).match(line) is None:
+                    self.log_failure(W_INDENT, count)
                 count += 1
             f.seek(0)
             text = f.read()
