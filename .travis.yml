@@ -4,6 +4,8 @@ python:
 install:
   - pip install flake8
   - pip install flake8-docstrings
+  - pip install flake8-mutable
+  - pip install flake8-builtins
   - pip install pep8-naming
   - pip install pytest
   - pip install mkdocs
