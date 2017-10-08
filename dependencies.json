@@ -9,7 +9,9 @@
             "mdpopups",
             "python-jinja2",
             "markupsafe",
-            "backrefs"
+            "backrefs",
+            "pymdownx",
+            "pyyaml"
         ]
     }
 }
