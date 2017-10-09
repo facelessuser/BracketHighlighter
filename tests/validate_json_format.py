@@ -45,9 +45,12 @@ RE_TRAILING_COMMA = re.compile(
     ''',
     re.DOTALL
 )
-RE_LINE_INDENT_TAB = re.compile(r'^((\t+)?[^ \t\r\n][^\r\n]*)?\r?\n$')
-RE_LINE_INDENT_SPACE = re.compile(r'^(((?: {4})+)?[^ \t\r\n][^\r\n]*)?\r?\n$')
+RE_LINE_INDENT_TAB = re.compile(r'^(?:(\t+)?(?:(/\*)|[^ \t\r\n])[^\r\n]*)?\r?\n$')
+RE_LINE_INDENT_SPACE = re.compile(r'^(?:((?: {4})+)?(?:(/\*)|[^ \t\r\n])[^\r\n]*)?\r?\n$')
 RE_TRAILING_SPACES = re.compile(r'^.*?[ \t]+\r?\n?$')
+RE_COMMENT_END = re.compile(r'\*/')
+PATTERN_COMMENT_INDENT_SPACE = r'^(%s *?[^\t\r\n][^\r\n]*)?\r?\n$'
+PATTERN_COMMENT_INDENT_TAB = r'^(%s[ \t]*[^ \t\r\n][^\r\n]*)?\r?\n$'
 
 
 E_MALFORMED = "E0"
@@ -57,6 +60,7 @@ W_NL_START = "W1"
 W_NL_END = "W2"
 W_INDENT = "W3"
 W_TRAILING_SPACE = "W4"
+W_COMMENT_INDENT = "W5"
 
 
 VIOLATION_MSG = {
@@ -66,7 +70,8 @@ VIOLATION_MSG = {
     W_NL_START: 'Unnecessary newlines at the start of file.',
     W_NL_END: 'Missing a new line at the end of the file.',
     W_INDENT: 'Indentation Error.',
-    W_TRAILING_SPACE: 'Trailing whitespace.'
+    W_TRAILING_SPACE: 'Trailing whitespace.',
+    W_COMMENT_INDENT: 'Comment Indentation Error.'
 }
 
 
@@ -169,20 +174,40 @@ class CheckJsonFormat(object):
         self.fail = True
 
     def check_format(self, file_name):
-        """Initiate teh check."""
+        """Initiate the check."""
 
         self.fail = False
+        comment_align = None
         with codecs.open(file_name, encoding='utf-8') as f:
             count = 1
             for line in f:
+                indent_match = (RE_LINE_INDENT_TAB if self.use_tabs else RE_LINE_INDENT_SPACE).match(line)
+                end_comment = comment_align is not None and RE_COMMENT_END.search(line)
+                # Don't allow empty lines at file start.
                 if count == 1 and line.strip() == '':
                     self.log_failure(W_NL_START, count)
+                # Line must end in new line
                 if not line.endswith('\n'):
                     self.log_failure(W_NL_END, count)
+                # Trailing spaces
                 if RE_TRAILING_SPACES.match(line):
                     self.log_failure(W_TRAILING_SPACE, count)
-                if (RE_LINE_INDENT_TAB if self.use_tabs else RE_LINE_INDENT_SPACE).match(line) is None:
+                # Handle block comment content indentation
+                if comment_align is not None:
+                    if comment_align.match(line) is None:
+                        self.log_failure(W_COMMENT_INDENT, count)
+                    if end_comment:
+                        comment_align = None
+                # Handle general indentation
+                elif indent_match is None:
                     self.log_failure(W_INDENT, count)
+                # Enter into block comment
+                elif comment_align is None and indent_match.group(2):
+                    alignment = indent_match.group(1) if indent_match.group(1) is not None else ""
+                    if not end_comment:
+                        comment_align = re.compile(
+                            (PATTERN_COMMENT_INDENT_TAB if self.use_tabs else PATTERN_COMMENT_INDENT_SPACE) % alignment
+                        )
                 count += 1
             f.seek(0)
             text = f.read()
