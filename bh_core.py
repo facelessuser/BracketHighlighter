@@ -1052,6 +1052,9 @@ class BhListenerCommand(sublime_plugin.EventListener):
     def on_selection_modified(self, view):
         """Highlight brackets when the selections change."""
 
+        # Support cloned files (workaround for ST3 issue #289)
+        view = sublime.active_window().active_view()
+
         if self.ignore_event(view):
             return
         if bh_thread.type != BH_MATCH_TYPE_EDIT:
