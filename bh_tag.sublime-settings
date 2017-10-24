@@ -85,7 +85,7 @@
     "self_closing_tag_patterns": {
         "xml": "[\\w:\\.\\-]+",
         "xhtml": "[\\w:\\.\\-]+",
-        "html": null,
+        "html": "circle|ellipse|line|path|polygon|polyline|rect|stop|use",
         "cfml": "cf.+"
     },
 
@@ -101,10 +101,10 @@
     // HTML attributes.  Do not use capturing groups.
     "attributes":
     {
-        "xml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
-        "xhtml": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
-        "html": "[\\w\\-:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?",
-        "cfml": "[\\w\\-\\.:]+(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?"
+        "xml": "[\\w:][-\\w\\d:.]*(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
+        "xhtml": "[\\w:][-\\w\\d:.]*(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'))?",
+        "html": "[\\w:][-\\w\\d:.]*(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?",
+        "cfml": "[\\w:][-\\w\\d:.]*(?:\\s*=\\s*(?:\"[^\"]*\"|'[^']*'|[^\\s\"'`=<>]+))?"
     },
 
     // Regex for start/opening tag.  Use a capturing group for tag name and self closing indicator '/' only.
