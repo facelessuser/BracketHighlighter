@@ -1,5 +1,12 @@
 # BracketHighlighter 2.25.1
 
+Oct x, 2017
+
+- **FIX**: Update tag attribute pattern.
+- **FIX**: Add SVG self closing tags.
+
+# BracketHighlighter 2.25.1
+
 Oct 8, 2017
 
 - **FIX**: Update dependencies.

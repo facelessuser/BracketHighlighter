@@ -3,7 +3,9 @@ site_url: https://facelessuser.github.io/BracketHighlighter
 repo_url: https://github.com/facelessuser/BracketHighlighter
 edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
-copyright: Copyright &copy; 2013 - 2017 <a href="https://github.com/facelessuser">Isaac Muse</a>
+copyright: |
+  Copyright &copy; 2013 - 2017 <a href="https://github.com/facelessuser">Isaac Muse</a>
+  <br><span class="md-footer-custom-text">emoji provided free by </span><a href="http://www.emojione.com">EmojiOne</a>
 
 pages:
   - About BracketHighlighter: index.md
@@ -73,6 +75,6 @@ extra:
     - type: github
       link: https://github.com/facelessuser
 extra_css:
-  - extra-9b4c72abee.css
+  - extra-00833721db.css
 extra_javascript:
-  - extra-449b50d2b3.js
+  - extra-4596f9831a.js

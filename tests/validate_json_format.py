@@ -39,7 +39,6 @@ RE_TRAILING_COMMA = re.compile(
         )
       | (?P<code>
             "(?:\\.|[^"\\])*"            # double quoted string
-          | '(?:\\.|[^'\\])*'            # single quoted string
           | .[^,"']*                     # everything else
         )
     ''',
