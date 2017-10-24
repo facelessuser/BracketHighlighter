@@ -625,7 +625,7 @@
             // BH1's original default color for reference
             // "color": "entity.name.class",
             "color": "brackethighlighter.default",
-            "style": "underline"
+            "style": "thin_underline"
         },
 
         // This particular style is used to highlight
