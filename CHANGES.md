@@ -1,9 +1,10 @@
-# BracketHighlighter 2.25.1
+# BracketHighlighter 2.25.2
 
-Oct x, 2017
+Oct 24, 2017
 
 - **FIX**: Update tag attribute pattern.
 - **FIX**: Add SVG self closing tags.
+- **FIX**: Temporarily use `thin_underline` style to mitigate issue [#443](https://github.com/facelessuser/BracketHighlighter/issues/443).
 
 # BracketHighlighter 2.25.1
 
