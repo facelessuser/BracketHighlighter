@@ -128,8 +128,19 @@ def select_bracket_icons(option, icon_path):
 def get_bracket_regions(settings, minimap):
     """Get styled regions for brackets to use."""
 
-    styles = settings.get("bracket_styles", DEFAULT_STYLES)
     icon_path = "Packages/BracketHighlighter/icons"
+    styles = settings.get("bracket_styles", DEFAULT_STYLES)
+    user_styles = settings.get("user_bracket_styles", {})
+
+    # Merge user styles with default style object
+    for key, value in user_styles.items():
+        if key not in styles:
+            styles[key] = value
+        else:
+            entry = styles[key]
+            for subkey, subvalue in value.items():
+                entry[subkey] = subvalue
+
     # Make sure default and unmatched styles in styles
     for key, value in DEFAULT_STYLES.items():
         if key not in styles:
@@ -138,6 +149,7 @@ def get_bracket_regions(settings, minimap):
         for k, v in value.items():
             if k not in styles[key]:
                 styles[key][k] = v
+
     # Initialize styles
     default_settings = styles["default"]
     for k, v in styles.items():

@@ -797,19 +797,16 @@ So, unless you are forking BH to pull request a change to the default rules, you
 
 ## Configuring Highlight Style
 
-Each bracket definition (described in *Configuring Scope Brackets* and *Configuring Brackets*) has a `style` setting that you can assign a specific style to.  The name of the style corresponds to a style definition.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`.
+Each bracket definition (described in *Configuring Scope Brackets* and *Configuring Brackets*) has a `style` option that you can assign a specific style to.  The name of the style corresponds to a style definition.  Style definitions are defined under `bracket_styles` in `bh_core.sublime-settings`. Normally you would override the existing style or add new styles through the `user_bracket_styles` instead of editing `bracket_styles` directly; direct editing of `bracket_styles` is mainly reserved for providing defaults to a user.
 
-There are two special style definitions whose names are reserved: `default` and `unmatched`, but you can configure them.  All other custom style definitions follow the same pattern.  All styles, even the *special* styles, follow the same format.  See description below:
+You can add and remove as many styles as you wish, but there are two special style definitions whose names are reserved: `default` and `unmatched`. If your remove them, they will be added back automatically in memory, but you can configure them.  All styles, even the *reserved* styles, follow the same format.  See description below:
 
-```javascript
-        // "default" style defines attributes that
-        // will be used for any style that does not
-        // explicitly define that attribute.  So if
-        // a style does not define a color, it will
-        // use the color from the "default" style.
+```js
+    // Define region highlight styles
+    "bracket_styles": {
         "default": {
             "icon": "dot",
-            "color": "brackethighlighter.default",
+            "color": "region.yellowish brackethighlighter.default",
             "style": "underline"
         },
 
@@ -818,21 +815,16 @@ There are two special style definitions whose names are reserved: `default` and 
         // style.
         "unmatched": {
             "icon": "question",
-            // "color": "brackethighlighter.unmatched",
+            "color": "region.redish",
             "style": "outline"
         },
         // User defined region styles
         "curly": {
-            "icon": "curly_bracket"
-            // "color": "brackethighlighter.curly",
+            "icon": "curly_bracket",
+            // "color": "region.purplish"
             // "style": "underline"
-        },
-        "tag": {
-            "icon": "tag",
-            // "endpoints": true,
-            // "color": "brackethighlighter.tag",
-            "style": "outline"
-        },
+        }
+    }
 ```
 
 Parameter  | Description
@@ -842,11 +834,61 @@ Parameter  | Description
 `style`    | Highlight style.  Available options are: `solid`, `outline`, `underline`, `none`.  ST3 has additional styles: `thin_underline`, `squiggly`, `stippled`.
 `endpoint` | Boolean to highlight just the beginning and end of bracket. This is useful for things like tags where it may be distracting highlighting the entire tag.
 
-As shown in the example above, if an option is omitted, it will use the setting in `default`.  So `curly`, in this example, defines `icon`, but will use `default` for the `color` and `style`.
+As shown in the example above, an option can be omitted.  If an option is omitted it will use the corresponding option in `default`. If for some reason you've modified `default` to not have all options, an internal default will be used.  So `curly`, in this example, defines `icon`, but will use the `default` definition's `color` and `style`.
 
-To customize the color for `curly` you can create your own custom scope.
+!!! note "Clearing Color Misconceptions"
+    Often I am asked why you can just add a color directly like `#!js "color": "#D04321"`. This is not a decision made by me, but is a limitation of the Sublime API, specifically with region coloring (which is what BH uses to highlight brackets).  Sublime *needs* a scope that exists in your color scheme file. If finds the rule regarding that scope, and applies the color specified in that rule.
 
-Add this to your color scheme:
+    Around Sublime build 3148, region-ish colors were added. These are scopes that get auto-generated for a color scheme (but can also be explicitly defined) that are meant to define a way for users to pick a specific color that corresponds the the color palette of the theme: `region.redish`, `region.orangish`, `region.yellowish`, `region.greenish`, `region.bluish`, `region.purplish`, and `region.pinkish`.  BH by default uses these now in the color scheme where before it defined nothing, so if you are on Sublime 3148+, you should see colors.
+
+    If the color scheme creator has not explicitly defined a region-ish color for all the default region-ish colors, Sublime will guess a color that is close. If the palette of the color scheme is limited, you may get colors that don't make sense or situations where the same color is picked for colors that are close to begin with -- like `region.purplish` and `region.pinkish`.
+
+### Example: Adding and Overriding Styles
+
+To customize a color, style, or icon, you can simply override that specific style definition by placing your override in `user_bracket_styles` in your `Packages/User/bh_core.sublime-settings` file. You are also free to add new styles as well. Just and the key name you want to add/override and specify the options you want to explicitly define, and those specific options will override the existing rule or the defaults.
+
+In this example, we will override the exiting `curly` and *only* change the color.  We will continue to use the `icon` and `style` defined defined in the exiting `curly` rule. We've used the region-ish color `region.bluish` (for Sublime 3148+) to use the closes color Sublime can find to blue in the existing color scheme. We could have also used any other scope that the color scheme already has rules for.
+
+```js
+"user_bracket_styles": {
+    "curly": {
+        "color": "region.bluish"
+    }
+}
+```
+
+If `curly` had not already been defined, `curly` would have been added to the existing rules and any options that were not specified would have inherited their value from the *reserved* `default` rule.
+
+### Example: Specifying Custom Colors in Schemes
+
+If you are unsatisfied or unable to use region-ish colors, and are not satisfied with existing scope and color rules in your color scheme, you can modify your color scheme and add the scope and color you wish to use.
+
+In Sublime 3152+, you can use the new color format to create an override color scheme instead of directly editing your color scheme. To append your new rule (or override an existing rule) you can create a `.sublime-color-scheme` file in your `Packages/User` folder. You only need to specify the colors you are explicitly adding or overriding. In this case, the scheme file would only contain the new scopes we want to append to the base color scheme file. In this case we are adding our own custom region called `brackethighligher.curly` and assigning a color of `#CC99CC`.
+
+```js
+{
+    "rules": [
+        {
+            "scope": "brackethighlighter.curly",
+            "foreground": "#CC99CC"
+        }
+    ]
+}
+```
+
+And now we can use our new scope:
+
+```javascript
+    "user_bracket_styles": {
+        "curly": {
+            "icon": "curly_bracket"
+            "color": "brackethighlighter.curly",
+            // "style": "underline"
+        }
+    }
+```
+
+For Sublime builds &lt;3152, you'd have to actually modify the existing color scheme (`tmTheme`) file that you are using and add your specific scope definition:
 
 ```xml
         <dict>
@@ -862,186 +904,228 @@ Add this to your color scheme:
         </dict>
 ```
 
-And then use the scope:
+??? settings "Sublime Color Scheme Example"
+    Assuming I was dissatisfied with using the built-in region-ish colors and wanted to create my own scopes (and was on a Sublime build that supports `.sublime-color-scheme` files), this is how you would it.
 
-```javascript
-        "curly": {
-            "icon": "curly_bracket"
-            "color": "brackethighlighter.curly",
-            // "style": "underline"
-        },
-```
+    Override the bracket styles you want to apply a custom scope to (you can do some or all) by placing something similar in `Packages/User/bh_core.sublime-settings`:
 
-### My personal configurations
+    ```js
+    // Define region highlight styles
+    {
+        "user_bracket_styles": {
+            "default": {
+                "color": "brackethighlighter.default"
+            },
 
-If you are curious about my personal configuration, here it is. The color scheme I use (at the time of writing this) is from my [Aprosopo theme][aprosopo].
+            "unmatched": {
+                "color": "brackethighlighter.unmatched"
+            },
 
-!!! note "Note"
-    If a scope is not defined, it won't change the color. For instance, below I assign the hash rule for C/C++ preprocessors conditionals to `brackethighlighter.c_define`, but I don't have `brackethighlighter.c_define` in my theme `<dict>`. So it will look like the default color for this theme, which is white.
-
-**My personal configuration: `bh_core.sublime-settings`**
-
-```js
-// Define region highlight styles
-{
-    "bracket_styles": {
-        // "default" and "unmatched" styles are special
-        // styles. If they are not defined here,
-        // they will be generated internally with
-        // internal defaults.
-
-        // "default" style defines attributes that
-        // will be used for any style that does not
-        // explicitly define that attribute.  So if
-        // a style does not define a color, it will
-        // use the color from the "default" style.
-        "default": {
-            "icon": "dot",
-            // BH1's original default color for reference
-            // "color": "entity.name.class",
-            "color": "brackethighlighter.default",
-            "style": "underline"
-        },
-
-        // This particular style is used to highlight
-        // unmatched bracket pairs.  It is a special
-        // style.
-        "unmatched": {
-            "icon": "question",
-            "color": "brackethighlighter.unmatched",
-            "style": "outline"
-        },
-        // User defined region styles
-        "curly": {
-            "icon": "curly_bracket",
-            "color": "brackethighlighter.curly"
-            // "style": "underline"
-        },
-        "round": {
-            "icon": "round_bracket",
-            "color": "brackethighlighter.round"
-            // "style": "underline"
-        },
-        "square": {
-            "icon": "square_bracket",
-            "color": "brackethighlighter.square"
-            // "style": "underline"
-        },
-        "angle": {
-            "icon": "angle_bracket",
-            "color": "brackethighlighter.angle"
-            // "style": "underline"
-        },
-        "tag": {
-            "icon": "tag",
-            "color": "brackethighlighter.tag"
-            // "style": "underline"
-        },
-        "c_define": {
-            "icon": "hash",
-            "color": "brackethighlighter.c_define"
-            // "style": "underline"
-        },
-        "single_quote": {
-            "icon": "single_quote",
-            "color": "brackethighlighter.quote"
-            // "style": "underline"
-        },
-        "double_quote": {
-            "icon": "double_quote",
-            "color": "brackethighlighter.quote"
-            // "style": "underline"
-        },
-        "regex": {
-            "icon": "star",
-            "color": "brackethighlighter.quote"
-            // "style": "underline"
+            "curly": {
+                "color": "brackethighlighter.curly"
+            },
+            "round": {
+                "color": "brackethighlighter.round"
+            },
+            "square": {
+                "color": "brackethighlighter.square"
+            },
+            "angle": {
+                "color": "brackethighlighter.angle"
+            },
+            "tag": {
+                "color": "brackethighlighter.tag"
+            },
+            "c_define": {
+                "color": "brackethighlighter.c_define"
+            },
+            "single_quote": {
+                "color": "brackethighlighter.quote"
+            },
+            "double_quote": {
+                "color": "brackethighlighter.quote"
+            },
+            "regex": {
+                "color": "brackethighlighter.quote"
+            }
         }
     }
-}
-```
+    ```
 
-**My personal configuration: `[Default Theme].tmTheme`**
+    Then create an override `.sublime-color-scheme` file in `Packages/User` named `<schme name to override>.sublime-color-scheme`. Then add the scopes rules you are adding/overriding in the color scheme:
 
-```xml
-<dict>
-    <key>name</key>
-    <string>Bracket Tag</string>
-    <key>scope</key>
-    <string>brackethighlighter.tag</string>
-    <key>settings</key>
+    ```js
+    {
+        "rules": [
+            {
+                "scope": "brackethighlighter.default",
+                "foreground": "#CC99CC"
+            },
+            {
+                "scope": "brackethighlighter.unmatched",
+                "foreground": "#F2777A"
+            },
+            {
+                "scope": "brackethighlighter.curly",
+                "foreground": "#CC99CC"
+            },
+            {
+                "scope": "brackethighlighter.round",
+                "foreground": "#FFCC66"
+            },
+            {
+                "scope": "brackethighlighter.square",
+                "foreground": "#6699CC"
+            },
+            {
+                "scope": "brackethighlighter.angle",
+                "foreground": "#F99157"
+            },
+            {
+                "scope": "brackethighlighter.tag",
+                "foreground": "#66CCCC"
+            },
+            {
+                "scope": "brackethighlighter.c_define",
+                "foreground": "#F99157"
+            },
+            {
+                "scope": "brackethighlighter.quote",
+                "foreground": "#99CC99"
+            }
+        ]
+    }
+    ```
+
+??? settings "Pre Sublime Color Scheme Example"
+    Assuming I was dissatisfied with using the built-in scopes for styling bracket highlighting and wanted to create my own scopes (and was on a Sublime build before 3152), this is how you would it.
+
+    Override the bracket styles you want to apply a custom scope to (you can do some or all) by placing something similar in `Packages/User/bh_core.sublime-settings`:
+
+    ```js
+    // Define region highlight styles
+    {
+        "user_bracket_styles": {
+            "default": {
+                "color": "brackethighlighter.default"
+            },
+
+            "unmatched": {
+                "color": "brackethighlighter.unmatched"
+            },
+
+            "curly": {
+                "color": "brackethighlighter.curly"
+            },
+            "round": {
+                "color": "brackethighlighter.round"
+            },
+            "square": {
+                "color": "brackethighlighter.square"
+            },
+            "angle": {
+                "color": "brackethighlighter.angle"
+            },
+            "tag": {
+                "color": "brackethighlighter.tag"
+            },
+            "c_define": {
+                "color": "brackethighlighter.c_define"
+            },
+            "single_quote": {
+                "color": "brackethighlighter.quote"
+            },
+            "double_quote": {
+                "color": "brackethighlighter.quote"
+            },
+            "regex": {
+                "color": "brackethighlighter.quote"
+            }
+        }
+    }
+    ```
+
+    Then you'd need to modify the existing `tmTheme` file you are using (or create a copy and modify that). Just add the new scope rules in the appropriate place in the PLIST ([real world example](https://github.com/facelessuser/Aprosopo/blob/master/Tomorrow-Night-Eighties-Stormy.tmTheme#L386)).
+
+    ```xml
     <dict>
-        <key>foreground</key>
-        <string>#66CCCC</string>
+        <key>name</key>
+        <string>Bracket Tag</string>
+        <key>scope</key>
+        <string>brackethighlighter.tag</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#66CCCC</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Curly</string>
-    <key>scope</key>
-    <string>brackethighlighter.curly</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#CC99CC</string>
+        <key>name</key>
+        <string>Bracket Curly</string>
+        <key>scope</key>
+        <string>brackethighlighter.curly</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#CC99CC</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Round</string>
-    <key>scope</key>
-    <string>brackethighlighter.round</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#FFCC66</string>
+        <key>name</key>
+        <string>Bracket Round</string>
+        <key>scope</key>
+        <string>brackethighlighter.round</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#FFCC66</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Square</string>
-    <key>scope</key>
-    <string>brackethighlighter.square</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#6699CC</string>
+        <key>name</key>
+        <string>Bracket Square</string>
+        <key>scope</key>
+        <string>brackethighlighter.square</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#6699CC</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Angle</string>
-    <key>scope</key>
-    <string>brackethighlighter.angle</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#F99157</string>
+        <key>name</key>
+        <string>Bracket Angle</string>
+        <key>scope</key>
+        <string>brackethighlighter.angle</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#F99157</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Quote</string>
-    <key>scope</key>
-    <string>brackethighlighter.quote</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#99CC99</string>
+        <key>name</key>
+        <string>Bracket Quote</string>
+        <key>scope</key>
+        <string>brackethighlighter.quote</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#99CC99</string>
+        </dict>
     </dict>
-</dict>
-<dict>
-    <key>name</key>
-    <string>Bracket Unmatched</string>
-    <key>scope</key>
-    <string>brackethighlighter.unmatched</string>
-    <key>settings</key>
     <dict>
-        <key>foreground</key>
-        <string>#F2777A</string>
+        <key>name</key>
+        <string>Bracket Unmatched</string>
+        <key>scope</key>
+        <string>brackethighlighter.unmatched</string>
+        <key>settings</key>
+        <dict>
+            <key>foreground</key>
+            <string>#F2777A</string>
+        </dict>
     </dict>
-</dict>
-```
+    ```
 
 ## Bracket Plugin API
 
