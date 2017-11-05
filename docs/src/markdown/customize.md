@@ -308,17 +308,6 @@ Turn on debug logging.  Set to `true` to enable or `false` to disable.
     "debug_enable": false,
 ```
 
-### `upgrade_dependencies`
-
-This sets whether BH will attempt to upgrade dependencies to the know latest on package upgrade.  If this is undesirable for any reason (development or you just don't like things upgrading without your explicit say so), then set this to `false`.
-
-```js
-    // Try to ensure dependencies are up to date.
-    // If it is not desirable to have this done (like developing) on a specific dependency,
-    // or some other reason, set this to False.
-    "upgrade_dependencies": true,
-```
-
 ## Tag Plugin Settings
 
 This section covers settings found in `bh_tag.sublime-settings`.  All tag settings are dictionaries.  Each key represents a tag mode such as: `html`, `xhtml`, `cfml`, etc.  All of these are exposed so that even non-standard HTML syntax can be supported.

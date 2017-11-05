@@ -2,11 +2,6 @@
     // Debug logging
     "debug_enable": false,
 
-    // Try to ensure dependencies are up to date.
-    // If it is not desirable to have this done (like developing) on a specific dependency,
-    // or some other reason, set this to False.
-    "upgrade_dependencies": true,
-
     // When only either the left or right bracket can be found
     // this defines if the unmatched bracket should be shown.
     "show_unmatched": true,
@@ -41,7 +36,6 @@
     // Specified line count is split to context before and after the target line.
     // So a value of 4 would give you two lines of context before and two lines after.
     "popup_line_context": 2,
-
 
     // Experimental: Use 'popup_bracket_emphasis' to customize the popup's bracket emphasis color
     "use_custom_popup_bracket_emphasis": false,
@@ -420,7 +414,7 @@
         // !!! May conflict with 'php_keywords' if enabled in same file !!!
         {
             "name": "ruby_embedded_html",
-            "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
+            "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<)|(?<=return))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
             "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
@@ -436,7 +430,7 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "((?:(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|^\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|^\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
+            "open": "((?:(?<=^)|(?<==)|(?<=<<)|(?<=return))\\s*\\b(?:if|begin|case)\\b(?!:)|^\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|^\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
             "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
