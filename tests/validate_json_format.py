@@ -17,7 +17,6 @@ RE_COMMENT = re.compile(
         )
       | (?P<code>
             "(?:\\.|[^"\\])*"               # double quotes
-          | '(?:\\.|[^'\\])*'               # single quotes
           | .[^/"']*                        # everything else
         )
     ''',

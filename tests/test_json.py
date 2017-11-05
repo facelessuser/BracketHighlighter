@@ -26,7 +26,8 @@ class TestSettings(unittest.TestCase):
             '*.sublime-keymap',
             '*.sublime-commands',
             '*.sublime-menu',
-            '*.sublime-theme'
+            '*.sublime-theme',
+            '*.sublime-color-scheme'
         )
 
         for pattern in patterns:
