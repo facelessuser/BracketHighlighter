@@ -1,3 +1,13 @@
+# BracketHighlighter 2.26.0
+
+Nov 5, 2017
+
+- **NEW**: Added new configuration `user_bracket_styles` to allow a user to override specific rules or just part of a  
+specific rule instead of copying all of `bracket_styles` [#448](https://github.com/facelessuser/BracketHighlighter/pull/448).
+- **NEW**: Add colorization with region-ish scopes for Sublime builds 3148+ [#448](https://github.com/facelessuser/BracketHighlighter/pull/448).
+- **FIX**: Ruby issue with conditionals immediately followed after return keyword [#425](https://github.com/facelessuser/BracketHighlighter/issues/425).
+- **FIX**: PHP issue for arrows (`$var->prop`) [#446](https://github.com/facelessuser/BracketHighlighter/pull/446).
+
 # BracketHighlighter 2.25.2
 
 Oct 24, 2017
@@ -40,7 +50,7 @@ May 26, 2017
 
 May 10, 2017
 
-- **NEW**: Popup/Phantom support limited to 3124+ moving forward to prepare for `mdpopups` 2.0 that will drop legacy
+- **NEW**: Popup/Phantom support limited to 3124+ moving forward to prepare for `mdpopups` 2.0 that will drop legacy  
 support for old, early implementation of popups and phantoms.
 - **NEW**: No longer try and force dependency updates.  Leave it up to Package Control (whether they do it or not).
 - **NEW**: CSS adjustments to popups.
