@@ -1,6 +1,14 @@
+sudo: false
+
 language: python
-python:
-  - "3.3"
+
+matrix:
+  include:
+  - python: 3.3
+    env: TESTENV=unittest
+  - python: 3.6
+    env: TESTENV=documents
+
 install:
   - pip install flake8
   - pip install flake8-docstrings
@@ -11,16 +19,19 @@ install:
   - pip install mkdocs-material
   - pip install pymdown-extensions
   - pip install pygments
+
 addons:
   apt:
     packages:
       - aspell
       - aspell-en
+
 script:
-  - py.test .
-  - flake8 .
-  - python tests/spellcheck.py
-  - mkdocs build --clean --verbose --strict
+  - if [ $TESTENV = unittest ]; then py.test .; fi
+  - if [ $TESTENV = unittest ]; then flake8 .; fi
+  - if [ $TESTENV = documents ]; then python tests/spellcheck.py; fi
+  - if [ $TESTENV = documents ]; then mkdocs build --clean --verbose --strict; fi
+
 deploy:
   - provider: pages
     github_token: $GITHUB_TOKEN
@@ -31,3 +42,4 @@ deploy:
     on:
       tags: true
       repo: facelessuser/BracketHighlighter
+      condition: "$TESTENV = documents"
