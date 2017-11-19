@@ -418,7 +418,7 @@
         // !!! May conflict with 'php_keywords' if enabled in same file !!!
         {
             "name": "ruby_embedded_html",
-            "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<)|(?<=return))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
+            "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:)|(?<=return)\\s*\\b(?:begin|case|for|until|while|class|module)\\b(?!:))",
             "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["text.html", "source", "comment", "string"],
@@ -434,7 +434,7 @@
         // Ruby conditional statements
         {
             "name": "ruby",
-            "open": "((?:(?<=^)|(?<==)|(?<=<<)|(?<=return))\\s*\\b(?:if|begin|case)\\b(?!:)|^\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|^\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:))",
+            "open": "((?:(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|^\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|^\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:)|(?<=return)\\s*\\b(?:begin|case|for|until|while|class|module)\\b(?!:))",
             "close": "(?<=[\\s;])(end)\\b(?!:)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
