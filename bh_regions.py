@@ -40,10 +40,17 @@ def clear_all_regions():
 
     for window in sublime.windows():
         for view in window.views():
+            # Normal views
             for region_key in view.settings().get("bracket_highlighter.regions", []):
                 view.erase_regions(region_key)
             view.settings().set(
                 'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
+            )
+            # Clone views (settings are shared between normal and cloned)
+            for region_key in view.settings().get("bracket_highlighter.clone_regions", []):
+                view.erase_regions(region_key)
+            view.settings().set(
+                'bracket_highlighter.clone_locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
             )
 
 
@@ -518,13 +525,15 @@ class BhRegion(object):
                 )
             regions.append(name)
 
-    def highlight(self, high_visibility):
+    def highlight(self, high_visibility, clone_view):
         """Highlight all bracket regions."""
 
         self.change_sel()
 
         # Sometimes Sublime is in a weird state and returns None istead fo the default we ask for
-        highlight_regions = self.view.settings().get("bracket_highlighter.regions", [])
+        regions_key = "bracket_highlighter.clone_regions" if clone_view else "bracket_highlighter.regions"
+        locations_key = "bracket_highlighter.clone_locations" if clone_view else "bracket_highlighter.locations"
+        highlight_regions = self.view.settings().get(regions_key, [])
         if highlight_regions is not None:
             for region_key in highlight_regions:
                 self.view.erase_regions(region_key)
@@ -559,8 +568,8 @@ class BhRegion(object):
                 "bh_" + name + "_content", "no_icon", "content_selections", r, regions, high_visibility
             )
         # Track which regions were set in the view so that they can be cleaned up later.
-        self.view.settings().set("bracket_highlighter.regions", regions)
-        self.view.settings().set("bracket_highlighter.locations", self.log_regions)
+        self.view.settings().set(regions_key, regions)
+        self.view.settings().set(locations_key, self.log_regions)
 
         if self.count_lines:
             sublime.status_message('In Block: Lines ' + str(self.lines) + ', Chars ' + str(self.chars))
