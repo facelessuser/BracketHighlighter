@@ -2,6 +2,7 @@
 
 Nov X, 2017
 
+- **NEW**: Add option to always show the bracket popup on bracket hover [#457](https://github.com/facelessuser/BracketHighlighter/pull/457).
 - **FIX**: Fix clone views not properly supported [#454](https://github.com/facelessuser/BracketHighlighter/issues/454).
 
 Nov 5, 2017
