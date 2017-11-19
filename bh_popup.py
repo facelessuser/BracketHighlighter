@@ -104,6 +104,10 @@ class BhOffscreenPopup(object):
         (xa,yb)------------------------
         """
 
+        # Always report that bracket is not visible if we always want to show the popup
+        if sublime.load_settings("bh_core.sublime-settings").get('show_bracket_popup_always', False):
+            return False
+
         xa, ya = view.viewport_position()
         w, h = view.viewport_extent()
         xb, yb = xa + w, ya + h

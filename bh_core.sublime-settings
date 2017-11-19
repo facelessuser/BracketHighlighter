@@ -28,6 +28,10 @@
     // the other bracket.
     "show_offscreen_bracket_popup": true,
 
+    // If enabled with `show_offscreen_bracket_popup`,the popup will be shown
+    // even if brackets are onscreen.
+    "show_bracket_popup_always": false,
+
     // Adjust char per line context of bracket popup.
     "popup_char_context": 120,
 
