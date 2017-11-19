@@ -53,7 +53,9 @@ markdown_extensions:
   - pymdownx.inlinehilite:
   - pymdownx.magiclink:
       repo_url_shortener: true
-      base_repo_url: https://github.com/facelessuser/BracketHighlighter
+      repo_url_shorthand: true
+      user: facelessuser
+      repo: BracketHighlighter
   - pymdownx.tilde:
   - pymdownx.caret:
   - pymdownx.smartsymbols:
@@ -78,6 +80,6 @@ extra:
     - type: github
       link: https://github.com/facelessuser
 extra_css:
-  - extra-00833721db.css
+  - extra-f8303dea60.css
 extra_javascript:
-  - extra-4596f9831a.js
+  - extra-d8800ea088.js
