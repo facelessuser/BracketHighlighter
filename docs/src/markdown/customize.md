@@ -835,10 +835,10 @@ Parameter  | Description
 
 As shown in the example above, an option can be omitted.  If an option is omitted it will use the corresponding option in `default`. If for some reason you've modified `default` to not have all options, an internal default will be used.  So `curly`, in this example, defines `icon`, but will use the `default` definition's `color` and `style`.
 
-!!! note "Clearing Color Misconceptions"
-    Often I am asked why you can just add a color directly like `#!js "color": "#D04321"`. This is not a decision made by me, but is a limitation of the Sublime API, specifically with region coloring (which is what BH uses to highlight brackets).  Sublime *needs* a scope that exists in your color scheme file. If finds the rule regarding that scope, and applies the color specified in that rule.
+!!! note "Clearing Up Color Misconceptions"
+    Often I am asked why you can't just add a color directly like `#!js "color": "#D04321"`. This is not a decision made by me, but is a limitation of the Sublime API, specifically with region coloring, which is what BH uses to highlight brackets.  Sublime *needs* a scope that exists in your color scheme file. It finds the rule regarding that scope, and applies the color specified in that rule.
 
-    Around Sublime build 3148, region-ish colors were added. These are scopes that get auto-generated for a color scheme (but can also be explicitly defined) that are meant to define a way for users to pick a specific color that corresponds the the color palette of the theme: `region.redish`, `region.orangish`, `region.yellowish`, `region.greenish`, `region.bluish`, `region.purplish`, and `region.pinkish`.  BH by default uses these now in the color scheme where before it defined nothing, so if you are on Sublime 3148+, you should see colors.
+    Around Sublime build 3148, region-ish colors were added. These are scopes that get auto-generated for a color scheme (but can also be explicitly defined) that are meant to define a way for users to pick a specific color that corresponds to the color palette of the theme: `region.redish`, `region.orangish`, `region.yellowish`, `region.greenish`, `region.bluish`, `region.purplish`, and `region.pinkish`.  BH by default uses these now in the color scheme where before it defined nothing, so if you are on Sublime 3148+, you should see colors.
 
     If the color scheme creator has not explicitly defined a region-ish color for all the default region-ish colors, Sublime will guess a color that is close. If the palette of the color scheme is limited, you may get colors that don't make sense or situations where the same color is picked for colors that are close to begin with -- like `region.purplish` and `region.pinkish`.
 
