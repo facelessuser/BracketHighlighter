@@ -80,6 +80,6 @@ extra:
     - type: github
       link: https://github.com/facelessuser
 extra_css:
-  - extra-f8303dea60.css
+  - extra-4e53a56959.css
 extra_javascript:
   - extra-d8800ea088.js
