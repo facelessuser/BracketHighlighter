@@ -1,15 +1,16 @@
-"""Sublime settings parser."""
 import re
 import codecs
-from pyspelling import parsers
+import json
+from pyspelling import filters
 import textwrap
 
 RE_LINE_PRESERVE = re.compile(r"\r?\n", re.MULTILINE)
 RE_COMMENT = re.compile(
     r'''(?x)
         (?P<comments>
-            (?P<block>/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)                        # multi-line comments
-          | (?P<start>^)?(?P<leading_space>[ \t]*)?(?P<line>//(?:[^\r\n])*)  # single line comments
+            (?P<block>/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)           # multi-line comments
+          | ^(?P<leading_space>[ \t]*)?(?P<line>//(?:[^\r\n])*)  # single line comments
+          | [ \t]*(?P<after_line>//(?:[^\r\n])*)                # single line comment after source
         )
       | (?P<code>
             "(?:\\.|[^"\\])*"                                  # double quotes
@@ -20,10 +21,8 @@ RE_COMMENT = re.compile(
 )
 
 
-class SublimeSettingsParser(parsers.Parser):
+class SublimeSettingsFilter(filters.Filter):
     """Spelling Sublime settings."""
-
-    FILE_PATTERNS = ('*.sublime-settings',)
 
     def __init__(self, options, default_encoding='ascii'):
         """Initialization."""
@@ -33,7 +32,7 @@ class SublimeSettingsParser(parsers.Parser):
         # self.strings = options.get('strings', False) is True
         self.group_comments = options.get('group_comments', False) is True
 
-        super(SublimeSettingsParser, self).__init__(options, default_encoding)
+        super(SublimeSettingsFilter, self).__init__(options, default_encoding)
 
     def filter(self, text, encoding):
         """Filter JSON strings."""
@@ -51,8 +50,8 @@ class SublimeSettingsParser(parsers.Parser):
                 self.block_comments.append([g['block'][2:-2], self.lines])
                 self.lines += g['comments'].count('\n')
             elif self.lines:
-                if g['start'] is None:
-                    self.line_comments.append([g['line'][2:], self.lines])
+                if g['after_line']:
+                    self.line_comments.append([g['after_line'][2:], self.lines])
                     self.lines += g['comments'].count('\n')
                 else:
                     # Cosecutive lines with only comments with same leading whitespace
@@ -64,18 +63,11 @@ class SublimeSettingsParser(parsers.Parser):
                     self.leading = g['leading_space']
                     self.lines += g['comments'].count('\n')
                     self.prev_line = self.lines
-            else:
-                self.lines += g['comments'].count('\n')
             text = ''.join([x[0] for x in RE_LINE_PRESERVE.findall(g["comments"])])
         return text
 
-    def _find_comments(self, text):
-        """Find comments."""
-
-        return ''.join(map(lambda m: self._evaluate(m), RE_COMMENT.finditer(text)))
-
-    def parse_file(self, source_file, encoding):
-        """Parse HTML file."""
+    def _filter(self, text, context, encoding):
+        """Perform actual filtering."""
 
         content = []
         self.lines = 1
@@ -84,31 +76,46 @@ class SublimeSettingsParser(parsers.Parser):
         self.block_comments = []
         self.line_comments = []
 
-        with codecs.open(source_file, 'r', encoding=encoding) as f:
-            self._find_comments(f.read())
-            for comment, line in self.block_comments:
-                content.append(
-                    parsers.SourceText(
-                        textwrap.dedent(comment),
-                        "%s (%d)" % (source_file, line),
-                        encoding,
-                        'block-comment'
-                    )
+        text = self._find_comments(text)
+        for comment, line in self.block_comments:
+            content.append(
+                filters.SourceText(
+                    textwrap.dedent(comment),
+                    "%s (%d)" % (context, line),
+                    encoding,
+                    'block-comment'
                 )
-            for comment, line in self.line_comments:
-                content.append(
-                    parsers.SourceText(
-                        textwrap.dedent(comment),
-                        "%s (%d)" % (source_file, line),
-                        encoding,
-                        'line-comment'
-                    )
+            )
+        for comment, line in self.line_comments:
+            content.append(
+                filters.SourceText(
+                    textwrap.dedent(comment),
+                    "%s (%d)" % (context, line),
+                    encoding,
+                    'line-comment'
                 )
+            )
 
         return content
 
+    def _find_comments(self, text):
+        """Find comments."""
 
-def get_parser():
-    """Get parser."""
+        return ''.join(map(lambda m: self._evaluate(m), RE_COMMENT.finditer(text)))
 
-    return SublimeSettingsParser
+    def filter(self, source_file, encoding):
+        """Parse HTML file."""
+
+        with codecs.open(source_file, 'r', encoding=encoding) as f:
+            return self._filter(f.read(), source_file, encoding)
+
+    def sfilter(self, source):
+        """String filter."""
+
+        return self._find(source.text, source.context, source.encoding)
+
+
+def get_filter():
+    """Get filter."""
+
+    return SublimeSettingsFilter

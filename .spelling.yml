@@ -1,10 +1,7 @@
 documents:
 - name: settings
-  parser: tests.sublime_settings_parser
-  options:
-    group_comments: true
   sources:
-  - '.'
+  - '**/*.sublime-settings'
   aspell:
     lang: en
   dictionary:
@@ -13,7 +10,9 @@ documents:
     - docs/src/dictionary/en-custom.txt
     output: build/dictionary/settings.dic
   filters:
-  - pyspelling.filters.context_filter:
+  - tests.sublime_settings_filter:
+      group_comments: true
+  - pyspelling.filters.context:
       context_visible_first: true
       escapes: \\[\\`~]
       delimiters:
@@ -25,26 +24,8 @@ documents:
         close: ^(?P=open)$
 
 - name: mkdocs
-  parser: pyspelling.parsers.html_parser
-  options:
-    comments: false
-    attributes:
-    - title
-    - alt
-    ignores:
-    - code
-    - pre
-    - a.magiclink-compare
-    - a.magiclink-commit
-    - span.keys
-    - .MathJax_Preview
-    - .md-nav__link
-    - .md-footer-custom-text
-    - .md-source__repository
-    - .headerlink
-    - .md-icon
   sources:
-  - site
+  - site/**/*.html
   aspell:
     lang: en
   dictionary:
@@ -52,9 +33,26 @@ documents:
     wordlists:
     - docs/src/dictionary/en-custom.txt
     output: build/dictionary/mkdocs.dic
+  filters:
+  - pyspelling.filters.html:
+      comments: false
+      attributes:
+      - title
+      - alt
+      ignores:
+      - code
+      - pre
+      - a.magiclink-compare
+      - a.magiclink-commit
+      - span.keys
+      - .MathJax_Preview
+      - .md-nav__link
+      - .md-footer-custom-text
+      - .md-source__repository
+      - .headerlink
+      - .md-icon
 
 - name: markdown
-  parser: pyspelling.parsers.markdown_parser
   sources:
   - readme.md
   aspell:
@@ -65,7 +63,8 @@ documents:
     - docs/src/dictionary/en-custom.txt
     output: build/dictionary/markdown.dic
   filters:
-  - pyspelling.filters.html_filter:
+  - pyspelling.filters.markdown:
+  - pyspelling.filters.html:
       comments: false
       attributes:
       - title
@@ -75,12 +74,8 @@ documents:
       - pre
 
 - name: python
-  parser: pyspelling.parsers.python_parser
-  options:
-    comments: false
-    strings: false
   sources:
-  - '.'
+  - './**/*.py'
   aspell:
     lang: en
   dictionary:
@@ -89,7 +84,10 @@ documents:
     - docs/src/dictionary/en-custom.txt
     output: build/dictionary/python.dic
   filters:
-  - pyspelling.filters.context_filter:
+  - pyspelling.filters.python:
+      comments: false
+      strings: false
+  - pyspelling.filters.context:
       context_visible_first: true
       escapes: \\[\\`~]
       delimiters:

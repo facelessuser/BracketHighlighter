@@ -161,6 +161,17 @@
             "enabled": true
         },
         {
+            "name": "csharp_double_quote",
+            "open": "\\$?@?(\")",
+            "close": "(\")",
+            "style": "double_quote",
+            "scopes": ["string.quoted.double", "meta.string.interpolated"],
+            "language_filter": "whitelist",
+            "language_list": ["C#"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
             "name": "single_quote",
             "open": "(')",
             "close": "(')",
@@ -187,9 +198,14 @@
             "open": "(`)",
             "close": "(`)",
             "style": "single_quote",
-            "scopes": ["string.interpolated.ruby", "string.interpolated.backtick.shell"],
+            "scopes": [
+                "string.interpolated.ruby",
+                "string.interpolated.backtick.shell",
+                "string.template-string.js",
+                "string.template.js, meta.template.expression.js"
+            ],
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Shell-Unix-Generic"],
+            "language_list": ["Ruby", "Shell-Unix-Generic", "Bash", "JavaScript", "JavaScriptNext"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -367,15 +383,21 @@
         // Angle
         {
             "name": "angle",
-            "open": "(<)",
-            "close": "(>)",
+            "open": "(<)(?=[^?%]|$)",
+            "close": "(?:(?<=[^?%])|(?<=^))(>)",
             "style": "angle",
             "scope_exclude": [
-                ""
-            ],
-            "scope_exclude_exceptions": [
-                "punctuation.definition.tag.begin",
-                "punctuation.definition.tag.end"
+                "string",
+                "comment",
+                "keyword.operator",
+                "source.ruby.rails.embedded.html",
+                "source.ruby.embedded.html",
+                "storage.type.function.arrow.js",
+                "punctuation.accessor.php",
+                "punctuation.accessor.arrow.php",
+                "source.php meta.embedded.html punctuation.section.embedded.begin.php",
+                "source.php meta.embedded.js punctuation.section.embedded.begin.php",
+                "source.php meta.embedded.css punctuation.section.embedded.begin.php"
             ],
             "language_filter": "whitelist",
             "language_list": [
@@ -443,12 +465,12 @@
         // C/C++ compile switches
         {
             "name": "c_compile_switch",
-            "open": "(\\#(?:if|ifdef|ifndef))\\b",
-            "close": "(\\#endif)\\b",
+            "open": "\\#[ \\t]*(if|ifdef|ifndef)\\b",
+            "close": "\\#[ \\t]*(endif)\\b",
             "style": "c_define",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C", "Objective-C", "CCpp", "C Improved"],
+            "language_list": ["C++", "C", "Objective-C++", "Objective-C", "CCpp", "C Improved"],
             "enabled": true
         },
         // PHP conditional keywords
@@ -495,7 +517,7 @@
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.bashsupport",
             "language_filter": "whitelist",
-            "language_list": ["Shell-Unix-Generic"],
+            "language_list": ["Shell-Unix-Generic", "Bash"],
             "enabled": true
         },
         //Fish shell
@@ -512,7 +534,7 @@
         // Lua
         {
             "name": "lua",
-            "open": "(?:(?<=[\\s;])|(?<=^))(if|while|function|do|repeat)\\b",
+            "open": "(?:(?<=[\\s;])|(?<=^))(if|function|do|repeat)\\b",
             "close": "(?:(?<=[\\s;])|(?<=^))(end|until)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
@@ -601,6 +623,8 @@
     // the official list, and do not need to be inserted before
     // one of the official definitions, this is a good place to
     // put yours rules and keep in sync with the defaults.
+    // If you want to disable all gutter icons, please set icon
+    // to none for all region with user_bracket_styles
     "user_scope_brackets": [],
     "user_brackets": [],
     "user_bracket_styles": {},

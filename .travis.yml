@@ -10,6 +10,7 @@ matrix:
     env: TESTENV=documents
 
 install:
+  - pip install --upgrade setuptools
   - pip install flake8
   - pip install flake8-docstrings
   - pip install flake8-mutable
