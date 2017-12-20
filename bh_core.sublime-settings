@@ -367,15 +367,18 @@
         // Angle
         {
             "name": "angle",
-            "open": "(<)",
-            "close": "(>)",
+            "open": "(<)(?=[^?%]|$)",
+            "close": "(?:(?<=[^?%])|(?<=^))(>)",
             "style": "angle",
             "scope_exclude": [
-                ""
-            ],
-            "scope_exclude_exceptions": [
-                "punctuation.definition.tag.begin",
-                "punctuation.definition.tag.end"
+                "string",
+                "comment",
+                "keyword.operator",
+                "source.ruby.rails.embedded.html",
+                "source.ruby.embedded.html",
+                "storage.type.function.arrow.js",
+                "punctuation.accessor.php",
+                "punctuation.accessor.arrow.php"
             ],
             "language_filter": "whitelist",
             "language_list": [
