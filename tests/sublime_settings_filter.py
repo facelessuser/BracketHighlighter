@@ -1,6 +1,6 @@
+"""Sublime settings comment parser."""
 import re
 import codecs
-import json
 from pyspelling import filters
 import textwrap
 

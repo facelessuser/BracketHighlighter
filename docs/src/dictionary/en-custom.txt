@@ -65,6 +65,7 @@ offscreen
 plugin
 plugins
 popup
+popup's
 popups
 pre
 preprocessors
@@ -79,6 +80,7 @@ requesters
 screenshot
 squidfunk
 sublicense
+tuple
 un
 unescaping
 versa
