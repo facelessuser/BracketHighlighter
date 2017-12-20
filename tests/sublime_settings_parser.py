@@ -1,6 +1,6 @@
+"""Sublime settings comment parser."""
 import re
 import codecs
-import json
 from pyspelling import parsers
 import textwrap
 
@@ -84,7 +84,7 @@ class SublimeSettingsParser(parsers.Parser):
         self.line_comments = []
 
         with codecs.open(source_file, 'r', encoding=encoding) as f:
-            text = self._find_comments(f.read())
+            self._find_comments(f.read())
             for comment, line in self.block_comments:
                 content.append(
                     parsers.SourceText(
