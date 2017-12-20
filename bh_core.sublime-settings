@@ -6,7 +6,7 @@
     // this defines if the unmatched bracket should be shown.
     "show_unmatched": true,
 
-    // Do the opposite of "show_unmatched" for the languages listed below
+    // Do the opposite of `show_unmatched` for the languages listed below
     "show_unmatched_exceptions": [],
 
     // Enable high visibility by default when sublime starts up
@@ -41,11 +41,11 @@
     // So a value of 4 would give you two lines of context before and two lines after.
     "popup_line_context": 2,
 
-    // Experimental: Use 'popup_bracket_emphasis' to customize the popup's bracket emphasis color
+    // Experimental: Use `popup_bracket_emphasis` to customize the popup's bracket emphasis color
     "use_custom_popup_bracket_emphasis": false,
 
     // Experimental: Specify the scope (to get color) to emphasize the off screen bracket
-    // in popups.  Alternatively you can use a hex value in the form '#rgb' or '#rrggbb'.
+    // in popups.  Alternatively you can use a hex value in the form `#rgb` or `#rrggbb`.
     "popup_bracket_emphasis": "keyword",
 
     // Experimental: Align the content highlight bar at the bracket indent level
@@ -70,8 +70,8 @@
     "show_in_minimap": false,
 
     // High visibility style and color for high visibility mode
-    // (solid|outline|underline)
-    // ST3 has additional options of (thin_underline|squiggly|stippled)
+    // (`solid`|`outline`|`underline`)
+    // ST3 has additional options of (`thin_underline`|`squiggly`|`stippled`)
     "high_visibility_style": "outline",
 
     // (scope|__default__|__bracket__)
@@ -86,16 +86,16 @@
     // Experimental: Special matching mode for block cursor.
     // Essentially, this provides a matching mode that makes a little more
     // sense to some in regards to the visual representation of block cursors.
-    // This will ignore "bracket_outside_adjacent".
+    // This will ignore `bracket_outside_adjacent`.
     "block_cursor_mode": false,
 
-    // When "bracket_outside_adjacet" is set, and a plugin command explicitly sets
-    // "no_outside_adj" to "None" instead of "true" or the default "false",
+    // When `bracket_outside_adjacet` is set, and a plugin command explicitly sets
+    // `no_outside_adj` to `None` instead of `true` or the default `false`,
     // this value will be used.
     "ignore_outside_adjacent_in_plugin": true,
 
-    // When "block_cursor_mode" is set, and a plugin command explicitly sets
-    // "no_block_mode" to "None" instead of "true" or the default "false",
+    // When `block_cursor_mode` is set, and a plugin command explicitly sets
+    // "no_block_mode" to `None` instead of `true` or the default `false`,
     // this value will be used.
     "ignore_block_mode_in_plugin": true,
 
@@ -105,7 +105,7 @@
     // Ignore threshold
     "ignore_threshold": false,
 
-    // Set mode for string escapes to ignore (regex|string)
+    // Set mode for string escapes to ignore (`regex`|`string`)
     "bracket_string_escape_mode": "string",
 
     // Set max number of multi-select brackets that will be searched automatically
@@ -367,18 +367,15 @@
         // Angle
         {
             "name": "angle",
-            "open": "(<)(?=[^?%]|$)",
-            "close": "(?:(?<=[^?%])|(?<=^))(>)",
+            "open": "(<)",
+            "close": "(>)",
             "style": "angle",
             "scope_exclude": [
-                "string",
-                "comment",
-                "keyword.operator",
-                "source.ruby.rails.embedded.html",
-                "source.ruby.embedded.html",
-                "storage.type.function.arrow.js",
-                "punctuation.accessor.php",
-                "punctuation.accessor.arrow.php"
+                ""
+            ],
+            "scope_exclude_exceptions": [
+                "punctuation.definition.tag.begin",
+                "punctuation.definition.tag.end"
             ],
             "language_filter": "whitelist",
             "language_list": [
@@ -415,7 +412,7 @@
             "enabled": true
         },
         // Ruby embedded HTML
-        // !!! May conflict with 'php_keywords' if enabled in same file !!!
+        // !!! May conflict with `php_keywords` if enabled in same file !!!
         {
             "name": "ruby_embedded_html",
             "open": "((?:(?<=<%)|(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|(?:(?<=<%)|(?<=^))\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:)|(?<=return)\\s*\\b(?:begin|case|for|until|while|class|module)\\b(?!:))",
@@ -455,7 +452,7 @@
             "enabled": true
         },
         // PHP conditional keywords
-        // !!! May conflict with 'ruby_embedded_html' if enabled in same file !!!
+        // !!! May conflict with `ruby_embedded_html` if enabled in same file !!!
         {
             "name": "php_keywords",
             "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*?\\)\\s*:\\s*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
@@ -572,7 +569,7 @@
             "language_list": ["CMake"],
             "enabled": true
         },
-        // SINUMERIK 840D SL G-Code
+        // `SINUMERIK 840D SL G-Code`
         {
             "name": "s840d_gcode",
             "open": "\\b(IF(?!.*GOTO)|FOR|WHILE|REPEAT(?!.*GOTO))\\b",
@@ -584,7 +581,7 @@
             "language_list": ["s840d_gcode"],
             "enabled": true
         },
-        // SINUMERIK 840D SL RunMyHmi
+        // `SINUMERIK 840D SL RunMyHmi`
         {
             "name": "s840d_hmi",
             "open": "^\\s*(//[ABGMS]|ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB)\\b",
@@ -598,7 +595,7 @@
         }
     ],
 
-    // user_scope_brackets and user_brackets will be appended
+    // `user_scope_brackets` and `user_brackets` will be appended
     // to the tail of scope_brackets and brackets respectively
     // If you have custom rules that you don't want to commit to
     // the official list, and do not need to be inserted before
@@ -610,19 +607,19 @@
 
     // Define region highlight styles
     "bracket_styles": {
-        // "default" and "unmatched" styles are special
+        // `default` and `unmatched` styles are special
         // styles. If they are not defined here,
         // they will be generated internally with
         // internal defaults.
 
-        // "default" style defines attributes that
+        // `default` style defines attributes that
         // will be used for any style that does not
         // explicitly define that attribute.  So if
         // a style does not define a color, it will
         // use the color from the "default" style.
         "default": {
             "icon": "dot",
-            // Support the old convention of "brackethighlighter.default"
+            // Support the old convention of `brackethighlighter.default`
             // for themes that already provide something.
             // As this has always been the only one we've provided
             // by default, all the others will use region-ish colors.

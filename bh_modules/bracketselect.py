@@ -18,8 +18,8 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
         Select the content between brackets.
 
         If "always_include_brackets" is enabled,
-        include the brackts as well.  If the content is already selected, expand to the
-        parent.
+        include the brackets as well.
+        If the content is already selected, expand to the parent.
         """
 
         self.tags = DEFAULT_TAGS if tags is None else tags

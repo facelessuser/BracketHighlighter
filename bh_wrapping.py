@@ -69,7 +69,7 @@ class TextInsertion(object):
         self.edit = edit
 
     def insert(self, pt, text):
-        """Peform insertion."""
+        """Perform insertion."""
 
         return self.view.insert(self.edit, pt, text)
 
@@ -101,7 +101,7 @@ class WrapBrackets(object):
     """Wrap the current selection(s) with the defined wrapping options."""
 
     def __init__(self, view, setting_file, attribute):
-        """Init."""
+        """Initialization."""
 
         self.view = view
         self._menu = []

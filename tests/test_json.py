@@ -9,7 +9,7 @@ class TestSettings(unittest.TestCase):
     """Test JSON settings."""
 
     def _get_json_files(self, pattern, folder='.'):
-        """Get json files."""
+        """Get JSON files."""
 
         for root, dirnames, filenames in os.walk(folder):
             for filename in fnmatch.filter(filenames, pattern):

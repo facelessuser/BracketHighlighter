@@ -1,7 +1,7 @@
 {
     /* If you add a new key to one of these settings, you must add one to all! */
 
-    // This is where you intially define a new tag mode.
+    // This is where you initially define a new tag mode.
     // This new tag_mode key must be used in all other settings in this file
     // to set up its specific settings.
     // Determine which style of tag-matching to use in which syntax.

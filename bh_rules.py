@@ -182,7 +182,7 @@ class SearchRules(object):
     """Search rule object."""
 
     def __init__(self, brackets, scopes, string_escape_mode, outside_adj, block_cursor):
-        """Setup search rulel object."""
+        """Setup search rule object."""
 
         self.bracket_rules = process_overrides(brackets)
         self.scope_rules = process_overrides(scopes)
@@ -194,7 +194,7 @@ class SearchRules(object):
         self.pattern = None
 
     def load_rules(self, language, modules):
-        """Load teh search rules."""
+        """Load the search rules."""
 
         self.enabled = False
         self.brackets = []
@@ -209,7 +209,7 @@ class SearchRules(object):
             self.enabled = True
 
     def parse_bracket_definition(self, language, loaded_modules):
-        """Parse the bracket defintion."""
+        """Parse the bracket definition."""
 
         names = []
         subnames = []
@@ -289,7 +289,7 @@ class SearchRules(object):
                 self.pattern = None
 
     def parse_scope_definition(self, language, loaded_modules):
-        """Parse the scope defintion."""
+        """Parse the scope definition."""
 
         scopes = {}
         scope_count = 0

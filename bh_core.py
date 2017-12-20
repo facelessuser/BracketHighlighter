@@ -256,7 +256,7 @@ class BhCore(object):
         return match
 
     def compare(self, first, second, scope_bracket=False):
-        """Compare brackets.  This function allows bracket plugins to add aditional logic."""
+        """Compare brackets.  This function allows bracket plugins to add additional logic."""
 
         if scope_bracket:
             match = first is not None and second is not None
@@ -285,9 +285,9 @@ class BhCore(object):
 
     def post_match(self, left, right, center, scope_bracket=False):
         """
-        Peform special logic after a match has been made.
+        Perform special logic after a match has been made.
 
-        This function allows bracket plugins to add aditional logic.
+        This function allows bracket plugins to add additional logic.
         """
 
         if left is not None:
@@ -452,7 +452,7 @@ class BhCore(object):
         view.settings().set("bracket_highlighter.busy", False)
 
     def sub_search(self, sel, scope=None):
-        """Search a scope bracket match for bracekts within."""
+        """Search a scope bracket match for brackets within."""
 
         # Protect against recursive search of scopes
         self.recursive_guard = True
@@ -521,7 +521,7 @@ class BhCore(object):
         Perform match for scope brackets.
 
         See if scope should be searched, and then check
-        endcaps to determine if valid scope bracket.
+        end caps to determine if valid scope bracket.
         """
 
         center = sel.b
@@ -865,7 +865,7 @@ class BhKeyCommand(sublime_plugin.TextCommand):
     """
     Command to process shortcuts, menu calls, and command palette calls.
 
-    This is how BhCore is called with different options.
+    This is how `BhCore` is called with different options.
     """
 
     def run(
@@ -1170,7 +1170,7 @@ def plugin_loaded():
     """
     General plugin initialization.
 
-    Load up uniocode table, initialize settings and match object,
+    Initialize settings and match object,
     and start event loop.  Restart event loop if already loaded.
     """
 
