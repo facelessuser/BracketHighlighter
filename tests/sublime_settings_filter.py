@@ -1,4 +1,4 @@
-"""Sublime settings comment parser."""
+"""Sublime settings parser."""
 import re
 import codecs
 from pyspelling import filters
@@ -8,9 +8,8 @@ RE_LINE_PRESERVE = re.compile(r"\r?\n", re.MULTILINE)
 RE_COMMENT = re.compile(
     r'''(?x)
         (?P<comments>
-            (?P<block>/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)           # multi-line comments
-          | ^(?P<leading_space>[ \t]*)?(?P<line>//(?:[^\r\n])*)  # single line comments
-          | [ \t]*(?P<after_line>//(?:[^\r\n])*)                # single line comment after source
+            (?P<block>/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)                        # multi-line comments
+          | (?P<start>^)?(?P<leading_space>[ \t]*)?(?P<line>//(?:[^\r\n])*)  # single line comments
         )
       | (?P<code>
             "(?:\\.|[^"\\])*"                                  # double quotes
@@ -50,8 +49,8 @@ class SublimeSettingsFilter(filters.Filter):
                 self.block_comments.append([g['block'][2:-2], self.lines])
                 self.lines += g['comments'].count('\n')
             elif self.lines:
-                if g['after_line']:
-                    self.line_comments.append([g['after_line'][2:], self.lines])
+                if g['start'] is None:
+                    self.line_comments.append([g['line'][2:], self.lines])
                     self.lines += g['comments'].count('\n')
                 else:
                     # Cosecutive lines with only comments with same leading whitespace
@@ -63,6 +62,8 @@ class SublimeSettingsFilter(filters.Filter):
                     self.leading = g['leading_space']
                     self.lines += g['comments'].count('\n')
                     self.prev_line = self.lines
+            else:
+                self.lines += g['comments'].count('\n')
             text = ''.join([x[0] for x in RE_LINE_PRESERVE.findall(g["comments"])])
         return text
 
