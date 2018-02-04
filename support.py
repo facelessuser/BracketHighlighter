@@ -5,7 +5,7 @@ import textwrap
 import webbrowser
 import re
 
-__version__ = "2.27.0"
+__version__ = "2.27.1"
 __pc_name__ = 'BracketHighlighter'
 
 CSS = '''
@@ -32,7 +32,7 @@ frontmatter = {
                 "repo_url_shortener": True,
                 "repo_url_shorthand": True,
                 "user": "facelessuser",
-                "repo": "ExportHtml"
+                "repo": "BracketHighlighter"
             }
         },
         "pymdownx.extrarawhtml",
