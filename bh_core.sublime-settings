@@ -161,6 +161,17 @@
             "enabled": true
         },
         {
+            "name": "csharp_double_quote",
+            "open": "\\$?@?(\")",
+            "close": "(\")",
+            "style": "double_quote",
+            "scopes": ["string.quoted.double", "meta.string.interpolated"],
+            "language_filter": "whitelist",
+            "language_list": ["C#"],
+            "sub_bracket_search": "true",
+            "enabled": true
+        },
+        {
             "name": "single_quote",
             "open": "(')",
             "close": "(')",
