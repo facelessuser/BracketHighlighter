@@ -457,12 +457,12 @@
         // C/C++ compile switches
         {
             "name": "c_compile_switch",
-            "open": "(\\#(?:if|ifdef|ifndef))\\b",
-            "close": "(\\#endif)\\b",
+            "open": "(\\#\\s*(?:if|ifdef|ifndef))\\b",
+            "close": "(\\#\\s*endif)\\b",
             "style": "c_define",
             "scope_exclude": ["string", "comment"],
             "language_filter": "whitelist",
-            "language_list": ["C++", "C", "Objective-C", "CCpp", "C Improved"],
+            "language_list": ["C++", "C", "Objective-C++", "Objective-C", "CCpp", "C Improved"],
             "enabled": true
         },
         // PHP conditional keywords
