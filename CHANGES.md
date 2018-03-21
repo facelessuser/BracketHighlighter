@@ -1,12 +1,10 @@
 # BracketHighlighter 2.27.2
 
-Mar 4, 2018
+Mar 20, 2018
 
 - **FIX**: `C#` interpolated strings !468.
-
-Feb 4, 2018
-
-- **FIX**: Fix Lua loops by avoiding `while` and `from` and just highlighting `do` #466.
+- **FIX**: Fix C/C++ preprocessor highlighting !474.
+- **FIX**: Only highlight the keyword in C/C++ preprocessors af22600cd23bd3c15a1a0f6fc54041e6d96b3dd3.
 
 # BracketHighlighter 2.27.1
 
