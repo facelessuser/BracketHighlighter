@@ -198,9 +198,14 @@
             "open": "(`)",
             "close": "(`)",
             "style": "single_quote",
-            "scopes": ["string.interpolated.ruby", "string.interpolated.backtick.shell"],
+            "scopes": [
+                "string.interpolated.ruby",
+                "string.interpolated.backtick.shell",
+                "string.template-string.js",
+                "string.template.js, meta.template.expression.js"
+            ],
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Shell-Unix-Generic"],
+            "language_list": ["Ruby", "Shell-Unix-Generic", "JavaScript", "JavaScriptNext"],
             "sub_bracket_search": "true",
             "enabled": true
         },
