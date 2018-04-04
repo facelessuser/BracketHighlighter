@@ -1,3 +1,7 @@
+# BracketHighlighter 2.27.3
+
+- **FIX**: Selecting "no threshold" search from popup quickly reverts back to unmatched.
+
 # BracketHighlighter 2.27.2
 
 Mar 20, 2018

@@ -777,7 +777,7 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
 
         # Search with no threshold
         if no_threshold:
-            self.view.run_command("bh_key", {"lines": True})
+            self.view.run_command("bh_async_key", {"lines": True})
 
         # Get point if not specified
         if point is None:
