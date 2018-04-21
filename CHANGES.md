@@ -1,6 +1,9 @@
 # BracketHighlighter 2.27.3
 
+Apr 21, 2018
+
 - **FIX**: Selecting "no threshold" search from popup quickly reverts back to unmatched.
+- **FIX**: Backtick string support extended to JavaScript.
 
 # BracketHighlighter 2.27.2
 
