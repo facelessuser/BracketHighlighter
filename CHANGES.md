@@ -1,3 +1,9 @@
+# BracketHighlighter 2.27.4
+
+Jun 14, 2018
+
+- **FIX**: Avoid targeting common `HERDOC` syntax with angle brackets. #482
+
 # BracketHighlighter 2.27.3
 
 Apr 21, 2018

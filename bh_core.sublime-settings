@@ -394,7 +394,10 @@
                 "source.ruby.embedded.html",
                 "storage.type.function.arrow.js",
                 "punctuation.accessor.php",
-                "punctuation.accessor.arrow.php"
+                "punctuation.accessor.arrow.php",
+                "source.php meta.embedded.html punctuation.section.embedded.begin.php",
+                "source.php meta.embedded.js punctuation.section.embedded.begin.php",
+                "source.php meta.embedded.css punctuation.section.embedded.begin.php"
             ],
             "language_filter": "whitelist",
             "language_list": [
