@@ -623,6 +623,8 @@
     // the official list, and do not need to be inserted before
     // one of the official definitions, this is a good place to
     // put yours rules and keep in sync with the defaults.
+    // If you want to disable all gutter icons, please set icon
+    // to none for all region with user_bracket_styles
     "user_scope_brackets": [],
     "user_brackets": [],
     "user_bracket_styles": {},
