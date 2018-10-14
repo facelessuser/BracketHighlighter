@@ -95,6 +95,8 @@ class BhOffscreenPopup(object):
 
         Check if first point of bracket is visible or last point is visible.
         In short, is any part visible?
+
+        ~~~
         (xa,ya)--------------------(xb,ya)
         |                             |
         |                             |
@@ -102,6 +104,7 @@ class BhOffscreenPopup(object):
         |                             |
         |                             |
         (xa,yb)------------------------
+        ~~~
         """
 
         # Always report that bracket is not visible if we always want to show the popup

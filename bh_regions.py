@@ -199,7 +199,7 @@ class BhRegion(object):
     """Class for handling highlight regions."""
 
     def __init__(self, alter_select, count_lines):
-        """Init."""
+        """Initialization."""
 
         settings = sublime.load_settings("bh_core.sublime-settings")
         minimap = settings.get('show_in_minimap', False)
@@ -504,7 +504,7 @@ class BhRegion(object):
             bracket.close_selections += [right.toregion()]
 
     def highlight_regions(self, name, icon_type, selections, bracket, regions, high_visibility):
-        """Apply the highlightes for the highlight region."""
+        """Apply the highlights for the highlight region."""
 
         if len(selections):
             if selections == "content_selections":

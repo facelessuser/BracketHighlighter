@@ -1,0 +1,99 @@
+documents:
+- name: settings
+  sources:
+  - '**/*.sublime-settings'
+  aspell:
+    lang: en
+  dictionary:
+    lang: en
+    wordlists:
+    - docs/src/dictionary/en-custom.txt
+    output: build/dictionary/settings.dic
+  filters:
+  - tests.sublime_settings_filter:
+      group_comments: true
+  - pyspelling.filters.context:
+      context_visible_first: true
+      escapes: \\[\\`~]
+      delimiters:
+      - open: (?P<open>`+)
+        content: .*?
+        close: (?P=open)
+      - open: (?s)^(?P<open>\s*~{3,})
+        content: .*?
+        close: ^(?P=open)$
+
+- name: mkdocs
+  sources:
+  - site/**/*.html
+  aspell:
+    lang: en
+  dictionary:
+    lang: en
+    wordlists:
+    - docs/src/dictionary/en-custom.txt
+    output: build/dictionary/mkdocs.dic
+  filters:
+  - pyspelling.filters.html:
+      comments: false
+      attributes:
+      - title
+      - alt
+      ignores:
+      - code
+      - pre
+      - a.magiclink-compare
+      - a.magiclink-commit
+      - span.keys
+      - .MathJax_Preview
+      - .md-nav__link
+      - .md-footer-custom-text
+      - .md-source__repository
+      - .headerlink
+      - .md-icon
+
+- name: markdown
+  sources:
+  - readme.md
+  aspell:
+    lang: en
+  dictionary:
+    lang: en
+    wordlists:
+    - docs/src/dictionary/en-custom.txt
+    output: build/dictionary/markdown.dic
+  filters:
+  - pyspelling.filters.markdown:
+  - pyspelling.filters.html:
+      comments: false
+      attributes:
+      - title
+      - alt
+      ignores:
+      - code
+      - pre
+
+- name: python
+  sources:
+  - './**/*.py'
+  aspell:
+    lang: en
+  dictionary:
+    lang: en
+    wordlists:
+    - docs/src/dictionary/en-custom.txt
+    output: build/dictionary/python.dic
+  filters:
+  - pyspelling.filters.python:
+      comments: false
+      strings: false
+  - pyspelling.filters.context:
+      context_visible_first: true
+      escapes: \\[\\`~]
+      delimiters:
+      - open: (?P<open>`+)
+        content: .*?
+        close: (?P=open)
+      - open: (?s)^(?P<open>\s*~{3,})
+        content: .*?
+        close: ^(?P=open)$

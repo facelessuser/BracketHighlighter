@@ -20,7 +20,7 @@ theme:
     text: Roboto
     code: Roboto Mono
 
-pages:
+nav:
   - About BracketHighlighter: index.md
   - Installation: installation.md
   - Basic Usage: usage.md
@@ -67,8 +67,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.progressbar:
-  - pymdownx.plainhtml:
-      strip_attributes: ''
+  - pymdownx.striphtml:
   - pymdownx.snippets:
       base_path: docs/src/markdown/_snippets
   - pymdownx.keys:

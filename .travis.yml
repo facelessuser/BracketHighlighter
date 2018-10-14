@@ -4,7 +4,7 @@ language: python
 
 matrix:
   include:
-  - python: 3.3
+  - python: 3.6
     env: TESTENV=unittest
   - python: 3.6
     env: TESTENV=documents
@@ -17,6 +17,7 @@ install:
   - pip install flake8-builtins
   - pip install pep8-naming
   - pip install pytest
+  - pip install pyspelling
   - pip install mkdocs-material
   - pip install pymdown-extensions
   - pip install pygments
@@ -30,8 +31,8 @@ addons:
 script:
   - if [ $TESTENV = unittest ]; then py.test .; fi
   - if [ $TESTENV = unittest ]; then flake8 .; fi
-  - if [ $TESTENV = documents ]; then python tests/spellcheck.py; fi
   - if [ $TESTENV = documents ]; then mkdocs build --clean --verbose --strict; fi
+  - if [ $TESTENV = documents ]; then python -m pyspelling; fi
 
 deploy:
   - provider: pages
