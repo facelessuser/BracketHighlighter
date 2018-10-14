@@ -20,7 +20,7 @@ theme:
     text: Roboto
     code: Roboto Mono
 
-pages:
+nav:
   - About BracketHighlighter: index.md
   - Installation: installation.md
   - Basic Usage: usage.md
