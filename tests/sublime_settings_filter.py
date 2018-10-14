@@ -33,10 +33,6 @@ class SublimeSettingsFilter(filters.Filter):
 
         super(SublimeSettingsFilter, self).__init__(options, default_encoding)
 
-    def filter(self, text, encoding):
-        """Filter JSON strings."""
-        return text
-
     def _evaluate(self, m):
         """Search for comments."""
 
@@ -104,7 +100,7 @@ class SublimeSettingsFilter(filters.Filter):
 
         return ''.join(map(lambda m: self._evaluate(m), RE_COMMENT.finditer(text)))
 
-    def filter(self, source_file, encoding):
+    def filter(self, source_file, encoding):  # noqa A001
         """Parse HTML file."""
 
         with codecs.open(source_file, 'r', encoding=encoding) as f:
@@ -113,7 +109,7 @@ class SublimeSettingsFilter(filters.Filter):
     def sfilter(self, source):
         """String filter."""
 
-        return self._find(source.text, source.context, source.encoding)
+        return self._filter(source.text, source.context, source.encoding)
 
 
 def get_filter():
