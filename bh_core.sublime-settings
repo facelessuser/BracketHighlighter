@@ -205,7 +205,7 @@
                 "string.template.js, meta.template.expression.js"
             ],
             "language_filter": "whitelist",
-            "language_list": ["Ruby", "Shell-Unix-Generic", "JavaScript", "JavaScriptNext"],
+            "language_list": ["Ruby", "Shell-Unix-Generic", "Bash", "JavaScript", "JavaScriptNext"],
             "sub_bracket_search": "true",
             "enabled": true
         },
@@ -517,7 +517,7 @@
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.bashsupport",
             "language_filter": "whitelist",
-            "language_list": ["Shell-Unix-Generic"],
+            "language_list": ["Shell-Unix-Generic", "Bash"],
             "enabled": true
         },
         //Fish shell
