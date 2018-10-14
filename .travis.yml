@@ -4,7 +4,7 @@ language: python
 
 matrix:
   include:
-  - python: 3.3
+  - python: 3.6
     env: TESTENV=unittest
   - python: 3.6
     env: TESTENV=documents
