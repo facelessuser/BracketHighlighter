@@ -361,7 +361,7 @@ class TagMatch(object):
         if self.no_tag or (self.left and self.right):
             return self.left, self.right
 
-        # Init tag matching objects
+        # Initialize tag matching objects
         osearch = TagSearch(
             self.view, self.bfr, self.window,
             self.center, self.tag_open,

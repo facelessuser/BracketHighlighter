@@ -20,8 +20,8 @@ GitHub
 GitLab
 JSON
 JavaScript
-LaTeX
 Jun
+LaTeX
 Lua
 MERCHANTABILITY
 Mar
@@ -85,6 +85,7 @@ sublicense
 tuple
 un
 unescaping
+unneeded
 versa
 whitelist
 whitespace
