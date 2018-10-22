@@ -365,7 +365,7 @@ class BhRegion(object):
                     if remainder and tabs:
                         # Index of first non-whitespace character.
                         # Account for smaller tabs that are not aligned on
-                        # tab_size boudary.
+                        # tab_size boundary.
                         index = tab_aligned + (tabs * (tab_size - 1)) + tab_size
                     else:
                         # Index of first non-whitespace character.
@@ -383,12 +383,12 @@ class BhRegion(object):
                 include = True
 
                 # Loop through all lines after the first.
-                # Calculate the true column postion where the bar should
+                # Calculate the true column position where the bar should
                 # be drawn.  Calculation should account for tabs.
                 for y in range(start_pt, start_pt + end_pt):
                     char = self.view.substr(y)
                     if char == '\x00':
-                        # Exended past the file's end
+                        # Extended past the file's end
                         actual_pt += 1
                         break
                     elif char == "\t":
@@ -530,7 +530,7 @@ class BhRegion(object):
 
         self.change_sel()
 
-        # Sometimes Sublime is in a weird state and returns None istead fo the default we ask for
+        # Sometimes Sublime is in a weird state and returns None instead of the default we ask for
         regions_key = "bracket_highlighter.clone_regions" if clone_view else "bracket_highlighter.regions"
         locations_key = "bracket_highlighter.clone_locations" if clone_view else "bracket_highlighter.locations"
         highlight_regions = self.view.settings().get(regions_key, [])

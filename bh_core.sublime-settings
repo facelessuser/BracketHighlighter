@@ -352,6 +352,19 @@
             "ignore_string_escape": true,
             "enabled": true
         },
+        //XML
+        {
+            "name":"xml_cdata",
+            "open":"(<!\\[CDATA\\[)",
+            "close":"(\\]\\]>)",
+            "style":"default",
+            "language_filter": "whitelist",
+            "language_list": ["XML"],
+            "scope_exclude": [
+                "comment"
+            ],
+            "enabled":true
+        },
         {
             "name": "square",
             "open": "(\\[)",

@@ -91,7 +91,7 @@ def process_overrides(rules):
             final[pos] = dict(list(final[pos].items()) + list(v.items()))
 
     # Track which positions are specified
-    # If an postition index has aleady been
+    # If an position index has already been
     # specified or is invalid, discard the index.
     for rule in final:
         index = rule.get("position")

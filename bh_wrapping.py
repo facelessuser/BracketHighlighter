@@ -334,7 +334,7 @@ class BhNextWrapSelCommand(sublime_plugin.TextCommand):
             self.view.sel().clear()
             self.view.sel().add_all(regions)
 
-        # Clean up unneed sections
+        # Clean up unneeded sections
         self.view.erase_regions(SEL_REGION)
         self.view.erase_regions(OUT_REGION)
 

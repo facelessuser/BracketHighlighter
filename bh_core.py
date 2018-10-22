@@ -73,7 +73,7 @@ class BhCore(object):
         if plugin is None:
             plugin = {}
 
-        # Init view params
+        # Initialize view parameters
         self.refresh_match = False
         self.last_id_view = None
         self.last_id_sel = None
@@ -88,7 +88,7 @@ class BhCore(object):
             no_block_mode = self.settings.get('ignore_block_mode_in_plugin', True)
         block_cursor = self.settings.get('block_cursor_mode', False) and not no_block_mode
 
-        # Init search object
+        # Initialize search object
         self.rules = bh_rules.SearchRules(
             self.settings.get("brackets", []) + self.settings.get("user_brackets", []),
             self.settings.get("scope_brackets", []) + self.settings.get("user_scope_brackets", []),
@@ -97,12 +97,12 @@ class BhCore(object):
             block_cursor
         )
 
-        # Init selection params
+        # Initialize selection parameters
         self.use_selection_threshold = True
         self.selection_threshold = int(self.settings.get("search_threshold", 5000))
         self.loaded_modules = set([])
 
-        # Init plugin
+        # Initialize plugin
         alter_select = False
         self.plugin = None
         self.plugin_targets = set([])
@@ -113,7 +113,7 @@ class BhCore(object):
                 for target in plugin["type"]:
                     self.plugin_targets.add(target)
 
-        # Region selection, highlight, managment
+        # Region selection, highlight, management
         self.regions = bh_regions.BhRegion(alter_select, count_lines)
 
     def refresh_rules(self, language):
@@ -420,7 +420,7 @@ class BhCore(object):
                     self.regions.store_sel([sel])
                     continue
 
-                # Subsearch guard for recursive matching of scopes
+                # Sub-search guard for recursive matching of scopes
                 self.recursive_guard = False
 
                 # Prepare for search
@@ -548,7 +548,6 @@ class BhCore(object):
                     center, before_center, scope, adj_dir
                 )
             except Exception:
-                # log(str(traceback.format_exc()))
                 scope_count += 1
                 continue
 
