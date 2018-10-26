@@ -75,7 +75,7 @@ def highlighting(view, name, style, left, right):
     tag_settings = sublime.load_settings("bh_tag.sublime-settings")
     match_style = tag_settings.get("tag_style", {}).get(last_mode, None)
     if match_style is not None and style == match_style:
-        tag_name = tag_settings.get('tag_name', {}).get(last_mode, '[\w\:\.\-]+')
+        tag_name = tag_settings.get('tag_name', {}).get(last_mode, r'[\w\:\.\-]+')
         if left is not None:
             region = view.find(tag_name, left.begin)
             left = left.move(region.begin(), region.end())
