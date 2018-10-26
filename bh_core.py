@@ -787,7 +787,7 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
         # Get relative bracket regions for point
         if point is not None:
             clone_view = self.view.id() == self.view.settings().get('bracket_highlighter.clone', -1)
-            locations_key = 'bracket_highlighter.clone' if clone_view else 'bracket_highlighter.clone_locations'
+            locations_key = 'bracket_highlighter.clone_locations' if clone_view else 'bracket_highlighter.locations'
             locations = self.view.settings().get(locations_key, {})
             for k, v in locations.get('unmatched', {}).items():
                 if v[0] <= point <= v[1]:
@@ -979,7 +979,11 @@ class BhListenerCommand(sublime_plugin.EventListener):
         """Show popup indicating where other offscreen bracket is located."""
 
         settings = sublime.load_settings('bh_core.sublime-settings')
-        if GLOBAL_ENABLE and bh_popup.HOVER_SUPPORT and settings.get('show_offscreen_bracket_popup', True):
+        if (
+            GLOBAL_ENABLE and bh_popup.HOVER_SUPPORT and
+            settings.get('show_offscreen_bracket_popup', True) and
+            not view.settings().get('bracket_highlighter.ignore', False)
+        ):
             # Find other bracket
             region = None
             index = None
@@ -1050,12 +1054,12 @@ class BhListenerCommand(sublime_plugin.EventListener):
             if settings.get('bracket_highlighter.regions'):
                 for region_key in view.settings().get("bracket_highlighter.regions", []):
                     view.erase_regions(region_key)
-                view.settings().set('bracket_highlighter.clone_locations', [])
+                view.settings().set('bracket_highlighter.clone_locations', {})
             # Clone views (settings are shared between normal and cloned)
             if settings.get('bracket_highlighter.clone_regions'):
                 for region_key in view.settings().get("bracket_highlighter.clone_regions", []):
                     view.erase_regions(region_key)
-                view.settings().set('bracket_highlighter.clone_locations', [])
+                view.settings().set('bracket_highlighter.clone_locations', {})
 
     def on_activated(self, view):
         """Highlight brackets when the view gains focus again."""
