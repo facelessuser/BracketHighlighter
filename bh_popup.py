@@ -47,9 +47,9 @@ template_options = {
     "block_start_string": "\x02{%",
     "block_end_string": "%}\x03",
     "variable_start_string": "\x02{{",
-    "variable_end_string": "}}\x02",
+    "variable_end_string": "}}\x03",
     "comment_start_string": "\x02{#",
-    "comment_end_string": "#}\x02"
+    "comment_end_string": "#}\x03"
 }
 
 if HOVER_SUPPORT:
