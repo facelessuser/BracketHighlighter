@@ -1,6 +1,9 @@
 # BracketHighlighter 2.27.5
 
 - **FIX**: Fix issue where bracket context code blocks in popups sometimes are recognized as Jinja2 template variables.
+- **FIX**: Fix internal clone view cleanup.
+- **FIX**: Fix bad clone reference.
+- **FIX**: `on_hover` should not occur if `bracket_highlighter.ignore` is set in the view.
 
 # BracketHighlighter 2.27.4
 
