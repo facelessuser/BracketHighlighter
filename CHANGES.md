@@ -1,3 +1,7 @@
+# BracketHighlighter 2.27.5
+
+- **FIX**: Fix issue where bracket context code blocks in popups sometimes are recognized as Jinja2 template variables.
+
 # BracketHighlighter 2.27.4
 
 Jun 14, 2018
