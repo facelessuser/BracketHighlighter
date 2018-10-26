@@ -23,7 +23,7 @@ div.bracket-highlighter { padding: 0; margin: 0; }
 {%- endif %}
 '''
 MATCH_ERR = '''
-{%%- if plugin.mdpopups_version >= (2, 0, 0) %%}
+\x02{%%- if plugin.mdpopups_version >= (2, 0, 0) %%}\x03
 !!! panel-error "Matching bracket could not be found!"
 
     - There *might* be no match.
@@ -32,7 +32,7 @@ MATCH_ERR = '''
     A match done without the threshold *might* find it.
 
 [(Match brackets without threshold)](%(pt)s)
-{%%- else %%}
+\x02{%%- else %%}\x03
 ### Matching bracket could not be found! {: .error}
 
 - There *might* be no match.
@@ -40,8 +40,17 @@ MATCH_ERR = '''
 - Matching bracket *might* be beyond the search threshold.
 A match done without the threshold *might* find it.
 [(Match brackets without threshold)](%(pt)s)
-{%%- endif %%}
+\x02{%%- endif %%}\x03
 '''
+
+template_options = {
+    "block_start_string": "\x02{%",
+    "block_end_string": "%}\x03",
+    "variable_start_string": "\x02{{",
+    "variable_end_string": "}}\x02",
+    "comment_start_string": "\x02{#",
+    "comment_end_string": "#}\x02"
+}
 
 if HOVER_SUPPORT:
     import mdpopups
@@ -86,7 +95,8 @@ class BhOffscreenPopup(object):
                 max_height=800,
                 location=point,
                 on_navigate=self.on_navigate_unmatched,
-                template_vars={'mdpopups_version': mdpopups.version()}
+                template_vars={'mdpopups_version': mdpopups.version()},
+                template_env_options=template_options
             )
 
     def is_bracket_visible(self, view, region):
@@ -216,7 +226,8 @@ class BhOffscreenPopup(object):
                     max_width=800,
                     location=point,
                     on_navigate=self.on_navigate,
-                    template_vars={'mdpopups_version': mdpopups.version()}
+                    template_vars={'mdpopups_version': mdpopups.version()},
+                    template_env_options=template_options
                 )
             else:
                 self.show_unmatched_popup(view, point)
@@ -300,5 +311,6 @@ class BhOffscreenPopup(object):
                     max_width=800,
                     location=point,
                     on_navigate=self.on_navigate,
-                    template_vars={'mdpopups_version': mdpopups.version()}
+                    template_vars={'mdpopups_version': mdpopups.version()},
+                    template_env_options=template_options
                 )
