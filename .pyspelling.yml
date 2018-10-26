@@ -15,14 +15,17 @@ matrix:
       line_comments: false
   - pyspelling.filters.context:
       context_visible_first: true
-      escapes: \\[\\`~]
+      escapes: '\\[\\`]'
       delimiters:
-      - open: (?P<open>`+)
-        content: .*?
-        close: (?P=open)
-      - open: (?s)^(?P<open>\s*~{3,})
-        content: .*?
-        close: ^(?P=open)$
+      # Ignore multiline content between fences (fences can have 3 or more back ticks)
+      # ```
+      # content
+      # ```
+      - open: '(?s)^(?P<open> *`{3,})$'
+        close: '^(?P=open)$'
+      # Ignore text between inline back ticks
+      - open: '(?P<open>`+)'
+        close: '(?P=open)'
 
 - name: mkdocs
   sources:
@@ -83,7 +86,7 @@ matrix:
     output: build/dictionary/python.dic
   pipeline:
   - pyspelling.filters.python:
-      group_comments: True
+      group_comments: true
   - pyspelling.flow_control.wildcard:
       allow:
       - py-comment
@@ -91,16 +94,21 @@ matrix:
       context_visible_first: true
       delimiters:
       # Ignore lint (noqa) and coverage (pragma) as well as shebang (#!)
-      - open: ^(?:(?:noqa|pragma)\b|!)
-        close: $
+      - open: '^(?: *(?:noqa\b|pragma: no cover)|!)'
+        close: '$'
       # Ignore Python encoding string -*- encoding stuff -*-
-      - open: ^ *-\*-
-        close: -\*-$
+      - open: '^ *-\*-'
+        close: '-\*-$'
   - pyspelling.filters.context:
       context_visible_first: true
-      escapes: \\[\\`~]
+      escapes: '\\[\\`]'
       delimiters:
-        - open: (?P<open>`+)
-          close: (?P=open)
-        - open: (?s)^(?P<open>\s*~{3,})
-          close: ^(?P=open)$
+      # Ignore multiline content between fences (fences can have 3 or more back ticks)
+      # ```
+      # content
+      # ```
+      - open: '(?s)^(?P<open> *`{3,})$'
+        close: '^(?P=open)$'
+      # Ignore text between inline back ticks
+      - open: '(?P<open>`+)'
+        close: '(?P=open)'
