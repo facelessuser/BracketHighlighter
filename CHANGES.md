@@ -1,6 +1,7 @@
 # BracketHighlighter 2.27.6
 
 - **FIX**: Fix issue where HTML style attribute quotes where not highlighted due to syntax definition changes.
+- **FIX**: Add support for `@` in HTML attributes.
 
 # BracketHighlighter 2.27.5
 
