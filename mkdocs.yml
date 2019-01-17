@@ -5,7 +5,7 @@ edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 copyright: |
   Copyright &copy; 2013 - 2018 <a href="https://github.com/facelessuser">Isaac Muse</a>
-  <br><span class="md-footer-custom-text">emoji provided free by </span><a href="http://www.emojione.com">EmojiOne</a>
+  <br><span class="md-footer-custom-text">emoji provided free by <a href="http://www.emojione.com">EmojiOne</a></span>
 
 docs_dir: docs/src/markdown
 theme:
