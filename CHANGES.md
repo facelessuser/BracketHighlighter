@@ -1,3 +1,7 @@
+# BracketHighlighter 2.27.6
+
+- **FIX**: Fix issue where HTML style attribute quotes where not highlighted due to syntax definition changes.
+
 # BracketHighlighter 2.27.5
 
 - **FIX**: Fix issue where bracket context code blocks in popups sometimes are recognized as Jinja2 template variables.

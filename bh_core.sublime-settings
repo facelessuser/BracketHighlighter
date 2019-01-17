@@ -176,7 +176,11 @@
             "open": "(')",
             "close": "(')",
             "style": "single_quote",
-            "scopes": ["string", "string.quoted"],
+            "scopes": [
+                "meta.attribute-with-value.style.html -entity.other.attribute-name.style.html -punctuation.separator.key-value.html",
+                "string",
+                "string.quoted"
+            ],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
@@ -187,7 +191,11 @@
             "open": "(\")",
             "close": "(\")",
             "style": "double_quote",
-            "scopes": ["string", "string.quoted"],
+            "scopes": [
+                "meta.attribute-with-value.style.html -entity.other.attribute-name.style.html -punctuation.separator.key-value.html",
+                "string",
+                "string.quoted"
+            ],
             "language_filter": "blacklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
