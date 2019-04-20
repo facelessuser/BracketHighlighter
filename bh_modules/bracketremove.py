@@ -4,7 +4,7 @@ BracketHighlighter.
 Copyright (c) 2013 - 2016 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
-import BracketHighlighter.bh_plugin as bh_plugin
+from BracketHighlighter import bh_plugin
 import re
 import sublime
 

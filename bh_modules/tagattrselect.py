@@ -5,7 +5,7 @@ Copyright (c) 2013 - 2016 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
 import sublime
-import BracketHighlighter.bh_plugin as bh_plugin
+from BracketHighlighter import bh_plugin
 from BracketHighlighter.bh_plugin import import_module
 tags = import_module("bh_modules.tags")
 
