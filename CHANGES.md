@@ -1,3 +1,7 @@
+#BracketHighlighter 2.27.7
+
+- **FIX**: Fix Ruby interpolated strings.
+
 # BracketHighlighter 2.27.6
 
 - **FIX**: Fix issue where HTML style attribute quotes where not highlighted due to syntax definition changes.
