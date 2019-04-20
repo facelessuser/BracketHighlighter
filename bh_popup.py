@@ -10,7 +10,7 @@ import sublime
 import re
 import textwrap
 import traceback
-from BracketHighlighter.bh_logging import log
+from .bh_logging import log
 
 HOVER_SUPPORT = int(sublime.version()) >= 3124
 WRAPPER_CLASS = "bracket-highlighter"

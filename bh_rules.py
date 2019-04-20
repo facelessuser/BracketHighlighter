@@ -5,8 +5,8 @@ Copyright (c) 2013 - 2016 Isaac Muse <isaacmuse@gmail.com>
 License: MIT
 """
 from backrefs import bre
-import BracketHighlighter.bh_plugin as bh_plugin
-from BracketHighlighter.bh_logging import debug, log
+from . import bh_plugin
+from .bh_logging import debug, log
 from operator import itemgetter
 import sublime
 import sublime_plugin

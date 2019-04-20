@@ -10,12 +10,12 @@ from os.path import basename, splitext
 from time import time, sleep
 import threading
 import traceback
-import BracketHighlighter.bh_plugin as bh_plugin
-import BracketHighlighter.bh_search as bh_search
-import BracketHighlighter.bh_regions as bh_regions
-import BracketHighlighter.bh_rules as bh_rules
-import BracketHighlighter.bh_popup as bh_popup
-from BracketHighlighter.bh_logging import debug, log
+from . import bh_plugin
+from . import bh_search
+from . import bh_regions
+from . import bh_rules
+from . import bh_popup
+from .bh_logging import debug, log
 
 if 'bh_thread' not in globals():
     bh_thread = None
