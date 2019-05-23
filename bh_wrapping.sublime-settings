@@ -75,10 +75,10 @@
             ]
         }
     ],
-    // user_swapping will be appended to the tail of swapping
+    // user_wrapping will be appended to the tail of swapping
     // If you have custom rules that you don't want to commit to
     // the official list, and do not need to be inserted before
     // one of the official definitions, this is a good place to
     // put yours rules and keep in sync with the defaults.
-    "user_swapping": []
+    "user_wrapping": []
 }
