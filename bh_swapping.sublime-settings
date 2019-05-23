@@ -54,5 +54,5 @@
     // the official list, and do not need to be inserted before
     // one of the official definitions, this is a good place to
     // put yours rules and keep in sync with the defaults.
-    "user_swapping": [],
+    "user_swapping": []
 }
