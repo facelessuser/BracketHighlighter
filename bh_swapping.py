@@ -70,7 +70,7 @@ class SwapBracketsCommand(sublime_plugin.TextCommand):
 
         self.async = async
         self.window = self.view.window()
-        self.wrap = SwapBrackets(self.view, "bh_swapping.sublime-settings", "swapping")
+        self.wrap = SwapBrackets(self.view, "bh_swapping.sublime-settings", "swapping", "user_swapping")
 
         if len(self.wrap._menu):
             self.window.show_quick_panel(

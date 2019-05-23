@@ -676,7 +676,7 @@ Parameters                   | Description
 
 ### Bracket Rule Management
 
-In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
+In the past, BracketHighlighter required a user to copy the entire bracket list to the user `bh_core.sublime-settings`/`bh_swapping.sublime-settings`/`bh_wrapping.sublime-settings` file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.
 
 BracketHighlighter now lets you add or modify existing rules without overriding the entire rule set, or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":
 
