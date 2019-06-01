@@ -1,3 +1,7 @@
+# BracketHighlighter 2.27.7
+
+- **FIX**: Thread adjustments that allow BracketHighlighter to go completely idle when Sublime Text is idle.
+
 # BracketHighlighter 2.27.6
 
 - **FIX**: Fix issue where HTML style attribute quotes where not highlighted due to syntax definition changes.
