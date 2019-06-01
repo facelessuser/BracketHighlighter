@@ -57,6 +57,20 @@
         "keys": ["ctrl+alt+super+x"],
         "command": "bh_toggle_string_escape_mode"
     },
+    // Jump to matching bracket
+    {
+        "keys": ["ctrl+m"],
+        "command": "bh_key",
+        "args": {
+            "plugin": {
+                "args": {"select": "right", "alternate": true},
+                "command": "bh_modules.bracketselect",
+                "type": ["__all__"]
+            },
+            "lines": true,
+            "no_outside_adj": null
+        }
+    },
     // Select text between brackets
     {
         "no_outside_adj": null,
