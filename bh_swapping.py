@@ -6,7 +6,7 @@ License: MIT
 """
 import sublime
 import sublime_plugin
-import BracketHighlighter.bh_wrapping as bh_wrapping
+from . import bh_wrapping
 
 
 class SwapBrackets(bh_wrapping.WrapBrackets):
