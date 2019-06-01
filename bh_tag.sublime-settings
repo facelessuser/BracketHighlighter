@@ -69,8 +69,8 @@
     "optional_tag_patterns": {
         "xml": null,
         "xhtml": null,
-        "html": "colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr",
-        "cfml": "cf.+|colgroup|dd|dt|li|options|p|td|tfoot|th|thead|tr"
+        "html": "colgroup|dd|dt|li|option|optgroup|p|td|tfoot|th|thead|tr",
+        "cfml": "cf.+|colgroup|dd|dt|li|option|optgroup|p|td|tfoot|th|thead|tr"
     },
 
     // Tags that never have a closing.  You can use 'null' if it does not require a pattern.
