@@ -1179,6 +1179,7 @@ def start_task():
     if bh_thread.is_alive():
         bh_thread.queue.put(True)
 
+
 def init_bh_match():
     """Initialize the match object."""
 
