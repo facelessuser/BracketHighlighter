@@ -1,6 +1,7 @@
 # BracketHighlighter 2.27.7
 
 - **FIX**: Thread adjustments that allow BracketHighlighter to go completely idle when Sublime Text is idle.
+- **FIX**: Fix Ruby interpolated strings.
 
 # BracketHighlighter 2.27.6
 
