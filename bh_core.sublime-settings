@@ -311,18 +311,6 @@
             "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
             "sub_bracket_search": "true",
             "enabled": true
-        },
-        // OCaml
-        {
-            "name": "ocaml_comment",
-            "open": "(\\(\\*)",
-            "close": "(\\*\\))",
-            "style": "default",
-            "scopes": ["comment.block.ocaml"],
-            "language_filter": "whitelist",
-            "language_list": ["OCaml"],
-            "sub_bracket_search": "false",
-            "enabled": true
         }
     ],
 
@@ -332,6 +320,18 @@
     // Once all matches are found, the closest pair surrounding
     // the cursor are selected.
     "brackets": [
+        // OCaml
+        {
+            "name": "ocaml_comment",
+            "open": "(\\(\\*)",
+            "close": "(\\*\\))",
+            "style": "default",
+            "scope_exclude": ["-comment"],
+            "language_filter": "whitelist",
+            "language_list": ["OCaml"],
+            "sub_bracket_search": "false",
+            "enabled": true
+        },
         // Basic brackets
         {
             "name": "curly",
