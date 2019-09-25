@@ -365,7 +365,7 @@
                 "string",
                 "comment",
                 "source.regexp constant.character.escape",
-                "punctuation.definition.case-pattern.shell",
+                "keyword.control.conditional.patterns.end.shell",
                 "source.yaml-tmlanguage constant.character.escape"
             ],
             "language_filter": "blacklist",
