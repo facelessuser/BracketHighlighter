@@ -1,5 +1,7 @@
 # BracketHighlighter 2.27.7
 
+- **FIX**: Update support to include OCaml comment support.
+- **FIX**: Fix avoiding round brackets in shell case statements.
 - **FIX**: Thread adjustments that allow BracketHighlighter to go completely idle when Sublime Text is idle.
 - **FIX**: Fix Ruby interpolated strings.
 - **FIX**: Fix optional tags for `option` and `optgroup`.
