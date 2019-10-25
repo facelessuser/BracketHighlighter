@@ -72,6 +72,7 @@ delete_labels: true
 colors:
     bug: '#c45b46'
     feature: '#7b17d8'
+    enhancement: '#0b9e9e'
     support: '#efbe62'
     maintenance: '#b2ffeb'
     category: '#709ad8'
@@ -90,6 +91,9 @@ labels:
 - name: feature
   color: feature
   description: Feature request.
+
+- name: enhancement
+  color: enhancement
 
 - name: maintenance
   color: maintenance
