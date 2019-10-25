@@ -5,9 +5,7 @@ extended_glob: true
 
 rules:
   - labels: [infrastructure]
-    patterns:
-      - '*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings))'
-      - '@(requirements|.github)/**'
+    patterns: ['*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings))', '@(requirements|.github)/**']
 
   - labels: [source]
     patterns: ['**/*.py|-tests']
