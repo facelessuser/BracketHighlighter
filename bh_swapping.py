@@ -49,7 +49,7 @@ class SwapBracketsCommand(sublime_plugin.TextCommand):
         self.brackets = self.wrap._brackets[value]
 
         self.view.run_command(
-            "bh_async_key" if self.async else "bh_key",
+            "bh_async_key" if self._async else "bh_key",
             {
                 "plugin": {
                     "type": ["__all__"],
@@ -60,15 +60,15 @@ class SwapBracketsCommand(sublime_plugin.TextCommand):
 
         self.view = self.window.active_view()
 
-        if self.async:
+        if self._async:
             sublime.set_timeout(lambda: self.finalize(lambda: self.wrap.wrap(value)), 100)
         else:
             self.finalize(self.wrap.wrap(value))
 
-    def run(self, edit, async=False):
+    def run(self, edit, **kwargs):
         """Initiate the swap."""
 
-        self.async = async
+        self._async = kwargs.get('async', False)
         self.window = self.view.window()
         self.wrap = SwapBrackets(self.view, "bh_swapping.sublime-settings", "swapping")
 
