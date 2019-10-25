@@ -1,0 +1,31 @@
+name: deploy
+
+on:
+  push:
+    tags:
+    - 'st3-*'
+
+jobs:
+
+  documents:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools
+        python -m pip install -r requirements/docs.txt
+    - name: Deploy documents
+      run: |
+        git config user.name facelessuser
+        git config user.email "${{ secrets.GH_EMAIL }}"
+        git remote add gh-token "https://${{ secrets.GITHUB_TOKEN }}@github.com/facelessuser/pymdown-extensions.git"
+        git fetch gh-token && git fetch gh-token gh-pages:gh-pages
+        python -m mkdocs gh-deploy -v --clean --remote-name gh-token
+        git push gh-token gh-pages

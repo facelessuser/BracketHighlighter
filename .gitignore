@@ -1,9 +1,6 @@
 *.pyc
-
 .DS_Store
-
 site/*
-
 build/*
-
 .cache/*
+.tox/*
