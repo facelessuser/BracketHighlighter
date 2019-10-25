@@ -1,0 +1,234 @@
+# Wildcard labels
+
+brace_expansion: true
+extended_glob: true
+
+rules:
+  - labels: [infrastructure]
+    patterns:
+      - '*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings))'
+      - '@(requirements|.github)/**'
+
+  - labels: [source]
+    patterns: ['**/*.py|-tests']
+
+  - labels: [docs]
+    patterns: ['**/*.md|docs/**']
+
+  - labels: [tests]
+    patterns: ['tests/**']
+
+  - labels: [plugins]
+    patterns: ['bh_modules/**|bh_plugin.py']
+
+  - labels: [swapping]
+    patterns: ['**/*swapping*']
+
+  - labels: [wrapping]
+    patterns: ['**/*wrapping*']
+
+  - labels: [core]
+    patterns: ['**/*core*']
+
+  - labels: [logging]
+    patterns: ['bh_logging.py']
+
+  - labels: [popups]
+    patterns: ['bh_popup.py']
+
+  - labels: [regions]
+    patterns: ['bh_regions.py']
+
+  - labels: [remove]
+    patterns: ['bh_remove.py']
+
+  - labels: [rules]
+    patterns: ['bh_rules.py']
+
+  - labels: [search]
+    patterns: ['bh_search.py']
+
+  - labels: [tags]
+    patterns: ['**/bh_modules/tag@(s|attrselect|nameselect).py|bh_tag.sublime-settings']
+
+  - labels: [settings]
+    patterns: ['*.sublime-@(keymap|menu|settings)']
+
+  - labels: [icons]
+    patterns: ['**/icons/*']
+
+# WIP
+
+wip:
+  - work-in-progress
+  - needs-review
+  - needs-decision
+  - needs-confirmation
+  - requires-changes
+  - rejected
+
+# Label management
+
+delete_labels: true
+
+colors:
+    bug: '#c45b46'
+    feature: '#7b17d8'
+    support: '#efbe62'
+    maintenance: '#b2ffeb'
+    category: '#709ad8'
+    subcategory: '#bfd4f2'
+    pending: '#f0f49a'
+    rejected: '#f7c7be'
+    approved: '#beed6d'
+    low: '#dddddd'
+    bot: '#000000'
+
+labels:
+- name: bug
+  color: bug
+  description: Bug report.
+
+- name: feature
+  color: feature
+  description: Feature request.
+
+- name: maintenance
+  color: maintenance
+  description: Maintenance chore.
+
+- name: support
+  color: support
+  description: Support request.
+
+- name: tests
+  color: category
+  description: Related to testing.
+
+- name: infrastructure
+  color: category
+  description: Related to project infrastructure.
+
+- name: source
+  color: category
+  description: Related to source code.
+
+- name: docs
+  color: category
+  description: Related to documentation.
+
+- name: plugins
+  color: subcategory
+  description: Related to plugins.
+
+- name: swapping
+  color: subcategory
+  description: Related to the swapping library.
+
+- name: wrapping
+  color: subcategory
+  description: Related to the wrapping library.
+
+- name: core
+  color: subcategory
+  description: Related to the core code.
+
+- name: logging
+  color: subcategory
+  description: Related to logging
+
+- name: popups
+  color: subcategory
+  description: Related to popups
+
+- name: regions
+  color: subcategory
+  description: Related to regions.
+
+- name: remove
+  color: subcategory
+  description: Related to bracket removal.
+
+- name: rules
+  color: subcategory
+  description: Related to bracket rules.
+
+- name: search
+  color: subcategory
+  description: Related to search.
+
+- name: tags
+  color: subcategory
+  description: Related to tag handling.
+
+- name: settings
+  color: subcategory
+  description: Related to Sublime settings files.
+
+- name: icons
+  color: subcategory
+  description: Bracket icons.
+
+- name: more-info-needed
+  color: pending
+  description: More information is required.
+
+- name: needs-confirmation
+  color: pending
+  description: The alleged behavior needs to be confirmed.
+
+- name: needs-decision
+  color: pending
+  description: A decision needs to be made regarding request.
+
+- name: confirmed
+  color: approved
+  description: Confirmed bug report or approved feature request.
+
+- name: maybe
+  color: low
+  description: Pending approval of low priority request.
+
+- name: duplicate
+  color: rejected
+  description: The issue has been previously reported.
+
+- name: wontfix
+  color: rejected
+  description: The issue will not be fixed for the stated reasons.
+
+- name: invalid
+  color: rejected
+  description: Invalid report (user error, upstream issue, etc).
+
+- name: triage
+  color: pending
+  description: Issue needs triage.
+
+- name: work-in-progress
+  color: pending
+  description: A partial solution. More changes will be coming.
+
+- name: needs-review
+  color: pending
+  description: Needs to be reviewed and/or approved.
+
+- name: requires-changes
+  color: pending
+  description: Awaiting updates after a review.
+
+- name: approved
+  color: approved
+  description: The pull request is ready to be merged.
+
+- name: rejected
+  color: rejected
+  description: The pull request is rejected for the stated reasons.
+
+- name: skip-triage
+  color: bot
+  description: Tells bot to not tag a new issue with 'triage'.
+
+- name: skip-review
+  color: bot
+  description: Tells bot to not tag a reviews with 'needs-review'.
