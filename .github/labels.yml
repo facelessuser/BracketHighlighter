@@ -5,7 +5,7 @@ extended_glob: true
 
 rules:
   - labels: [infrastructure]
-    patterns: ['*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings))', '@(requirements|.github)/**']
+    patterns: ['*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings|commands))', '@(requirements|.github)/**']
 
   - labels: [source]
     patterns: ['**/*.py|-tests']
@@ -50,7 +50,7 @@ rules:
     patterns: ['**/bh_modules/tag@(s|attrselect|nameselect).py|bh_tag.sublime-settings']
 
   - labels: [settings]
-    patterns: ['*.sublime-@(keymap|menu|settings)']
+    patterns: ['*.sublime-@(keymap|menu|settings|commands)']
 
   - labels: [icons]
     patterns: ['**/icons/*']
