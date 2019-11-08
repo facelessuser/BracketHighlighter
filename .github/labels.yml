@@ -6,108 +6,121 @@ brace_expansion: true
 extended_glob: true
 
 rules:
-  - labels: [infrastructure]
+  - labels: ['C: infrastructure']
     patterns: ['*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings|commands))', '@(requirements|.github)/**']
 
-  - labels: [source]
+  - labels: ['C: source']
     patterns: ['**/*.py|-tests']
 
-  - labels: [docs]
+  - labels: ['C: docs']
     patterns: ['**/*.md|docs/**']
 
-  - labels: [tests]
+  - labels: ['C: tests']
     patterns: ['tests/**']
 
-  - labels: [plugins]
+  - labels: ['C: plugins']
     patterns: ['bh_modules/**|bh_plugin.py']
 
-  - labels: [swapping]
+  - labels: ['C: swapping']
     patterns: ['**/*swapping*']
 
-  - labels: [wrapping]
+  - labels: ['C: wrapping']
     patterns: ['**/*wrapping*']
 
-  - labels: [core]
+  - labels: ['C: core']
     patterns: ['**/*core*']
 
-  - labels: [logging]
+  - labels: ['C: logging']
     patterns: ['bh_logging.py']
 
-  - labels: [popups]
+  - labels: ['C: popups']
     patterns: ['bh_popup.py']
 
-  - labels: [regions]
+  - labels: ['C: regions']
     patterns: ['bh_regions.py']
 
-  - labels: [remove]
+  - labels: ['C: remove']
     patterns: ['bh_remove.py']
 
-  - labels: [rules]
+  - labels: ['C: rules']
     patterns: ['bh_rules.py']
 
-  - labels: [search]
+  - labels: ['C: search']
     patterns: ['bh_search.py']
 
-  - labels: [tags]
+  - labels: ['C: tags']
     patterns: ['**/bh_modules/tag@(s|attrselect|nameselect).py|bh_tag.sublime-settings']
 
-  - labels: [settings]
+  - labels: ['C: settings']
     patterns: ['*.sublime-@(keymap|menu|settings|commands)']
 
-  - labels: [icons]
+  - labels: ['C: icons']
     patterns: ['**/icons/*']
 
 # Label management
 
 labels:
-- name: plugins
+- name: 'C: plugins'
+  renamed: plugins
   color: subcategory
   description: Related to plugins.
 
-- name: swapping
+- name: 'C: swapping'
+  renamed: swapping
   color: subcategory
   description: Related to the swapping library.
 
-- name: wrapping
+- name: 'C: wrapping'
+  renamed: wrapping
   color: subcategory
   description: Related to the wrapping library.
 
-- name: core
+- name: 'C: core'
+  renamed: core
   color: subcategory
   description: Related to the core code.
 
-- name: logging
+- name: 'C: logging'
+  renamed: logging
   color: subcategory
   description: Related to logging
 
-- name: popups
+- name: 'C: popups'
+  renamed: popups
   color: subcategory
   description: Related to popups
 
-- name: regions
+- name: 'C: regions'
+  renamed: regions
   color: subcategory
   description: Related to regions.
 
-- name: remove
+- name: 'C: remove'
+  renamed: remove
   color: subcategory
   description: Related to bracket removal.
 
-- name: rules
+- name: 'C: rules'
+  renamed: rules
   color: subcategory
   description: Related to bracket rules.
 
-- name: search
+- name: 'C: search'
+  renamed: search
   color: subcategory
   description: Related to search.
 
-- name: tags
+- name: 'C: tags'
+  renamed: tags
   color: subcategory
   description: Related to tag handling.
 
-- name: settings
+- name: 'C: settings'
+  renamed: settings
   color: subcategory
   description: Related to Sublime settings files.
 
-- name: icons
+- name: 'C: icons'
+  renamed: icons
   color: subcategory
   description: Bracket icons.
