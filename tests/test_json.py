@@ -14,9 +14,7 @@ class TestSettings(unittest.TestCase):
         for root, dirnames, filenames in os.walk(folder):
             for filename in fnmatch.filter(filenames, pattern):
                 yield os.path.join(root, filename)
-            for dirname in [d for d in dirnames if d not in ('.svn', '.git', '.tox')]:
-                for f in self._get_json_files(pattern, os.path.join(root, dirname)):
-                    yield f
+            dirnames = [d for d in dirnames if d not in ('.svn', '.git', '.tox')]
 
     def test_json_settings(self):
         """Test each JSON file."""
