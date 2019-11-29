@@ -10,7 +10,7 @@ rules:
     patterns: ['*|-@(*.md|*.py|*.sublime-@(keymap|menu|settings|commands))', '@(requirements|.github)/**']
 
   - labels: ['C: source']
-    patterns: ['**/*.py|-tests']
+    patterns: ['**/@(*.py|*.sublime-@(keymap|menu|settings|commands))|-tests']
 
   - labels: ['C: docs']
     patterns: ['**/*.md|docs/**']
