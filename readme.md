@@ -24,7 +24,7 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 - Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selections with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold content between brackets, toggle through tag attribute selection, select both the opening and closing tag name to change both simultaneously.
 
 # Documentation
-http://facelessuser.github.io/BracketHighlighter/
+https://facelessuser.github.io/BracketHighlighter/
 
 # License
 Released under the MIT license.
