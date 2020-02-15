@@ -10,10 +10,10 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
-        <meta name="description" content="A customizable Sublime Text plugin that highlights matching brackets.">
+        <meta name="description" content="A Sublime Text hex viewer and editor.">
       
       
-        <link rel="canonical" href="https://facelessuser.github.io/BracketHighlighter/">
+        <link rel="canonical" href="https://facelessuser.github.io/HexViewer/">
       
       
       
@@ -36,15 +36,15 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
     
     
       
-        <title>BracketHighlighter Documentation</title>
+        <title>HexViewer Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="assets/stylesheets/application.adb8469c.css">
       
         <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -55,19 +55,19 @@
       
     
     
-      <script src="assets/javascripts/modernizr.74668098.js"></script>
+      <script src="assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
     <link rel="stylesheet" href="assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="extra-c507967d85.css">
+      <link rel="stylesheet" href="extra-b1410d454c.css">
     
     
       
@@ -91,7 +91,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#about-brackethighlighter" tabindex="1" class="md-skip">
+      <a href="#user-guide" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -100,7 +100,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://facelessuser.github.io/BracketHighlighter" title="BracketHighlighter Documentation" class="md-header-nav__button md-logo">
+        <a href="https://facelessuser.github.io/HexViewer" title="HexViewer Documentation" aria-label="HexViewer Documentation" class="md-header-nav__button md-logo">
           
             <i class="md-icon">description</i>
           
@@ -113,11 +113,11 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              BracketHighlighter Documentation
+              HexViewer Documentation
             </span>
             <span class="md-header-nav__topic">
               
-                About BracketHighlighter
+                User Guide
               
             </span>
           
@@ -131,7 +131,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -159,7 +159,7 @@
 
   
 
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/facelessuser/HexViewer/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -192,12 +192,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="https://facelessuser.github.io/BracketHighlighter" title="BracketHighlighter Documentation" class="md-nav__button md-logo">
+    <a href="https://facelessuser.github.io/HexViewer" title="HexViewer Documentation" class="md-nav__button md-logo">
       
         <i class="md-icon">description</i>
       
     </a>
-    BracketHighlighter Documentation
+    HexViewer Documentation
   </label>
   
     <div class="md-nav__source">
@@ -206,7 +206,7 @@
 
   
 
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/facelessuser/HexViewer/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -237,11 +237,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        About BracketHighlighter
+        User Guide
       </label>
     
-    <a href="." title="About BracketHighlighter" class="md-nav__link md-nav__link--active">
-      About BracketHighlighter
+    <a href="." title="User Guide" class="md-nav__link md-nav__link--active">
+      User Guide
     </a>
     
       
@@ -262,16 +262,371 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#feature-list" class="md-nav__link">
-    Feature List
+  <a href="#features" class="md-nav__link">
+    Features
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#credits" class="md-nav__link">
-    Credits
+  <a href="#commands" class="md-nav__link">
+    Commands
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-toggle-hex-view" class="md-nav__link">
+    HexViewer: Toggle Hex View
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-reload-hex-view" class="md-nav__link">
+    HexViewer: Reload Hex View
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-show-hex-inspector" class="md-nav__link">
+    HexViewer: Show Hex Inspector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-toggle-endiannes-biglittle" class="md-nav__link">
+    HexViewer: Toggle Endiannes (Big|Little)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-set-bits-per-group" class="md-nav__link">
+    HexViewer: Set Bits Per Group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-set-bytes-per-line" class="md-nav__link">
+    HexViewer: Set Bytes Per Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-go-to-offset" class="md-nav__link">
+    HexViewer: Go to Offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-show-hex-edit-panel" class="md-nav__link">
+    HexViewer: Show Hex Edit Panel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-discard-all-edits" class="md-nav__link">
+    HexViewer: Discard All Edits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-export-bin" class="md-nav__link">
+    HexViewer: Export Bin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-run-checksum" class="md-nav__link">
+    HexViewer: Run Checksum
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-generate-hash" class="md-nav__link">
+    HexViewer: Generate Hash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-generate-hash-from-selection" class="md-nav__link">
+    HexViewer: Generate Hash from Selection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-abort-hex-conversionexportchecksum" class="md-nav__link">
+    HexViewer: Abort (Hex Conversion|Export|Checksum)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-open-in-external-viewer" class="md-nav__link">
+    HexViewer: Open in External Viewer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurable-settings" class="md-nav__link">
+    Configurable settings
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group_bytes_by_bits" class="md-nav__link">
+    group_bytes_by_bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid_bytes_per_line" class="md-nav__link">
+    valid_bytes_per_line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bytes_per_line" class="md-nav__link">
+    bytes_per_line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_lowercase_hex" class="md-nav__link">
+    use_lowercase_hex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_font" class="md-nav__link">
+    custom_font
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_font_size" class="md-nav__link">
+    custom_font_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector" class="md-nav__link">
+    inspector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_endian" class="md-nav__link">
+    inspector_endian
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_auto_show" class="md-nav__link">
+    inspector_auto_show
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_integer_format" class="md-nav__link">
+    inspector_integer_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_float_format" class="md-nav__link">
+    inspector_float_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_double_format" class="md-nav__link">
+    inspector_double_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_missingbad_format" class="md-nav__link">
+    inspector_missing/bad_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_binary_format" class="md-nav__link">
+    inspector_binary_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_timestamp_format" class="md-nav__link">
+    inspector_timestamp_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable_fake_hex_file" class="md-nav__link">
+    enable_fake_hex_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_max_bytes" class="md-nav__link">
+    highlight_max_bytes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt_on_file_too_big" class="md-nav__link">
+    prompt_on_file_too_big
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_throttle" class="md-nav__link">
+    highlight_throttle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_scope" class="md-nav__link">
+    highlight_scope
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_scope_1" class="md-nav__link">
+    highlight_scope
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_icon" class="md-nav__link">
+    highlight_icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_edit_icon" class="md-nav__link">
+    highlight_edit_icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_style" class="md-nav__link">
+    highlight_style
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_edit_style" class="md-nav__link">
+    highlight_edit_style
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_file_size_kb" class="md-nav__link">
+    max_file_size_kb
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external_viewer" class="md-nav__link">
+    external_viewer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash_algorithm" class="md-nav__link">
+    hash_algorithm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum_on_save" class="md-nav__link">
+    checksum_on_save
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_open" class="md-nav__link">
+    auto_open
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_open_patterns" class="md-nav__link">
+    auto_open_patterns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable_auto_open_hex_encoding" class="md-nav__link">
+    disable_auto_open_hex_encoding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_sub_notify" class="md-nav__link">
+    use_sub_notify
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -294,42 +649,6 @@
   <li class="md-nav__item">
     <a href="installation/" title="Installation" class="md-nav__link">
       Installation
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="usage/" title="Basic Usage" class="md-nav__link">
-      Basic Usage
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="customize/" title="Customizing" class="md-nav__link">
-      Customizing
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="extended-regex/" title="Extended Regex Guide" class="md-nav__link">
-      Extended Regex Guide
     </a>
   </li>
 
@@ -386,16 +705,371 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#feature-list" class="md-nav__link">
-    Feature List
+  <a href="#features" class="md-nav__link">
+    Features
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#credits" class="md-nav__link">
-    Credits
+  <a href="#commands" class="md-nav__link">
+    Commands
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-toggle-hex-view" class="md-nav__link">
+    HexViewer: Toggle Hex View
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-reload-hex-view" class="md-nav__link">
+    HexViewer: Reload Hex View
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-show-hex-inspector" class="md-nav__link">
+    HexViewer: Show Hex Inspector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-toggle-endiannes-biglittle" class="md-nav__link">
+    HexViewer: Toggle Endiannes (Big|Little)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-set-bits-per-group" class="md-nav__link">
+    HexViewer: Set Bits Per Group
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-set-bytes-per-line" class="md-nav__link">
+    HexViewer: Set Bytes Per Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-go-to-offset" class="md-nav__link">
+    HexViewer: Go to Offset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-show-hex-edit-panel" class="md-nav__link">
+    HexViewer: Show Hex Edit Panel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-discard-all-edits" class="md-nav__link">
+    HexViewer: Discard All Edits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-export-bin" class="md-nav__link">
+    HexViewer: Export Bin
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-run-checksum" class="md-nav__link">
+    HexViewer: Run Checksum
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-generate-hash" class="md-nav__link">
+    HexViewer: Generate Hash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-generate-hash-from-selection" class="md-nav__link">
+    HexViewer: Generate Hash from Selection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-abort-hex-conversionexportchecksum" class="md-nav__link">
+    HexViewer: Abort (Hex Conversion|Export|Checksum)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexviewer-open-in-external-viewer" class="md-nav__link">
+    HexViewer: Open in External Viewer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configurable-settings" class="md-nav__link">
+    Configurable settings
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group_bytes_by_bits" class="md-nav__link">
+    group_bytes_by_bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid_bytes_per_line" class="md-nav__link">
+    valid_bytes_per_line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bytes_per_line" class="md-nav__link">
+    bytes_per_line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_lowercase_hex" class="md-nav__link">
+    use_lowercase_hex
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_font" class="md-nav__link">
+    custom_font
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom_font_size" class="md-nav__link">
+    custom_font_size
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector" class="md-nav__link">
+    inspector
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_endian" class="md-nav__link">
+    inspector_endian
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_auto_show" class="md-nav__link">
+    inspector_auto_show
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_integer_format" class="md-nav__link">
+    inspector_integer_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_float_format" class="md-nav__link">
+    inspector_float_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_double_format" class="md-nav__link">
+    inspector_double_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_missingbad_format" class="md-nav__link">
+    inspector_missing/bad_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_binary_format" class="md-nav__link">
+    inspector_binary_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspector_timestamp_format" class="md-nav__link">
+    inspector_timestamp_format
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable_fake_hex_file" class="md-nav__link">
+    enable_fake_hex_file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_max_bytes" class="md-nav__link">
+    highlight_max_bytes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prompt_on_file_too_big" class="md-nav__link">
+    prompt_on_file_too_big
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_throttle" class="md-nav__link">
+    highlight_throttle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_scope" class="md-nav__link">
+    highlight_scope
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_scope_1" class="md-nav__link">
+    highlight_scope
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_icon" class="md-nav__link">
+    highlight_icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_edit_icon" class="md-nav__link">
+    highlight_edit_icon
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_style" class="md-nav__link">
+    highlight_style
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#highlight_edit_style" class="md-nav__link">
+    highlight_edit_style
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max_file_size_kb" class="md-nav__link">
+    max_file_size_kb
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external_viewer" class="md-nav__link">
+    external_viewer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hash_algorithm" class="md-nav__link">
+    hash_algorithm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum_on_save" class="md-nav__link">
+    checksum_on_save
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_open" class="md-nav__link">
+    auto_open
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_open_patterns" class="md-nav__link">
+    auto_open_patterns
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable_auto_open_hex_encoding" class="md-nav__link">
+    disable_auto_open_hex_encoding
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use_sub_notify" class="md-nav__link">
+    use_sub_notify
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -415,35 +1089,348 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/facelessuser/BracketHighlighter/tree/master/docs/src/markdown/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/facelessuser/HexViewer/tree/master/docs/src/markdown/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="about-brackethighlighter">About BracketHighlighter<a class="headerlink" href="#about-brackethighlighter" title="Permanent link"></a></h1>
+                <h1 id="user-guide">User Guide<a class="headerlink" href="#user-guide" title="Permanent link"></a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link"></a></h2>
-<p>BracketHighlighter matches a variety of brackets such as: <code>[]</code>, <code>()</code>, <code>{}</code>, <code>""</code>, <code>''</code>, <code class="codehilite"><span class="nt">&lt;tag&gt;&lt;/tag&gt;</span></code>, and even custom brackets.</p>
-<p>This was originally forked from pyparadigm's <em>SublimeBrackets</em> and <em>SublimeTagmatcher</em> (both are no longer available).  I forked his repositories to fix a number issues I add some features I had wanted.  I also wanted to improve the efficiency of the matching. Moving forward, I have thrown away all of the code and have completely rewritten the entire code base to allow for more flexibility, faster matching, and a more feature rich experience.</p>
-<p><img alt="screenshot" src="images/Example1.png" /></p>
-<h2 id="feature-list">Feature List<a class="headerlink" href="#feature-list" title="Permanent link"></a></h2>
+<p>Hex Viewer is a plugin for Sublime Text that allows the toggling of a file into a hex viewing mode.  Hex Viewer also supports hex editing.</p>
+<p><img alt="Preview" src="images/preview.png" /></p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link"></a></h2>
 <ul>
-<li>Customizable to highlight almost any bracket.</li>
-<li>Customizable bracket highlight style.</li>
-<li>High visibility bracket highlight mode.</li>
-<li>Selectively disable or enable specific matching of tags, brackets, or quotes.</li>
-<li>Selectively whitelist or blacklist matching of specific tags, brackets, or quotes based on language.</li>
-<li>When bound to a shortcut, allow options to show line count and char count between match in the status bar.</li>
-<li>Highlight basic brackets within strings.</li>
-<li>Works with multi-select.</li>
-<li>Configurable custom gutter icons.</li>
-<li>Toggle bracket escape mode for string brackets (regex|string).</li>
-<li>Bracket plugins that can jump between bracket ends, select content, etc.</li>
+<li>View any file (that exist on disk) in a hex format showing both byte and ASCII representation.</li>
+<li>Command to jump to a specific address.</li>
+<li>In place editing of bytes or ASCII chars.</li>
+<li>Highlight selected byte <strong>and</strong> ASCII code.</li>
+<li>Inspection panel showing different integer representation at the cursor position.</li>
+<li>Configurable display of byte grouping, bytes per line, endianness.</li>
+<li>Export hex view to a binary file.</li>
+<li>Get the checksum of a given file (various checksums are available).</li>
+<li>Generate checksum/hash from input via panel or text selection.</li>
+<li>Optionally auto convert binary to hex view.</li>
 </ul>
-<h2 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link"></a></h2>
-<ul>
-<li>pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration for this project.</li>
-<li>BoundInCode: for his Tag icon.</li>
-</ul>
+<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link"></a></h2>
+<p>There are various commands available via the command palette or by key-bindings. Below outlines what the commands are and what they do.</p>
+<h3 id="hexviewer-toggle-hex-view">HexViewer: Toggle Hex View<a class="headerlink" href="#hexviewer-toggle-hex-view" title="Permanent link"></a></h3>
+<p>Toggles file in or out of hex view.</p>
+<h3 id="hexviewer-reload-hex-view">HexViewer: Reload Hex View<a class="headerlink" href="#hexviewer-reload-hex-view" title="Permanent link"></a></h3>
+<p>Reloads the current hex view.  All edits will be lost.</p>
+<h3 id="hexviewer-show-hex-inspector">HexViewer: Show Hex Inspector<a class="headerlink" href="#hexviewer-show-hex-inspector" title="Permanent link"></a></h3>
+<p>Show the Hex Inspector panel.  The Hex Inspector is a panel which shows the current selected byte as different unit types.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Signed</th>
+<th>Bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Byte</code></td>
+<td>Unsigned</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Short</code></td>
+<td>Signed</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Word</code></td>
+<td>Unsigned</td>
+<td>16</td>
+</tr>
+<tr>
+<td><code>Int</code></td>
+<td>Signed</td>
+<td>16</td>
+</tr>
+<tr>
+<td><code>Dword</code></td>
+<td>Unsigned</td>
+<td>32</td>
+</tr>
+<tr>
+<td><code>LongInt</code></td>
+<td>Signed</td>
+<td>32</td>
+</tr>
+<tr>
+<td><code>Qword</code></td>
+<td>Unsigned</td>
+<td>64</td>
+</tr>
+<tr>
+<td><code>LongLongInt</code></td>
+<td>Signed</td>
+<td>64</td>
+</tr>
+<tr>
+<td><code>Float</code></td>
+<td>Signed</td>
+<td>32</td>
+</tr>
+<tr>
+<td><code>Double</code></td>
+<td>Signed</td>
+<td>64</td>
+</tr>
+<tr>
+<td><code>Binary</code></td>
+<td>NA</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hexviewer-toggle-endiannes-biglittle">HexViewer: Toggle Endiannes (Big|Little)<a class="headerlink" href="#hexviewer-toggle-endiannes-biglittle" title="Permanent link"></a></h3>
+<p>Toggles the parsing of bytes to big or little endian when showing unit types in Hex Inspector.</p>
+<h3 id="hexviewer-set-bits-per-group">HexViewer: Set Bits Per Group<a class="headerlink" href="#hexviewer-set-bits-per-group" title="Permanent link"></a></h3>
+<p>Allows selection from the quick panel the grouping of bytes by 8, 16, 32, 64, and 128 bits.  This will reload the file with this formatting.  All edits will be lost, so export your changes before you do this.</p>
+<h3 id="hexviewer-set-bytes-per-line">HexViewer: Set Bytes Per Line<a class="headerlink" href="#hexviewer-set-bytes-per-line" title="Permanent link"></a></h3>
+<p>Allows selection from the quick panel the number of bytes to be shown on a line (allowed options are defined in <a href="#valid_bytes_per_line">valid_bytes_per_line</a>).</p>
+<h3 id="hexviewer-go-to-offset">HexViewer: Go to Offset<a class="headerlink" href="#hexviewer-go-to-offset" title="Permanent link"></a></h3>
+<p>Moves the cursor to the given offset (address).  Input is received through the input panel.</p>
+<h3 id="hexviewer-show-hex-edit-panel">HexViewer: Show Hex Edit Panel<a class="headerlink" href="#hexviewer-show-hex-edit-panel" title="Permanent link"></a></h3>
+<p>Invoking this command will take the currently selected bytes on a line and display them in an input panel.  They can then be modified and submitted to replace the original bytes.  Strings can also be used by using the <code>s:</code> prefix followed by the equivalent ASCII characters that are to replace the selected bytes.</p>
+<h3 id="hexviewer-discard-all-edits">HexViewer: Discard All Edits<a class="headerlink" href="#hexviewer-discard-all-edits" title="Permanent link"></a></h3>
+<p>If at any time you would like to discard all of the changes you have currently made to the hex view, you can invoke this command and a clean hex view will be reloaded.</p>
+<h3 id="hexviewer-export-bin">HexViewer: Export Bin<a class="headerlink" href="#hexviewer-export-bin" title="Permanent link"></a></h3>
+<p>Exports the current hex view to a binary file.</p>
+<h3 id="hexviewer-run-checksum">HexViewer: Run Checksum<a class="headerlink" href="#hexviewer-run-checksum" title="Permanent link"></a></h3>
+<p>By default, it opens up a quick panel with all available hashes that can be used as a checksum.  When an algorithm is selected, it is used to retrieve the checksum for the current file in hex view mode.</p>
+<h3 id="hexviewer-generate-hash">HexViewer: Generate Hash<a class="headerlink" href="#hexviewer-generate-hash" title="Permanent link"></a></h3>
+<p>Shows a quick panel allowing you to select the desired hash, and then shows an input panel that allows you to specify the string to be hashed. A panel is then displayed with your generated hash according to the selected specifications.</p>
+<h3 id="hexviewer-generate-hash-from-selection">HexViewer: Generate Hash from Selection<a class="headerlink" href="#hexviewer-generate-hash-from-selection" title="Permanent link"></a></h3>
+<p>Allows you to generate hashes from your current selection(s).  Multi-select regions' content will be combined and evaluated together.  If a region contains newlines, they will be hashed as well.</p>
+<h3 id="hexviewer-abort-hex-conversionexportchecksum">HexViewer: Abort (Hex Conversion|Export|Checksum)<a class="headerlink" href="#hexviewer-abort-hex-conversionexportchecksum" title="Permanent link"></a></h3>
+<p>Abort the given action.</p>
+<h3 id="hexviewer-open-in-external-viewer">HexViewer: Open in External Viewer<a class="headerlink" href="#hexviewer-open-in-external-viewer" title="Permanent link"></a></h3>
+<p>Opens the current binary file in an external hex editor.</p>
+<h2 id="configurable-settings">Configurable settings<a class="headerlink" href="#configurable-settings" title="Permanent link"></a></h2>
+<p>Settings are configurable in the <code>hex_viewer.sublime-settings</code> file.</p>
+<h3 id="group_bytes_by_bits"><code>group_bytes_by_bits</code><a class="headerlink" href="#group_bytes_by_bits" title="Permanent link"></a></h3>
+<p>Groups together the bytes by the number of bits.  Valid numbers are must be divisible by bytes and currently go up to 128 bits.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Group bytes together by bits</span>
+    <span class="c1">// Valid Settings (8|16|32|64|128)</span>
+    <span class="s2">&quot;group_bytes_by_bits&quot;</span> <span class="o">:</span> <span class="mi">16</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="valid_bytes_per_line"><code>valid_bytes_per_line</code><a class="headerlink" href="#valid_bytes_per_line" title="Permanent link"></a></h3>
+<p>Sets the number of valid bytes that will be allowed for the <code>valid_bytes_per_line</code>.  Keep in mind though that just be because a value is deemed valid here, there are still some restriction that are covered in <a href="#bytes_per_line">bytes_per_line</a>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// These are the valid bytes per line options</span>
+    <span class="s2">&quot;valid_bytes_per_line&quot;</span> <span class="o">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">],</span>
+</code></pre></div>
+
+<h3 id="bytes_per_line"><code>bytes_per_line</code><a class="headerlink" href="#bytes_per_line" title="Permanent link"></a></h3>
+<p>Number of bytes that will be shown on a line.  Can be any value found in <a href="#valid_bytes_per_line">valid_bytes_per_line</a>.  Even if the value is valid, there are some things to be aware of. HexViewer will default to a more reasonable value if the following does not hold true <strong>bytes_per_line / (group_bytes_by_bits / 8) == 0</strong>; if this does not hold true, there will be an adjustment made to the final number of bytes per line.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Number of 8 bit bytes per line.</span>
+    <span class="c1">// See &quot;valid_bytes_per_line&quot; for valid options</span>
+    <span class="s2">&quot;bytes_per_line&quot;</span> <span class="o">:</span> <span class="mi">24</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="use_lowercase_hex"><code>use_lowercase_hex</code><a class="headerlink" href="#use_lowercase_hex" title="Permanent link"></a></h3>
+<p>Controls whether hex values are displayed with lowercase or uppercase characters.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Use lowercase hex values.</span>
+    <span class="s2">&quot;use_lowercase_hex&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="custom_font"><code>custom_font</code><a class="headerlink" href="#custom_font" title="Permanent link"></a></h3>
+<p>Sets the font used in a HexViewer view.  It is strongly recommended to set this to a monospaced font if your default font is not monospaced.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Use None to use the current Sublime Text font.</span>
+    <span class="s2">&quot;custom_font&quot;</span> <span class="o">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="custom_font_size"><code>custom_font_size</code><a class="headerlink" href="#custom_font_size" title="Permanent link"></a></h3>
+<p>Sets the font size to be used in a HexViewer view.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Use zero to use the current Sublime Text font size.</span>
+    <span class="s2">&quot;custom_font_size&quot;</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector"><code>inspector</code><a class="headerlink" href="#inspector" title="Permanent link"></a></h3>
+<p>Sets whether the Hex Inspector panel is enabled.  To have the Hex Inspector panel auto-open when a HexViewer view loads, see <a href="#inspector_auto_show">inspector_auto_show</a>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Show inspector panel</span>
+    <span class="s2">&quot;inspector&quot;</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_endian"><code>inspector_endian</code><a class="headerlink" href="#inspector_endian" title="Permanent link"></a></h3>
+<p>Sets the endianness of the displayed values in the inspector.  The string value of <code>big</code> and <code>little</code> can be used.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// endian? (big|little)</span>
+    <span class="s2">&quot;inspector_endian&quot;</span> <span class="o">:</span> <span class="s2">&quot;big&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_auto_show"><code>inspector_auto_show</code><a class="headerlink" href="#inspector_auto_show" title="Permanent link"></a></h3>
+<p>Sets whether the Hex Inspector panel will auto-show on HexViewer view load.  If this is disabled, the Hex Inspector panel can still be shown manually when desired.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Show inspector panel on hex view load and hide on hex view hide</span>
+    <span class="s2">&quot;inspector_auto_show&quot;</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_integer_format"><code>inspector_integer_format</code><a class="headerlink" href="#inspector_integer_format" title="Permanent link"></a></h3>
+<p>Controls the text format for integer output in the inspector panel.  Uses standard python string formatting.</p>
+<div class="highlight"><pre><span></span><code>   <span class="c1">// Inspector format strings: ints and unsigned ints</span>
+    <span class="s2">&quot;inspector_integer_format&quot;</span><span class="o">:</span> <span class="s2">&quot;%-12s:  %-22d&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_float_format"><code>inspector_float_format</code><a class="headerlink" href="#inspector_float_format" title="Permanent link"></a></h3>
+<p>Controls the text format for float output in the inspector panel.  Uses standard python string formatting.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Inspector format strings: floating point decimals</span>
+    <span class="s2">&quot;inspector_float_format&quot;</span><span class="o">:</span> <span class="s2">&quot;%-12s:  %-22e&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_double_format"><code>inspector_double_format</code><a class="headerlink" href="#inspector_double_format" title="Permanent link"></a></h3>
+<p>Controls the text format for double output in the inspector panel.  Uses standard python string formatting.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Inspector format strings: double floating point decimal strings</span>
+    <span class="s2">&quot;inspector_double_format&quot;</span><span class="o">:</span> <span class="s2">&quot;%-12s:  %-22e&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_missingbad_format"><code>inspector_missing/bad_format</code><a class="headerlink" href="#inspector_missingbad_format" title="Permanent link"></a></h3>
+<p>Controls the text format for missing/bad output in the inspector panel.  Uses standard python string formatting.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Inspector format strings: &quot;NAN&quot; and not enough bytes to show numbers &quot;--&quot;</span>
+    <span class="s2">&quot;inspector_missing/bad_format&quot;</span><span class="o">:</span> <span class="s2">&quot;%-12s:  %-22s&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="inspector_binary_format"><code>inspector_binary_format</code><a class="headerlink" href="#inspector_binary_format" title="Permanent link"></a></h3>
+<p>Controls the text format for binary output in the inspector panel.  Uses standard python string formatting.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Binary number formatting</span>
+    <span class="s2">&quot;inspector_binary_format&quot;</span><span class="o">:</span> <span class="s2">&quot;%-12s:  %-22s&quot;</span>
+</code></pre></div>
+
+<h3 id="inspector_timestamp_format"><code>inspector_timestamp_format</code><a class="headerlink" href="#inspector_timestamp_format" title="Permanent link"></a></h3>
+<p>Controls the text format for the timestamp output in the inspector panel. Timestamp format is configured with two parts:
+the general string formatting, and the time output which is fed into the string format as the second parameter. Time
+format uses Python's <a href="https://docs.python.org/3/library/datetime.html#strftime-strptime-behavior"><code>strftime</code></a>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Timestamp format</span>
+    <span class="s2">&quot;inspector_timestamp_format&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;%-12s:  %-22s&quot;</span><span class="p">,</span> <span class="s2">&quot;%c&quot;</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="enable_fake_hex_file"><code>enable_fake_hex_file</code><a class="headerlink" href="#enable_fake_hex_file" title="Permanent link"></a></h3>
+<p>When loading a file that is a HexViewer visual representation of a binary file, and the syntax is set to HexViewer's custom syntax, HexViewer will enable basic byte highlight features, Hex Inspector panel etc.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Treat files in HexViewer syntax with proper format</span>
+    <span class="c1">// (usually .hxv files; saved versions of hex output)</span>
+    <span class="c1">// as real hex views.  The following functionality will be omitted:</span>
+    <span class="c1">// hex toggle, editing, writing to file,</span>
+    <span class="c1">// and dynamic changing of bits and bytes functionality.</span>
+    <span class="c1">// Address searching, Hex inspector, etc. should work fine.</span>
+    <span class="s2">&quot;enable_fake_hex_file&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_max_bytes"><code>highlight_max_bytes</code><a class="headerlink" href="#highlight_max_bytes" title="Permanent link"></a></h3>
+<p>Sets the max number of allowed bytes that HexViewer will highlight when selected.  This is a setting that limits the highlight for the sake of performance.  Keep this set to a reasonable value.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Approximate max byte selection.</span>
+    <span class="c1">// The highlighter will highlight individual selections until</span>
+    <span class="c1">// the max number of bytes is found.  The selection containing</span>
+    <span class="c1">// the maximum byte will still be finished even if it has more</span>
+    <span class="c1">// bytes than the max.</span>
+    <span class="s2">&quot;highlight_max_bytes&quot;</span> <span class="o">:</span> <span class="mi">1000</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="prompt_on_file_too_big"><code>prompt_on_file_too_big</code><a class="headerlink" href="#prompt_on_file_too_big" title="Permanent link"></a></h3>
+<p>Prompts the user with a dialog that gives the user the option to bypass the default action.  By default HexViewer cancels rendering a hex view if the file is too big; or, if an external viewer is configured, HexViewer will open the binary file in the configured external viewer.  This option gives the user the ability to conditionally override the default action and render the hex viewer tab despite file size being too large.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// If the file is too large (as defined in the settings file via &#39;max_file_size_kb&#39;),</span>
+    <span class="c1">// prompt the user with a dialog asking whether they would like to open the file internally anyways</span>
+    <span class="c1">// or use the default action (open in external viewer defined in &#39;external viewer&#39; or terminate action</span>
+    <span class="c1">// if &#39;external_viewer&#39; is not set or invalid).</span>
+    <span class="s2">&quot;prompt_on_file_too_big&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_throttle"><code>highlight_throttle</code><a class="headerlink" href="#highlight_throttle" title="Permanent link"></a></h3>
+<p>Sets whether <code>highlight_max_bytes</code> will be used.  This allows a user to not limit the number of highlighted bytes.  It is not recommended to use this for performances sake.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">//Enable highlight throttling</span>
+    <span class="s2">&quot;highlight_throttle&quot;</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_scope"><code>highlight_scope</code><a class="headerlink" href="#highlight_scope" title="Permanent link"></a></h3>
+<p>Define the highlight color when a byte or ASCII char is selected.  Colors must be a scope found in your theme file, if not, the color will be the default font color.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Scope? (Defined in theme files.)</span>
+    <span class="c1">// Examples: (keyword|string|number)</span>
+    <span class="s2">&quot;highlight_scope&quot;</span> <span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_scope_1"><code>highlight_scope</code><a class="headerlink" href="#highlight_scope_1" title="Permanent link"></a></h3>
+<p>Define the highlight color for bytes that have been edited.  Colors must be a scope found in your theme file, if not, the color will be the default font color.</p>
+<div class="highlight"><pre><span></span><code>    <span class="s2">&quot;highlight_edit_scope&quot;</span><span class="o">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_icon"><code>highlight_icon</code><a class="headerlink" href="#highlight_icon" title="Permanent link"></a></h3>
+<p>Sets a gutter icon for highlighted bytes.  Default is set to the string <code>none</code> to hide the icon.  This can be changed to either <code>dot</code>, <code>circle</code>, <code>bookmark</code>, <code>cross</code>, or <code>none</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Icon? (dot|circle|bookmark|cross|none)</span>
+    <span class="s2">&quot;highlight_icon&quot;</span> <span class="o">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_edit_icon"><code>highlight_edit_icon</code><a class="headerlink" href="#highlight_edit_icon" title="Permanent link"></a></h3>
+<p>Sets a gutter icon for edited bytes.  Default is set to the string <code>none</code> to hide the icon.  This can be changed to either <code>dot</code>, <code>circle</code>, <code>bookmark</code>, <code>cross</code>, <code>none</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="s2">&quot;highlight_edit_icon&quot;</span> <span class="o">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_style"><code>highlight_style</code><a class="headerlink" href="#highlight_style" title="Permanent link"></a></h3>
+<p>Sets the highlight style for highlighted bytes.  Can be <code>solid</code>, <code>outline</code>, <code>underline</code>, or <code>none</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Style? (solid|outline|underline|none)</span>
+    <span class="s2">&quot;highlight_style&quot;</span> <span class="o">:</span> <span class="s2">&quot;solid&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="highlight_edit_style"><code>highlight_edit_style</code><a class="headerlink" href="#highlight_edit_style" title="Permanent link"></a></h3>
+<p>Sets the highlight style for edited bytes.  Can be <code>solid</code>, <code>outline</code>, <code>underline</code>, or <code>none</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="s2">&quot;highlight_edit_style&quot;</span> <span class="o">:</span> <span class="s2">&quot;underline&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="max_file_size_kb"><code>max_file_size_kb</code><a class="headerlink" href="#max_file_size_kb" title="Permanent link"></a></h3>
+<p>Sets a limit for how big of a binary file HexViewer will try and convert to a HexView.  Size is in Kilobytes.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Maximum allowed byte size that HexViewer will parse</span>
+    <span class="s2">&quot;max_file_size_kb&quot;</span><span class="o">:</span> <span class="mf">50000.0</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="external_viewer"><code>external_viewer</code><a class="headerlink" href="#external_viewer" title="Permanent link"></a></h3>
+<p>Sometimes it may be desired to open a hex view in an external editor.  Due to the nature of the Sublime Text API, HexViewer's options and speed can be limited, so it can be advantageous to open a file in an external hex editor when performing certain actions or dealing with very large files.  <code>external_viewer</code> allows the configuring of the external hex editor.  <code>external_viewer</code> is a dictionary containing to parameters.  <code>viewer</code>, which is an absolute path to the the external hex editor.  <code>args</code> are the arguments that will be passed to the external editor; it is an array of string arguments.  You can use <code>${FILE}</code> has a place holder for the file path that will be sent to the editor.  HexViewer will insert the actual file path in the place of <code>${FILE}</code>.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// External Hex Viewer if max size is exceeded.</span>
+    <span class="c1">// Viewer should be the absolute path.</span>
+    <span class="c1">// Args is an array of command line arguments. Use ${FILE} for the file path.</span>
+    <span class="s2">&quot;external_viewer&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;viewer&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;args&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;${FILE}&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+</code></pre></div>
+
+<h3 id="hash_algorithm"><code>hash_algorithm</code><a class="headerlink" href="#hash_algorithm" title="Permanent link"></a></h3>
+<p>The default checksum algorithm to use when creating a hash or checksum (not all values listed below will be found on every platform and system).</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Checksum algorithm default? (the default is what is applied to a file when saving)</span>
+    <span class="c1">// (mdc2|md4|md5|sha|sha1|sha224|sha256|sha384|sha512|ripemd160|crc32|adler32)</span>
+    <span class="s2">&quot;hash_algorithm&quot;</span> <span class="o">:</span> <span class="s2">&quot;md5&quot;</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="checksum_on_save"><code>checksum_on_save</code><a class="headerlink" href="#checksum_on_save" title="Permanent link"></a></h3>
+<p>Controls whether HexViewer will checksum the binary file on save/export.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Enable checksum on save</span>
+    <span class="s2">&quot;checksum_on_save&quot;</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="auto_open"><code>auto_open</code><a class="headerlink" href="#auto_open" title="Permanent link"></a></h3>
+<p>Sets whether HexViewer should auto detect binary files and convert them to HexViewer views.  When enabled, HexViewer will detect when a view is set to the <code>Hexidecimal</code> syntax, or if the file name matches the <a href="#auto_open_patterns">auto_open_patterns</a> found below.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Auto open binary files in hex viewer</span>
+    <span class="c1">// Detects if view has encoding set to &#39;Hexidecimal&#39;.</span>
+    <span class="c1">// Additionally it can use &#39;auto_open_patterns&#39; below.</span>
+    <span class="s2">&quot;auto_open&quot;</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="auto_open_patterns"><code>auto_open_patterns</code><a class="headerlink" href="#auto_open_patterns" title="Permanent link"></a></h3>
+<p>When <a href="#auto_open">auto_open</a> is enabled, HexViewer will use the following list of file patterns to detect binary files for auto conversion.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Auto open patterns to open in hex viewer</span>
+    <span class="s2">&quot;auto_open_patterns&quot;</span> <span class="o">:</span> <span class="p">[</span><span class="s2">&quot;*.bin&quot;</span><span class="p">,</span> <span class="s2">&quot;*.pyc&quot;</span><span class="p">],</span>
+</code></pre></div>
+
+<h3 id="disable_auto_open_hex_encoding"><code>disable_auto_open_hex_encoding</code><a class="headerlink" href="#disable_auto_open_hex_encoding" title="Permanent link"></a></h3>
+<p>Sets whether <a href="#auto_open">auto_open</a> will convert views with the <code>Hexidecimal</code> syntax.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Disable auto open based on &#39;Hexidecimal&#39; encoding</span>
+    <span class="s2">&quot;disable_auto_open_hex_encoding&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</code></pre></div>
+
+<h3 id="use_sub_notify"><code>use_sub_notify</code><a class="headerlink" href="#use_sub_notify" title="Permanent link"></a></h3>
+<p>Enables use of <a href="https://github.com/facelessuser/SubNotify">SubNotify</a> notifications.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Use sub notify if available</span>
+    <span class="s2">&quot;use_sub_notify&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</code></pre></div>
                 
                   
+                
                 
               
               
@@ -485,22 +1472,23 @@
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2013 - 2018 <a href="https://github.com/facelessuser">Isaac Muse</a>
-<br><span class="md-footer-custom-text">emoji provided free by <a href="http://www.emojione.com">EmojiOne</a></span>
+            Copyright &copy; 2011 - 2020 <a href="https://github.com/facelessuser">Isaac Muse</a>
+<br><span class="md-footer-custom-text">emoji provided free by </span>
+<a href="https://github.com/twitter/twemoji">Twemoji</a>
 
           </div>
         
         powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
       
   <div class="md-footer-social">
     <link rel="stylesheet" href="assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/facelessuser" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/facelessuser" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
     
   </div>
 
@@ -510,11 +1498,11 @@
       
     </div>
     
-      <script src="assets/javascripts/application.c648116f.js"></script>
+      <script src="assets/javascripts/application.c33a9706.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
       
-        <script src="extra-d8800ea088.js"></script>
+        <script src="extra-0d9305e748.js"></script>
       
     
   </body>

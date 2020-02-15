@@ -10,10 +10,10 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
-        <meta name="description" content="A customizable Sublime Text plugin that highlights matching brackets.">
+        <meta name="description" content="A Sublime Text hex viewer and editor.">
       
       
-        <link rel="canonical" href="https://facelessuser.github.io/BracketHighlighter/_snippets/refs/">
+        <link rel="canonical" href="https://facelessuser.github.io/HexViewer/_snippets/refs/">
       
       
       
@@ -36,15 +36,15 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
     
     
       
-        <title>Refs - BracketHighlighter Documentation</title>
+        <title>Refs - HexViewer Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
       
         <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -55,19 +55,19 @@
       
     
     
-      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
     <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../../extra-c507967d85.css">
+      <link rel="stylesheet" href="../../extra-b1410d454c.css">
     
     
       
@@ -96,7 +96,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://facelessuser.github.io/BracketHighlighter" title="BracketHighlighter Documentation" class="md-header-nav__button md-logo">
+        <a href="https://facelessuser.github.io/HexViewer" title="HexViewer Documentation" aria-label="HexViewer Documentation" class="md-header-nav__button md-logo">
           
             <i class="md-icon">description</i>
           
@@ -109,7 +109,7 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              BracketHighlighter Documentation
+              HexViewer Documentation
             </span>
             <span class="md-header-nav__topic">
               
@@ -127,7 +127,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -155,7 +155,7 @@
 
   
 
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/facelessuser/HexViewer/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -188,12 +188,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="https://facelessuser.github.io/BracketHighlighter" title="BracketHighlighter Documentation" class="md-nav__button md-logo">
+    <a href="https://facelessuser.github.io/HexViewer" title="HexViewer Documentation" class="md-nav__button md-logo">
       
         <i class="md-icon">description</i>
       
     </a>
-    BracketHighlighter Documentation
+    HexViewer Documentation
   </label>
   
     <div class="md-nav__source">
@@ -202,7 +202,7 @@
 
   
 
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
+<a href="https://github.com/facelessuser/HexViewer/" title="Go to repository" class="md-source" data-md-source="github">
   
     <div class="md-source__icon">
       <svg viewBox="0 0 24 24" width="24" height="24">
@@ -224,8 +224,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="About BracketHighlighter" class="md-nav__link">
-      About BracketHighlighter
+    <a href="../.." title="User Guide" class="md-nav__link">
+      User Guide
     </a>
   </li>
 
@@ -238,42 +238,6 @@
   <li class="md-nav__item">
     <a href="../../installation/" title="Installation" class="md-nav__link">
       Installation
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../usage/" title="Basic Usage" class="md-nav__link">
-      Basic Usage
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../customize/" title="Customizing" class="md-nav__link">
-      Customizing
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../../extended-regex/" title="Extended Regex Guide" class="md-nav__link">
-      Extended Regex Guide
     </a>
   </li>
 
@@ -314,7 +278,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/facelessuser/BracketHighlighter/tree/master/docs/src/markdown/_snippets/refs.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/facelessuser/HexViewer/tree/master/docs/src/markdown/_snippets/refs.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                   <h1>Refs</h1>
@@ -322,6 +286,7 @@
                 
                 
                   
+                
                 
               
               
@@ -342,22 +307,23 @@
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2013 - 2018 <a href="https://github.com/facelessuser">Isaac Muse</a>
-<br><span class="md-footer-custom-text">emoji provided free by <a href="http://www.emojione.com">EmojiOne</a></span>
+            Copyright &copy; 2011 - 2020 <a href="https://github.com/facelessuser">Isaac Muse</a>
+<br><span class="md-footer-custom-text">emoji provided free by </span>
+<a href="https://github.com/twitter/twemoji">Twemoji</a>
 
           </div>
         
         powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
       
   <div class="md-footer-social">
     <link rel="stylesheet" href="../../assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/facelessuser" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/facelessuser" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
     
   </div>
 
@@ -367,11 +333,11 @@
       
     </div>
     
-      <script src="../../assets/javascripts/application.c648116f.js"></script>
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
-        <script src="../../extra-d8800ea088.js"></script>
+        <script src="../../extra-0d9305e748.js"></script>
       
     
   </body>
