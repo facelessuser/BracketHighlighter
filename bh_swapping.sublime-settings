@@ -27,9 +27,9 @@
         },
         {
             "enabled": true, "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"], "language_filter": "whitelist", "entries": [
-                {"name": "Mardown: Bold", "brackets": ["**", "**${BH_SEL}"]},
-                {"name": "Mardown: Italic", "brackets": ["_", "_${BH_SEL}"]},
-                {"name": "Mardown: Monospace", "brackets": ["`", "`${BH_SEL}"]}
+                {"name": "Markdown: Bold", "brackets": ["**", "**${BH_SEL}"]},
+                {"name": "Markdown: Italic", "brackets": ["_", "_${BH_SEL}"]},
+                {"name": "Markdown: Monospace", "brackets": ["`", "`${BH_SEL}"]}
             ]
         },
         {
