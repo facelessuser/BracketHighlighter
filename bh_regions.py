@@ -360,7 +360,7 @@ class BhRegion(object):
                     tabs += 1
                 elif char != " ":
                     # Calculate column on first non-whitespace character
-                    remainder = count & tab_size
+                    remainder = count % tab_size
                     tab_aligned = int(count / tab_size)
                     if remainder and tabs:
                         # Index of first non-whitespace character.
