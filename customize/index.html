@@ -2552,7 +2552,7 @@
 </dl>
 <p>If needed, bracket plugins can be imported into each other in order to reuse functionality, but because they are not in Python's path, you need to use the special import method.</p>
 <dl>
-<dt><code class="codehilite"><span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></code></dt>
+<dt><code class="codehilite"><span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></dt>
 <dd>
 <p>Imports a <code>bh_plugin</code> and returns the module or the module attribute if <code>attribute</code> is defined.</p>
 <p><strong>Parameters</strong>:</p>
@@ -2767,7 +2767,7 @@
 
 
 <span class="k">def</span> <span class="nf">post_match</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Strip whitespace from the beginning of first bracket</span>
         <span class="n">open_bracket</span> <span class="o">=</span> <span class="n">bfr</span><span class="p">[</span><span class="n">first</span><span class="o">.</span><span class="n">begin</span><span class="p">:</span><span class="n">first</span><span class="o">.</span><span class="n">end</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">open_bracket</span> <span class="o">!=</span> <span class="s2">&quot;do&quot;</span><span class="p">:</span>
@@ -2780,13 +2780,13 @@
 <p>Example (snippet from <code>tags.py</code>)</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">post_match</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span>
-    <span class="n">threshold</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfr</span><span class="p">)]</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">threshold</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfr</span><span class="p">)]</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">threshold</span>
     <span class="n">tag_settings</span> <span class="o">=</span> <span class="n">sublime</span><span class="o">.</span><span class="n">load_settings</span><span class="p">(</span><span class="s2">&quot;bh_core.sublime-settings&quot;</span><span class="p">)</span>
     <span class="n">tag_mode</span> <span class="o">=</span> <span class="n">get_tag_mode</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">tag_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tag_mode&quot;</span><span class="p">,</span> <span class="p">{}))</span>
     <span class="n">tag_style</span> <span class="o">=</span> <span class="n">tag_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tag_style&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">)</span>
     <span class="n">bracket_style</span> <span class="o">=</span> <span class="n">style</span>
 
-    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">tag_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tag_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">matcher</span> <span class="o">=</span> <span class="n">TagMatch</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">tag_mode</span><span class="p">)</span>
         <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">match</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matcher</span><span class="o">.</span><span class="n">no_tag</span><span class="p">:</span>
@@ -2859,10 +2859,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">&quot;tag&quot;</span><span class="p">:</span>
         <span class="n">tag_name</span> <span class="o">=</span> <span class="s1">&#39;[\w\:\.\-]+&#39;</span>
-        <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">region</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
             <span class="n">left</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">region</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">region</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
             <span class="n">right</span> <span class="o">=</span> <span class="n">right</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">region</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
@@ -3001,7 +3001,7 @@
 </dd>
 </dl>
 <p>Example (from <code>foldbracket.py</code>):</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">BracketHighlighter.bh_plugin</span> <span class="kn">as</span> <span class="nn">bh_plugin</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">BracketHighlighter.bh_plugin</span> <span class="k">as</span> <span class="nn">bh_plugin</span>
 <span class="kn">import</span> <span class="nn">sublime</span>
 
 
@@ -3010,7 +3010,7 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">sublime</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
         <span class="n">new_content</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">new_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="n">new_content</span>
 

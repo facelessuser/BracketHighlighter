@@ -427,7 +427,7 @@
 <p>It is not always clear when Package Control updates dependencies.  So to force dependency updates, you can run Package Control's <code>Satisfy Dependencies</code> command which will update to the latest release.</p>
 <h2 id="using-backrefs-in-brackethighlighter-plugins">Using Backrefs in BracketHighlighter Plugins<a class="headerlink" href="#using-backrefs-in-brackethighlighter-plugins" title="Permanent link"></a></h2>
 <p>You can import Backrefs into a <code>bh_plugin</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">backrefs</span> <span class="nn">as</span> <span class="nn">bre</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">backrefs</span> <span class="k">as</span> <span class="n">bre</span>
 </code></pre></div>
 
 <p>Backrefs does provide a wrapper for all of Re's normal functions such as <code>match</code>, <code>sub</code>, etc., but it is recommended to pre-compile your search patterns <strong>and</strong> your replace patterns for the best performance; especially if you plan on reusing the same pattern multiple times.  As Re does cache a certain amount of the non-compiled calls, you will be spared from some of the performance hit, but Backrefs does not cache the pre-processing of search and replace patterns.</p>
