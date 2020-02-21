@@ -13,7 +13,7 @@
         <meta name="description" content="A customizable Sublime Text plugin that highlights matching brackets.">
       
       
-        <link rel="canonical" href="https://facelessuser.github.io/BracketHighlighter/contributing/">
+        <link rel="canonical" href="https://facelessuser.github.io/BracketHighlighter/extended-regex/">
       
       
       
@@ -40,7 +40,7 @@
     
     
       
-        <title>Contributing & Support - BracketHighlighter Documentation</title>
+        <title>Extended Regex Guide - BracketHighlighter Documentation</title>
       
     
     
@@ -91,7 +91,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#contributing--support" tabindex="0" class="md-skip">
+      <a href="#extended-regex-guide" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -117,7 +117,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Contributing &amp; Support
+                Extended Regex Guide
               
             </span>
           
@@ -274,18 +274,6 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="../extended-regex/" title="Extended Regex Guide" class="md-nav__link">
-      Extended Regex Guide
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
 
 
@@ -297,11 +285,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Contributing &amp; Support
+        Extended Regex Guide
       </label>
     
-    <a href="./" title="Contributing & Support" class="md-nav__link md-nav__link--active">
-      Contributing &amp; Support
+    <a href="./" title="Extended Regex Guide" class="md-nav__link md-nav__link--active">
+      Extended Regex Guide
     </a>
     
       
@@ -322,42 +310,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bug-reports" class="md-nav__link">
-    Bug Reports
+  <a href="#getting-the-latest-backrefs" class="md-nav__link">
+    Getting the Latest Backrefs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#reviewing-code" class="md-nav__link">
-    Reviewing Code
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pull-requests" class="md-nav__link">
-    Pull Requests
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#running-validation-tests" class="md-nav__link">
-    Running Validation Tests
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation-improvements" class="md-nav__link">
-    Documentation Improvements
+  <a href="#using-backrefs-in-brackethighlighter-plugins" class="md-nav__link">
+    Using Backrefs in BracketHighlighter Plugins
   </a>
   
 </li>
@@ -370,6 +331,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../contributing/" title="Contributing & Support" class="md-nav__link">
+      Contributing &amp; Support
+    </a>
   </li>
 
     
@@ -413,42 +386,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bug-reports" class="md-nav__link">
-    Bug Reports
+  <a href="#getting-the-latest-backrefs" class="md-nav__link">
+    Getting the Latest Backrefs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#reviewing-code" class="md-nav__link">
-    Reviewing Code
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pull-requests" class="md-nav__link">
-    Pull Requests
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#running-validation-tests" class="md-nav__link">
-    Running Validation Tests
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation-improvements" class="md-nav__link">
-    Documentation Improvements
+  <a href="#using-backrefs-in-brackethighlighter-plugins" class="md-nav__link">
+    Using Backrefs in BracketHighlighter Plugins
   </a>
   
 </li>
@@ -469,133 +415,47 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/facelessuser/BracketHighlighter/tree/master/docs/src/markdown/contributing.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/facelessuser/BracketHighlighter/tree/master/docs/src/markdown/extended-regex.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="contributing--support">Contributing &amp; Support<a class="headerlink" href="#contributing--support" title="Permanent link"></a></h1>
+                <h1 id="extended-regex-guide">Extended Regex Guide<a class="headerlink" href="#extended-regex-guide" title="Permanent link"></a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link"></a></h2>
-<table>
-<thead>
-<tr>
-<th>Sublime&nbsp;Versions</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><abbr title="Sublime Text 2">ST2</abbr></td>
-<td>Supported on a separate branch, but not actively.  Any further fixes or enhancements must come from the community.  Issues for versions less than <abbr title="Sublime Text 3">ST3</abbr> will not be addressed moving forward by me.  Pull requests are welcome for back-porting features, enhancements, or fixes to the old branch, but the content of the pull <strong>must</strong> already exist on the main, actively developed branch.  I will not allow an older branch to exceed the main branch in regards to functionality.</td>
-</tr>
-<tr>
-<td><abbr title="Sublime Text 3">ST3</abbr></td>
-<td>Fully supported and actively maintained.</td>
-</tr>
-</tbody>
-</table>
-<p>Contribution from the community is encouraged and can be done in a variety of ways:</p>
-<ul>
-<li>Bug reports.</li>
-<li>Reviewing code.</li>
-<li>Code patches via pull requests.</li>
-<li>Documentation improvements via pull requests.</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Bracket Rules are Supported by the Community</p>
-<p>The most common requested enhancement for BracketHighlighter is for new rules to add support for {insert your favorite language here}.  I, like you, am proficient in very specific languages.  I probably don't use your favorite language or there would already be a support for it.  I don't have time to learn the nuances of your language.  For these reasons, support for new language brackets <strong>requires</strong> pull requests from the community.</p>
-<p>Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions and guidance to help those who may struggle to create rules for their specific language of interest.</p>
-</div>
-<h2 id="bug-reports">Bug Reports<a class="headerlink" href="#bug-reports" title="Permanent link"></a></h2>
-<ol>
-<li>
-<p>Please <strong>read the documentation</strong> and <strong>search the issue tracker</strong> to try to find the answer to your question <strong>before</strong> posting an issue.</p>
-</li>
-<li>
-<p>When an issue is created, a <a href="https://github.com/facelessuser/BracketHighlighter/blob/master/.github/ISSUE_TEMPLATE.md">template</a> will be shown, please fill out the appropriate sections. If the template is not followed, the issue will be marked <code>Invalid</code> and closed.</p>
-</li>
-<li>
-<p>When creating an issue on the repository, please provide as much info as possible.  The template will reiterate what is mentioned here as a reminder:</p>
-<ul>
-<li>Provide environment information by running <code>Preferences-&gt;Package Settings-&gt;BracketHighlighter-&gt;Support Info</code>.  The information will be copied to the clipboard; paste the info in issue.</li>
-<li>Errors in console.</li>
-<li>Detailed description of the problem.</li>
-<li>Examples for reproducing the error.  You can post pictures, but if specific text or code is required to reproduce the issue, please provide the text in a plain text format as well for easy copy/paste.</li>
-<li>Provide links to 3<sup>rd</sup> party syntax highlighting package you are using if applicable.</li>
-</ul>
-<p>The more info provided the greater the chance someone will take the time to answer, implement, or fix the issue.</p>
-</li>
-<li>
-<p>Be prepared to answer questions and provide additional information if required.  Issues in which the creator refuses to respond to follow up questions will be marked as stale and closed.</p>
-</li>
-</ol>
-<h2 id="reviewing-code">Reviewing Code<a class="headerlink" href="#reviewing-code" title="Permanent link"></a></h2>
-<p>Take part in reviewing pull requests and/or reviewing direct commits.  Make suggestions to improve the code and discuss solutions to overcome weakness in the algorithm.</p>
-<h2 id="pull-requests">Pull Requests<a class="headerlink" href="#pull-requests" title="Permanent link"></a></h2>
-<p>Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be mindful of.</p>
-<ol>
-<li>
-<p>Please describe the change in as much detail as possible so I can understand what is being added or modified.</p>
-</li>
-<li>
-<p>If you are solving a bug that does not already have an issue, please describe the bug in detail and provide info on how to reproduce if applicable (this is good for me and others to reference later when verifying the issue has been resolved).</p>
-</li>
-<li>
-<p>Please reference and link related open bugs or feature requests in this pull if applicable.</p>
-</li>
-<li>
-<p>Make sure you've documented or updated the existing documentation if introducing a new feature or modifying the behavior of an existing feature that a user needs to be aware of.  I will not accept new features or changes to existing features if you have not provided documentation describing the feature.</p>
-</li>
-</ol>
-<p>Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before pull requesting.  If it is not possible to run these tests locally, they will be run when the pull request is made, but it is strongly suggested that requesters make an effort to verify before requesting to allow for a quick, smooth merge.</p>
-<h3 id="running-validation-tests">Running Validation Tests<a class="headerlink" href="#running-validation-tests" title="Permanent link"></a></h3>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you are running Sublime on a OSX or Linux/Unix system, you run all tests by by running the shell script (assuming you have installed your environment fulfills all requirements below):</p>
-<div class="codehilite"><pre><span></span><code>chmod +x run_tests.sh
-./run_tests.sh
+<p><abbr title="BracketHighlighter">BH</abbr> uses Python's Re regular expression engine, but it also adds some additional back references to aid in the creation of bracket patterns.  This is done with a custom wrapper called Backrefs that was originally written for <a href="https://github.com/facelessuser/RegReplace">RegReplace</a>.</p>
+<p>Backrefs was written to add various additional back references that are known to some regex engines, but not to Python's Re.  Backrefs adds: <code>\p</code>, <code>\P</code>, <code>\u</code>, <code>\U</code>, <code>\l</code>, <code>\L</code>, <code>\Q</code> or <code>\E</code> (though <code>\u</code> and <code>\U</code> are replaced with <code>\c</code> and <code>\C</code>).</p>
+<p>You can read more about Backrefs' features in <a href="http://facelessuser.github.io/backrefs/">Backrefs' documentation</a>.</p>
+<h2 id="getting-the-latest-backrefs">Getting the Latest Backrefs<a class="headerlink" href="#getting-the-latest-backrefs" title="Permanent link"></a></h2>
+<p>It is not always clear when Package Control updates dependencies.  So to force dependency updates, you can run Package Control's <code>Satisfy Dependencies</code> command which will update to the latest release.</p>
+<h2 id="using-backrefs-in-brackethighlighter-plugins">Using Backrefs in BracketHighlighter Plugins<a class="headerlink" href="#using-backrefs-in-brackethighlighter-plugins" title="Permanent link"></a></h2>
+<p>You can import Backrefs into a <code>bh_plugin</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">backrefs</span> <span class="nn">as</span> <span class="nn">bre</span>
 </code></pre></div>
 
-</div>
-<p>There are a couple of dependencies that must be present before running the tests.</p>
-<ol>
-<li>
-<p>As <abbr title="Sublime Text 3">ST3</abbr> is the only current, actively supported version, Python 3.3 must be used to validate the tests.</p>
-</li>
-<li>
-<p>Unit tests are run with pytest (<a class="magiclink magiclink-github magiclink-repository" href="https://github.com/pytest-dev/pytest" title="GitHub Repository: pytest-dev/pytest">pytest-dev/pytest</a>).  You can install pytest via:</p>
-<div class="codehilite"><pre><span></span><code>pip install pytest
+<p>Backrefs does provide a wrapper for all of Re's normal functions such as <code>match</code>, <code>sub</code>, etc., but it is recommended to pre-compile your search patterns <strong>and</strong> your replace patterns for the best performance; especially if you plan on reusing the same pattern multiple times.  As Re does cache a certain amount of the non-compiled calls, you will be spared from some of the performance hit, but Backrefs does not cache the pre-processing of search and replace patterns.</p>
+<p>To use pre-compiled functions, you compile the search pattern with <code>compile_search</code>.  If you want to take advantage of replace Backrefs, you need to compile the replace pattern as well.  Notice the compiled pattern is fed into the replace pattern; you can feed the replace compiler the string representation of the search pattern as well, but the compiled pattern will be faster and is the recommended way.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">pattern</span> <span class="o">=</span> <span class="n">bre</span><span class="o">.</span><span class="n">compile_search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;somepattern&#39;</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+<span class="n">replace</span> <span class="o">=</span> <span class="n">bre</span><span class="o">.</span><span class="n">compile_replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1 some replace pattern&#39;</span><span class="p">)</span>
 </code></pre></div>
 
-<p>The tests should be run from the root folder of the plugin by using the following command:</p>
-<div class="codehilite"><pre><span></span><code>pytest .
+<p>Then you can use the complied search pattern and replace</p>
+<div class="codehilite"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;sometext&#39;</span><span class="p">)</span>
 </code></pre></div>
 
-</li>
-<li>
-<p>Linting is performed on the entire project with the following modules:</p>
-<ul>
-<li><a class="magiclink magiclink-gitlab magiclink-repository" href="https://gitlab.com/pycqa/flake8" title="GitLab Repository: pycqa/flake8">pycqa/flake8</a></li>
-<li><a class="magiclink magiclink-gitlab magiclink-repository" href="https://gitlab.com/pycqa/flake8-docstrings" title="GitLab Repository: pycqa/flake8-docstrings">pycqa/flake8-docstrings</a></li>
-<li><a class="magiclink magiclink-github magiclink-repository" href="https://github.com/ebeweber/flake8-mutable" title="GitHub Repository: ebeweber/flake8-mutable">ebeweber/flake8-mutable</a></li>
-<li><a class="magiclink magiclink-github magiclink-repository" href="https://github.com/gforcada/flake8-builtins" title="GitHub Repository: gforcada/flake8-builtins">gforcada/flake8-builtins</a></li>
-<li><a class="magiclink magiclink-gitlab magiclink-repository" href="https://gitlab.com/pycqa/pep8-naming" title="GitLab Repository: pycqa/pep8-naming">pycqa/pep8-naming</a></li>
-</ul>
-<p>These can be installed via:</p>
-<div class="codehilite"><pre><span></span><code>pip install flake8
-pip install flake8-docstrings
-pip install flake8-mutable
-pip install flake8-builtins
-pip install pep8-naming
+<p>or</p>
+<div class="codehilite"><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;sometext&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>  <span class="c1"># similar to m.expand(template)</span>
 </code></pre></div>
 
-<p>Linting is performed with the following command:</p>
-<div class="codehilite"><pre><span></span><code>flake8 .
+<p>To use the non-compiled search/replace functions, you call them just them as you would in Re; the names are the same.  Methods like <code>sub</code> and <code>subn</code> will compile the replace pattern on the fly if given a string.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">bre</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;somepattern&#39;</span><span class="p">,</span> <span class="s1">&#39;some text&#39;</span><span class="p">,</span> <span class="n">bre</span><span class="o">.</span><span class="n">UNICODE</span> <span class="o">|</span> <span class="n">bre</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">):</span>
+    <span class="c1"># do something</span>
 </code></pre></div>
 
-</li>
-</ol>
-<h2 id="documentation-improvements">Documentation Improvements<a class="headerlink" href="#documentation-improvements" title="Permanent link"></a></h2>
-<p>A ton of time has been spent not only creating and supporting this plugin, but also spent making this documentation.  If you feel it is still lacking, show your appreciation for the plugin by helping to improve the documentation.  Help with documentation is always appreciated and can be done via pull requests.  There shouldn't be any need to run validation tests if only updating documentation.</p>
-<p>You don't have to render the docs locally before pull requesting, but if you wish to, I currently use a combination of <a class="magiclink magiclink-github magiclink-repository" href="https://github.com/mkdocs/mkdocs" title="GitHub Repository: mkdocs/mkdocs">mkdocs/mkdocs</a>, the <a class="magiclink magiclink-github magiclink-repository" href="https://github.com/squidfunk/mkdocs-material" title="GitHub Repository: squidfunk/mkdocs-material">squidfunk/mkdocs-material</a>, and <a class="magiclink magiclink-github magiclink-repository" href="https://github.com/facelessuser/pymdown-extensions" title="GitHub Repository: facelessuser/pymdown-extensions">facelessuser/pymdown-extensions</a> to render the docs.  You can preview the docs if you install these two packages.  The command for previewing the docs is <code>mkdocs serve</code> from the root directory. You can then view the documents at <code>localhost:8000</code>.</p>
+<p>If you want to replace without compiling, you can use the <code>expand</code> method.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">m</span> <span class="o">=</span> <span class="n">bre</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;sometext&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">bre</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;replace pattern&#39;</span><span class="p">)</span>
+</code></pre></div>
                 
                   
                 
@@ -617,7 +477,7 @@ pip install pep8-naming
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../extended-regex/" title="Extended Regex Guide" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../customize/" title="Customizing" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -626,19 +486,19 @@ pip install pep8-naming
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Extended Regex Guide
+                Customizing
               </span>
             </div>
           </a>
         
         
-          <a href="../license/" title="License" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../contributing/" title="Contributing & Support" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                License
+                Contributing &amp; Support
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
