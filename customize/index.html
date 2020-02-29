@@ -16,27 +16,8 @@
         <link rel="canonical" href="https://facelessuser.github.io/BracketHighlighter/customize/">
       
       
-      
-        <meta name="lang:clipboard.copy" content="Copy to clipboard">
-      
-        <meta name="lang:clipboard.copied" content="Copied to clipboard">
-      
-        <meta name="lang:search.language" content="en">
-      
-        <meta name="lang:search.pipeline.stopwords" content="True">
-      
-        <meta name="lang:search.pipeline.trimmer" content="True">
-      
-        <meta name="lang:search.result.none" content="No matching documents">
-      
-        <meta name="lang:search.result.one" content="1 matching document">
-      
-        <meta name="lang:search.result.other" content="# matching documents">
-      
-        <meta name="lang:search.tokenizer" content="[\s\-]+">
-      
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-5.0.0b2-1">
     
     
       
@@ -44,9 +25,9 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      <link rel="stylesheet" href="../assets/stylesheets/app.0f079138.min.css">
       
-        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
+        <link rel="stylesheet" href="../assets/stylesheets/app-palette.3f90c815.min.css">
       
       
         
@@ -55,8 +36,6 @@
       
     
     
-      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
-    
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -64,10 +43,9 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
-      <link rel="stylesheet" href="../extra-c507967d85.css">
+      <link rel="stylesheet" href="../assets/pymdownx-extras/extra-821c6c252c.css">
     
     
       
@@ -79,21 +57,14 @@
     
     <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="blue">
   
-    <svg class="md-svg">
-      <defs>
-        
-        
-          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
-        
-      </defs>
-    </svg>
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer"></label>
     
-      <a href="#customizing" tabindex="0" class="md-skip">
+      <a href="#customizing" class="md-skip">
         Skip to content
       </a>
+    
     
     
       <header class="md-header" data-md-component="header">
@@ -110,7 +81,7 @@
         <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
       </div>
       <div class="md-flex__cell md-flex__cell--stretch">
-        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="header-title">
           
             <span class="md-header-nav__topic">
               BracketHighlighter Documentation
@@ -131,15 +102,15 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" name="query" aria-label="search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
       <label class="md-icon md-search__icon" for="__search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+      <button type="reset" class="md-icon md-search__icon" data-md-component="search-reset" tabindex="-1">
         &#xE5CD;
       </button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result">
+        <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Type to start searching
           </div>
@@ -155,18 +126,11 @@
         <div class="md-flex__cell md-flex__cell--shrink">
           <div class="md-header-nav__source">
             
-
-
-  
-
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
-  
-    <div class="md-source__icon">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
+<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source">
+  <div class="md-source__icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
   <div class="md-source__repository">
     GitHub
   </div>
@@ -178,13 +142,15 @@
   </nav>
 </header>
     
-    <div class="md-container">
+    <div class="md-container" data-md-component="container">
       
         
       
       
-      <main class="md-main" role="main">
-        <div class="md-main__inner md-grid" data-md-component="container">
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
           
             
               <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
@@ -202,18 +168,11 @@
   
     <div class="md-nav__source">
       
-
-
-  
-
-<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source" data-md-source="github">
-  
-    <div class="md-source__icon">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <use xlink:href="#__github" width="24" height="24"></use>
-      </svg>
-    </div>
-  
+<a href="https://github.com/facelessuser/BracketHighlighter/" title="Go to repository" class="md-source">
+  <div class="md-source__icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
   <div class="md-source__repository">
     GitHub
   </div>
@@ -1310,38 +1269,38 @@
                   <a href="https://github.com/facelessuser/BracketHighlighter/tree/master/docs/src/markdown/customize.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="customizing">Customizing<a class="headerlink" href="#customizing" title="Permanent link"></a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link"></a></h2>
+                <h1 id="customizing">Customizing<a class="headerlink" href="#customizing" title="Permanent link"></a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link"></a></h2>
 <p><abbr title="BracketHighlighter">BH</abbr> is extremely flexible and can be customized and extended to fit a user's needs.  The first step to customizing the existing rules and settings is to create a <code>bh_core.sublime-settings</code> in your <code>User</code> folder.  With this file you can override any of the settings or bracket rules.  By changing these settings, you can add support for new languages, or change the look of highlighting, and much more.</p>
-<h2 id="core-visual-settings">Core Visual Settings<a class="headerlink" href="#core-visual-settings" title="Permanent link"></a></h2>
+<h2 id="core-visual-settings">Core Visual Settings<a class="headerlink" href="#core-visual-settings" title="Permanent link"></a></h2>
 <p>These are the settings related to the visual appearance of <abbr title="BracketHighlighter">BH</abbr>.</p>
-<h3 id="show_in_minimap"><code>show_in_minimap</code><a class="headerlink" href="#show_in_minimap" title="Permanent link"></a></h3>
+<h3 id="show_in_minimap"><code>show_in_minimap</code><a class="headerlink" href="#show_in_minimap" title="Permanent link"></a></h3>
 <p>Shows highlighted brackets in the minimap.  This will work with all highlight styles except <code>underline</code>; <code>thin_underline</code> has no issues.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Show brackets in the minimap.</span>
     <span class="s2">&quot;show_in_minimap&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="show_unmatched"><code>show_unmatched</code><a class="headerlink" href="#show_unmatched" title="Permanent link"></a></h3>
+<h3 id="show_unmatched"><code>show_unmatched</code><a class="headerlink" href="#show_unmatched" title="Permanent link"></a></h3>
 <p>Displays a special highlight for brackets that cannot be matched.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// When only either the left or right bracket can be found</span>
     <span class="c1">// this defines if the unmatched bracket should be shown.</span>
     <span class="s2">&quot;show_unmatched&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="show_unmatched_exceptions"><code>show_unmatched_exceptions</code><a class="headerlink" href="#show_unmatched_exceptions" title="Permanent link"></a></h3>
+<h3 id="show_unmatched_exceptions"><code>show_unmatched_exceptions</code><a class="headerlink" href="#show_unmatched_exceptions" title="Permanent link"></a></h3>
 <p>List of languages in which the <code>show_unmatched</code> option logic will be reversed.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Do the opposite of &quot;show_unmatched&quot; for the languages listed below</span>
     <span class="s2">&quot;show_unmatched_exceptions&quot;</span><span class="o">:</span> <span class="p">[],</span>
 </code></pre></div>
 
-<h3 id="content_highlight_bar"><code>content_highlight_bar</code><a class="headerlink" href="#content_highlight_bar" title="Permanent link"></a></h3>
+<h3 id="content_highlight_bar"><code>content_highlight_bar</code><a class="headerlink" href="#content_highlight_bar" title="Permanent link"></a></h3>
 <p>An experimental setting which can enable the display of a vertical bar that extends from the line containing the opening bracket to the line with the closing bracket.  Takes a boolean of <code>true</code> or <code>false</code>.  When <a href="#align_content_highlight_bar"><code>align_content_highlight_bar</code></a> is set to <code>false</code>, the bar will be shown on the first column regardless of indent level of the brackets.  When <code>align_content_highlight_bar</code> is set to <code>true</code>, the bar will be aligned at the bracket indent level.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Experimental: Creates a visible bar at the beginning of all lines between</span>
     <span class="c1">// multiline bracket spans.</span>
     <span class="s2">&quot;content_highlight_bar&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="show_in_widgets"><code>show_in_widgets</code><a class="headerlink" href="#show_in_widgets" title="Permanent link"></a></h3>
+<h3 id="show_in_widgets"><code>show_in_widgets</code><a class="headerlink" href="#show_in_widgets" title="Permanent link"></a></h3>
 <p>An experimental setting that enables bracket highlighting in widgets (panels etc.).  By default, <abbr title="BracketHighlighter">BH</abbr> does not highlight any brackets in plain text which is what the majority of the widget text boxes are.  Regex search boxes are not plain text and <em>should</em> get bracket highlighting.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Experimental: Allow bracket highlighter to search in widgets.</span>
     <span class="c1">// Most widgets use Plain Text which BH should ignore,</span>
@@ -1351,7 +1310,7 @@
 </code></pre></div>
 
 <p>Output panels are widgets as well, but sometimes the widget flag gets removed from them (Sublime issue). So this flag may or may not affect the output panel depending on its state.  If you are a developer and wish to ensure an output panel that is created by your plugin does <strong>not</strong> have bracket highlighting, you can set the following setting to the view as <code>True</code>: <code>bracket_highlighter.ignore</code>.</p>
-<h3 id="align_content_highlight_bar"><code>align_content_highlight_bar</code><a class="headerlink" href="#align_content_highlight_bar" title="Permanent link"></a></h3>
+<h3 id="align_content_highlight_bar"><code>align_content_highlight_bar</code><a class="headerlink" href="#align_content_highlight_bar" title="Permanent link"></a></h3>
 <p>Modifies the behavior of <a href="#content-highlight-bar"><code>content_highlight_bar</code></a> and draws the vertical content bar at the indentation level of the highlighted bracket, but there are some limitations:</p>
 <ul>
 <li>
@@ -1365,19 +1324,19 @@
     <span class="s2">&quot;align_content_highlight_bar&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="high_visibility_enabled_by_default"><code>high_visibility_enabled_by_default</code><a class="headerlink" href="#high_visibility_enabled_by_default" title="Permanent link"></a></h3>
+<h3 id="high_visibility_enabled_by_default"><code>high_visibility_enabled_by_default</code><a class="headerlink" href="#high_visibility_enabled_by_default" title="Permanent link"></a></h3>
 <p>Enables high visibility mode by default.  High visibility mode highlights not only the bracket but the content between as well, but it is disabled by default and must be toggled on to be used.  This reverses the behavior and has it on by default. Takes a boolean <code>true</code> or <code>false</code>.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Enable high visibility by default when sublime starts up</span>
     <span class="s2">&quot;high_visibility_enabled_by_default&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="high_visibility_style"><code>high_visibility_style</code><a class="headerlink" href="#high_visibility_style" title="Permanent link"></a></h3>
+<h3 id="high_visibility_style"><code>high_visibility_style</code><a class="headerlink" href="#high_visibility_style" title="Permanent link"></a></h3>
 <p>Modifies the styling of high visibility mode.  The available options are <code>solid</code>, <code>outline</code>, <code>underline</code>, <code>thin_underline</code>, <code>squiggly</code>, and <code>stippled</code>.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// High visibility style and color for high visibility mode</span>
     <span class="s2">&quot;high_visibility_style&quot;</span><span class="o">:</span> <span class="s2">&quot;outline&quot;</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="high_visibility_color"><code>high_visibility_color</code><a class="headerlink" href="#high_visibility_color" title="Permanent link"></a></h3>
+<h3 id="high_visibility_color"><code>high_visibility_color</code><a class="headerlink" href="#high_visibility_color" title="Permanent link"></a></h3>
 <p>Modifies the high visibility color.  There are three types of settings you can use:</p>
 <ul>
 <li>
@@ -1394,21 +1353,21 @@
     <span class="s2">&quot;high_visibility_color&quot;</span><span class="o">:</span> <span class="s2">&quot;__bracket__&quot;</span><span class="p">,</span>
 </code></pre></div>
 
-<h2 id="behavioral-settings">Behavioral Settings<a class="headerlink" href="#behavioral-settings" title="Permanent link"></a></h2>
+<h2 id="behavioral-settings">Behavioral Settings<a class="headerlink" href="#behavioral-settings" title="Permanent link"></a></h2>
 <p>These settings affect the matching behavior.</p>
-<h3 id="match_only_adjacent"><code>match_only_adjacent</code><a class="headerlink" href="#match_only_adjacent" title="Permanent link"></a></h3>
+<h3 id="match_only_adjacent"><code>match_only_adjacent</code><a class="headerlink" href="#match_only_adjacent" title="Permanent link"></a></h3>
 <p>Causes <abbr title="BracketHighlighter">BH</abbr> to only match and highlight brackets when the cursor is adjacent to a bracket.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Match brackets only when the cursor is touching the inside of the bracket</span>
     <span class="s2">&quot;match_only_adjacent&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="bracket_outside_adjacent"><code>bracket_outside_adjacent</code><a class="headerlink" href="#bracket_outside_adjacent" title="Permanent link"></a></h3>
+<h3 id="bracket_outside_adjacent"><code>bracket_outside_adjacent</code><a class="headerlink" href="#bracket_outside_adjacent" title="Permanent link"></a></h3>
 <p>Augments the matching behavior and will trigger matching when the cursor is adjacent to a cursor on the outside (not between the brackets).</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Outside adjacent bracket matching</span>
     <span class="s2">&quot;bracket_outside_adjacent&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="block_cursor_mode"><code>block_cursor_mode</code><a class="headerlink" href="#block_cursor_mode" title="Permanent link"></a></h3>
+<h3 id="block_cursor_mode"><code>block_cursor_mode</code><a class="headerlink" href="#block_cursor_mode" title="Permanent link"></a></h3>
 <p>Experimental setting that modifies the bracket matching mode for block cursor.  The bracket matching mode is one that makes a little more sense to some people in regards to the visual representation of block cursors.  In this mode, brackets will match when the cursor is right before the bracket (or if using a block cursor, highlighting the character). So if you are someone that uses block cursors and find that toggling <a href="#bracket_outside_adjacent"><code>bracket_outside_adjacent</code></a> still doesn't quite match brackets how you would like, you can give this setting a try. It has also been mentioned that this makes sense with Vim.</p>
 <p>When this setting is enabled, <a href="#bracket_outside_adjacent"><code>bracket_outside_adjacent</code></a> will be ignored.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Experimental: Special matching mode for block cursor.</span>
@@ -1418,7 +1377,7 @@
     <span class="s2">&quot;block_cursor_mode&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="ignore_outside_adjacent_in_plugin"><code>ignore_outside_adjacent_in_plugin</code><a class="headerlink" href="#ignore_outside_adjacent_in_plugin" title="Permanent link"></a></h3>
+<h3 id="ignore_outside_adjacent_in_plugin"><code>ignore_outside_adjacent_in_plugin</code><a class="headerlink" href="#ignore_outside_adjacent_in_plugin" title="Permanent link"></a></h3>
 <p>Ignores the <a href="#bracket_outside_adjacent"><code>bracket_outside_adjacent</code></a> setting when running a plugin <strong>if</strong> the plugin sets <code>no_outside_adj</code> to <code>null</code> (<code>null</code> for JSON or <code>None</code> in Python).</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// When &quot;bracket_outside_adjacet&quot; is set, and a plugin command explicitly sets</span>
     <span class="c1">// &quot;no_outside_adj&quot; &quot;None&quot; instead of &quot;true&quot; or the default &quot;false&quot;,</span>
@@ -1426,7 +1385,7 @@
     <span class="s2">&quot;ignore_outside_adjacent_in_plugin&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="ignore_block_mode_in_plugin"><code>ignore_block_mode_in_plugin</code><a class="headerlink" href="#ignore_block_mode_in_plugin" title="Permanent link"></a></h3>
+<h3 id="ignore_block_mode_in_plugin"><code>ignore_block_mode_in_plugin</code><a class="headerlink" href="#ignore_block_mode_in_plugin" title="Permanent link"></a></h3>
 <p>Experimental setting that ignores the <a href="#block_cursor_mode"><code>block_cursor_mode</code></a> setting when running a plugin <strong>if</strong> the plugin sets <code>no_block_mode</code> to <code>null</code> (<code>null</code> for JSON or <code>None</code> in Python).</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// When &quot;block_cursor_mode&quot; is set, and a plugin command explicitly sets</span>
     <span class="c1">// &quot;no_block_mode&quot; to &quot;None&quot; instead of &quot;true&quot; or the default &quot;false&quot;,</span>
@@ -1434,46 +1393,46 @@
     <span class="s2">&quot;ignore_block_mode_in_plugin&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="bracket_string_escape_mode"><code>bracket_string_escape_mode</code><a class="headerlink" href="#bracket_string_escape_mode" title="Permanent link"></a></h3>
+<h3 id="bracket_string_escape_mode"><code>bracket_string_escape_mode</code><a class="headerlink" href="#bracket_string_escape_mode" title="Permanent link"></a></h3>
 <p>Depending on the setting, <abbr title="BracketHighlighter">BH</abbr> will either match sub-brackets inside strings with traditional string escape logic, or it will match sub-brackets in strings with regex escape logic.  Takes a string value of either <code>regex</code> or <code>string</code>.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Set mode for string escapes to ignore (regex|string)</span>
     <span class="s2">&quot;bracket_string_escape_mode&quot;</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="search_threshold"><code>search_threshold</code><a class="headerlink" href="#search_threshold" title="Permanent link"></a></h3>
+<h3 id="search_threshold"><code>search_threshold</code><a class="headerlink" href="#search_threshold" title="Permanent link"></a></h3>
 <p>Sets the search threshold.  The search threshold determines how many characters <abbr title="BracketHighlighter">BH</abbr> will search through to find matching brackets before giving up.  This setting only affects auto-matching and not on-demand calls from the command palette and menu. By default, this value is very conservative and can be increased.  Keep in mind that a very large value may impact performance.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Character threshold to search</span>
     <span class="s2">&quot;search_threshold&quot;</span><span class="o">:</span> <span class="mi">5000</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="ignore_threshold"><code>ignore_threshold</code><a class="headerlink" href="#ignore_threshold" title="Permanent link"></a></h3>
+<h3 id="ignore_threshold"><code>ignore_threshold</code><a class="headerlink" href="#ignore_threshold" title="Permanent link"></a></h3>
 <p>Causes the <a href="#search_threshold"><code>search_threshold</code></a> limit to be ignored.  It is not advised to use this as very large files may cause a noticeable performance hit, but has been made available due to a number of requests.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Ignore threshold</span>
     <span class="s2">&quot;ignore_threshold&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="auto_selection_threshold"><code>auto_selection_threshold</code><a class="headerlink" href="#auto_selection_threshold" title="Permanent link"></a></h3>
+<h3 id="auto_selection_threshold"><code>auto_selection_threshold</code><a class="headerlink" href="#auto_selection_threshold" title="Permanent link"></a></h3>
 <p>A numerical value which controls the maximum number of simultaneous auto-matched brackets that are allowed.  This setting will not be considered when running on-demand calls via the command palette or menu.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Set max number of multi-select brackets that will be searched automatically</span>
     <span class="s2">&quot;auto_selection_threshold&quot;</span> <span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="kill_highlight_on_threshold"><code>kill_highlight_on_threshold</code><a class="headerlink" href="#kill_highlight_on_threshold" title="Permanent link"></a></h3>
+<h3 id="kill_highlight_on_threshold"><code>kill_highlight_on_threshold</code><a class="headerlink" href="#kill_highlight_on_threshold" title="Permanent link"></a></h3>
 <p>Completely kills highlighting when <a href="#auto_selection_threshold"><code>auto_selection_threshold</code></a> is exceeded.  When disabled, <abbr title="BracketHighlighter">BH</abbr> will just highlight up to the threshold limit.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Enable this to completely kill highlighting if &quot;auto_selection_threshold&quot;</span>
     <span class="c1">// is exceeded.  Default is to highlight up to the &quot;auto_selection_threshold&quot;.</span>
     <span class="s2">&quot;kill_highlight_on_threshold&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="no_multi_select_icons"><code>no_multi_select_icons</code><a class="headerlink" href="#no_multi_select_icons" title="Permanent link"></a></h3>
+<h3 id="no_multi_select_icons"><code>no_multi_select_icons</code><a class="headerlink" href="#no_multi_select_icons" title="Permanent link"></a></h3>
 <p>Disables gutter icons when doing multiple selections.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Disable gutter icons when doing multi-select</span>
     <span class="s2">&quot;no_multi_select_icons&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h2 id="popup-settings">Popup Settings<a class="headerlink" href="#popup-settings" title="Permanent link"></a></h2>
+<h2 id="popup-settings">Popup Settings<a class="headerlink" href="#popup-settings" title="Permanent link"></a></h2>
 <p>Settings related to the new popup hints when brackets are offscreen.</p>
-<h3 id="show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code><a class="headerlink" href="#show_offscreen_bracket_popup" title="Permanent link"></a></h3>
+<h3 id="show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code><a class="headerlink" href="#show_offscreen_bracket_popup" title="Permanent link"></a></h3>
 <p>Setting this will show a popup when the mouse hovers over a visible bracket and its matching pair is offscreen.  The popup will show about 120 chars of context for every line shown.  Additionally, if the offscreen bracket is located on a separate line, it will show an additional line(s) of context before and after.  The context is shown in plain text, but the bracket will be emphasized by making the bracket bold and colorizing it with the your theme's keyword color.  <a href="#popup_char_context">Character context</a>, <a href="#popup_line_context">line context</a>, and <a href="#popup_bracket_emphasis">emphasis color</a> can all be configured in the settings file.</p>
 <p><img alt="popup1" src="../images/popup1.png" /></p>
 <p><img alt="popup2" src="../images/popup2.png" /></p>
@@ -1490,20 +1449,20 @@
     <span class="s2">&quot;show_offscreen_bracket_popup&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="show_bracket_popup_always"><code>show_bracket_popup_always</code><a class="headerlink" href="#show_bracket_popup_always" title="Permanent link"></a></h3>
+<h3 id="show_bracket_popup_always"><code>show_bracket_popup_always</code><a class="headerlink" href="#show_bracket_popup_always" title="Permanent link"></a></h3>
 <p>If this setting is enabled with <a href="#show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code></a>, the bracket popup will always be shown on bracket hover, even if both brackets are onscreen.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// If enabled with `show_offscreen_bracket_popup`,the popup will be shown</span>
     <span class="c1">// even if brackets are onscreen.</span>
     <span class="s2">&quot;show_bracket_popup_always&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="popup_char_context"><code>popup_char_context</code><a class="headerlink" href="#popup_char_context" title="Permanent link"></a></h3>
+<h3 id="popup_char_context"><code>popup_char_context</code><a class="headerlink" href="#popup_char_context" title="Permanent link"></a></h3>
 <p>This determines the amount of characters per line of context that are allowed in the popup that is generated by <a href="#show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code></a>.  By default, this setting is set to <code>120</code>.  If you desire a different amount, you can specify it here.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Adjust char per line context of bracket popup.</span>
     <span class="s2">&quot;popup_char_context&quot;</span><span class="o">:</span> <span class="mi">120</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="popup_line_context"><code>popup_line_context</code><a class="headerlink" href="#popup_line_context" title="Permanent link"></a></h3>
+<h3 id="popup_line_context"><code>popup_line_context</code><a class="headerlink" href="#popup_line_context" title="Permanent link"></a></h3>
 <p>Setting this determines the amount of additional lines of context that are allowed in the popup that is generated by <a href="#show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code></a>.  <code>popup_line_context</code> is only applied to brackets that are not on the same line as the visible bracket. This value is split and half the lines will be gathered from before the line of interest and half from after the line of interest.  It is recommend to use even numbers.  Line context is a bit dynamic in the sense that if <strong>X</strong> number of lines cannot be gathered from before, the additional lines will be applied after; the inverse is true in regards to lines after.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Adjust number of lines of additional context</span>
     <span class="c1">// that are shown when brackets are vertically off screen.</span>
@@ -1512,13 +1471,13 @@
     <span class="s2">&quot;popup_line_context&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="use_custom_popup_bracket_emphasis"><code>use_custom_popup_bracket_emphasis</code><a class="headerlink" href="#use_custom_popup_bracket_emphasis" title="Permanent link"></a></h3>
+<h3 id="use_custom_popup_bracket_emphasis"><code>use_custom_popup_bracket_emphasis</code><a class="headerlink" href="#use_custom_popup_bracket_emphasis" title="Permanent link"></a></h3>
 <p>This experimental setting allows you to override the default popup bracket emphasis which is calculated based on what scope/color you have assigned to the matched bracket style.  With this setting enabled, you can use the setting <a href="#popup_bracket_emphasis"><code>popup_bracket_emphasis</code></a> to control the color of the popup bracket emphasis.  This will default to <code>true</code> if you don't have the MdPopups version which supports guessing the correct color.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Use &#39;popup_bracket_emphasis&#39; to customize the popup&#39;s bracket emphasis color</span>
     <span class="s2">&quot;use_custom_popup_bracket_emphasis&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h3 id="popup_bracket_emphasis"><code>popup_bracket_emphasis</code><a class="headerlink" href="#popup_bracket_emphasis" title="Permanent link"></a></h3>
+<h3 id="popup_bracket_emphasis"><code>popup_bracket_emphasis</code><a class="headerlink" href="#popup_bracket_emphasis" title="Permanent link"></a></h3>
 <p>This setting dictates what color is used to emphasize the off screen bracket in the popup that is generated by <a href="#show_offscreen_bracket_popup"><code>show_offscreen_bracket_popup</code></a>.  Colors can either be specified by a standard <a href="http://facelessuser.github.io/sublime-markdown-popups/textmate_scopes/">TextMate scopes</a> (the popup library being used is MdPopups, and it scans your theme for standard TextMate scopes and creates the necessary CSS for the popups), or you can specify a hex color in the form of <code>#rgb</code> or <code>#rrggbb</code>.  Due to limitations in Sublime's HTML renderer, scopes that define background colors will most likely not show the background color.  The default setting is <code>#ff0000</code>.</p>
 <p>Outside of the scopes generated by MdPopups, it is likely that your theme may have additionally included scopes.  Sublime seems to include these by default (but your mileage may vary):</p>
 <ul>
@@ -1534,20 +1493,20 @@
     <span class="s2">&quot;popup_bracket_emphasis&quot;</span><span class="o">:</span> <span class="s2">&quot;keyword&quot;</span>
 </code></pre></div>
 
-<h2 id="special-settings">Special Settings<a class="headerlink" href="#special-settings" title="Permanent link"></a></h2>
-<h3 id="debug"><code>debug</code><a class="headerlink" href="#debug" title="Permanent link"></a></h3>
+<h2 id="special-settings">Special Settings<a class="headerlink" href="#special-settings" title="Permanent link"></a></h2>
+<h3 id="debug"><code>debug</code><a class="headerlink" href="#debug" title="Permanent link"></a></h3>
 <p>Turn on debug logging.  Set to <code>true</code> to enable or <code>false</code> to disable.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">//Debug logging</span>
     <span class="s2">&quot;debug_enable&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
 </code></pre></div>
 
-<h2 id="tag-plugin-settings">Tag Plugin Settings<a class="headerlink" href="#tag-plugin-settings" title="Permanent link"></a></h2>
+<h2 id="tag-plugin-settings">Tag Plugin Settings<a class="headerlink" href="#tag-plugin-settings" title="Permanent link"></a></h2>
 <p>This section covers settings found in <code>bh_tag.sublime-settings</code>.  All tag settings are dictionaries.  Each key represents a tag mode such as: <code>html</code>, <code>xhtml</code>, <code>cfml</code>, etc.  All of these are exposed so that even non-standard HTML syntax can be supported.</p>
 <div class="admonition warning">
 <p class="admonition-title">Attention!</p>
 <p>More tag mode keys can be added, but they <strong>must</strong> be added to <strong>every</strong> setting with valid parameters.</p>
 </div>
-<h3 id="tag_mode"><code>tag_mode</code><a class="headerlink" href="#tag_mode" title="Permanent link"></a></h3>
+<h3 id="tag_mode"><code>tag_mode</code><a class="headerlink" href="#tag_mode" title="Permanent link"></a></h3>
 <p>A list that contains a dictionary of different modes.  Each mode tweaks the tag matching for the respective mode.  Each entry in the list consists of a dictionary with the keys <code>mode</code>, <code>syntax</code>, and the optional <code>first_line</code>. <code>mode</code> specifies the mode name.  <code>syntax</code> is a list of languages that are allowed in that mode. <code>first_line</code> (which is optional) is a regular expression that is applied to the first line in the file as a condition for selecting that mode.  The <code>tag_mode</code> list is evaluated in order from top to bottom and selects the first entry that matches all the criteria.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Determine which style of tag-matching to use in which syntax.</span>
     <span class="s2">&quot;tag_mode&quot;</span><span class="o">:</span> <span class="p">[</span>
@@ -1596,7 +1555,7 @@
     <span class="p">],</span>
 </code></pre></div>
 
-<h3 id="tag_style"><code>tag_style</code><a class="headerlink" href="#tag_style" title="Permanent link"></a></h3>
+<h3 id="tag_style"><code>tag_style</code><a class="headerlink" href="#tag_style" title="Permanent link"></a></h3>
 <p>Sets the highlight style for the tag plugin.  The string value should correspond to a style entry in <code>bracket_styles</code>.  See <a href="#configuring-highlight-style">Configuring Highlight Style</a> for more info.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Style to use for matched tags</span>
     <span class="s2">&quot;tag_style&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1606,7 +1565,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="tag_scope_exclude"><code>tag_scope_exclude</code><a class="headerlink" href="#tag_scope_exclude" title="Permanent link"></a></h3>
+<h3 id="tag_scope_exclude"><code>tag_scope_exclude</code><a class="headerlink" href="#tag_scope_exclude" title="Permanent link"></a></h3>
 <p>Excludes certain scopes from being evaluated when searching for tags.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Scopes to exclude from tag searches.</span>
     <span class="s2">&quot;tag_scope_exclude&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1616,7 +1575,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="optional_tag_patterns"><code>optional_tag_patterns</code><a class="headerlink" href="#optional_tag_patterns" title="Permanent link"></a></h3>
+<h3 id="optional_tag_patterns"><code>optional_tag_patterns</code><a class="headerlink" href="#optional_tag_patterns" title="Permanent link"></a></h3>
 <p>Specifies a regex pattern for names that will be evaluated as optional tags. Optional tags are tags whose closing tag is optional. In the case of optional tags, you may only have an opening (with no self closing slash). <code>null</code> can be used to specify that there is no pattern for the specified tag mode.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Optional closing HTML tags. You can use &#39;null&#39; if it does not require a pattern.</span>
     <span class="s2">&quot;optional_tag_patterns&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1627,7 +1586,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="void_tag_patterns"><code>void_tag_patterns</code><a class="headerlink" href="#void_tag_patterns" title="Permanent link"></a></h3>
+<h3 id="void_tag_patterns"><code>void_tag_patterns</code><a class="headerlink" href="#void_tag_patterns" title="Permanent link"></a></h3>
 <p>Specifies a regex pattern for names that never have a closing tag.  Void or empty tags can optionally use the self closing slash: <code>&lt;tag /&gt;</code>. <code>null</code> can be used to specify that there is no pattern for the specified tag mode.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Tags that never have a closing.  You can use &#39;null&#39; if it does not require a pattern.</span>
     <span class="s2">&quot;void_tag_patterns&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1638,7 +1597,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="self_closing_tag_patterns"><code>self_closing_tag_patterns</code><a class="headerlink" href="#self_closing_tag_patterns" title="Permanent link"></a></h3>
+<h3 id="self_closing_tag_patterns"><code>self_closing_tag_patterns</code><a class="headerlink" href="#self_closing_tag_patterns" title="Permanent link"></a></h3>
 <p>Specifies a regex pattern for tag names that can be represented in self closing form: <code>&lt;tag /&gt;</code>.  <code>null</code> can be used to specify that there is no pattern for the specified tag mode.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Self closing tags.  Single tags that are closed like this &lt;tag /&gt;</span>
     <span class="s2">&quot;self_closing_tag_patterns&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1649,7 +1608,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="tag_name"><code>tag_name</code><a class="headerlink" href="#tag_name" title="Permanent link"></a></h3>
+<h3 id="tag_name"><code>tag_name</code><a class="headerlink" href="#tag_name" title="Permanent link"></a></h3>
 <p>Specifies the regex pattern for identifying the tag name for a given tag mode.  This is broken out as a separate pattern because the Tag Attribute Select <code>bh_plugin</code> needs access to the tag name and tag attributes separate from the whole HTML tag regex.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Regex for tag name. Do not use capturing groups.</span>
     <span class="s2">&quot;tag_name&quot;</span><span class="o">:</span>
@@ -1660,7 +1619,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="attributes"><code>attributes</code><a class="headerlink" href="#attributes" title="Permanent link"></a></h3>
+<h3 id="attributes"><code>attributes</code><a class="headerlink" href="#attributes" title="Permanent link"></a></h3>
 <p>Specifies the regex pattern for identifying the tag attributes for a given tag mode.  This is broken out as a separate pattern so that because the Tag Attribute Select <code>bh_plugin</code> needs access to the tag_name and tag attributes separate from the whole HTML tag regex.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// HTML attributes.  Do not use capturing groups.</span>
     <span class="s2">&quot;attributes&quot;</span><span class="o">:</span>
@@ -1671,7 +1630,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="start_tag"><code>start_tag</code><a class="headerlink" href="#start_tag" title="Permanent link"></a></h3>
+<h3 id="start_tag"><code>start_tag</code><a class="headerlink" href="#start_tag" title="Permanent link"></a></h3>
 <p>Specifies the starting/opening tag regex.  The pattern can accept the tag name and attribute portion of the pattern from the <a href="#tag_name"><code>tag_name</code></a> and <a href="#attributes"><code>attributes</code></a> settings via the python string formatting variables <code>tag_name</code> and <code>attributes</code> (see example below).</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Regex for start/opening tag.  Use a capturing group for tag name and self closing indicator &#39;/&#39; only.</span>
     <span class="c1">// Attributes and tag names are inserted using python string formatting:</span>
@@ -1683,7 +1642,7 @@
     <span class="p">},</span>
 </code></pre></div>
 
-<h3 id="end_tag"><code>end_tag</code><a class="headerlink" href="#end_tag" title="Permanent link"></a></h3>
+<h3 id="end_tag"><code>end_tag</code><a class="headerlink" href="#end_tag" title="Permanent link"></a></h3>
 <p>Specifies the ending/closing tag regex.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Regex for end/closing tag.  Only use a capturing group for name.</span>
     <span class="s2">&quot;end_tag&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -1693,7 +1652,7 @@
     <span class="p">}</span>
 </code></pre></div>
 
-<h2 id="swap-brackets-plugin-settings">Swap Brackets Plugin Settings<a class="headerlink" href="#swap-brackets-plugin-settings" title="Permanent link"></a></h2>
+<h2 id="swap-brackets-plugin-settings">Swap Brackets Plugin Settings<a class="headerlink" href="#swap-brackets-plugin-settings" title="Permanent link"></a></h2>
 <p>Swappable brackets for a given language can be defined in <code>bh_swapping.sublime-settings</code>.  Swap rules are found under the key <code>swapping</code> where <code>swapping</code> is an array of language swap rules.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="s2">&quot;swapping&quot;</span><span class="o">:</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -1768,7 +1727,7 @@
 </tbody>
 </table>
 <p>Within the <code>brackets</code> key, you can specify where the cursor(s) will appear by using <code>${BH_SEL}</code>.  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use <code>${BH_SEL:optional text}</code>.  You can also define tab stops that a user can tab through and enter text.  The tab stop syntax is <code>${BH_TAB}</code>.  You can also define optional text within a tab stop to give the user a hint of what should be entered using the following syntax: <code>${BH_TAB:optional text}</code>.</p>
-<h2 id="wrap-brackets-plugin-settings">Wrap Brackets Plugin Settings<a class="headerlink" href="#wrap-brackets-plugin-settings" title="Permanent link"></a></h2>
+<h2 id="wrap-brackets-plugin-settings">Wrap Brackets Plugin Settings<a class="headerlink" href="#wrap-brackets-plugin-settings" title="Permanent link"></a></h2>
 <p>Wrapping brackets for a given language can be defined in <code>bh_wrapping.sublime-settings</code>.  Wrap rules are found under the key <code>wrapping</code> where <code>wrapping</code> is an array of language wrap rules.</p>
 <div class="codehilite"><pre><span></span><code>    <span class="s2">&quot;wrapping&quot;</span><span class="o">:</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -1842,7 +1801,7 @@
 </tbody>
 </table>
 <p>Within the <code>brackets</code> key, you can specify where the cursor(s) will appear by using <code>${BH_SEL}</code>.  If you would like the selection to display text as a hint to what a user should enter in the selection, you can use <code>${BH_SEL:optional text}</code>. You can also define tab stops that a user can tab through and enter text.  The tab stop syntax is <code>${BH_TAB}</code>.  You can also define optional text within a tab stop to give the user a hint of what should be entered using the following syntax: <code>${BH_TAB:optional text}</code>.</p>
-<h2 id="configuring-brackets">Configuring Brackets<a class="headerlink" href="#configuring-brackets" title="Permanent link"></a></h2>
+<h2 id="configuring-brackets">Configuring Brackets<a class="headerlink" href="#configuring-brackets" title="Permanent link"></a></h2>
 <p><abbr title="BracketHighlighter">BH</abbr> has been written to allow users the ability to define any bracket they would like to have highlighted.  Bracket rules are defined with case insensitive regular expressions, syntax scoping, and <code>bh_plugins</code>.  There are two kinds of brackets you can define.</p>
 <ol>
 <li>
@@ -1858,7 +1817,7 @@
 <p class="admonition-title">Tip</p>
 <p>Brackets can be modified, or even added, without copying the entire bracket rule list to the user settings.  See <a href="#bracket-rule-management">Bracket Rule Management</a> for more info.</p>
 </div>
-<h3 id="configuring-brackets-rules">Configuring Brackets Rules<a class="headerlink" href="#configuring-brackets-rules" title="Permanent link"></a></h3>
+<h3 id="configuring-brackets-rules">Configuring Brackets Rules<a class="headerlink" href="#configuring-brackets-rules" title="Permanent link"></a></h3>
 <p>Brackets are defined under <code>brackets</code> in <code>bh_core.sublime-settings</code>.</p>
 <p><code>angle</code> and <code>curly</code> brackets will be used as an example (not all options may be shown in these examples):</p>
 <div class="codehilite"><pre><span></span><code>        <span class="p">{</span>
@@ -1945,7 +1904,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="configuring-scope-brackets-rules">Configuring Scope Brackets Rules<a class="headerlink" href="#configuring-scope-brackets-rules" title="Permanent link"></a></h3>
+<h3 id="configuring-scope-brackets-rules">Configuring Scope Brackets Rules<a class="headerlink" href="#configuring-scope-brackets-rules" title="Permanent link"></a></h3>
 <p>Scope Brackets are defined under <code>scope_brackets</code> in <code>bh_core.sublime-settings</code>.</p>
 <p><code>py_single_quote</code> bracket will be used as an example (not all options are shown in this example):</p>
 <div class="codehilite"><pre><span></span><code>        <span class="p">{</span>
@@ -2011,7 +1970,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="bracket-rule-management">Bracket Rule Management<a class="headerlink" href="#bracket-rule-management" title="Permanent link"></a></h3>
+<h3 id="bracket-rule-management">Bracket Rule Management<a class="headerlink" href="#bracket-rule-management" title="Permanent link"></a></h3>
 <p>In the past, BracketHighlighter required a user to copy the entire bracket list to the user <code>bh_core.sublime-settings</code> file.  This was a cumbersome requirement that also punished a user because if they did this, they wouldn't automatically get updates to the rules as all the rules were now overridden by the user's settings file.</p>
 <p>BracketHighlighter now lets you add or modify existing rules without overriding the entire rule set, or even the entire target rule.  Let's say you have a custom language you want to have on your machine. Now, you can simply add it to one of the two settings arrays: "user_scope_brackets" and "user_brackets":</p>
 <div class="codehilite"><pre><span></span><code>    <span class="s2">&quot;user_scope_brackets&quot;</span><span class="o">:</span> <span class="p">[],</span>
@@ -2115,7 +2074,7 @@
     <span class="s2">&quot;user_brackets&quot;</span><span class="o">:</span> <span class="p">[],</span>
 </code></pre></div>
 
-<h2 id="configuring-highlight-style">Configuring Highlight Style<a class="headerlink" href="#configuring-highlight-style" title="Permanent link"></a></h2>
+<h2 id="configuring-highlight-style">Configuring Highlight Style<a class="headerlink" href="#configuring-highlight-style" title="Permanent link"></a></h2>
 <p>Each bracket definition (described in <em>Configuring Scope Brackets</em> and <em>Configuring Brackets</em>) has a <code>style</code> option that you can assign a specific style to.  The name of the style corresponds to a style definition.  Style definitions are defined under <code>bracket_styles</code> in <code>bh_core.sublime-settings</code>. Normally you would override the existing style or add new styles through the <code>user_bracket_styles</code> instead of editing <code>bracket_styles</code> directly; direct editing of <code>bracket_styles</code> is mainly reserved for providing defaults to a user.</p>
 <p>You can add and remove as many styles as you wish, but there are two special style definitions whose names are reserved: <code>default</code> and <code>unmatched</code>. If your remove them, they will be added back automatically in memory, but you can configure them.  All styles, even the <em>reserved</em> styles, follow the same format.  See description below:</p>
 <div class="codehilite"><pre><span></span><code>    <span class="c1">// Define region highlight styles</span>
@@ -2176,7 +2135,7 @@
 <p>Around Sublime build 3148, region-ish colors were added. These are scopes that get auto-generated for a color scheme (but can also be explicitly defined) that are meant to define a way for users to pick a specific color that corresponds to the color palette of the theme: <code>region.redish</code>, <code>region.orangish</code>, <code>region.yellowish</code>, <code>region.greenish</code>, <code>region.bluish</code>, <code>region.purplish</code>, and <code>region.pinkish</code>.  <abbr title="BracketHighlighter">BH</abbr> by default uses these now in the color scheme where before it defined nothing, so if you are on Sublime 3148+, you should see colors.</p>
 <p>If the color scheme creator has not explicitly defined a region-ish color for all the default region-ish colors, Sublime will guess a color that is close. If the palette of the color scheme is limited, you may get colors that don't make sense or situations where the same color is picked for colors that are close to begin with &ndash; like <code>region.purplish</code> and <code>region.pinkish</code>.</p>
 </div>
-<h3 id="example-adding-and-overriding-styles">Example: Adding and Overriding Styles<a class="headerlink" href="#example-adding-and-overriding-styles" title="Permanent link"></a></h3>
+<h3 id="example-adding-and-overriding-styles">Example: Adding and Overriding Styles<a class="headerlink" href="#example-adding-and-overriding-styles" title="Permanent link"></a></h3>
 <p>To customize a color, style, or icon, you can simply override that specific style definition by placing your override in <code>user_bracket_styles</code> in your <code>Packages/User/bh_core.sublime-settings</code> file. You are also free to add new styles as well. Just and the key name you want to add/override and specify the options you want to explicitly define, and those specific options will override the existing rule or the defaults.</p>
 <p>In this example, we will override the exiting <code>curly</code> and <em>only</em> change the color.  We will continue to use the <code>icon</code> and <code>style</code> defined defined in the exiting <code>curly</code> rule. We've used the region-ish color <code>region.bluish</code> (for Sublime 3148+) to use the closes color Sublime can find to blue in the existing color scheme. We could have also used any other scope that the color scheme already has rules for.</p>
 <div class="codehilite"><pre><span></span><code><span class="s2">&quot;user_bracket_styles&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -2187,7 +2146,7 @@
 </code></pre></div>
 
 <p>If <code>curly</code> had not already been defined, <code>curly</code> would have been added to the existing rules and any options that were not specified would have inherited their value from the <em>reserved</em> <code>default</code> rule.</p>
-<h3 id="example-specifying-custom-colors-in-schemes">Example: Specifying Custom Colors in Schemes<a class="headerlink" href="#example-specifying-custom-colors-in-schemes" title="Permanent link"></a></h3>
+<h3 id="example-specifying-custom-colors-in-schemes">Example: Specifying Custom Colors in Schemes<a class="headerlink" href="#example-specifying-custom-colors-in-schemes" title="Permanent link"></a></h3>
 <p>If you are unsatisfied or unable to use region-ish colors, and are not satisfied with existing scope and color rules in your color scheme, you can modify your color scheme and add the scope and color you wish to use.</p>
 <p>In Sublime 3152+, you can use the new color format to create an override color scheme instead of directly editing your color scheme. To append your new rule (or override an existing rule) you can create a <code>.sublime-color-scheme</code> file in your <code>Packages/User</code> folder. You only need to specify the colors you are explicitly adding or overriding. In this case, the scheme file would only contain the new scopes we want to append to the base color scheme file. In this case we are adding our own custom region called <code>brackethighligher.curly</code> and assigning a color of <code>#CC99CC</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -2437,7 +2396,7 @@
 </code></pre></div>
 
 </details>
-<h2 id="bracket-plugin-api">Bracket Plugin API<a class="headerlink" href="#bracket-plugin-api" title="Permanent link"></a></h2>
+<h2 id="bracket-plugin-api">Bracket Plugin API<a class="headerlink" href="#bracket-plugin-api" title="Permanent link"></a></h2>
 <p>There are two kinds of plugins that can be written:</p>
 <ol>
 <li><code>definition</code> plugins (plugins attached to bracket definitions via the <code>plugin_library</code> option).</li>
@@ -2552,7 +2511,7 @@
 </dl>
 <p>If needed, bracket plugins can be imported into each other in order to reuse functionality, but because they are not in Python's path, you need to use the special import method.</p>
 <dl>
-<dt><code class="codehilite"><span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code></dt>
+<dt><code class="codehilite"><span class="k">def</span> <span class="nf">import_module</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></code></dt>
 <dd>
 <p>Imports a <code>bh_plugin</code> and returns the module or the module attribute if <code>attribute</code> is defined.</p>
 <p><strong>Parameters</strong>:</p>
@@ -2576,9 +2535,9 @@
 </table>
 </dd>
 </dl>
-<h3 id="definition-plugins">Definition Plugins<a class="headerlink" href="#definition-plugins" title="Permanent link"></a></h3>
+<h3 id="definition-plugins">Definition Plugins<a class="headerlink" href="#definition-plugins" title="Permanent link"></a></h3>
 <p>These are plugins that are attached to the bracket definition and aid in processing the brackets.  These kinds of plugins have three methods you can provide: <code>post_match</code>, <code>compare</code>, and/or <code>validate</code>.</p>
-<h4 id="validate">validate<a class="headerlink" href="#validate" title="Permanent link"></a></h4>
+<h4 id="validate">validate<a class="headerlink" href="#validate" title="Permanent link"></a></h4>
 <dl>
 <dt><code class="codehilite"><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bracket</span><span class="p">,</span> <span class="n">bracket_size</span><span class="p">,</span> <span class="n">bfr</span><span class="p">)</span></code></dt>
 <dd>
@@ -2641,7 +2600,7 @@
 
 </dd>
 </dl>
-<h4 id="compare">compare<a class="headerlink" href="#compare" title="Permanent link"></a></h4>
+<h4 id="compare">compare<a class="headerlink" href="#compare" title="Permanent link"></a></h4>
 <dl>
 <dt><code class="codehilite"><span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">bfr</span><span class="p">)</span></code></dt>
 <dd>
@@ -2695,7 +2654,7 @@
 
 </dd>
 </dl>
-<h4 id="post_match">post_match<a class="headerlink" href="#post_match" title="Permanent link"></a></h4>
+<h4 id="post_match">post_match<a class="headerlink" href="#post_match" title="Permanent link"></a></h4>
 <dl>
 <dt><code class="codehilite"><span class="k">def</span> <span class="nf">post_match</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">)</span></code></dt>
 <dd>
@@ -2767,7 +2726,7 @@
 
 
 <span class="k">def</span> <span class="nf">post_match</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="c1"># Strip whitespace from the beginning of first bracket</span>
         <span class="n">open_bracket</span> <span class="o">=</span> <span class="n">bfr</span><span class="p">[</span><span class="n">first</span><span class="o">.</span><span class="n">begin</span><span class="p">:</span><span class="n">first</span><span class="o">.</span><span class="n">end</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">open_bracket</span> <span class="o">!=</span> <span class="s2">&quot;do&quot;</span><span class="p">:</span>
@@ -2780,13 +2739,13 @@
 <p>Example (snippet from <code>tags.py</code>)</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">post_match</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span>
-    <span class="n">threshold</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfr</span><span class="p">)]</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">threshold</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfr</span><span class="p">)]</span> <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">threshold</span>
     <span class="n">tag_settings</span> <span class="o">=</span> <span class="n">sublime</span><span class="o">.</span><span class="n">load_settings</span><span class="p">(</span><span class="s2">&quot;bh_core.sublime-settings&quot;</span><span class="p">)</span>
     <span class="n">tag_mode</span> <span class="o">=</span> <span class="n">get_tag_mode</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">tag_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tag_mode&quot;</span><span class="p">,</span> <span class="p">{}))</span>
     <span class="n">tag_style</span> <span class="o">=</span> <span class="n">tag_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tag_style&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">)</span>
     <span class="n">bracket_style</span> <span class="o">=</span> <span class="n">style</span>
 
-    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tag_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">first</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">tag_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">matcher</span> <span class="o">=</span> <span class="n">TagMatch</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">bfr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">tag_mode</span><span class="p">)</span>
         <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="n">match</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">matcher</span><span class="o">.</span><span class="n">no_tag</span><span class="p">:</span>
@@ -2797,7 +2756,7 @@
 
 </dd>
 </dl>
-<h4 id="highlighting">highlighting<a class="headerlink" href="#highlighting" title="Permanent link"></a></h4>
+<h4 id="highlighting">highlighting<a class="headerlink" href="#highlighting" title="Permanent link"></a></h4>
 <dl>
 <dt><code class="codehilite"><span class="k">def</span> <span class="nf">highlighting</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span></code></dt>
 <dd>
@@ -2859,10 +2818,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s2">&quot;tag&quot;</span><span class="p">:</span>
         <span class="n">tag_name</span> <span class="o">=</span> <span class="s1">&#39;[\w\:\.\-]+&#39;</span>
-        <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">region</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
             <span class="n">left</span> <span class="o">=</span> <span class="n">left</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">region</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">region</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
             <span class="n">right</span> <span class="o">=</span> <span class="n">right</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">region</span><span class="o">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">region</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
@@ -2870,7 +2829,7 @@
 
 </dd>
 </dl>
-<h3 id="run-instance-plugins">Run Instance Plugins<a class="headerlink" href="#run-instance-plugins" title="Permanent link"></a></h3>
+<h3 id="run-instance-plugins">Run Instance Plugins<a class="headerlink" href="#run-instance-plugins" title="Permanent link"></a></h3>
 <p><code>Run instance</code> plugins are manually invoked bracket matching with an attached plugin. The plugin itself is executed after a match is made.  When defining a manually invoked <abbr title="BracketHighlighter">BH</abbr> command, either <code>bh_key</code> or <code>bh_async_key</code> should be used (key referring to key binding, but is also used for the menu and command palette).  It may be misleading as to what <code>bh_async_key</code> means, but it is mainly a workaround to launch <abbr title="BracketHighlighter">BH</abbr> keys from the command palette.  The command is kicked off asynchronously to ensure the palette closes before executing, but the <abbr title="BracketHighlighter">BH</abbr> command itself is still synchronous.</p>
 <p>Example of run instance plugin getting called:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// Go to left bracket</span>
@@ -3001,7 +2960,7 @@
 </dd>
 </dl>
 <p>Example (from <code>foldbracket.py</code>):</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">BracketHighlighter.bh_plugin</span> <span class="k">as</span> <span class="nn">bh_plugin</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">BracketHighlighter.bh_plugin</span> <span class="kn">as</span> <span class="nn">bh_plugin</span>
 <span class="kn">import</span> <span class="nn">sublime</span>
 
 
@@ -3010,7 +2969,7 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">sublime</span><span class="o">.</span><span class="n">Region</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">begin</span><span class="p">)</span>
         <span class="n">new_content</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
                 <span class="n">new_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">unfold</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selection</span> <span class="o">=</span> <span class="n">new_content</span>
 
@@ -3024,6 +2983,16 @@
                 
                   
                 
+                
+                  
+                  <hr>
+                  <div class="md-source-date">
+                    <small>
+                      
+                        Last update: November 26, 2017
+                      
+                    </small>
+                  </div>
                 
               
               
@@ -3079,22 +3048,31 @@
       <div class="md-footer-copyright">
         
           <div class="md-footer-copyright__highlight">
-            Copyright &copy; 2013 - 2018 <a href="https://github.com/facelessuser">Isaac Muse</a>
-<br><span class="md-footer-custom-text">emoji provided free by <a href="http://www.emojione.com">EmojiOne</a></span>
+            Copyright &copy; 2013 - 2020 <a href="https://github.com/facelessuser">Isaac Muse</a>
+<br><span class="md-footer-custom-text">emoji provided free by </span>
+<a href="https://github.com/twitter/twemoji">Twemoji</a>
 
           </div>
         
         powered by
-        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">
+          MkDocs
+        </a>
         and
         <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-          Material for MkDocs</a>
+          Material for MkDocs
+        </a>
       </div>
       
   <div class="md-footer-social">
-    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/facelessuser" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/facelessuser" target="_blank" rel="noopener" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      <a href="https://discord.gg/AsDnNrj" target="_blank" rel="noopener" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M297.216 243.2c0 15.616-11.52 28.416-26.112 28.416-14.336 0-26.112-12.8-26.112-28.416s11.52-28.416 26.112-28.416c14.592 0 26.112 12.8 26.112 28.416zm-119.552-28.416c-14.592 0-26.112 12.8-26.112 28.416s11.776 28.416 26.112 28.416c14.592 0 26.112-12.8 26.112-28.416.256-15.616-11.52-28.416-26.112-28.416zM448 52.736V512c-64.494-56.994-43.868-38.128-118.784-107.776l13.568 47.36H52.48C23.552 451.584 0 428.032 0 398.848V52.736C0 23.552 23.552 0 52.48 0h343.04C424.448 0 448 23.552 448 52.736zm-72.96 242.688c0-82.432-36.864-149.248-36.864-149.248-36.864-27.648-71.936-26.88-71.936-26.88l-3.584 4.096c43.52 13.312 63.744 32.512 63.744 32.512-60.811-33.329-132.244-33.335-191.232-7.424-9.472 4.352-15.104 7.424-15.104 7.424s21.248-20.224 67.328-33.536l-2.56-3.072s-35.072-.768-71.936 26.88c0 0-36.864 66.816-36.864 149.248 0 0 21.504 37.12 78.08 38.912 0 0 9.472-11.52 17.152-21.248-32.512-9.728-44.8-30.208-44.8-30.208 3.766 2.636 9.976 6.053 10.496 6.4 43.21 24.198 104.588 32.126 159.744 8.96 8.96-3.328 18.944-8.192 29.44-15.104 0 0-12.8 20.992-46.336 30.464 7.68 9.728 16.896 20.736 16.896 20.736 56.576-1.792 78.336-38.912 78.336-38.912z"/></svg>
+      </a>
     
   </div>
 
@@ -3104,11 +3082,22 @@
       
     </div>
     
-      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      <script src="../assets/javascripts/bundle.bd6ef04a.min.js"></script><script id="__lang" type="application/json">
+        {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.language": "en", "search.pipeline.stopwords": "True", "search.pipeline.trimmer": "True", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.tokenizer": "[\\s\\-]+"}
+      </script>
+      <script>
+        app = initialize({
+          base: "..",
+          worker: {
+            search: "../assets/javascripts/worker/search.926ffd9e.min.js"
+          },
+          feature: {
+            instant: false
+          }
+        });
+      </script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
-      
-        <script src="../extra-d8800ea088.js"></script>
+        <script src="../assets/pymdownx-extras/extra-0d9305e748.js"></script>
       
     
   </body>
