@@ -41,6 +41,7 @@ SublimeBrackets
 SublimeTagmatcher
 Swappable
 TextMate
+Twemoji
 backticks
 bool
 boolean
