@@ -46,12 +46,6 @@ def clear_all_regions():
             view.settings().set(
                 'bracket_highlighter.locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
             )
-            # Clone views (settings are shared between normal and cloned)
-            for region_key in view.settings().get("bracket_highlighter.clone_regions", []):
-                view.erase_regions(region_key)
-            view.settings().set(
-                'bracket_highlighter.clone_locations', {'open': {}, 'close': {}, 'unmatched': {}, 'icon': {}}
-            )
 
 
 def select_bracket_style(option, minimap):
@@ -525,14 +519,14 @@ class BhRegion(object):
                 )
             regions.append(name)
 
-    def highlight(self, high_visibility, clone_view):
+    def highlight(self, high_visibility):
         """Highlight all bracket regions."""
 
         self.change_sel()
 
         # Sometimes Sublime is in a weird state and returns None instead of the default we ask for
-        regions_key = "bracket_highlighter.clone_regions" if clone_view else "bracket_highlighter.regions"
-        locations_key = "bracket_highlighter.clone_locations" if clone_view else "bracket_highlighter.locations"
+        regions_key = "bracket_highlighter.regions"
+        locations_key = "bracket_highlighter.locations"
         highlight_regions = self.view.settings().get(regions_key, [])
         if highlight_regions is not None:
             for region_key in highlight_regions:

@@ -4,13 +4,13 @@ repo_url: https://github.com/facelessuser/BracketHighlighter
 edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 copyright: |
-  Copyright &copy; 2013 - 2018 <a href="https://github.com/facelessuser">Isaac Muse</a>
-  <br><span class="md-footer-custom-text">emoji provided free by <a href="http://www.emojione.com">EmojiOne</a></span>
+  Copyright &copy; 2013 - 2020 <a href="https://github.com/facelessuser">Isaac Muse</a>
+  <br><span class="md-footer-custom-text">emoji provided free by </span>
+  <a href="https://github.com/twitter/twemoji">Twemoji</a>
 
 docs_dir: docs/src/markdown
 theme:
   name: material
-  custom_dir: docs/theme
   palette:
     primary: blue
     accent: blue
@@ -32,7 +32,7 @@ nav:
 markdown_extensions:
   - markdown.extensions.toc:
       slugify: !!python/name:pymdownx.slugs.uslugify
-      permalink: "\ue157"
+      permalink: ""
   - markdown.extensions.admonition:
   - markdown.extensions.smarty:
       smart_quotes: false
@@ -60,6 +60,7 @@ markdown_extensions:
   - pymdownx.caret:
   - pymdownx.smartsymbols:
   - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
       emoji_generator: !!python/name:pymdownx.emoji.to_png
   - pymdownx.escapeall:
       hardbreak: true
@@ -73,12 +74,16 @@ markdown_extensions:
   - pymdownx.keys:
       separator: "\uff0b"
   - pymdownx.details:
+  - pymdownx.tabbed:
 
 extra:
   social:
-    - type: github
+    - icon: brands/github
       link: https://github.com/facelessuser
-extra_css:
-  - extra-c507967d85.css
-extra_javascript:
-  - extra-d8800ea088.js
+    - icon: brands/discord
+      link: https://discord.gg/AsDnNrj
+
+plugins:
+  - search
+  - git-revision-date-localized
+  - mkdocs_pymdownx_material_extras

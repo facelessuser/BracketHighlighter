@@ -352,7 +352,7 @@ class BhCore(object):
     ####################
     # Matching
     ####################
-    def match(self, view, force_match=True, clone_view=False):
+    def match(self, view, force_match=True):
         """Preform matching brackets surround the selection(s)."""
 
         if view is None:
@@ -360,15 +360,9 @@ class BhCore(object):
 
         # Ensure nothing else calls BH until done
         view.settings().set("bracket_highlighter.busy", True)
-        if clone_view:
-            view.settings().set("bracket_highlighter.clone", view.id())
-        elif view.id() == view.settings().set("bracket_highlighter.clone", -1):
-            # Catch situations for a manual command invokes this and it is not known this is a clone.
-            clone_view = True
-            view.settings().set("bracket_highlighter.clone", view.id())
 
-        regions_key = "bracket_highlighter.clone_regions" if clone_view else "bracket_highlighter.regions"
-        locations_key = "bracket_highlighter.clone_locations" if clone_view else "bracket_highlighter.locations"
+        regions_key = "bracket_highlighter.regions"
+        locations_key = "bracket_highlighter.locations"
 
         # Abort if disabled
         if not GLOBAL_ENABLE:
@@ -396,7 +390,7 @@ class BhCore(object):
         if not self.ignore_threshold and self.kill_highlight_on_threshold:
             if self.use_selection_threshold and num_sels > self.auto_selection_threshold:
                 self.regions.reset(view, num_sels)
-                self.regions.highlight(HIGH_VISIBILITY, clone_view)
+                self.regions.highlight(HIGH_VISIBILITY)
                 view.settings().set("bracket_highlighter.busy", False)
                 return
 
@@ -438,7 +432,7 @@ class BhCore(object):
                 multi_select_count += 1
 
         # Highlight, focus, and display lines etc.
-        self.regions.highlight(HIGH_VISIBILITY, clone_view)
+        self.regions.highlight(HIGH_VISIBILITY)
 
         # Free up BH
         self.search = None
@@ -788,8 +782,7 @@ class BhOffscreenPopupCommand(sublime_plugin.TextCommand):
 
         # Get relative bracket regions for point
         if point is not None:
-            clone_view = self.view.id() == self.view.settings().get('bracket_highlighter.clone', -1)
-            locations_key = 'bracket_highlighter.clone_locations' if clone_view else 'bracket_highlighter.locations'
+            locations_key = 'bracket_highlighter.locations'
             locations = self.view.settings().get(locations_key, {})
             for k, v in locations.get('unmatched', {}).items():
                 if v[0] <= point <= v[1]:
@@ -991,8 +984,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             index = None
             unmatched = False
             if hover_zone == sublime.HOVER_TEXT:
-                clone_view = view.id() == view.settings().get('bracket_highlighter.clone', -1)
-                locations_key = 'bracket_highlighter.clone_locations' if clone_view else 'bracket_highlighter.locations'
+                locations_key = 'bracket_highlighter.locations'
                 locations = view.settings().get(locations_key, {})
                 for k, v in locations.get('unmatched', {}).items():
                     if v[0] <= point <= v[1]:
@@ -1057,12 +1049,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
             if settings.get('bracket_highlighter.regions'):
                 for region_key in view.settings().get("bracket_highlighter.regions", []):
                     view.erase_regions(region_key)
-                view.settings().set('bracket_highlighter.clone_locations', {})
-            # Clone views (settings are shared between normal and cloned)
-            if settings.get('bracket_highlighter.clone_regions'):
-                for region_key in view.settings().get("bracket_highlighter.clone_regions", []):
-                    view.erase_regions(region_key)
-                view.settings().set('bracket_highlighter.clone_locations', {})
 
     def on_activated(self, view):
         """Highlight brackets when the view gains focus again."""
@@ -1073,7 +1059,6 @@ class BhListenerCommand(sublime_plugin.EventListener):
         if self.ignore_event(view):
             return
         bh_thread.type = BH_MATCH_TYPE_SELECTION
-        bh_thread.last_active = view
         bh_thread.view = view
         sublime.set_timeout(bh_thread.payload, 0)
 
@@ -1121,7 +1106,6 @@ class BhThread(threading.Thread):
         self.reset()
         self.queue = Queue()
         self.view = None
-        self.last_active = None
         threading.Thread.__init__(self)
 
     def reset(self):
@@ -1140,9 +1124,8 @@ class BhThread(threading.Thread):
 
         self.modified = False
         self.ignore_all = True
-        is_clone = self.view is None
-        if bh_match is not None:
-            bh_match(self.last_active if is_clone else self.view, self.type == BH_MATCH_TYPE_EDIT, is_clone)
+        if bh_match is not None and self.view is not None:
+            bh_match(self.view, self.type == BH_MATCH_TYPE_EDIT)
         self.view = None
         self.ignore_all = False
         self.time = time()
