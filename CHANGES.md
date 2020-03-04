@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.27.10
+
+- **FIX**: Handle certain regular expression compilation failures in a more graceful way.
+
 ## 2.27.9
 
 - **FIX**: Remove old clone workaround as this issue will be fixed upstream in Sublime Text 4 builds.
