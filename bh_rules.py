@@ -260,13 +260,21 @@ class SearchRules(object):
                 "SubBracket Pattern: (%s)\n" % ','.join(subnames) +
                 "    (Opening|Closing): (?:%s)\n" % '|'.join(sub_find_regex)
             )
-            self.sub_pattern = bre.compile_search("(?:%s)" % '|'.join(sub_find_regex), bre.MULTILINE | bre.IGNORECASE)
-            self.pattern = bre.compile_search("(?:%s)" % '|'.join(find_regex), bre.MULTILINE | bre.IGNORECASE)
+            fail = False
+            try:
+                self.sub_pattern = bre.compile_search(
+                    "(?:%s)" % '|'.join(sub_find_regex), bre.MULTILINE | bre.IGNORECASE
+                )
+                self.pattern = bre.compile_search("(?:%s)" % '|'.join(find_regex), bre.MULTILINE | bre.IGNORECASE)
+            except Exception as e:
+                log(e)
+                fail = True
             if (
+                fail or
                 self.sub_pattern.groups != len(sub_find_regex) or
                 self.pattern.groups != len(find_regex)
             ):
-                if self.sub_pattern.groups != len(sub_find_regex):
+                if not fail and self.sub_pattern.groups != len(sub_find_regex):
                     log(
                         BRACKET_ERROR % (
                             len(sub_find_regex),
@@ -275,7 +283,7 @@ class SearchRules(object):
                             "(?:%s)" % '|'.join(sub_find_regex)
                         )
                     )
-                if self.pattern.groups != len(find_regex):
+                if not fail and self.pattern.groups != len(find_regex):
                     log(
                         BRACKET_ERROR % (
                             len(find_regex),
