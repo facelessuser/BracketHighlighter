@@ -33,7 +33,7 @@
             ]
         },
         {
-            "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
+            "enabled": true, "language_list": ["HTML", "HTML 5", "XML", "PHP", "CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC"], "language_filter": "whitelist", "entries": [
                 {"name": "HTML/XML Tag", "brackets": ["<${BH_SEL:NAME}>", "</${BH_SEL:NAME}>"], "insert_style": ["inline", "block", "indent_block"]}
             ]
         },

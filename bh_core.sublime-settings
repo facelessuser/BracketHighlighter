@@ -445,6 +445,7 @@
                 "HTML (Jinja2)",
                 "HTML (Twig)",
                 "HTML (Django)",
+                "CFML",
                 "HTML+CFML",
                 "ColdFusion",
                 "ColdFusionCFC",
@@ -525,6 +526,7 @@
                 "HTML",
                 "HTML 5",
                 "PHP",
+                "CFML",
                 "HTML+CFML",
                 "ColdFusion",
                 "ColdFusionCFC"
