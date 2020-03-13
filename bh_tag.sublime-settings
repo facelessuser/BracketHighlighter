@@ -46,7 +46,7 @@
         },
         {
             "mode": "cfml",
-            "syntax": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+            "syntax": ["CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC"]
         }
     ],
 

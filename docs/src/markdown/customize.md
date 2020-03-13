@@ -372,7 +372,7 @@ A list that contains a dictionary of different modes.  Each mode tweaks the tag 
         },
         {
             "mode": "cfml",
-            "syntax": ["HTML+CFML", "ColdFusion", "ColdFusionCFC"]
+            "syntax": ["CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC"]
         }
     ],
 ```
@@ -607,7 +607,7 @@ Brackets are defined under `brackets` in `bh_core.sublime-settings`.
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator"],
             "language_filter": "whitelist",
-            "language_list": ["HTML", "HTML 5", "XML", "PHP", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
+            "language_list": ["HTML", "HTML 5", "XML", "PHP", "CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
         },
@@ -707,7 +707,7 @@ Let's say you want to modify an existing rule, maybe just tweak the language lis
             "language_list": [
                 "HTML", "HTML 5", "XML", "PHP", "HTML (Rails)",
                 "HTML (Jinja Templates)", "HTML (Jinja2)", "HTML (Twig)",
-                "HTML+CFML", "ColdFusion", "ColdFusionCFC",
+                "CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC",
                 "laravel-blade", "Handlebars", "AngularJS",
                 "SomeNewLanguage" // <--- New language
             ]
