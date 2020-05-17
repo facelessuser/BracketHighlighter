@@ -4,18 +4,16 @@ repo_url: https://github.com/facelessuser/BracketHighlighter
 edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 copyright: |
-  Copyright &copy; 2013 - 2020 <a href="https://github.com/facelessuser">Isaac Muse</a>
-  <br><span class="md-footer-custom-text">emoji provided free by </span>
-  <a href="https://github.com/twitter/twemoji">Twemoji</a>
+  Copyright &copy; 2013 - 2020 <a href="https://github.com/facelessuser"  target="_blank" rel="noopener">Isaac Muse</a>
 
 docs_dir: docs/src/markdown
 theme:
   name: material
   palette:
-    primary: blue
-    accent: blue
-  logo:
-    icon: description
+    primary: drac-purple
+    accent: drac-purple
+  icon:
+    logo: material/book-open-page-variant
   font:
     text: Roboto
     code: Roboto Mono
@@ -44,7 +42,6 @@ markdown_extensions:
   - pymdownx.extrarawhtml:
   - pymdownx.superfences:
   - pymdownx.highlight:
-      css_class: codehilite
       extend_pygments_lang:
         - name: php-inline
           lang: php
@@ -60,8 +57,8 @@ markdown_extensions:
   - pymdownx.caret:
   - pymdownx.smartsymbols:
   - pymdownx.emoji:
-      emoji_index: !!python/name:pymdownx.emoji.twemoji
-      emoji_generator: !!python/name:pymdownx.emoji.to_png
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.escapeall:
       hardbreak: true
       nbsp: true
@@ -78,12 +75,14 @@ markdown_extensions:
 
 extra:
   social:
-    - icon: brands/github
+    - icon: fontawesome/brands/github
       link: https://github.com/facelessuser
-    - icon: brands/discord
-      link: https://discord.gg/AsDnNrj
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/TWs8Tgr
 
 plugins:
   - search
   - git-revision-date-localized
   - mkdocs_pymdownx_material_extras
+  - minify:
+      minify_html: true

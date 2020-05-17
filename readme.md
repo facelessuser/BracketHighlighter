@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 [github-ci-image]: https://github.com/facelessuser/BracketHighlighter/workflows/build/badge.svg
 [github-ci-link]: https://github.com/facelessuser/BracketHighlighter/actions?workflow=build
 [discord-image]: https://img.shields.io/discord/678289859768745989?logo=discord&logoColor=aaaaaa&color=mediumpurple&labelColor=333333
-[discord-link]: https://discord.gg/AsDnNrj
+[discord-link]: https://discord.gg/TWs8Tgr
 [pc-image]: https://img.shields.io/packagecontrol/dt/BracketHighlighter.svg?labelColor=333333&logo=sublime%20text
 [pc-link]: https://packagecontrol.io/packages/BracketHighlighter
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?labelColor=333333
