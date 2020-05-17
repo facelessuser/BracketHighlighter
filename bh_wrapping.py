@@ -100,7 +100,7 @@ class ExecuteWrapInstanceCommand(sublime_plugin.TextCommand):
 class WrapBrackets(object):
     """Wrap the current selection(s) with the defined wrapping options."""
 
-    def __init__(self, view, setting_file, attribute):
+    def __init__(self, view, setting_file, attribute, user_attribute):
         """Initialization."""
 
         self.view = view
@@ -108,7 +108,7 @@ class WrapBrackets(object):
         self._brackets = []
         self._insert = []
         self._style = []
-        self.read_wrap_entries(setting_file, attribute)
+        self.read_wrap_entries(setting_file, attribute, user_attribute)
 
     def inline(self, edit, sel):
         """Inline wrap."""
@@ -230,13 +230,13 @@ class WrapBrackets(object):
         elif len(final_sel):
             self.view.sel().add(final_sel[0])
 
-    def read_wrap_entries(self, setting_file, attribute):
+    def read_wrap_entries(self, setting_file, attribute, user_attribute):
         """Read wrap entries from the settings file."""
 
         settings = sublime.load_settings(setting_file)
         syntax = self.view.settings().get('syntax')
         language = splitext(basename(syntax))[0].lower() if syntax is not None else "plain text"
-        wrapping = settings.get(attribute, [])
+        wrapping = settings.get(attribute, []) + settings.get(user_attribute, [])
         for i in wrapping:
             if not exclude_entry(i["enabled"], i["language_filter"], i["language_list"], language):
                 for j in i.get("entries", []):
@@ -302,7 +302,7 @@ class WrapBracketsCommand(sublime_plugin.TextCommand, WrapBrackets):
         self._brackets = []
         self._insert = []
         self._style = []
-        self.read_wrap_entries("bh_wrapping.sublime-settings", "wrapping")
+        self.read_wrap_entries("bh_wrapping.sublime-settings", "wrapping", "user_wrapping")
 
         if len(self._menu):
             self.view.window().show_quick_panel(
