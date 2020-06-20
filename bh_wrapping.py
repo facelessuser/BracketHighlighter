@@ -28,7 +28,7 @@ def exclude_entry(enabled, filter_type, language_list, language):
     exclude = True
     if enabled:
         # Black list languages
-        if filter_type == 'blacklist':
+        if filter_type == 'blocklist':
             exclude = False
             if language is not None:
                 for item in language_list:
@@ -36,7 +36,7 @@ def exclude_entry(enabled, filter_type, language_list, language):
                         exclude = True
                         break
         # White list languages
-        elif filter_type == 'whitelist':
+        elif filter_type == 'allowlist':
             if language is not None:
                 for item in language_list:
                     if language == item.lower():

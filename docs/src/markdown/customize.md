@@ -510,7 +510,7 @@ Swappable brackets for a given language can be defined in `bh_swapping.sublime-s
         {
             "enabled": true,
             "language_list": ["C++", "C"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "entries": [
                 {"name": "C/C++: #if", "brackets": ["#if ${BH_SEL}", "#endif"]},
                 {"name": "C/C++: #if, #else", "brackets": ["#if${BH_SEL}", "#else\n${BH_TAB:/* CODE */}\n#endif"]},
@@ -530,7 +530,7 @@ Attribute         | Type      | Description
 ----------------- | --------- | -----------
 `enabled`         | bool      | Specifies if the rule is enabled.
 `language_list`   | \[string] | An array of languages.
-`language_filter` | string    | A string that specifies whether the `language_list` is either a `whitelist` or `blacklist`.
+`language_filter` | string    | A string that specifies whether the `language_list` is either a `allowlist` or `blocklist`.
 `entries`         | \[dict]   | An array of dictionaries, where each dictionary describes a type of bracket that can be swapped to.
 
 The `entries` key is used to define the related bracket swap rules for the given language.  Each entry represents a bracket you can swap to.
@@ -551,7 +551,7 @@ Wrapping brackets for a given language can be defined in `bh_wrapping.sublime-se
         {
             "enabled": true,
             "language_list": ["Plain text"],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "entries": [
                 {"name": "{} Curly", "brackets": ["{", "}${BH_SEL}"], "insert_style": ["inline", "block", "indent_block"]}
             ]
@@ -565,7 +565,7 @@ Attribute         | Type     | Description
 ----------------- | -------- | -----------
 `enabled`         | bool     | Specifies if the rule is enabled.
 `language_list`   | [string] | An array of languages.
-`language_filter` | string   | A string that specifies if the `language_list` is either a `whitelist` or `blacklist`.
+`language_filter` | string   | A string that specifies if the `language_list` is either a `allowlist` or `blocklist`.
 `entries`         | [dict]   | An array of dictionaries, where each dictionary describes a type of bracket that can be used to wrap the selection.
 
 The `entries` key is used to define the related bracket wrap rules for the given language.  Each entry represents a bracket you can wrap the selection with.
@@ -606,7 +606,7 @@ Brackets are defined under `brackets` in `bh_core.sublime-settings`.
             "close": "(>)",
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["HTML", "HTML 5", "XML", "PHP", "CFML", "HTML+CFML", "ColdFusion", "ColdFusionCFC"],
             "plugin_library": "bh_modules.tags",
             "enabled": true
@@ -618,7 +618,7 @@ Brackets are defined under `brackets` in `bh_core.sublime-settings`.
             "style": "curly",
             "scope_exclude": ["string", "comment"],
             "scope_exclude_exceptions": ["string.other.math.block.environment.latex"],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
@@ -633,7 +633,7 @@ Parameter                              | Description
 `close`                                | Defines the closing bracket (one and only one capturing group must be present).
 `style`                                | Name of the style definition to be used to highlight the brackets.  See *Configuring Bracket Styles* for more info.
 `scope_exclude`                        | Scopes where the opening and closing brackets should be ignored.
-`language_filter`                      | This works in conjunction with `language_list`.  It specifies whether `language_list` is a `blacklist` or `whitelist`.
+`language_filter`                      | This works in conjunction with `language_list`.  It specifies whether `language_list` is a `blocklist` or `allowlist`.
 `language_list`                        | An array of `tmLanguage` file names that should be avoided or included for highlighting.  Looks to `language_filter` to determine if avoidance or inclusion is used.
 `enabled`                              | Disable or enable rule.
 `scope_exclude_exceptions`\ (optional) | Used to ignore excluding of sub scopes such as in the curly example above where `string` is excluded, but not `string.other.math.block.environment.latex`.
@@ -654,7 +654,7 @@ Scope Brackets are defined under `scope_brackets` in `bh_core.sublime-settings`.
             "close": "((?:'')?')",
             "style": "single_quote",
             "scopes": ["string"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Python"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -668,7 +668,7 @@ Parameters                   | Description
 `close`                      | Defines the closing bracket (one and only one capturing group must be present).
 `style`                      | Name of the style definition to be used to highlight the brackets.  See *Configuring Bracket Styles* for more info.
 `scopes`                     | Scope that should be searched to find the opening and closing brackets.
-`language_filter`            | This works in conjunction with `language_list`.  It specifies whether `language_list` is a `blacklist` or `whitelist`.
+`language_filter`            | This works in conjunction with `language_list`.  It specifies whether `language_list` is a `blocklist` or `allowlist`.
 `language_list`              | An array of `tmLanguage` file names that should be avoided or included for highlighting.  Looks to `language_filter` to determine if avoidance or inclusion is used.
 `sub_bracket_search`         | Specifies whether this scope bracket also searches for sub brackets (like curly brackets in strings etc.).
 `enabled`                    | Disable or enable rule.
@@ -690,7 +690,7 @@ BracketHighlighter now lets you add or modify existing rules without overriding 
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "User.bh_modules.mylangkeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["mylang"],
             "enabled": true
         }
@@ -766,7 +766,7 @@ Then you can specify the position you want to insert at using the `position` key
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "User.bh_modules.mylangkeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["mylang"],
             "enabled": true
         }

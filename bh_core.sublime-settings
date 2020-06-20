@@ -134,7 +134,7 @@
             "close": "((?:'')?')",
             "style": "single_quote",
             "scopes": ["string", "meta.string"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": [
                 "Python",
                 "PythonImproved",
@@ -150,7 +150,7 @@
             "close": "((?:\"\")?\")",
             "style": "double_quote",
             "scopes": ["string", "meta.string"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": [
                 "Python",
                 "PythonImproved",
@@ -166,7 +166,7 @@
             "close": "(\")",
             "style": "double_quote",
             "scopes": ["string.quoted.double", "meta.string.interpolated"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["C#"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -182,7 +182,7 @@
                 "string",
                 "string.quoted"
             ],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -198,7 +198,7 @@
                 "string",
                 "string.quoted"
             ],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -214,7 +214,7 @@
                 "string.template-string.js",
                 "string.template.js, meta.template.expression.js"
             ],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Ruby", "Shell-Unix-Generic", "Bash", "JavaScript", "JavaScriptNext"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -226,7 +226,7 @@
             "close": "(/)[igm]*",
             "style": "regex",
             "scopes": ["string"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["JavaScript"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -237,7 +237,7 @@
             "close": "(.|\n)(?:[igmos]*)",
             "style": "regex",
             "scopes": ["string.regexp"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Perl"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -248,7 +248,7 @@
             "close": "(/)[imxo]*",
             "style": "regex",
             "scopes": ["string"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Ruby", "RSpec", "Better RSpec"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -260,7 +260,7 @@
             "close": "(\\*|_)",
             "style": "default",
             "scopes": ["markup.italic"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -271,7 +271,7 @@
             "close": "(\\*\\*|__)",
             "style": "default",
             "scopes": ["markup.bold"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -282,7 +282,7 @@
             "close": "(`+)",
             "style": "default",
             "scopes": ["markup.raw.inline.markdown"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "sub_bracket_search": "true",
             "plugin_library": "bh_modules.mdcode",
@@ -294,7 +294,7 @@
             "close": "(`{3,}|~{3,})\\n?",
             "style": "default",
             "scopes": ["markup.raw.block.fenced.markdown, markup.raw.block.markdown.fenced"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Markdown", "Multimarkdown", "GithubFlavoredMarkdown", "Markdown Extended"],
             "plugin_library": "bh_modules.mdcode",
             "sub_bracket_search": "true",
@@ -307,7 +307,7 @@
             "close": "(\\$)",
             "style": "default",
             "scopes": ["string.other.math.tex", "meta.environment.math.inline.dollar.latex"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -327,7 +327,7 @@
             "close": "(\\*\\))",
             "style": "default",
             "scope_exclude": ["-comment"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["OCaml"],
             "sub_bracket_search": "false",
             "enabled": true
@@ -345,7 +345,7 @@
                 "source.yaml-tmlanguage constant.character.escape"
             ],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
@@ -368,7 +368,7 @@
                 "keyword.control.conditional.patterns.end.shell",
                 "source.yaml-tmlanguage constant.character.escape"
             ],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex", "RTF"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
@@ -380,7 +380,7 @@
             "open":"(<!\\[CDATA\\[)",
             "close":"(\\]\\]>)",
             "style":"default",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["XML"],
             "scope_exclude": [
                 "comment"
@@ -398,7 +398,7 @@
                 "comment"
             ],
             "scope_exclude_exceptions": ["text.tex string.other.math", "source.yaml-tmlanguage meta.value -constant.character.escape"],
-            "language_filter": "blacklist",
+            "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex", "RTF"],
             "find_in_sub_search": "true",
             "ignore_string_escape": true,
@@ -411,7 +411,7 @@
             "close": "(\\?>)",
             "style": "angle",
             "scope_exclude": ["string", "comment", "keyword.operator"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["HTML", "HTML 5"],
             "enabled": true
         },
@@ -434,7 +434,7 @@
                 "source.php meta.embedded.js punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.css punctuation.section.embedded.begin.php"
             ],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": [
                 "HTML",
                 "HTML 5",
@@ -465,7 +465,7 @@
             "close": "(/\\* *@end *\\*/)",
             "style": "default",
             "scope_exclude": [],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["CSS"],
             "enabled": true
         },
@@ -482,7 +482,7 @@
                 "source.ruby.embedded.html -comment -string"
             ],
             "plugin_library": "bh_modules.rubykeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["HTML", "HTML 5", "HTML (Rails)"],
             "enabled": true
         },
@@ -494,7 +494,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Ruby", "RSpec", "Better RSpec", "Ruby on Rails"],
             "enabled": true
         },
@@ -505,7 +505,7 @@
             "close": "\\#[ \\t]*(endif)\\b",
             "style": "c_define",
             "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["C++", "C", "Objective-C++", "Objective-C", "CCpp", "C Improved"],
             "enabled": true
         },
@@ -516,7 +516,7 @@
             "open": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(if|foreach|for|while|switch)\\b(?=.*?\\)\\s*:\\s*(?://.*?|/\\*.*?\\*/\\s*?)?(?:\\?>|$))",
             "close": "(?:(?<=^)|(?<=<\\?php)|(?<=<\\?))\\s*(endif|endfor|endforeach|endwhile|endswitch)\\b(?=\\s*(?:;|;?\\?>))",
             "style": "default",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "scope_exclude": ["string", "comment", "text.html"],
             "scope_exclude_exceptions": [
                 "source.php -comment -string"
@@ -540,7 +540,7 @@
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "plugin_library": "bh_modules.lowercase",
             "language_list": ["Erlang", "HTML (Erlang)"],
             "enabled": true
@@ -553,7 +553,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.bashsupport",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Shell-Unix-Generic", "Bash"],
             "enabled": true
         },
@@ -564,7 +564,7 @@
             "close": "(?:(?<!\\\\\\n)(?:;|^)\\s*)\\b(end)(?=;|\\s|$)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["fish"],
             "enabled": true
         },
@@ -576,7 +576,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.luakeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Lua"],
             "enabled": true
         },
@@ -588,7 +588,7 @@
             "style": "tag",
             "scope_exclude": ["comment"],
             "plugin_library": "bh_modules.latexenvironments",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["LaTeX", "LaTeX (TikZ)", "knitr (Rnw)"],
             "sub_bracket_search": "true",
             "enabled": true
@@ -601,7 +601,7 @@
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.pascalkeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Pascal"],
             "enabled": true
         },
@@ -612,7 +612,7 @@
             "close": "\\b(end)\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["Elixir"],
             "enabled": true
         },
@@ -624,7 +624,7 @@
             "style": "default",
             "scope_exclude": ["-keyword.cmake"],
             "plugin_library": "bh_modules.cmakekeywords",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["CMake"],
             "enabled": true
         },
@@ -636,7 +636,7 @@
             "style": "tag",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.s840d_gcode",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["s840d_gcode"],
             "enabled": true
         },
@@ -648,7 +648,7 @@
             "style": "tag",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.s840d_hmi",
-            "language_filter": "whitelist",
+            "language_filter": "allowlist",
             "language_list": ["s840d_hmi"],
             "enabled": true
         }

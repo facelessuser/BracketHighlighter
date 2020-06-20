@@ -42,7 +42,9 @@ SublimeTagmatcher
 Swappable
 TextMate
 Twemoji
+allowlist
 backticks
+blocklist
 bool
 boolean
 builtins

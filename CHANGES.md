@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.28.0
+
+- **NEW**: Rename `language_filter` options `whitelist` and `blacklist` to `allowlist` and `blocklist` respectively.
+
 ## 2.27.10
 
 - **FIX**: Handle certain regular expression compilation failures in a more graceful way.
