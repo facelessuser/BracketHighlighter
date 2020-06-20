@@ -16,7 +16,7 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 - Customizable bracket highlight style.
 - High visibility bracket highlight mode.
 - Selectively disable or enable specific matching of tags, brackets, or quotes.
-- Selectively whitelist or blacklist matching of specific tags, brackets, or quotes based on language.
+- Selectively use an allowlist or blocklist for matching specific tags, brackets, or quotes based on language.
 - When bound to a shortcut, allow option to show line count and char count between match in the status bar.
 - Highlight basic brackets within strings.
 - Works with multi-select.

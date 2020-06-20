@@ -14,7 +14,7 @@ import sublime_plugin
 BH_STYLE = "default"
 BH_ENABLED = True
 BH_LANG_LIST = []
-BH_LANG_FILTER = "blacklist"
+BH_LANG_FILTER = "blocklist"
 BH_FIND_SUB = "false"
 BH_SUB_BRACKET = "false"
 BH_COMPARE_MATCH = None
@@ -42,7 +42,7 @@ def exclude_bracket(enabled, filter_type, language_list, language):
     exclude = True
     if enabled:
         # Black list languages
-        if filter_type == 'blacklist':
+        if filter_type == 'blocklist':
             exclude = False
             if language is not None:
                 for item in language_list:
@@ -50,7 +50,7 @@ def exclude_bracket(enabled, filter_type, language_list, language):
                         exclude = True
                         break
         # White list languages
-        elif filter_type == 'whitelist':
+        elif filter_type == 'allowlist':
             if language is not None:
                 for item in language_list:
                     if language == item.lower():
