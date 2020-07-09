@@ -4,12 +4,17 @@ on:
   push:
     branches:
       - 'master'
+    tags:
+    - '**'
+  pull_request:
+    branches:
+    - '**'
 
 jobs:
   tests:
 
     env:
-      TOXENV: py37
+      TOXENV: py38
 
     runs-on: ubuntu-latest
 
@@ -18,7 +23,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools tox
@@ -38,7 +43,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools tox
@@ -58,7 +63,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools tox
