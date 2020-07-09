@@ -204,6 +204,7 @@ class BhRegion(object):
         self.hv_underline = self.hv_style & sublime.DRAW_EMPTY_AS_OVERWRITE
         self.hv_color = settings.get("high_visibility_color", HV_RSVD_VALUES[1])
         self.no_multi_select_icons = bool(settings.get("no_multi_select_icons", False))
+        self.gutter_icons = bool(settings.get("gutter_icons", True))
         self.bracket_regions = {}
         self.alter_select = alter_select
         for style, bracket_region in get_bracket_regions(settings, minimap):
@@ -541,7 +542,7 @@ class BhRegion(object):
         icon_type = "no_icon"
         open_icon_type = "no_icon"
         close_icon_type = "no_icon"
-        if not self.no_multi_select_icons or not self.multi_select:
+        if self.gutter_icons and (not self.no_multi_select_icons or not self.multi_select):
             icon_type = "small_icon" if self.view.line_height() < 16 else "icon"
             open_icon_type = "small_open_icon" if self.view.line_height() < 16 else "open_icon"
             close_icon_type = "small_close_icon" if self.view.line_height() < 16 else "close_icon"

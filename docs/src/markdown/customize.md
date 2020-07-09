@@ -211,6 +211,15 @@ Completely kills highlighting when [`auto_selection_threshold`](#auto_selection_
     "kill_highlight_on_threshold": true,
 ```
 
+### `gutter_icons`
+
+Globally enable or disable gutter icons.
+
+```js
+    // Global control of gutter icons.
+    "gutter_icons": true,
+```
+
 ### `no_multi_select_icons`
 
 Disables gutter icons when doing multiple selections.
