@@ -118,6 +118,9 @@
     // Disable gutter icons when doing multi-select
     "no_multi_select_icons": false,
 
+    // Global control of gutter icons.
+    "gutter_icons": true,
+
     // Rules that define the finding and matching of brackets
     // that are contained in a common scope.
     // Useful for bracket pairs that are the same but
