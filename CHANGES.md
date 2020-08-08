@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.28.1
+
+- **FIX**: Handle HTML attributes even when there are no spaces between them.
+
 ## 2.28.0
 
 - **NEW**: Rename `language_filter` options `whitelist` and `blacklist` to `allowlist` and `blocklist` respectively.

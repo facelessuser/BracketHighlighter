@@ -111,10 +111,10 @@
     // Attributes and tag names are inserted using python string formatting:
     // the keyword 'attributes' and `tag_name` are used.
     "start_tag": {
-        "xml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
-        "xhtml": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
-        "html": "<(%(tag_name)s)(?:\\s+%(attributes)s)*\\s*(/?)>",
-        "cfml": "<(%(tag_name)s)(?:(?:\\s+%(attributes)s)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*(/?)>"
+        "xml": "<(%(tag_name)s)(?:(?:\\s+|(?<=['\"]))%(attributes)s)*\\s*(/?)>",
+        "xhtml": "<(%(tag_name)s)(?:(?:\\s+|(?<=['\"]))%(attributes)s)*\\s*(/?)>",
+        "html": "<(%(tag_name)s)(?:(?:\\s+|(?<=['\"]))%(attributes)s)*\\s*(/?)>",
+        "cfml": "<(%(tag_name)s)(?:(?:(?:\\s+|(?<=['\"]))%(attributes)s)*|(?:(?<=cfif)|(?<=cfelseif))[^>]+)\\s*(/?)>"
     },
 
     // Regex for end/closing tag.  Only use a capturing group for name.
