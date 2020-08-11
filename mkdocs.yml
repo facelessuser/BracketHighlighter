@@ -9,6 +9,7 @@ copyright: |
 docs_dir: docs/src/markdown
 theme:
   name: material
+  custom_dir: docs/theme
   palette:
     primary: drac-purple
     accent: drac-purple
@@ -72,6 +73,7 @@ markdown_extensions:
       separator: "\uff0b"
   - pymdownx.details:
   - pymdownx.tabbed:
+  - pymdownx.saneheaders:
 
 extra:
   social:
