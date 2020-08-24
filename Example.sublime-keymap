@@ -47,6 +47,40 @@
             }
         }
     },
+    // Select to left bracket
+    {
+        "keys": ["ctrl+alt+shift+super+up"],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "left", "extend": true}
+            }
+        }
+    },
+    // Select to right bracket
+    {
+        "keys": ["ctrl+alt+shift+super+down"],
+        "command": "bh_key",
+        "args":
+        {
+            "no_outside_adj": null,
+            "no_block_mode": null,
+            "lines" : true,
+            "plugin":
+            {
+                "type": ["__all__"],
+                "command": "bh_modules.bracketselect",
+                "args": {"select": "right", "extend": true}
+            }
+        }
+    },
     // Remove brackets
     {
         "keys": ["ctrl+alt+super+r"],
