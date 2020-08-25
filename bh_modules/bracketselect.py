@@ -17,6 +17,10 @@ class SelectBracket(bh_plugin.BracketPluginCommand):
         """
         Select the content between brackets.
 
+        If "extend" is set to true, extend the current
+        selection up to (and including) the left/right bracket
+        when jumping to the left/right bracket.
+
         If "always_include_brackets" is enabled,
         include the brackets as well.
         If the content is already selected, expand to the parent.
