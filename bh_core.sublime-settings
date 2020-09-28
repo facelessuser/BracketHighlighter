@@ -369,6 +369,7 @@
                 "comment",
                 "source.regexp constant.character.escape",
                 "keyword.control.conditional.patterns.end.shell",
+                "keyword.control.case.item",
                 "source.yaml-tmlanguage constant.character.escape"
             ],
             "language_filter": "blocklist",

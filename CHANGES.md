@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.28.2
+
+- **FIX**: Bash switch case highlighting on ST3.
+
 ## 2.28.1
 
 - **FIX**: Handle HTML attributes even when there are no spaces between them.
