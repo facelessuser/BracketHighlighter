@@ -69,7 +69,7 @@ BH is also extendable via plugins and provides a number of built-in Bracket Plug
 
 ### Bracket Select Plugin
 
-The Bracket Select plugin selects the content between the brackets or moves the selection to the opening or closing bracket.  Behavior is slightly modified for tags.
+The Bracket Select plugin selects the content between the brackets or moves the selection to the opening or closing bracket.  Behavior is slightly modified for tags.  When the `extend` argument is set to `true`, the Bracket Select plugin extends the current selection to the left/right bracket when jumping to the chosen bracket.
 
 ### Swap Brackets Plugin
 
