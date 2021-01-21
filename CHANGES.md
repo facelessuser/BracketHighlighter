@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.28.3
+
+- **FIX**: Fix custom popup color handling.
+
 ## 2.28.2
 
 - **FIX**: Bash switch case highlighting on ST3.

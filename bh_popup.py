@@ -239,12 +239,15 @@ class BhOffscreenPopup(object):
         tab_size = view.settings().get('tab_size', 4)
 
         # Get highlight colors
+        color = None
         if icon is not None:
             color = mdpopups.scope2style(view, icon[1]).get('color')
-            if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
-                bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
-            else:
-                bracket_em = color
+        if color is None or bool(settings.get('use_custom_popup_bracket_emphasis', False)):
+            bracket_em = settings.get('popup_bracket_emphasis', '#ff0000')
+            if not bracket_em.startswith('#'):
+                bracket_em = mdpopups.scope2style(view, bracket_em).get('color')
+        else:
+            bracket_em = color
 
         # Get positions of bracket extents on the line
         row, col = view.rowcol(region[0])

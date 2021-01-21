@@ -1,4 +1,4 @@
-mkdocs_pymdownx_material_extras>=1.0.7
+mkdocs_pymdownx_material_extras==1.1.3
 mkdocs-git-revision-date-localized-plugin
 mkdocs-minify-plugin
 pyspelling
