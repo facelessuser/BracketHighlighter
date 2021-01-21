@@ -10,14 +10,16 @@ docs_dir: docs/src/markdown
 theme:
   name: material
   custom_dir: docs/theme
-  palette:
-    primary: drac-purple
-    accent: drac-purple
   icon:
     logo: material/book-open-page-variant
+  palette:
+    primary: deep purple
+    accent: deep purple
   font:
     text: Roboto
     code: Roboto Mono
+  features:
+    - navigation.tabs
 
 nav:
   - About BracketHighlighter: index.md
@@ -25,8 +27,9 @@ nav:
   - Basic Usage: usage.md
   - Customizing: customize.md
   - Extended Regex Guide: extended-regex.md
-  - Contributing &amp; Support: contributing.md
-  - License: license.md
+  - About:
+    - Contributing &amp; Support: about/contributing.md
+    - License: about/license.md
 
 markdown_extensions:
   - markdown.extensions.toc:
@@ -48,10 +51,15 @@ markdown_extensions:
           lang: php
           options:
             startinline: true
+        - name: pycon3
+          lang: pycon
+          options:
+            python3: true
   - pymdownx.inlinehilite:
   - pymdownx.magiclink:
       repo_url_shortener: true
       repo_url_shorthand: true
+      social_url_shorthand: true
       user: facelessuser
       repo: BracketHighlighter
   - pymdownx.tilde:
@@ -66,6 +74,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.progressbar:
+  - pymdownx.mark:
   - pymdownx.striphtml:
   - pymdownx.snippets:
       base_path: docs/src/markdown/_snippets
@@ -85,6 +94,6 @@ extra:
 plugins:
   - search
   - git-revision-date-localized
-  - mkdocs_pymdownx_material_extras
   - minify:
       minify_html: true
+  - mkdocs_pymdownx_material_extras
