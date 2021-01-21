@@ -1,12 +1,11 @@
 # BracketHighlighter
 
-## 2.28.3
 
-- **FIX**: Fix custom popup color handling.
+## 2.29.0
 
-## 2.28.2
-
+- **NEW**: Enhance bracket content select feature with `extend` parameter.
 - **FIX**: Bash switch case highlighting on ST3.
+- **FIX**: Fix custom popup color handling.
 
 ## 2.28.1
 

@@ -1,4 +1,4 @@
-# BracketHighlighter 2.28.0
+# BracketHighlighter 2.29.0
 
 New release!
 
