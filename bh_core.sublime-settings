@@ -576,10 +576,11 @@
         // Lua
         {
             "name": "lua",
-            "open": "(?:(?<=[\\s;])|(?<=^))(if|function|do|repeat)\\b",
-            "close": "(?:(?<=[\\s;])|(?<=^))(end|until)\\b",
+            "open": "\\b(if|function|do|repeat)\\b",
+            "close": "\\b(end|until)\\b",
             "style": "default",
-            "scope_exclude": ["string", "comment"],
+            "scope_exclude": ["-keyword"],
+            "scope_exclude_exceptions": ["storage.type.function.lua"],
             "plugin_library": "bh_modules.luakeywords",
             "language_filter": "allowlist",
             "language_list": ["Lua"],
