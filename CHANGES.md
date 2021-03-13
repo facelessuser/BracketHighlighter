@@ -1,5 +1,8 @@
 # BracketHighlighter
 
+## 2.29.1
+
+- **FIX**: PHP bracket matching issue.
 
 ## 2.29.0
 

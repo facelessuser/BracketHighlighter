@@ -434,6 +434,7 @@
                 "storage.type.function.arrow.js",
                 "punctuation.accessor.php",
                 "punctuation.accessor.arrow.php",
+                "punctuation.definition.arrow-function.php",
                 "source.php meta.embedded.html punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.js punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.css punctuation.section.embedded.begin.php"
