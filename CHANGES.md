@@ -3,6 +3,7 @@
 ## 2.29.1
 
 - **FIX**: PHP bracket matching issue.
+- **FIX**: Fix Lua keyword issue.
 
 ## 2.29.0
 
