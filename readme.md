@@ -5,11 +5,15 @@
 ![License][license-image]
 # BracketHighlighter
 
-Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `<tag></tag>`, and even custom brackets.
+Bracket Highlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `<tag></tag>`, and even custom
+brackets.
 
-This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available).  I forked this to fix some issues I had and to add some features I had wanted.  I also wanted to improve the efficiency of the matching.
+This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available). I
+forked this to fix some issues I had and to add some features I had wanted.  I also wanted to improve the efficiency of
+the matching.
 
-Moving forward, I have thrown away all of the code and have completely rewritten the entire code base to allow for a more flexibility, faster, and more feature rich experience.
+Moving forward, I have thrown away all of the code and have completely rewritten the entire code base to allow for a
+more flexibility, faster, and more feature rich experience.
 
 ![screenshot](docs/src/markdown/images/Example1.png)
 
@@ -25,7 +29,10 @@ Moving forward, I have thrown away all of the code and have completely rewritten
 - Works with multi-select.
 - Configurable custom gutter icons.
 - Toggle bracket escape mode for string brackets (regex|string).
-- Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selections with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold content between brackets, toggle through tag attribute selection, select both the opening and closing tag name to change both simultaneously.
+- Bracket plugins that can jump between bracket ends, select content, remove brackets and/or content, wrap selections
+  with brackets, swap brackets, swap quotes (handling quote escaping between the main quotes), fold/unfold content
+  between brackets, toggle through tag attribute selection, select both the opening and closing tag name to change both
+  simultaneously, etc.
 
 # Documentation
 
@@ -35,13 +42,20 @@ https://facelessuser.github.io/BracketHighlighter/
 
 Released under the MIT license.
 
-Copyright (c) 2013 - 2020 Isaac Muse <isaacmuse@gmail.com>
+Copyright (c) 2013 - 2021 Isaac Muse <isaacmuse@gmail.com>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [github-ci-image]: https://github.com/facelessuser/BracketHighlighter/workflows/build/badge.svg?branch=master&event=push
 [github-ci-link]: https://github.com/facelessuser/BracketHighlighter/actions?query=workflow%3Abuild+branch%3Amaster

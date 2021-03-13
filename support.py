@@ -5,7 +5,7 @@ import textwrap
 import webbrowser
 import re
 
-__version__ = "2.29.0"
+__version__ = "2.29.1"
 __pc_name__ = 'BracketHighlighter'
 
 CSS = '''
@@ -35,7 +35,7 @@ frontmatter = {
                 "repo": "BracketHighlighter"
             }
         },
-        "pymdownx.extrarawhtml",
+        "markdown.extensions.md_in_html",
         "pymdownx.keys",
         {"pymdownx.escapeall": {"hardbreak": True, "nbsp": True}},
         # Sublime doesn't support superscript, so no ordinal numbers
@@ -163,9 +163,8 @@ class BracketHighlighterDocCommand(sublime_plugin.WindowCommand):
 
         try:
             import mdpopups
-            import pymdownx
-            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3124)
-            fmatter = mdpopups.format_frontmatter(frontmatter) if pymdownx.version_info[:3] >= (4, 3, 0) else ''
+            has_phantom_support = (mdpopups.version() >= (1, 10, 0))
+            fmatter = mdpopups.format_frontmatter(frontmatter)
         except Exception:
             fmatter = ''
             has_phantom_support = False
@@ -202,10 +201,10 @@ class BracketHighlighterChangesCommand(sublime_plugin.WindowCommand):
         """Show the changelog in a new view."""
         try:
             import mdpopups
-            import pymdownx
-            has_phantom_support = (mdpopups.version() >= (1, 10, 0)) and (int(sublime.version()) >= 3124)
-            fmatter = mdpopups.format_frontmatter(frontmatter) if pymdownx.version_info[:3] >= (4, 3, 0) else ''
-        except Exception:
+            has_phantom_support = (mdpopups.version() >= (1, 10, 0))
+            fmatter = mdpopups.format_frontmatter(frontmatter)
+        except Exception as e:
+            print(e)
             fmatter = ''
             has_phantom_support = False
 

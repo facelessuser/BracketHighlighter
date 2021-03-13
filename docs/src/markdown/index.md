@@ -2,9 +2,13 @@
 
 ## Overview
 
-BracketHighlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `#!xml <tag></tag>`, and even custom brackets.
+BracketHighlighter matches a variety of brackets such as: `[]`, `()`, `{}`, `""`, `''`, `#!xml <tag></tag>`, and even
+custom brackets.
 
-This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available).  I forked his repositories to fix a number issues I add some features I had wanted.  I also wanted to improve the efficiency of the matching. Moving forward, I have thrown away all of the code and have completely rewritten the entire code base to allow for more flexibility, faster matching, and a more feature rich experience.
+This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagmatcher_ (both are no longer available). I
+forked his repositories to fix a number issues I add some features I had wanted.  I also wanted to improve the
+efficiency of the matching. Moving forward, I have thrown away all of the code and have completely rewritten the entire
+code base to allow for more flexibility, faster matching, and a more feature rich experience.
 
 ![screenshot](images/Example1.png)
 
@@ -24,7 +28,8 @@ This was originally forked from pyparadigm's _SublimeBrackets_ and _SublimeTagma
 
 ## Credits
 
-- pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter was built off of and the inspiration for this project.
+- pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter
+  was built off of and the inspiration for this project.
 - BoundInCode: for his Tag icon.
 
 --8<-- "refs.md"

@@ -4,7 +4,7 @@ repo_url: https://github.com/facelessuser/BracketHighlighter
 edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 copyright: |
-  Copyright &copy; 2013 - 2020 <a href="https://github.com/facelessuser"  target="_blank" rel="noopener">Isaac Muse</a>
+  Copyright &copy; 2013 - 2021 <a href="https://github.com/facelessuser"  target="_blank" rel="noopener">Isaac Muse</a>
 
 docs_dir: docs/src/markdown
 theme:
@@ -13,6 +13,7 @@ theme:
   icon:
     logo: material/book-open-page-variant
   palette:
+    scheme: dracula
     primary: deep purple
     accent: deep purple
   font:
@@ -22,13 +23,15 @@ theme:
     - navigation.tabs
 
 nav:
-  - About BracketHighlighter: index.md
-  - Installation: installation.md
-  - Basic Usage: usage.md
-  - Customizing: customize.md
-  - Extended Regex Guide: extended-regex.md
+  - Home:
+    - BracketHighlighter: index.md
+    - Installation: installation.md
+    - Basic Usage: usage.md
+    - Customizing: customize.md
+    - Extended Regex Guide: extended-regex.md
   - About:
     - Contributing &amp; Support: about/contributing.md
+    - Changelog: https://github.com/facelessuser/BracketHighlighter/blob/master/CHANGES.md
     - License: about/license.md
 
 markdown_extensions:
@@ -43,6 +46,7 @@ markdown_extensions:
   - markdown.extensions.def_list:
   - markdown.extensions.tables:
   - markdown.extensions.abbr:
+  - markdown.extensions.footnotes:
   - markdown.extensions.md_in_html:
   - pymdownx.superfences:
   - pymdownx.highlight:
@@ -73,7 +77,7 @@ markdown_extensions:
       nbsp: true
   - pymdownx.tasklist:
       custom_checkbox: true
-  - pymdownx.progressbar:
+  - pymdownx.arithmatex:
   - pymdownx.mark:
   - pymdownx.striphtml:
   - pymdownx.snippets:
@@ -94,6 +98,6 @@ extra:
 plugins:
   - search
   - git-revision-date-localized
+  - mkdocs_pymdownx_material_extras
   - minify:
       minify_html: true
-  - mkdocs_pymdownx_material_extras
