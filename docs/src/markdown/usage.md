@@ -8,14 +8,36 @@ will also put opening and closing icons in the gutter of the corresponding line 
 It is advised that you disable Sublime's default bracket and tag matcher in your `Preferences.sublime-settings` file or
 you will have matching conflicts:
 
+Sublime's bracket highlighter can clash with BH's and it advisable to disable Sublime's bracket matching visualization.
+If this is desired, it can be done by creating a file in your user folder with the same name as your current color
+scheme using the extension `.sublime-color-scheme` (even if you are overriding a `tmTheme` color scheme) and adding the
+following to that file:
+
 ```js
-    "match_brackets": false,
-    "match_brackets_angle": false,
-    "match_brackets_braces": false,
-    "match_brackets_content": false,
-    "match_brackets_square": false,
-    "match_tags": false
+{
+    "variables": {},
+    "globals":
+    {
+        "bracket_contents_options": "none",
+        "brackets_options": "none",
+        "tags_options": "none"
+    },
+    "rules": []
+}
 ```
+
+!!! note "Outdated Recommendation"
+    Previously, it was recommended to disable the following features, but this also disabled bracket related features
+    in "expand selections" and such. This is no longer recommended.
+
+    ```js
+        "match_brackets": false,
+        "match_brackets_angle": false,
+        "match_brackets_braces": false,
+        "match_brackets_content": false,
+        "match_brackets_square": false,
+        "match_tags": false
+    ```
 
 If you are using Sublime Text build 3124+, a new feature has been added which shows a popup when you mouse over a
 bracket that has its matching bracket pair off screen.  It will show where the other bracket is located with line
