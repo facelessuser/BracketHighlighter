@@ -21,6 +21,7 @@ theme:
     code: Roboto Mono
   features:
     - navigation.tabs
+    - navigation.top
 
 nav:
   - Home:
