@@ -616,7 +616,7 @@
         {
             "name": "elixir",
             "open": "\\b(do$|fn)\\b",
-            "close": "\\b(end)\\b",
+            "close": "\\b(end(?![:?]))\\b",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "language_filter": "allowlist",

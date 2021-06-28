@@ -4,6 +4,7 @@
 
 - **FIX**: Adjustments for latest syntax changes in default JavaScript and HTML in Sublime Text. Fixes issues with
   JavaScript angle brackets.
+- **FIX**: Elixir end block detection.
 
 ## 2.29.1
 
