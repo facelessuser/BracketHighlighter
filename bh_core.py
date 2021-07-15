@@ -1013,7 +1013,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
             elif region is not None:
                 bh_popup.BhOffscreenPopup().show_popup(view, point, region, icon)
 
-    def on_load(self, view):
+    def on_load_async(self, view):
         """Search brackets on view load."""
 
         if self.ignore_event(view):
@@ -1022,7 +1022,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         bh_thread.view = view
         sublime.set_timeout(bh_thread.payload, 0)
 
-    def on_modified(self, view):
+    def on_modified_async(self, view):
         """Update highlighted brackets when the text changes."""
 
         if self.ignore_event(view):
@@ -1050,7 +1050,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
                 for region_key in view.settings().get("bracket_highlighter.regions", []):
                     view.erase_regions(region_key)
 
-    def on_activated(self, view):
+    def on_activated_async(self, view):
         """Highlight brackets when the view gains focus again."""
 
         if bh_thread is not None:
@@ -1062,7 +1062,7 @@ class BhListenerCommand(sublime_plugin.EventListener):
         bh_thread.view = view
         sublime.set_timeout(bh_thread.payload, 0)
 
-    def on_selection_modified(self, view):
+    def on_selection_modified_async(self, view):
         """Highlight brackets when the selections change."""
 
         if self.ignore_event(view):
