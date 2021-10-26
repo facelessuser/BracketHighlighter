@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.29.3
+
+- **FIX**: Quotes matching for SQL string in PHP.
+
 ## 2.29.2
 
 - **FIX**: Adjustments for latest syntax changes in default JavaScript and HTML in Sublime Text. Fixes issues with
