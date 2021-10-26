@@ -181,6 +181,7 @@
             "style": "single_quote",
             "scopes": [
                 "meta.attribute-with-value.style.html -entity.other.attribute-name.style.html -punctuation.separator.key-value.html",
+                "source.php meta.string",
                 "source.ruby string.quoted, source.ruby meta.interpolation",
                 "string",
                 "string.quoted"
@@ -197,6 +198,7 @@
             "style": "double_quote",
             "scopes": [
                 "meta.attribute-with-value.style.html -entity.other.attribute-name.style.html -punctuation.separator.key-value.html",
+                "source.php meta.string",
                 "source.ruby string.quoted, source.ruby meta.interpolation",
                 "string",
                 "string.quoted"
