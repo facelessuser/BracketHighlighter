@@ -503,7 +503,7 @@
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",
             "language_filter": "allowlist",
-            "language_list": ["Ruby", "RSpec", "Better RSpec", "Ruby on Rails"],
+            "language_list": ["Ruby", "RSpec", "Better RSpec", "Ruby on Rails", "Ruby (Rails)"],
             "enabled": true
         },
         // C/C++ compile switches
