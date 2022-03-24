@@ -2,6 +2,7 @@
 
 ## 2.29.3
 
+- **FIX**: Fix "Ruby on Rails" for Sublime build 4130+.
 - **FIX**: Quotes matching for SQL string in PHP.
 
 ## 2.29.2
