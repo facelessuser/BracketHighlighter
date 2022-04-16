@@ -226,5 +226,3 @@ will have to keep all the packages updated yourself.
     ```
 
 3. Restart Sublime Text.
-
---8<-- "refs.md"

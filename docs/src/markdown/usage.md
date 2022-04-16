@@ -146,5 +146,3 @@ Tag Name Select plugin selects the opening and closing tag name of the current s
 
 BH provides no keyboard shortcuts in order to avoid shortcut conflicts, but you can view the included
 [`Example.sublime-keymap`][keymap] file to get an idea how to set up your own.
-
---8<-- "refs.md"

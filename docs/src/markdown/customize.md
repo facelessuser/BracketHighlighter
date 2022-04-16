@@ -1631,5 +1631,3 @@ called `plugin` that returns the class.
     def plugin():
         return FoldBrackets
     ```
-
---8<-- "refs.md"

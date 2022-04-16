@@ -31,5 +31,3 @@ code base to allow for more flexibility, faster matching, and a more feature ric
 - pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter
   was built off of and the inspiration for this project.
 - BoundInCode: for his Tag icon.
-
---8<-- "refs.md"
