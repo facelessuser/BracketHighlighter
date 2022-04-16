@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.29.4
+
+- **FIX**: Fix for "Ruby on Rails" embedded in HTML 4130+.
+
 ## 2.29.3
 
 - **FIX**: Fix "Ruby on Rails" for Sublime build 4130+.
