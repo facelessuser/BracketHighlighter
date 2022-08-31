@@ -453,6 +453,7 @@
                 "HTML (Jinja2)",
                 "HTML (Twig)",
                 "HTML (Django)",
+                "Jinja",
                 "CFML",
                 "HTML+CFML",
                 "ColdFusion",

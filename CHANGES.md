@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.29.5
+
+- **FIX**: Ensure Jinja2 support for works for the Jinja2 package (support existed for some older package).
+
 ## 2.29.4
 
 - **FIX**: Fix for "Ruby on Rails" embedded in HTML 4130+.
