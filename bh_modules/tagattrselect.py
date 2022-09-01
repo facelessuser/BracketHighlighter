@@ -67,7 +67,7 @@ class SelectAttr(bh_plugin.BracketPluginCommand):
 
             while region is not None and region.b < self.left.end:
                 # Select closest attribute to the right of the selection
-                if(
+                if (
                     current_pt < region.b or
                     (
                         current_pt <= region.b and current_region.a >= region.a and not
