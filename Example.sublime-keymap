@@ -24,7 +24,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect",
                 "args": {"select": "left"}
             }
@@ -41,7 +40,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect",
                 "args": {"select": "right"}
             }
@@ -58,7 +56,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect",
                 "args": {"select": "left", "extend": true}
             }
@@ -75,7 +72,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect",
                 "args": {"select": "right", "extend": true}
             }
@@ -98,8 +94,7 @@
         "args": {
             "plugin": {
                 "args": {"select": "right", "alternate": true},
-                "command": "bh_modules.bracketselect",
-                "type": ["__all__"]
+                "command": "bh_modules.bracketselect"
             },
             "lines": true,
             "no_outside_adj": null
@@ -115,7 +110,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect"
             }
         }
@@ -130,7 +124,6 @@
             "lines" : true,
             "plugin":
             {
-                "type": ["__all__"],
                 "command": "bh_modules.bracketselect",
                 "args": {"always_include_brackets": true}
             }
@@ -199,7 +192,6 @@
         "args":
         {
             "plugin": {
-                "type": ["__all__"],
                 "command" : "bh_modules.foldbracket"
             }
         }
