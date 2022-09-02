@@ -1577,7 +1577,7 @@ circumstance it is run, and with what parameters it is run with.
 
 Parameter | Description
 --------- | -----------
-`type`    | An array containing the bracket definition names that the plugin should be run on.  Use `__all__` for all bracket definitions.
+`type`    | An array containing the bracket definition names that the plugin should be run on.  If `type` is not set, `['__all__']` will be used signifying all bracket definitions.
 `command` | The plugin to run.  For internal plugins, they are referenced by `bh_modules.<plugin name>`.  For custom plugins, you should use the folder path relative to `Packages`.  So if I had a plugin called `myplugin.py` in my `User/bh_modules` folder, I would use `User.bh_modules.myplugin`.
 `args`    | A dictionary containing the arguments to feed into the plugin.
 
