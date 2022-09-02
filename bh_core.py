@@ -113,6 +113,8 @@ class BhCore(object):
             if 'type' in plugin:
                 for target in plugin["type"]:
                     self.plugin_targets.add(target)
+            else:
+                self.plugin_targets.add('__all__')
 
         # Region selection, highlight, management
         self.regions = bh_regions.BhRegion(alter_select, count_lines)
