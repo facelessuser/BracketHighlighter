@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.30.1
+
+- **FIX**: Fix PHP angle matching rule.
+
 ## 2.30.0
 
 - **NEW**: When defining key bindings `type` is now defaulted to `['__all__']` if not set.

@@ -438,6 +438,7 @@
                 "punctuation.accessor.arrow.php",
                 "punctuation.definition.arrow-function.php",
                 "keyword.declaration.function.arrow.js",
+                "embedding.php punctuation.separator.key-value.php",
                 "source.php meta.embedded.html punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.js punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.css punctuation.section.embedded.begin.php"
