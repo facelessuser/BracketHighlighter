@@ -14,20 +14,20 @@ code base to allow for more flexibility, faster matching, and a more feature ric
 
 ## Feature List
 
-- Customizable to highlight almost any bracket.
-- Customizable bracket highlight style.
-- High visibility bracket highlight mode.
-- Selectively disable or enable specific matching of tags, brackets, or quotes.
-- Selectively use an allowlist or blocklist for matching specific tags, brackets, or quotes based on language.
-- When bound to a shortcut, allow options to show line count and char count between match in the status bar.
-- Highlight basic brackets within strings.
-- Works with multi-select.
-- Configurable custom gutter icons.
-- Toggle bracket escape mode for string brackets (regex|string).
-- Bracket plugins that can jump between bracket ends, select content, etc.
+-   Customizable to highlight almost any bracket.
+-   Customizable bracket highlight style.
+-   High visibility bracket highlight mode.
+-   Selectively disable or enable specific matching of tags, brackets, or quotes.
+-   Selectively use an allowlist or blocklist for matching specific tags, brackets, or quotes based on language.
+-   When bound to a shortcut, allow options to show line count and char count between match in the status bar.
+-   Highlight basic brackets within strings.
+-   Works with multi-select.
+-   Configurable custom gutter icons.
+-   Toggle bracket escape mode for string brackets (regex|string).
+-   Bracket plugins that can jump between bracket ends, select content, etc.
 
 ## Credits
 
-- pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter
-  was built off of and the inspiration for this project.
-- BoundInCode: for his Tag icon.
+-   pyparadigm: for his original efforts with SublimeBrackets and SublimeTagmatcher which originally BracketHighlighter
+    was built off of and the inspiration for this project.
+-   BoundInCode: for his Tag icon.

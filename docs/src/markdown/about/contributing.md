@@ -9,19 +9,20 @@ ST3               | Fully supported and actively maintained.
 
 Contribution from the community is encouraged and can be done in a variety of ways:
 
-- Bug reports.
-- Reviewing code.
-- Code patches via pull requests.
-- Documentation improvements via pull requests.
+-   Bug reports.
+-   Reviewing code.
+-   Code patches via pull requests.
+-   Documentation improvements via pull requests.
 
-!!! warning "Bracket Rules are Supported by the Community"
-    The most common requested enhancement for BracketHighlighter is for new rules to add support for \{insert your
-    favorite language here}.  I, like you, am proficient in very specific languages.  I probably don't use your favorite
-    language or there would already be a support for it.  I don't have time to learn the nuances of your language.  For
-    these reasons, support for new language brackets **requires** pull requests from the community.
+/// warning | Bracket Rules are Supported by the Community
+The most common requested enhancement for BracketHighlighter is for new rules to add support for \{insert your
+favorite language here}.  I, like you, am proficient in very specific languages.  I probably don't use your favorite
+language or there would already be a support for it.  I don't have time to learn the nuances of your language.  For
+these reasons, support for new language brackets **requires** pull requests from the community.
 
-    Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions
-    and guidance to help those who may struggle to create rules for their specific language of interest.
+Though I will not personally implement rules for your favorite language, I am more than willing to offer suggestions
+and guidance to help those who may struggle to create rules for their specific language of interest.
+///
 
 ## Become a Sponsor :octicons-heart-fill-16:{: .heart-throb}
 
@@ -33,14 +34,14 @@ any tier you feel comfortable with. No amount is too little. We also accept one 
 
 ## Bug Reports
 
-1. Please **read the documentation** and **search the issue tracker** to try to find the answer to your question
-   **before** posting an issue.
+1.  Please **read the documentation** and **search the issue tracker** to try to find the answer to your question
+    **before** posting an issue.
 
-2. When an issue is created, a [template][template] will be shown, please fill out the appropriate sections. If the
-   template is not followed, the issue will be marked `Invalid` and closed.
+2.  When an issue is created, a [template][template] will be shown, please fill out the appropriate sections. If the
+    template is not followed, the issue will be marked `Invalid` and closed.
 
-3. When creating an issue on the repository, please provide as much info as possible.  The template will reiterate what
-   is mentioned here as a reminder:
+3.  When creating an issue on the repository, please provide as much info as possible.  The template will reiterate what
+    is mentioned here as a reminder:
 
     - Provide environment information by running `Preferences->Package Settings->BracketHighlighter->Support Info`. The
       information will be copied to the clipboard; paste the info in issue.
@@ -52,8 +53,8 @@ any tier you feel comfortable with. No amount is too little. We also accept one 
 
     The more info provided the greater the chance someone will take the time to answer, implement, or fix the issue.
 
-4. Be prepared to answer questions and provide additional information if required.  Issues in which the creator refuses
-   to respond to follow up questions will be marked as stale and closed.
+4.  Be prepared to answer questions and provide additional information if required.  Issues in which the creator refuses
+    to respond to follow up questions will be marked as stale and closed.
 
 ## Reviewing Code
 
@@ -65,17 +66,17 @@ solutions to overcome weakness in the algorithm.
 Pull requests are welcome, and if you plan on contributing directly to the code, there are a couple of things to be
 mindful of.
 
-1. Please describe the change in as much detail as possible so I can understand what is being added or modified.
+1.  Please describe the change in as much detail as possible so I can understand what is being added or modified.
 
-2. If you are solving a bug that does not already have an issue, please describe the bug in detail and provide info on
-   how to reproduce if applicable (this is good for me and others to reference later when verifying the issue has been
-   resolved).
+2.  If you are solving a bug that does not already have an issue, please describe the bug in detail and provide info on
+    how to reproduce if applicable (this is good for me and others to reference later when verifying the issue has been
+    resolved).
 
-3. Please reference and link related open bugs or feature requests in this pull if applicable.
+3.  Please reference and link related open bugs or feature requests in this pull if applicable.
 
-4. Make sure you've documented or updated the existing documentation if introducing a new feature or modifying the
-   behavior of an existing feature that a user needs to be aware of.  I will not accept new features or changes to
-   existing features if you have not provided documentation describing the feature.
+4.  Make sure you've documented or updated the existing documentation if introducing a new feature or modifying the
+    behavior of an existing feature that a user needs to be aware of.  I will not accept new features or changes to
+    existing features if you have not provided documentation describing the feature.
 
 Continuous integration tests on are run on all pull requests and commits via Travis CI.  When making a pull request, the
 tests will automatically be run, and the request must pass to be accepted.  You can (and should) run these tests before
@@ -84,20 +85,21 @@ it is strongly suggested that requesters make an effort to verify before request
 
 ### Running Validation Tests
 
-!!! tip "Tip"
-    If you are running Sublime on a OSX or Linux/Unix system, you run all tests by by running the shell script (assuming
-    you have installed your environment fulfills all requirements below):
+/// tip | Tip
+If you are running Sublime on a OSX or Linux/Unix system, you run all tests by by running the shell script (assuming
+you have installed your environment fulfills all requirements below):
 
-    ```
-    chmod +x run_tests.sh
-    ./run_tests.sh
-    ```
+```
+chmod +x run_tests.sh
+./run_tests.sh
+```
+///
 
 There are a couple of dependencies that must be present before running the tests.
 
-1. As ST3 is the only current, actively supported version, Python 3.3 must be used to validate the tests.
+1.  As ST3 is the only current, actively supported version, Python 3.3 must be used to validate the tests.
 
-2. Unit tests are run with pytest (@pytest-dev/pytest).  You can install pytest via:
+2.  Unit tests are run with pytest (@pytest-dev/pytest).  You can install pytest via:
 
     ```
     pip install pytest
@@ -109,13 +111,13 @@ There are a couple of dependencies that must be present before running the tests
     pytest .
     ```
 
-3. Linting is performed on the entire project with the following modules:
+3.  Linting is performed on the entire project with the following modules:
 
-    - @gitlab:pycqa/flake8
-    - @gitlab:pycqa/flake8-docstrings
-    - @ebeweber/flake8-mutable
-    - @gforcada/flake8-builtins
-    - @gitlab:pycqa/pep8-naming
+    -   @gitlab:pycqa/flake8
+    -   @gitlab:pycqa/flake8-docstrings
+    -   @ebeweber/flake8-mutable
+    -   @gforcada/flake8-builtins
+    -   @gitlab:pycqa/pep8-naming
 
     These can be installed via:
 

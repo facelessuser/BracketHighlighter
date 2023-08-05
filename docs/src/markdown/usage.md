@@ -26,18 +26,19 @@ following to that file:
 }
 ```
 
-!!! note "Outdated Recommendation"
-    Previously, it was recommended to disable the following features, but this also disabled bracket related features
-    in "expand selections" and such. This is no longer recommended.
+/// note | Outdated Recommendation
+Previously, it was recommended to disable the following features, but this also disabled bracket related features
+in "expand selections" and such. This is no longer recommended.
 
-    ```js
-        "match_brackets": false,
-        "match_brackets_angle": false,
-        "match_brackets_braces": false,
-        "match_brackets_content": false,
-        "match_brackets_square": false,
-        "match_tags": false
-    ```
+```js
+    "match_brackets": false,
+    "match_brackets_angle": false,
+    "match_brackets_braces": false,
+    "match_brackets_content": false,
+    "match_brackets_square": false,
+    "match_tags": false
+```
+///
 
 If you are using Sublime Text build 3124+, a new feature has been added which shows a popup when you mouse over a
 bracket that has its matching bracket pair off screen.  It will show where the other bracket is located with line
@@ -49,29 +50,29 @@ search without thresholds to see if it can find the brackets when restraints are
 
 BH supports a variety of brackets out of the box; here are some examples:
 
-- round
-- square
-- curly
-- angle
-- single and double quotes
-- Python single, double, and triple quotes (Unicode and raw)
-- Django Python templates with mixed HTML, CSS, and JavaScript
-- JavaScript regex
-- Perl regex
-- Ruby regex
-- Markdown bold, italic, and code blocks
-- CSSedit groups
-- Ruby conditional statements
-- C/C++ compiler switches
-- PHP conditional keywords
-- PHP angle brackets `<?php ?>`
-- Erlang conditional statements
-- HTML, ColdFusion, XML, and various other template tags
-- Bash conditional and looping constructs
-- Fish conditional and looping constructs
-- Lua
-- Pascal
-- Elixir
+-   round
+-   square
+-   curly
+-   angle
+-   single and double quotes
+-   Python single, double, and triple quotes (Unicode and raw)
+-   Django Python templates with mixed HTML, CSS, and JavaScript
+-   JavaScript regex
+-   Perl regex
+-   Ruby regex
+-   Markdown bold, italic, and code blocks
+-   CSSedit groups
+-   Ruby conditional statements
+-   C/C++ compiler switches
+-   PHP conditional keywords
+-   PHP angle brackets `<?php ?>`
+-   Erlang conditional statements
+-   HTML, ColdFusion, XML, and various other template tags
+-   Bash conditional and looping constructs
+-   Fish conditional and looping constructs
+-   Lua
+-   Pascal
+-   Elixir
 
 Within supported regex and strings, BH can also highlight basic sub brackets between the matched quotes: `(), [], {}`.
 
