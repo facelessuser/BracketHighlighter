@@ -249,13 +249,22 @@ class BhCore(object):
         if bracket.validate is not None:
             try:
                 match = bracket.validate(
+                    self.view,
                     bracket.name,
                     bh_plugin.BracketRegion(b.begin, b.end),
                     bracket_type,
                     self.search.get_buffer()
                 )
-            except Exception:
-                log("Plugin Bracket Find Error:\n%s" % str(traceback.format_exc()))
+            except TypeError:
+                try:
+                    match = bracket.validate(
+                        bracket.name,
+                        bh_plugin.BracketRegion(b.begin, b.end),
+                        bracket_type,
+                        self.search.get_buffer()
+                    )
+                except Exception:
+                    log("Plugin Bracket Find Error:\n%s" % str(traceback.format_exc()))
         return match
 
     def compare(self, first, second, scope_bracket=False):
