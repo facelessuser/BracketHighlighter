@@ -7,7 +7,10 @@ License: MIT
 import re
 
 RE_DEF = re.compile(r"\s*(?:(?:private|public|protected)\s+)?(def).*?")
-RE_DEF_ENDLESS = re.compile(r"^[ \t]*((?:private|public|protected)\s+)?def\s+(?:[\w\.=]+)[?!]?\s*(\([^)]+\)\s*|\s+)=", re.M)
+RE_DEF_ENDLESS = re.compile(
+    r"^[ \t]*((?:private|public|protected)\s+)?def\s+(?:[\w\.=]+)[?!]?\s*(\([^)]+\)\s*|\s+)=",
+    re.M
+)
 RE_KEYWORD = re.compile(r"(\s*\b)[\w\W]*")
 SPECIAL_KEYWORDS = ('do',)
 NORMAL_KEYWORDS = ('for', 'until', 'unless', 'while', 'class', 'module', 'if', 'begin', 'case')
@@ -27,7 +30,8 @@ def validate(view, name, bracket, bracket_side, bfr):
         m = RE_PREVIOUS.match(previous)
         if m:
             s = left + m.start(1)
-            if not view.match_selector(s, 'meta.function.ruby entity.name.function.ruby, meta.function.parameters.ruby'):
+            selector = 'meta.function.ruby entity.name.function.ruby, meta.function.parameters.ruby'
+            if not view.match_selector(s, selector):
                 return False
     return True
 
