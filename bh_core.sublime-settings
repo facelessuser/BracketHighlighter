@@ -501,7 +501,7 @@
         {
             "name": "ruby",
             "open": "((?:(?<=^)|(?<==)|(?<=<<))\\s*\\b(?:if|begin|case)\\b(?!:)|^\\s*(?:(?:private|public|protected)\\s*)?def\\b[\\p{Ll}\\p{Lu}]*\\b(?!:)|^\\s*\\b(?:for|until|unless|while|class|module)\\b(?!:)|(?<!:)\\bdo\\b(?!:)|(?<=return)\\s*\\b(?:begin|case|for|until|while|class|module)\\b(?!:))",
-            "close": "(?<=[\\s;])(end)\\b(?!:)",
+            "close": "((?<=[\\s;])end\\b(?!:)|(?<!\\s)\\s*=)",
             "style": "default",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.rubykeywords",

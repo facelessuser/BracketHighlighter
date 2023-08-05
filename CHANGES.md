@@ -1,5 +1,11 @@
 # BracketHighlighter
 
+## 2.31
+
+- **NEW**: Add support for Ruby endless methods.
+- **NEW**: `validate` plugin method has been updated to accept a View, but will fallback to the legacy approach
+  for backwards compatibility.
+
 ## 2.30.1
 
 - **FIX**: Fix PHP angle matching rule.
