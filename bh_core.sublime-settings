@@ -433,6 +433,7 @@
                 "keyword.operator",
                 "source.ruby.rails.embedded.html",
                 "source.ruby.embedded.html",
+                "storage.type.function.arrow.cfml",
                 "storage.type.function.arrow.js",
                 "punctuation.accessor.php",
                 "punctuation.accessor.arrow.php",
