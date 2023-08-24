@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.31.1
+
+- **FIX**: Fix issue with CMFL bracket matching.
+
 ## 2.31
 
 - **NEW**: Add support for Ruby endless methods.

@@ -5,6 +5,7 @@ Backrefs
 BoundInCode
 BracketHighligher
 BracketHighlighter
+CMFL
 CMake
 CSS
 CSSedit

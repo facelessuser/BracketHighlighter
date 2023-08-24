@@ -5,7 +5,7 @@ import textwrap
 import webbrowser
 import re
 
-__version__ = "2.31.0"
+__version__ = "2.31.1"
 __pc_name__ = 'BracketHighlighter'
 
 CSS = '''
