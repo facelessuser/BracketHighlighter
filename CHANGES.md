@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.31.2
+
+- **FIX**: Fix performance with content highlight bar.
+
 ## 2.31.1
 
 - **FIX**: Fix issue with CMFL bracket matching.
