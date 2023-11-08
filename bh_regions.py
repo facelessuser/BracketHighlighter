@@ -348,8 +348,7 @@ class BhRegion(object):
             count = 0
             # Calculate column index of where text starts for line
             # containing opening bracket
-            for x in range(start_pt, start_pt + end_pt):
-                char = self.view.substr(x)
+            for char in self.view.substr(sublime.Region(start_pt, start_pt + end_pt)):
                 if char == "\t":
                     # Track all tabs
                     tabs += 1
@@ -380,8 +379,7 @@ class BhRegion(object):
                 # Loop through all lines after the first.
                 # Calculate the true column position where the bar should
                 # be drawn.  Calculation should account for tabs.
-                for y in range(start_pt, start_pt + end_pt):
-                    char = self.view.substr(y)
+                for char in self.view.substr(sublime.Region(start_pt, start_pt + end_pt)):
                     if char == '\x00':
                         # Extended past the file's end
                         actual_pt += 1
@@ -411,12 +409,10 @@ class BhRegion(object):
                     if self.view.rowcol(actual_pt)[0] == x and actual_pt not in bracket_locations:
                         if x == last_line:
                             # Draw bar on last line if text comes before bracket
-                            include = False
-                            for y in range(actual_pt, right.begin):
-                                if self.view.substr(y) not in whitespace:
-                                    include = True
-                                    break
-                            if include:
+                            if any(
+                                char not in whitespace
+                                for char in self.view.substr(sublime.Region(actual_pt, right.begin))
+                            ):
                                 bracket.content_selections.append(sublime.Region(actual_pt))
                         else:
                             # Content line; draw bar
@@ -428,12 +424,10 @@ class BhRegion(object):
                 if pt not in bracket_locations:
                     if x == last_line:
                         # Draw bar on last line if text comes before bracket
-                        include = False
-                        for y in range(pt, right.begin):
-                            if self.view.substr(y) not in whitespace:
-                                include = True
-                                break
-                        if include:
+                        if any(
+                            char not in whitespace
+                            for char in self.view.substr(sublime.Region(pt, right.begin))
+                        ):
                             bracket.content_selections.append(sublime.Region(pt))
                     else:
                         # Content line; draw bar
