@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.31.3
+
+- **FIX**: Fix some Bash cases.
+
 ## 2.31.2
 
 - **FIX**: Fix performance with content highlight bar.
