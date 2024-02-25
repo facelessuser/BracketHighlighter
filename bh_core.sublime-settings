@@ -184,7 +184,8 @@
                 "source.php meta.string",
                 "source.ruby string.quoted, source.ruby meta.interpolation",
                 "string",
-                "string.quoted"
+                "string.quoted",
+                "meta.string.regexp.shell"
             ],
             "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex"],
@@ -201,7 +202,8 @@
                 "source.php meta.string",
                 "source.ruby string.quoted, source.ruby meta.interpolation",
                 "string",
-                "string.quoted"
+                "string.quoted",
+                "meta.string.regexp.shell"
             ],
             "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex"],
@@ -347,7 +349,8 @@
                 "string",
                 "comment",
                 "source.regexp constant.character.escape",
-                "source.yaml-tmlanguage constant.character.escape"
+                "source.yaml-tmlanguage constant.character.escape",
+                "meta.string.regexp.shell"
             ],
             "scope_exclude_exceptions": ["text.tex string.other.math"],
             "language_filter": "blocklist",
@@ -372,7 +375,8 @@
                 "source.regexp constant.character.escape",
                 "keyword.control.conditional.patterns.end.shell",
                 "keyword.control.case.item",
-                "source.yaml-tmlanguage constant.character.escape"
+                "source.yaml-tmlanguage constant.character.escape",
+                "meta.string.regexp.shell"
             ],
             "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex", "RTF"],
@@ -401,7 +405,8 @@
             "scope_exclude": [
                 "string",
                 "source.regexp constant.character.escape",
-                "comment"
+                "comment",
+                "meta.string.regexp.shell"
             ],
             "scope_exclude_exceptions": ["text.tex string.other.math", "source.yaml-tmlanguage meta.value -constant.character.escape"],
             "language_filter": "blocklist",
