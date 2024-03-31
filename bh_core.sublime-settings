@@ -447,7 +447,8 @@
                 "embedding.php punctuation.separator.key-value.php",
                 "source.php meta.embedded.html punctuation.section.embedded.begin.php",
                 "source.php meta.embedded.js punctuation.section.embedded.begin.php",
-                "source.php meta.embedded.css punctuation.section.embedded.begin.php"
+                "source.php meta.embedded.css punctuation.section.embedded.begin.php",
+                "keyword.declaration.function.arrow.php "
             ],
             "language_filter": "allowlist",
             "language_list": [
