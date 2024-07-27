@@ -22,7 +22,7 @@ def validate(view, name, bracket, bracket_side, bfr):
 
     b = bfr[bracket.begin:bracket.end]
     if bracket_side == 1 and b.strip() == '=':
-        if view.match_selector(bracket.begin, 'meta.function.parameters.default-value.ruby, string, comment'):
+        if view.match_selector(bracket.end, 'meta.function.parameters.default-value.ruby, string, comment'):
             return False
         view.score_selector
         left = max(0, bracket.begin - 1)
