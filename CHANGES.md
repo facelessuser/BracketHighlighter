@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.31.5
+
+- **FIX**: Fix endless Ruby method case.
+
 ## 2.31.4
 
 - **FIX**: Fix PHP arrow case that could break bracket highlighting.
