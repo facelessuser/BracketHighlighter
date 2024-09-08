@@ -34,13 +34,13 @@ class BhEntry(object):
         return sublime.Region(self.begin, self.end)
 
 
-class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type'], verbose=False), BhEntry):
+class BracketEntry(namedtuple('BracketEntry', ['begin', 'end', 'type']), BhEntry):
     """Bracket object."""
 
     pass
 
 
-class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type'], verbose=False), BhEntry):
+class ScopeEntry(namedtuple('ScopeEntry', ['begin', 'end', 'scope', 'type']), BhEntry):
     """Scope bracket object."""
 
     pass
