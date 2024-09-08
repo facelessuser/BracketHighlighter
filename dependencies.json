@@ -4,14 +4,8 @@
             "backrefs"
         ],
         ">=3124": [
-            "pygments",
-            "python-markdown",
-            "mdpopups",
-            "python-jinja2",
-            "markupsafe",
             "backrefs",
-            "pymdownx",
-            "pyyaml"
+            "mdpopups"
         ]
     }
 }
