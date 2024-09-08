@@ -31,7 +31,7 @@ class Payload(object):
         cls.args = None
 
 
-class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'], verbose=False)):
+class BracketRegion (namedtuple('BracketRegion', ['begin', 'end'])):
     """Bracket regions for plugins."""
 
     def move(self, begin, end):
