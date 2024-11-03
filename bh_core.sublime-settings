@@ -663,7 +663,7 @@
         {
             "name": "s840d_hmi",
             "open": "^\\s*(//[ABGMS]|ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB)\\b",
-            "close": "^\\s*(//END|END_(?:ACTIVATE|CHANGE|FOCUS|IF|LOAD|UNLOAD|OUTPUT|PRESS|SUB))\\b",
+            "close": "^\\s*(//END|END_(?:ACTIVATE|CHANGE|FOCUS|LOAD|UNLOAD|OUTPUT|PRESS|SUB)|END(?:IF))\\b",
             "style": "tag",
             "scope_exclude": ["string", "comment"],
             "plugin_library": "bh_modules.s840d_hmi",

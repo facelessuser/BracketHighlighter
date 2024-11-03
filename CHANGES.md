@@ -1,5 +1,10 @@
 # BracketHighlighter
 
+## 2.32.0
+
+- **NEW**: Opt in to Python 3.8.
+- **FIX**: Fix issues with "SINUMERIK840D" language.
+
 ## 2.31.5
 
 - **FIX**: Fix endless Ruby method case.
