@@ -19,6 +19,6 @@ def compare(name, first, second, bfr):
     if o in S840D_HMI_CLASSES and c == "//end":
         match = True
     # methods
-    elif c == "end_" + o:
+    elif c == "end_" + o or c == 'end' + o:
         match = True
     return match
