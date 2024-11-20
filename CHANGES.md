@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.32.1
+
+- **FIX**: Remove verbose parameter from named tubple which causes issues with Python 3.8.
+
 ## 2.32.0
 
 - **NEW**: Opt in to Python 3.8.

@@ -26,7 +26,7 @@ def process_tag_pattern(pattern, variables=None):
     return pattern
 
 
-class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'optional', 'single'], verbose=False)):
+class TagEntry(namedtuple('TagEntry', ['begin', 'end', 'name', 'optional', 'single'])):
     """Tag entry tuple."""
 
     def move(self, begin, end):
