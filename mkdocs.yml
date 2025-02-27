@@ -4,7 +4,7 @@ repo_url: https://github.com/facelessuser/BracketHighlighter
 edit_uri: tree/master/docs/src/markdown
 site_description: A customizable Sublime Text plugin that highlights matching brackets.
 copyright: |
-  Copyright &copy; 2013 - 2024 <a href="https://github.com/facelessuser"  target="_blank" rel="noopener">Isaac Muse</a>
+  Copyright &copy; 2013 - 2025 <a href="https://github.com/facelessuser"  target="_blank" rel="noopener">Isaac Muse</a>
 
 docs_dir: docs/src/markdown
 theme:
