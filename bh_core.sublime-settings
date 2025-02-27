@@ -376,7 +376,8 @@
                 "keyword.control.conditional.patterns.end.shell",
                 "keyword.control.case.item",
                 "source.yaml-tmlanguage constant.character.escape",
-                "meta.string.regexp.shell"
+                "meta.string.regexp.shell",
+                "punctuation.section.patterns.end.shell"
             ],
             "language_filter": "blocklist",
             "language_list": ["Plain text", "Hex", "RTF"],
