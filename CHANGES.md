@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.32.3
+
+-   **FIX**: Fix example keymap for selection.
+
 ## 2.32.2
 
 -   **FIX**: Fix bracket highlighting in Bash due to recent changes in syntax language.
