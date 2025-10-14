@@ -3,6 +3,7 @@
 ## 2.32.3
 
 -   **FIX**: Fix example keymap for selection.
+-   **FIX**: Use typing dependency.
 
 ## 2.32.2
 
