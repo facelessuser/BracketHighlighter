@@ -1,5 +1,9 @@
 # BracketHighlighter
 
+## 2.32.4
+
+-   **FIX**: Fixes for Sublime beta using Python 3.14.
+
 ## 2.32.3
 
 -   **FIX**: Fix example keymap for selection.
