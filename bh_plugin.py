@@ -7,7 +7,6 @@ License: MIT
 import sublime
 import sublime_plugin
 from os.path import normpath, join
-import imp
 from collections import namedtuple
 import sys
 import traceback
@@ -83,6 +82,17 @@ def load_modules(obj, loaded):
         raise
 
 
+def new_module(name):
+    """Create a new module."""
+
+    if sys.version_info < (3, 4):
+        import imp
+        return imp.new_module(name)
+
+    import types
+    return types.ModuleType(name)
+
+
 def _import_module(module_name, loaded=None):
     """
     Import the module.
@@ -100,7 +110,7 @@ def _import_module(module_name, loaded=None):
     if loaded is not None and module_name in loaded:
         module = sys.modules[module_name]
     else:
-        module = imp.new_module(module_name)
+        module = new_module(module_name)
         sys.modules[module_name] = module
         exec(
             compile(
