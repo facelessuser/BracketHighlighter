@@ -1,11 +1,10 @@
-# BracketHighlighter 2.32.0
+# BracketHighlighter
 
 New release!
 
 A restart might be required. If you see issues immediately after the update  
 please try restarting.
 
-## 2.32
+## 2.33.0
 
-- **NEW**: Opt in to Python 3.8.
-- **FIX**: Fix issues with "SINUMERIK840D" language.
+-   **NEW**: Release special branch for Sublime Text 4201+.

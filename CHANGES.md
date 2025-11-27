@@ -1,8 +1,12 @@
 # BracketHighlighter
 
+## 2.33.0
+
+-   **NEW**: Release special branch for Sublime Text 4201+.
+
 ## 2.32.4
 
--   **FIX**: Fixes for Sublime beta using Python 3.14.
+-   **FIX**: Fixes for Sublime beta using Python 3.13.
 
 ## 2.32.3
 

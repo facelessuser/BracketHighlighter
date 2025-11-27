@@ -5,8 +5,7 @@
         ],
         ">=3124": [
             "backrefs",
-            "mdpopups",
-            "typing"
+            "mdpopups"
         ]
     }
 }
